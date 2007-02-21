@@ -7,7 +7,7 @@ package ru.amse.soultakov.ereditor.model;
  * @author sma
  *
  */
-public class Relation
+public class Relationship
 {
 	/**
 	 * 
@@ -17,19 +17,19 @@ public class Relation
 	/**
 	 * 
 	 */
-	private RelationEnd firstEnd;
+	private RelationshipEnd firstEnd;
 	
 	/**
 	 * 
 	 */
-	private RelationEnd secondEnd;
+	private RelationshipEnd secondEnd;
 
 	/**
 	 * @param name
 	 * @param firstEnd
 	 * @param secondEnd
 	 */
-	public Relation(String name, RelationEnd firstEnd, RelationEnd secondEnd)
+	public Relationship(String name, RelationshipEnd firstEnd, RelationshipEnd secondEnd)
 	{
 		super();
 		this.name = name;
@@ -56,7 +56,7 @@ public class Relation
 	/**
 	 * @return
 	 */
-	public RelationEnd getFirstEnd()
+	public RelationshipEnd getFirstEnd()
 	{
 		return firstEnd;
 	}
@@ -64,7 +64,7 @@ public class Relation
 	/**
 	 * @param firstEnd
 	 */
-	public void setFirstEnd(RelationEnd firstEnd)
+	public void setFirstEnd(RelationshipEnd firstEnd)
 	{
 		this.firstEnd = firstEnd;
 	}
@@ -72,7 +72,7 @@ public class Relation
 	/**
 	 * @return
 	 */
-	public RelationEnd getSecondEnd()
+	public RelationshipEnd getSecondEnd()
 	{
 		return secondEnd;
 	}
@@ -80,7 +80,7 @@ public class Relation
 	/**
 	 * @param secondEnd
 	 */
-	public void setSecondEnd(RelationEnd secondEnd)
+	public void setSecondEnd(RelationshipEnd secondEnd)
 	{
 		this.secondEnd = secondEnd;
 	}

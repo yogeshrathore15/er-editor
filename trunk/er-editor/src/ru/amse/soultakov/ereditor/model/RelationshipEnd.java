@@ -7,7 +7,7 @@ package ru.amse.soultakov.ereditor.model;
  * @author sma
  *
  */
-public class RelationEnd
+public class RelationshipEnd
 {
 	/**
 	 * 
@@ -17,13 +17,13 @@ public class RelationEnd
 	/**
 	 * 
 	 */
-	private RelationMultiplicity multiplicity;
+	private RelationshipMultiplicity multiplicity;
 
 	/**
 	 * @param entity
 	 * @param multiplicity
 	 */
-	public RelationEnd(Entity entity, RelationMultiplicity multiplicity)
+	public RelationshipEnd(Entity entity, RelationshipMultiplicity multiplicity)
 	{
 		super();
 		this.entity = entity;
@@ -49,7 +49,7 @@ public class RelationEnd
 	/**
 	 * @return
 	 */
-	public RelationMultiplicity getMultiplicity()
+	public RelationshipMultiplicity getMultiplicity()
 	{
 		return multiplicity;
 	}
@@ -57,7 +57,7 @@ public class RelationEnd
 	/**
 	 * @param multiplicity
 	 */
-	public void setMultiplicity(RelationMultiplicity multiplicity)
+	public void setMultiplicity(RelationshipMultiplicity multiplicity)
 	{
 		this.multiplicity = multiplicity;
 	}
