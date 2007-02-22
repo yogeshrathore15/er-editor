@@ -5,84 +5,77 @@ package ru.amse.soultakov.ereditor.model;
 
 /**
  * @author sma
- *
+ * 
  */
-public class Relationship
-{
-	/**
-	 * 
-	 */
-	private String name;
-	
-	/**
-	 * 
-	 */
-	private RelationshipEnd firstEnd;
-	
-	/**
-	 * 
-	 */
-	private RelationshipEnd secondEnd;
+public class Relationship {
+    /**
+     * 
+     */
+    private String name;
 
-	/**
-	 * @param name
-	 * @param firstEnd
-	 * @param secondEnd
-	 */
-	public Relationship(String name, RelationshipEnd firstEnd, RelationshipEnd secondEnd)
-	{
-		super();
-		this.name = name;
-		this.firstEnd = firstEnd;
-		this.secondEnd = secondEnd;
-	}
+    /**
+     * 
+     */
+    private RelationshipEnd firstEnd;
 
-	/**
-	 * @return
-	 */
-	public String getName()
-	{
-		return name;
-	}
+    /**
+     * 
+     */
+    private RelationshipEnd secondEnd;
 
-	/**
-	 * @param name
-	 */
-	public void setName(String name)
-	{
-		this.name = name;
-	}
+    /**
+     * @param name
+     * @param firstEnd
+     * @param secondEnd
+     */
+    public Relationship(String name, RelationshipEnd firstEnd,
+            RelationshipEnd secondEnd) {
+        super();
+        this.name = name;
+        this.firstEnd = firstEnd;
+        this.secondEnd = secondEnd;
+    }
 
-	/**
-	 * @return
-	 */
-	public RelationshipEnd getFirstEnd()
-	{
-		return firstEnd;
-	}
+    /**
+     * @return
+     */
+    public String getName() {
+        return name;
+    }
 
-	/**
-	 * @param firstEnd
-	 */
-	public void setFirstEnd(RelationshipEnd firstEnd)
-	{
-		this.firstEnd = firstEnd;
-	}
+    /**
+     * @param name
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	/**
-	 * @return
-	 */
-	public RelationshipEnd getSecondEnd()
-	{
-		return secondEnd;
-	}
+    /**
+     * @return
+     */
+    public RelationshipEnd getFirstEnd() {
+        return firstEnd;
+    }
 
-	/**
-	 * @param secondEnd
-	 */
-	public void setSecondEnd(RelationshipEnd secondEnd)
-	{
-		this.secondEnd = secondEnd;
-	}
-	
+    /**
+     * @param firstEnd
+     */
+    public void setFirstEnd(RelationshipEnd firstEnd) {
+        this.firstEnd = firstEnd;
+    }
+
+    /**
+     * @return
+     */
+    public RelationshipEnd getSecondEnd() {
+        return secondEnd;
+    }
+
+    /**
+     * @param secondEnd
+     */
+    public void setSecondEnd(RelationshipEnd secondEnd) {
+        this.secondEnd = secondEnd;
+    }
+
 }
