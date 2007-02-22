@@ -5,61 +5,55 @@ package ru.amse.soultakov.ereditor.model;
 
 /**
  * @author sma
- *
+ * 
  */
-public class RelationshipEnd
-{
-	/**
-	 * 
-	 */
-	private Entity entity;
-	
-	/**
-	 * 
-	 */
-	private RelationshipMultiplicity multiplicity;
+public class RelationshipEnd {
+    /**
+     * 
+     */
+    private Entity entity;
 
-	/**
-	 * @param entity
-	 * @param multiplicity
-	 */
-	public RelationshipEnd(Entity entity, RelationshipMultiplicity multiplicity)
-	{
-		super();
-		this.entity = entity;
-		this.multiplicity = multiplicity;
-	}
+    /**
+     * 
+     */
+    private RelationshipMultiplicity multiplicity;
 
-	/**
-	 * @return
-	 */
-	public Entity getEntity()
-	{
-		return entity;
-	}
+    /**
+     * @param entity
+     * @param multiplicity
+     */
+    public RelationshipEnd(Entity entity, RelationshipMultiplicity multiplicity) {
+        super();
+        this.entity = entity;
+        this.multiplicity = multiplicity;
+    }
 
-	/**
-	 * @param entity
-	 */
-	public void setEntity(Entity entity)
-	{
-		this.entity = entity;
-	}
+    /**
+     * @return
+     */
+    public Entity getEntity() {
+        return entity;
+    }
 
-	/**
-	 * @return
-	 */
-	public RelationshipMultiplicity getMultiplicity()
-	{
-		return multiplicity;
-	}
+    /**
+     * @param entity
+     */
+    public void setEntity(Entity entity) {
+        this.entity = entity;
+    }
 
-	/**
-	 * @param multiplicity
-	 */
-	public void setMultiplicity(RelationshipMultiplicity multiplicity)
-	{
-		this.multiplicity = multiplicity;
-	}
-		
+    /**
+     * @return
+     */
+    public RelationshipMultiplicity getMultiplicity() {
+        return multiplicity;
+    }
+
+    /**
+     * @param multiplicity
+     */
+    public void setMultiplicity(RelationshipMultiplicity multiplicity) {
+        this.multiplicity = multiplicity;
+    }
+
 }

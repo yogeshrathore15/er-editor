@@ -5,7 +5,7 @@ package ru.amse.soultakov.ereditor.model;
 
 /**
  * @author sma
- *
+ * 
  */
 public enum RelationshipMultiplicity {
 	ZERO_OR_ONE,

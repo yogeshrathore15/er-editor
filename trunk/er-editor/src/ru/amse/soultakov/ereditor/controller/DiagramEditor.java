@@ -11,29 +11,24 @@ import javax.swing.JComponent;
 
 /**
  * @author sma
- *
+ * 
  */
-public class DiagramEditor extends JComponent
-{
+public class DiagramEditor extends JComponent {
 
-	public DiagramEditor()
-	{
-	}
-	
-	@Override
-	protected void paintComponent(Graphics g)
-	{
-		super.paintComponent(g);
-		g.setColor(Color.LIGHT_GRAY);
-		g.fillRect(getX(), getY(), getWidth(), getHeight());		
-	}
-	
-	/* (non-Javadoc)
-	 * @see javax.swing.JComponent#getPreferredSize()
-	 */
-	@Override
-	public Dimension getPreferredSize()
-	{
-		return new Dimension(200,100);
-	}
+    private static final Dimension PREFERRED_SIZE = new Dimension(300,300);
+        
+    public DiagramEditor() {
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.setColor(Color.LIGHT_GRAY);
+        //g.fillRect(getX(), getY(), getWidth(), getHeight());
+    }
+    
+    @Override
+    public Dimension getPreferredSize() {
+        return PREFERRED_SIZE;
+    }
 }
