@@ -48,7 +48,9 @@ public class Main {
         diagramEditor.setLayout(null);
         diagramEditor.add(new EntityView(new Entity("Foo entity "), 20, 20));
         diagramEditor.add(new EntityView(new Entity("Bar entity"),  150, 10));
-        diagramEditor.add(new EntityView(new Entity("Buzz entity"), 260, 10));
+        EntityView entityView = new EntityView(new Entity("Buzz entity"), 260, 10);
+        diagramEditor.add(entityView);
+        entityView.setSelected(true);
         diagramEditor.add(new EntityView(new Entity("Long named entity"), 260, 200));
         //JLabel label = new JLabel("Just a label");
        // label.setSize(40, 40);
