@@ -11,7 +11,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import javax.swing.JPanel;
 import javax.swing.JToolBar;
 
 import ru.amse.soultakov.ereditor.model.Entity;
@@ -39,19 +38,17 @@ public class Main {
     }
 
     private static JComponent createDiagramEditor() {
-        JComponent diagramEditor = new DiagramEditor() {
+	DiagramEditor diagramEditor = new DiagramEditor() {
             @Override
             public Dimension getPreferredSize() {
                 return new Dimension(400,400);
             }
         };
         diagramEditor.setLayout(null);
-        diagramEditor.add(new EntityView(new Entity("Foo entity "), 20, 20));
-        diagramEditor.add(new EntityView(new Entity("Bar entity"),  150, 10));
-        EntityView entityView = new EntityView(new Entity("Buzz entity"), 260, 10);
-        diagramEditor.add(entityView);
-        entityView.setSelected(true);
-        diagramEditor.add(new EntityView(new Entity("Long named entity"), 260, 200));
+        diagramEditor.add(new EntityView(diagramEditor, new Entity("Foo entity "), 20, 20));
+        diagramEditor.add(new EntityView(diagramEditor, new Entity("Bar entity"),  150, 10));
+        diagramEditor.add(new EntityView(diagramEditor, new Entity("Buzz entity"), 260, 10));
+        diagramEditor.add(new EntityView(diagramEditor, new Entity("Long named entity"), 260, 200));
         //JLabel label = new JLabel("Just a label");
        // label.setSize(40, 40);
         //diagramEditor.add(label);
