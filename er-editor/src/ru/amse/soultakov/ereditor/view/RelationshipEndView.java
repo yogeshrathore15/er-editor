@@ -29,6 +29,8 @@ public class RelationshipEndView {
         this.relationshipEnd = relationshipEnd;
         this.attachedEntity = attachedEntity;
     }
+    
+    
 
     /**
      * @return

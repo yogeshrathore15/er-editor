@@ -39,7 +39,7 @@ public class Main {
     }
 
     private static JComponent createDiagramEditor() {
-        JComponent diagramEditor = new JPanel() {
+        JComponent diagramEditor = new DiagramEditor() {
             @Override
             public Dimension getPreferredSize() {
                 return new Dimension(400,400);

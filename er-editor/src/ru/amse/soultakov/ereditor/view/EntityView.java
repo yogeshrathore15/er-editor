@@ -12,7 +12,6 @@ import java.awt.geom.Rectangle2D;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
-import javax.swing.border.BevelBorder;
 
 import ru.amse.soultakov.ereditor.model.Entity;
 
@@ -72,7 +71,11 @@ public class EntityView extends JComponent {
     }
 
     public void setSelected(boolean selected) {
-        this.selected = selected;
+        boolean oldSelected = this.selected;
+        if (oldSelected != selected) { 
+            this.selected = selected;
+            repaint();
+        }
     }
 
     public boolean isSelected() {
