@@ -32,14 +32,10 @@ public class RelationshipView {
      */
     private EntityView secondEntity;
 
-    final static BasicStroke stroke = new BasicStroke(1.0f);
+    private static final BasicStroke SIMPLE_STROKE = new BasicStroke(1.0f);
 
-    final static BasicStroke wideStroke = new BasicStroke(8.0f);
-
-    final static float dash1[] = { 10.0f };
-
-    final static BasicStroke dashed = new BasicStroke(1.0f, BasicStroke.CAP_BUTT,
-            BasicStroke.JOIN_MITER, 10.0f, dash1, 0.0f);
+    private static final BasicStroke DASHED = new BasicStroke(1.0f, BasicStroke.CAP_BUTT,
+            BasicStroke.JOIN_MITER, 10.0f, new float[] { 10.0f }, 0.0f);
 
     /**
      * @param relationship
@@ -53,6 +49,9 @@ public class RelationshipView {
         this.secondEntity = secondEntity;
     }
 
+    /**
+     * @param graphics
+     */
     public void paint(Graphics graphics) {
         Graphics2D graphics2D = (Graphics2D) graphics;
         int x1, x2, y1, y2;
@@ -72,19 +71,71 @@ public class RelationshipView {
         }
         int xCenter = (x1 + x2) / 2;
         int yCenter = (y1 + y2) / 2;
-        drawRelationshipEnd(graphics2D, x1, y1, xCenter, yCenter, relationship.getFirstEnd()
-                .getMultiplicity());
+        drawRelationshipEnd(graphics2D, x1, y1, xCenter, yCenter, relationship
+                .getFirstEnd().getMultiplicity());
         drawRelationshipEnd(graphics2D, x2, y2, xCenter, yCenter, relationship
                 .getSecondEnd().getMultiplicity());
-        //graphics2D.drawLine(x1, y1, x2, y2);
+        // graphics2D.drawLine(x1, y1, x2, y2);
     }
 
+    /**
+     * @param graphics2D
+     * @param x1
+     * @param y1
+     * @param xCenter
+     * @param yCenter
+     * @param multiplicity
+     */
     private void drawRelationshipEnd(Graphics2D graphics2D, int x1, int y1, int xCenter,
             int yCenter, RelationshipMultiplicity multiplicity) {
         Stroke old = graphics2D.getStroke();
-        graphics2D.setStroke(multiplicity.isObligatory() ? stroke : dashed);
+        graphics2D.setStroke(multiplicity.isObligatory() ? SIMPLE_STROKE : DASHED);
         graphics2D.setColor(Color.BLACK);
         graphics2D.drawLine(x1, y1, xCenter, yCenter);
         graphics2D.setStroke(old);
     }
+
+    /**
+     * @return the firstEntity
+     */
+    public EntityView getFirstEntity() {
+        return firstEntity;
+    }
+
+    /**
+     * @param firstEntity the firstEntity to set
+     */
+    public void setFirstEntity(EntityView firstEntity) {
+        this.firstEntity = firstEntity;
+    }
+
+    /**
+     * @return the relationship
+     */
+    public Relationship getRelationship() {
+        return relationship;
+    }
+
+    /**
+     * @param relationship the relationship to set
+     */
+    public void setRelationship(Relationship relationship) {
+        this.relationship = relationship;
+    }
+
+    /**
+     * @return the secondEntity
+     */
+    public EntityView getSecondEntity() {
+        return secondEntity;
+    }
+
+    /**
+     * @param secondEntity the secondEntity to set
+     */
+    public void setSecondEntity(EntityView secondEntity) {
+        this.secondEntity = secondEntity;
+    }
+    
+    
 }
