@@ -12,8 +12,8 @@ import java.awt.event.MouseEvent;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.Rectangle2D;
 
-import javax.swing.BorderFactory;
 import javax.swing.JComponent;
+import javax.swing.border.LineBorder;
 import javax.swing.event.MouseInputAdapter;
 
 import ru.amse.soultakov.ereditor.controller.DiagramEditor;
@@ -23,126 +23,179 @@ import ru.amse.soultakov.ereditor.model.Entity;
  * @author sma
  * 
  */
-public class EntityView extends JComponent {
+public class EntityView extends JComponent implements Selectable {
 
-	private static final FontRenderContext FONT_RENDER_CONTEXT = new FontRenderContext(
-			null, false, false);
+    private static final int SELECTION_SQUARE_SIZE = 5;
 
-	private static final int MARGIN = 3;
+    private static final FontRenderContext FONT_RENDER_CONTEXT = new FontRenderContext(
+            null, false, false);
 
-	private Entity entity;
+    private static final int MARGIN = 3;
 
-	private boolean selected;
+    private Entity entity;
 
-	private EntityColorDeterminant colorDeterminant = new EntityColorDeterminant();
+    private boolean selected;
 
-	private DiagramEditor diagramEditor;
+    private EntityColorDeterminant colorDeterminant = new EntityColorDeterminant();
 
-	public EntityView(DiagramEditor diagramEditor, Entity entity, int x, int y) {
-		super();
-		this.entity = entity;
-		this.diagramEditor = diagramEditor;
-		setLocation(x, y);
-		setSize(1, 1);
-		setOpaque(true);
-		initMouseListener();
-	}
+    private DiagramEditor diagramEditor;
 
-	/**
-	 * 
-	 */
-	private void initMouseListener() {
-		MouseInputAdapter mouseInputAdapter = new MouseInputAdapter() {
+    /**
+     * @param diagramEditor
+     * @param entity
+     * @param x
+     * @param y
+     */
+    public EntityView(DiagramEditor diagramEditor, Entity entity, int x, int y) {
+        super();
+        this.entity = entity;
+        this.diagramEditor = diagramEditor;
+        setLocation(x, y);
+        setSize(1, 1);
+        setOpaque(true);
+        initMouseListener();
+        setBorder(new LineBorder(Color.BLACK, 1, true));
+    }
 
-			private Point current;
-			private int dx = 0;
-			private int dy = 0;
-			
-			@Override
-			public void mousePressed(MouseEvent e) {
-				diagramEditor.getSelectedItems().clear();
-				diagramEditor.getSelectedItems().addEntity(EntityView.this);
-				current = e.getPoint();
-			}
-			
-			@Override
-			public void mouseDragged(MouseEvent e) {
-				EntityView.this.shift(e.getX() - current.x , e.getY() - current.y );
-				System.out.println(e.getSource());
-				current = e.getPoint();
-			}
-			
-		};
-		this.addMouseListener(mouseInputAdapter);
-		this.addMouseMotionListener(mouseInputAdapter);
-		//this.addMouseWheelListener(mouseInputAdapter);
-	}
+    /**
+     * 
+     */
+    private void initMouseListener() {
+        MouseInputAdapter mouseInputAdapter = new MouseInputAdapter() {
 
-	@Override
-	protected void paintComponent(Graphics g) {
-		Graphics2D graphics = (Graphics2D) g;
-		Rectangle2D titleBounds = drawTitle(graphics);
-		setSize((int) titleBounds.getWidth() + getInsets().right
-				+ getInsets().left, 100);
-		int titleHeight = (int) (getInsets().top + titleBounds.getHeight() + MARGIN);
-		graphics.setColor(colorDeterminant.getLineColor());
-		graphics.drawLine(getInsets().left, titleHeight, getWidth(),
-				titleHeight);
-		graphics.drawLine(getInsets().left, (titleHeight + MARGIN) * 2,
-				getWidth() - getInsets().right, (titleHeight + MARGIN) * 2);
-		setBorder(BorderFactory.createCompoundBorder(BorderFactory
-				.createLineBorder(colorDeterminant.getLineColor()),
-				BorderFactory.createLineBorder(Color.DARK_GRAY, 1)));//
-	}
+            private Point current;
 
-	private Rectangle2D drawTitle(Graphics2D graphics) {
-		graphics.setColor(colorDeterminant.getTitleColor());
-		Rectangle2D bounds = getStringBounds(graphics);
-		graphics.drawString(entity.getName(), getInsets().left,
-				(int) (getInsets().top + bounds.getHeight()));
-		return bounds;
-	}
+            @Override
+            public void mousePressed(MouseEvent e) {
+                diagramEditor.getSelectedItems().clear();
+                diagramEditor.getSelectedItems().add(EntityView.this);
+                current = e.getLocationOnScreen();
+            }
 
-	private Rectangle2D getStringBounds(Graphics2D graphics) {
-		return graphics.getFont().getStringBounds(entity.getName(),
-				FONT_RENDER_CONTEXT);
-	}
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                EntityView.this.shift(e.getXOnScreen() - current.x, e.getYOnScreen()
+                        - current.y);
+                diagramEditor.repaint();
+                current = e.getLocationOnScreen();
+            }
 
-	public void setSelected(boolean selected) {
-		boolean oldSelected = this.selected;
-		if (oldSelected != selected) {
-			this.selected = selected;
-			repaint();
-		}
-	}
+        };
+        this.addMouseListener(mouseInputAdapter);
+        this.addMouseMotionListener(mouseInputAdapter);
+        this.addMouseWheelListener(mouseInputAdapter);
+    }
 
-	public boolean isSelected() {
-		return selected;
-	}
+    @Override
+    protected void paintComponent(Graphics g) {
+        Graphics2D graphics = (Graphics2D) g;
+        Rectangle2D bounds = getContentBounds(graphics);
+        graphics.setColor(Color.LIGHT_GRAY);
+        graphics.fillRect(0, 0, getWidth(), getHeight());
+        setSize((int) bounds.getWidth() + getInsets().right + getInsets().left, 100);
+        drawTitle(graphics);
+        int titleHeight = (int) (getInsets().top + bounds.getHeight() + MARGIN);
+        graphics.setColor(colorDeterminant.getLineColor());
+        graphics.drawLine(getInsets().left, titleHeight, getWidth(), titleHeight);
+        graphics.drawLine(getInsets().left, (titleHeight + MARGIN) * 2, getWidth()
+                - getInsets().right, (titleHeight + MARGIN) * 2);
+        drawSelection(graphics);
+    }
 
-	@Override
-	public Dimension getPreferredSize() {
-		return getSize();
-	}
-	
-	
-	private void shift(int dx, int dy) {
-		this.setLocation(getX() + dx , getY() + dy);
-	}
+    /**
+     * @return
+     */
+    private Rectangle2D getContentBounds(Graphics2D graphics) {
+        return getStringBounds(graphics, entity.getName());
+    }
 
-	private class EntityColorDeterminant {
+    /**
+     * @param graphics
+     * @return
+     */
+    private Rectangle2D drawTitle(Graphics2D graphics) {
+        graphics.setColor(colorDeterminant.getTitleColor());
+        Rectangle2D bounds = getStringBounds(graphics, entity.getName());
+        graphics.drawString(entity.getName(), getInsets().left,
+                (int) (getInsets().top + bounds.getHeight()));
+        return bounds;
+    }
 
-		public Color getTitleColor() {
-			return Color.BLACK;
-		}
+    /**
+     * @param graphics
+     * @return
+     */
+    private Rectangle2D getStringBounds(Graphics2D graphics, String string) {
+        return graphics.getFont().getStringBounds(string, FONT_RENDER_CONTEXT);
+    }
 
-		public Color getLineColor() {
-			return isSelected() ? Color.RED : Color.BLACK;
-		}
+    private void drawSelection(Graphics2D graphics) {
+        if (isSelected()) {
+            // left up
+            drawSelectionSquare(graphics, 0, 0);
+            // left middle
+            drawSelectionSquare(graphics, 0, getHeight() / 2 - SELECTION_SQUARE_SIZE / 2);
+            // left down
+            drawSelectionSquare(graphics, 0, getHeight() - SELECTION_SQUARE_SIZE);
+            // down
+            drawSelectionSquare(graphics, getWidth() / 2 - SELECTION_SQUARE_SIZE / 2,
+                    getHeight() - SELECTION_SQUARE_SIZE);
+            // right down
+            drawSelectionSquare(graphics, getWidth() - SELECTION_SQUARE_SIZE, getHeight()
+                    - SELECTION_SQUARE_SIZE);
+            // right middle
+            drawSelectionSquare(graphics, getWidth() - SELECTION_SQUARE_SIZE, getHeight()
+                    / 2 - SELECTION_SQUARE_SIZE / 2);
+            // right up
+            drawSelectionSquare(graphics, getWidth() - SELECTION_SQUARE_SIZE, 0);
+            // up
+            drawSelectionSquare(graphics, getWidth() / 2 - SELECTION_SQUARE_SIZE / 2, 0);
+        }
+    }
 
-		public Color getBackgroundColor() {
-			return Color.LIGHT_GRAY;
-		}
-	};
+    /**
+     * @param graphics
+     * @param x
+     * @param y
+     */
+    private void drawSelectionSquare(Graphics2D graphics, int x, int y) {
+        graphics.drawRect(x, y, SELECTION_SQUARE_SIZE, SELECTION_SQUARE_SIZE);
+    }
+
+    public void setSelected(boolean selected) {
+        boolean oldSelected = this.selected;
+        if (oldSelected != selected) {
+            this.selected = selected;
+            repaint();
+        }
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    @Override
+    public Dimension getPreferredSize() {
+        return getSize();
+    }
+
+    private void shift(int dx, int dy) {
+        this.setLocation(getX() + dx, getY() + dy);
+    }
+
+    private class EntityColorDeterminant {
+
+        public Color getTitleColor() {
+            return Color.BLACK;
+        }
+
+        public Color getLineColor() {
+            return Color.BLACK;
+        }
+
+        public Color getBackgroundColor() {
+            return Color.LIGHT_GRAY;
+        }
+    };
 
 }

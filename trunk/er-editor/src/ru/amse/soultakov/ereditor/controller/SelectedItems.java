@@ -7,37 +7,58 @@ import java.util.HashSet;
 import java.util.Set;
 
 import ru.amse.soultakov.ereditor.view.EntityView;
+import ru.amse.soultakov.ereditor.view.Selectable;
 
 /**
- * @author sma
- * 
+ * @author Soultakov Maxim
  */
 public class SelectedItems {
 
-	private Set<EntityView> selectedEntities = new HashSet<EntityView>();
+    /**
+     * 
+     */
+    private Set<Selectable> selectedEntities = new HashSet<Selectable>();
 
-	public SelectedItems() {
-	}
+    /**
+     * 
+     */
+    public SelectedItems() {
+    }
 
-	public boolean addEntity(EntityView entityView) {
-		entityView.setSelected(true);
-		return selectedEntities.add(entityView);
-	}
+    /**
+     * @param item
+     * @return
+     */
+    public boolean add(Selectable item) {
+        item.setSelected(true);
+        return selectedEntities.add(item);
+    }
 
-	public boolean removeEntity(EntityView entityView) {
-		entityView.setSelected(false);
-		return selectedEntities.remove(entityView);
-	}
+    /**
+     * @param item
+     * @return
+     */
+    public boolean remove(Selectable item) {
+        item.setSelected(false);
+        return selectedEntities.remove(item);
+    }
 
-	public boolean containsEntity(EntityView entityView) {
-		return selectedEntities.contains(entityView);
-	}
+    /**
+     * @param item
+     * @return
+     */
+    public boolean contains(Selectable item) {
+        return selectedEntities.contains(item);
+    }
 
-	public void clear() {
-		for (EntityView entityView : selectedEntities) {
-			entityView.setSelected(false);
-		}
-		selectedEntities.clear();
-	}
+    /**
+     * 
+     */
+    public void clear() {
+        for (Selectable item : selectedEntities) {
+            item.setSelected(false);
+        }
+        selectedEntities.clear();
+    }
 
 }
