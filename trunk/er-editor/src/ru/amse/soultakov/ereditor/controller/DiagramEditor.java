@@ -7,13 +7,18 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.swing.JComponent;
+import javax.swing.event.MouseInputAdapter;
 
+import ru.amse.soultakov.ereditor.model.Entity;
 import ru.amse.soultakov.ereditor.view.EntityView;
 import ru.amse.soultakov.ereditor.view.RelationshipView;
 
@@ -23,11 +28,13 @@ import ru.amse.soultakov.ereditor.view.RelationshipView;
  */
 public class DiagramEditor extends JComponent {
 
-    private static final Dimension PREFERRED_SIZE = new Dimension(300, 300);
+	private static final Dimension PREFERRED_SIZE = new Dimension(300, 300);
 
-    private SelectedItems selectedItems = new SelectedItems();
+    private final SelectedItems selectedItems = new SelectedItems();
     
-    private Set<RelationshipView> relationshipViews = new HashSet<RelationshipView>();
+    private final Set<RelationshipView> relationshipViews = new HashSet<RelationshipView>();
+    
+    private final Map<Entity, EntityView> entityToView = new HashMap<Entity, EntityView>();
 
     public DiagramEditor() {
         initMouseListener();
@@ -42,6 +49,18 @@ public class DiagramEditor extends JComponent {
         }
         relationshipViews.add(view);
     }
+    
+    public EntityView addEntity(Entity entity, int x, int y) {
+		if (entityToView.containsKey(entity)) {
+			throw new IllegalArgumentException("This entity is already in map");
+		}
+    	EntityView entityView = new EntityView(entity, x, y);
+    	MyMouseInputAdapter listener = new MyMouseInputAdapter(entityView);
+    	entityView.addMouseListener(listener);
+    	entityView.addMouseMotionListener(listener);
+		entityToView.put(entity, entityView);
+    	return entityView;
+	}
     
     public boolean contains(EntityView entityView) {
         for (Component component : getComponents()) {
@@ -87,5 +106,36 @@ public class DiagramEditor extends JComponent {
     public SelectedItems getSelectedItems() {
         return selectedItems;
     }
+    
+    /**
+	 * @author sma
+	 *
+	 */
+	private class MyMouseInputAdapter extends MouseInputAdapter {
+		private Point current;
+		private EntityView entityView;
+		
+		/**
+		 * 
+		 */
+		public MyMouseInputAdapter(EntityView entityView) {
+			this.entityView = entityView;
+		}
+	
+		@Override
+		public void mousePressed(MouseEvent e) {
+		    getSelectedItems().clear();
+		    getSelectedItems().add(entityView);
+		    current = e.getLocationOnScreen();
+		}
+	
+		@Override
+		public void mouseDragged(MouseEvent e) {
+		    entityView.shift(e.getXOnScreen() - current.x, e.getYOnScreen()
+		            - current.y);
+		    repaint();
+		    current = e.getLocationOnScreen();
+		}
+	}
 
 }

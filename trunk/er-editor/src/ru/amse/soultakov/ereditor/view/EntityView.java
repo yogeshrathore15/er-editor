@@ -7,8 +7,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.event.MouseEvent;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.Rectangle2D;
 
@@ -39,52 +37,19 @@ public class EntityView extends JComponent implements Selectable {
 
     private EntityColorDeterminant colorDeterminant = new EntityColorDeterminant();
 
-    private DiagramEditor diagramEditor;
-
     /**
      * @param diagramEditor
      * @param entity
      * @param x
      * @param y
      */
-    public EntityView(DiagramEditor diagramEditor, Entity entity, int x, int y) {
+    public EntityView(Entity entity, int x, int y) {
         super();
         this.entity = entity;
-        this.diagramEditor = diagramEditor;
         setLocation(x, y);
         setSize(1, 1);
         setOpaque(true);
-        initMouseListener();
         setBorder(new LineBorder(Color.BLACK, 1, true));
-    }
-
-    /**
-     * 
-     */
-    private void initMouseListener() {
-        MouseInputAdapter mouseInputAdapter = new MouseInputAdapter() {
-
-            private Point current;
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-                diagramEditor.getSelectedItems().clear();
-                diagramEditor.getSelectedItems().add(EntityView.this);
-                current = e.getLocationOnScreen();
-            }
-
-            @Override
-            public void mouseDragged(MouseEvent e) {
-                EntityView.this.shift(e.getXOnScreen() - current.x, e.getYOnScreen()
-                        - current.y);
-                diagramEditor.repaint();
-                current = e.getLocationOnScreen();
-            }
-
-        };
-        this.addMouseListener(mouseInputAdapter);
-        this.addMouseMotionListener(mouseInputAdapter);
-        this.addMouseWheelListener(mouseInputAdapter);
     }
 
     @Override
@@ -180,7 +145,7 @@ public class EntityView extends JComponent implements Selectable {
         return getSize();
     }
 
-    private void shift(int dx, int dy) {
+    public void shift(int dx, int dy) {
         this.setLocation(getX() + dx, getY() + dy);
     }
     
