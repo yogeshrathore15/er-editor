@@ -183,6 +183,10 @@ public class EntityView extends JComponent implements Selectable {
     private void shift(int dx, int dy) {
         this.setLocation(getX() + dx, getY() + dy);
     }
+    
+    public Entity getEntity() {
+        return entity;
+    }
 
     private class EntityColorDeterminant {
 
