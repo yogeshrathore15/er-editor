@@ -21,8 +21,8 @@ import ru.amse.soultakov.ereditor.view.EntityView;
 import ru.amse.soultakov.ereditor.view.RelationshipView;
 
 /**
- * @author sma
  * 
+ * @author Soultakov Maxim
  */
 public class Main {
     public static void main(String[] args) {
