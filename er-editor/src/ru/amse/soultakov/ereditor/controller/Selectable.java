@@ -1,7 +1,7 @@
 /*
  * Created on 27.02.2007
  */
-package ru.amse.soultakov.ereditor.view;
+package ru.amse.soultakov.ereditor.controller;
 
 /**
  * @author Soultakov Maxim

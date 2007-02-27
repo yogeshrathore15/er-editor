@@ -4,7 +4,6 @@
 package ru.amse.soultakov.ereditor.controller;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
