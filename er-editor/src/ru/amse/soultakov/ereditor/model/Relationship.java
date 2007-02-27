@@ -28,8 +28,7 @@ public class Relationship {
      * @param firstEnd
      * @param secondEnd
      */
-    public Relationship(String name, RelationshipEnd firstEnd,
-            RelationshipEnd secondEnd) {
+    public Relationship(String name, RelationshipEnd firstEnd, RelationshipEnd secondEnd) {
         super();
         this.name = name;
         this.firstEnd = firstEnd;

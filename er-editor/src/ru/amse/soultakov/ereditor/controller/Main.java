@@ -14,7 +14,9 @@ import javax.swing.JMenuBar;
 import javax.swing.JToolBar;
 
 import ru.amse.soultakov.ereditor.model.Entity;
+import ru.amse.soultakov.ereditor.model.Relationship;
 import ru.amse.soultakov.ereditor.view.EntityView;
+import ru.amse.soultakov.ereditor.view.RelationshipView;
 
 /**
  * @author sma
@@ -22,7 +24,7 @@ import ru.amse.soultakov.ereditor.view.EntityView;
  */
 public class Main {
     public static void main(String[] args) {
-        JFrame.setDefaultLookAndFeelDecorated(true);
+        // JFrame.setDefaultLookAndFeelDecorated(true);
         JFrame frame = new JFrame("Stupid test");
         JMenuBar menu = new JMenuBar();
         frame.setJMenuBar(menu);
@@ -38,20 +40,24 @@ public class Main {
     }
 
     private static JComponent createDiagramEditor() {
-	DiagramEditor diagramEditor = new DiagramEditor() {
+        DiagramEditor diagramEditor = new DiagramEditor() {
             @Override
             public Dimension getPreferredSize() {
-                return new Dimension(400,400);
+                return new Dimension(400, 400);
             }
         };
-        diagramEditor.setLayout(null);
-        diagramEditor.add(new EntityView(diagramEditor, new Entity("Foo entity "), 20, 20));
-        diagramEditor.add(new EntityView(diagramEditor, new Entity("Bar entity"),  150, 10));
-        diagramEditor.add(new EntityView(diagramEditor, new Entity("Buzz entity"), 260, 10));
-        diagramEditor.add(new EntityView(diagramEditor, new Entity("Long named entity"), 260, 200));
-        //JLabel label = new JLabel("Just a label");
-       // label.setSize(40, 40);
-        //diagramEditor.add(label);
+        EntityView entityView1 = new EntityView(diagramEditor, new Entity("Foo entity "),
+                20, 20);
+        diagramEditor.add(entityView1);
+        EntityView entityView2 = new EntityView(diagramEditor, new Entity("Bar entity"),
+                150, 10);
+        diagramEditor.add(entityView2);
+        diagramEditor.add(new EntityView(diagramEditor, new Entity("Buzz entity"), 260,
+                10));
+        diagramEditor.add(new EntityView(diagramEditor, new Entity("Long named entity"),
+                260, 200));
+        diagramEditor.add(new RelationshipView(new Relationship("", null, null),
+                entityView1, entityView2));
         return diagramEditor;
     }
 }

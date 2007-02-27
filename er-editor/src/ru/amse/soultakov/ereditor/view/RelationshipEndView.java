@@ -24,13 +24,10 @@ public class RelationshipEndView {
      * @param relationshipEnd
      * @param attachedEntity
      */
-    public RelationshipEndView(RelationshipEnd relationshipEnd,
-            EntityView attachedEntity) {
+    public RelationshipEndView(RelationshipEnd relationshipEnd, EntityView attachedEntity) {
         this.relationshipEnd = relationshipEnd;
         this.attachedEntity = attachedEntity;
     }
-    
-    
 
     /**
      * @return
