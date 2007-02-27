@@ -59,11 +59,12 @@ public class Main {
         diagramEditor.add(new EntityView(diagramEditor, new Entity("Long named entity"),
                 260, 200));
         diagramEditor //O_O
-                .add(new RelationshipView(new Relationship("", new RelationshipEnd(
-                        entityView1.getEntity(), RelationshipMultiplicity.ONE_ONLY),
+                .add(new RelationshipView(new Relationship("", 
+                        new RelationshipEnd(entityView1.getEntity(), 
+                                RelationshipMultiplicity.ONE_ONLY),
                         new RelationshipEnd(entityView2.getEntity(),
-                                RelationshipMultiplicity.ZERO_OR_ONE)), entityView1,
-                        entityView2));
+                                RelationshipMultiplicity.ZERO_OR_ONE)), 
+                        entityView1, entityView2));
         return diagramEditor;
     }
 }
