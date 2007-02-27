@@ -15,6 +15,8 @@ import javax.swing.JToolBar;
 
 import ru.amse.soultakov.ereditor.model.Entity;
 import ru.amse.soultakov.ereditor.model.Relationship;
+import ru.amse.soultakov.ereditor.model.RelationshipEnd;
+import ru.amse.soultakov.ereditor.model.RelationshipMultiplicity;
 import ru.amse.soultakov.ereditor.view.EntityView;
 import ru.amse.soultakov.ereditor.view.RelationshipView;
 
@@ -56,8 +58,12 @@ public class Main {
                 10));
         diagramEditor.add(new EntityView(diagramEditor, new Entity("Long named entity"),
                 260, 200));
-        diagramEditor.add(new RelationshipView(new Relationship("", null, null),
-                entityView1, entityView2));
+        diagramEditor //O_O
+                .add(new RelationshipView(new Relationship("", new RelationshipEnd(
+                        entityView1.getEntity(), RelationshipMultiplicity.ONE_ONLY),
+                        new RelationshipEnd(entityView2.getEntity(),
+                                RelationshipMultiplicity.ZERO_OR_ONE)), entityView1,
+                        entityView2));
         return diagramEditor;
     }
 }
