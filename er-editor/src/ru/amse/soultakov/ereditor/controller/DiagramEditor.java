@@ -4,6 +4,7 @@
 package ru.amse.soultakov.ereditor.controller;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
@@ -13,6 +14,7 @@ import java.util.Set;
 
 import javax.swing.JComponent;
 
+import ru.amse.soultakov.ereditor.view.EntityView;
 import ru.amse.soultakov.ereditor.view.RelationshipView;
 
 /**
@@ -31,8 +33,23 @@ public class DiagramEditor extends JComponent {
         initMouseListener();
     }
     
+    /**
+     * @param view
+     */
     public void add(RelationshipView view) {
+        if(!contains(view.getFirstEntity()) || !contains(view.getSecondEntity())) {
+            throw new IllegalArgumentException("Entities must belong to DiagramEditor");
+        }
         relationshipViews.add(view);
+    }
+    
+    public boolean contains(EntityView entityView) {
+        for (Component component : getComponents()) {
+            if (component == entityView) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
