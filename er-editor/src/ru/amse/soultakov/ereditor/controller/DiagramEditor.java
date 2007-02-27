@@ -124,8 +124,16 @@ public class DiagramEditor extends JComponent {
 	
 		@Override
 		public void mousePressed(MouseEvent e) {
-		    getSelectedItems().clear();
-		    getSelectedItems().add(entityView);
+		    if (e.isControlDown()) {
+		    	if (entityView.isSelected()) {
+		    		getSelectedItems().remove(entityView);
+		    	} else {
+		    		getSelectedItems().add(entityView);
+		    	}
+		    } else {
+		    	getSelectedItems().clear();
+		    	getSelectedItems().add(entityView);
+		    }
 		    current = e.getLocationOnScreen();
 		}
 	
