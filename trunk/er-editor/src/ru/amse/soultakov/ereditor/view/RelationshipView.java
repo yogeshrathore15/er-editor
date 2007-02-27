@@ -13,8 +13,6 @@ import ru.amse.soultakov.ereditor.model.Relationship;
  */
 public class RelationshipView {
 
-    private static final int MARGIN = 10;
-
     /**
      * 
      */

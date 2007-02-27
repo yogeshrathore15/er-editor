@@ -6,8 +6,6 @@ package ru.amse.soultakov.ereditor.controller;
 import java.util.HashSet;
 import java.util.Set;
 
-import ru.amse.soultakov.ereditor.view.EntityView;
-import ru.amse.soultakov.ereditor.view.Selectable;
 
 /**
  * @author Soultakov Maxim

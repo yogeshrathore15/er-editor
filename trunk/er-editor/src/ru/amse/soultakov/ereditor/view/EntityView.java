@@ -17,6 +17,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.event.MouseInputAdapter;
 
 import ru.amse.soultakov.ereditor.controller.DiagramEditor;
+import ru.amse.soultakov.ereditor.controller.Selectable;
 import ru.amse.soultakov.ereditor.model.Entity;
 
 /**
