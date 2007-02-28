@@ -3,8 +3,10 @@
  */
 package ru.amse.soultakov.ereditor.model;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author sma
@@ -21,7 +23,12 @@ public class Entity implements Iterable<Attribute> {
 	 */
 	private List<Attribute> attributes;
 
-	/**
+    /**
+     * 
+     */
+    private final Set<Relationship> relationships = new HashSet<Relationship>();
+	
+    /**
 	 * @param name
 	 */
 	public Entity(String name) {
@@ -62,17 +69,31 @@ public class Entity implements Iterable<Attribute> {
 		return attributes.iterator();
 	}
 
+	/**
+	 * @param attribute
+	 */
 	public void addAttribute(Attribute attribute) {
 		attributes.add(attribute);
 	}
 
+	/**
+	 * @param attribute
+	 * @return
+	 */
 	public boolean removeAttribute(Attribute attribute) {
 		return attributes.remove(attribute);
 	}
 
+	/**
+	 * @param index
+	 */
 	public void removeAttribute(int index) {
 		attributes.remove(index);
 	}
+    
+    public boolean addRelationship(Relationship relationship) {
+        return relationships.add(relationship);
+    }
 
 	@Override
 	public int hashCode() {

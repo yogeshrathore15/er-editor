@@ -30,6 +30,9 @@ public class Relationship {
      */
     public Relationship(String name, RelationshipEnd firstEnd, RelationshipEnd secondEnd) {
         super();
+        if ((name == null) || (firstEnd == null) || (secondEnd == null)) {
+            throw new IllegalArgumentException("Arguments must be non null values");
+        }
         this.name = name;
         this.firstEnd = firstEnd;
         this.secondEnd = secondEnd;

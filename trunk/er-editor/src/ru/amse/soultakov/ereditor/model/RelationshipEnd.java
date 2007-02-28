@@ -24,6 +24,9 @@ public class RelationshipEnd {
      */
     public RelationshipEnd(Entity entity, RelationshipMultiplicity multiplicity) {
         super();
+        if ((entity == null)||(multiplicity == null)) {
+            throw new IllegalArgumentException("Arguments must be non-null values");
+        }
         this.entity = entity;
         this.multiplicity = multiplicity;
     }
