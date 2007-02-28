@@ -94,6 +94,10 @@ public class Entity implements Iterable<Attribute> {
     public boolean addRelationship(Relationship relationship) {
         return relationships.add(relationship);
     }
+    
+    public boolean removeRelationship(Relationship relationship) {
+    	return relationships.remove(relationship);
+    }
 
 	@Override
 	public int hashCode() {
