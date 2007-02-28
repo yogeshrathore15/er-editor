@@ -9,13 +9,15 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
 
+import javax.swing.JComponent;
+
 import ru.amse.soultakov.ereditor.model.Relationship;
 import ru.amse.soultakov.ereditor.model.RelationshipMultiplicity;
 
 /**
  * @author Soultakov Maxim
  */
-public class RelationshipView {
+public class RelationshipView extends JComponent{
 
 	/**
 	 * 
@@ -48,12 +50,14 @@ public class RelationshipView {
 		this.relationship = relationship;
 		this.firstEntity = firstEntity;
 		this.secondEntity = secondEntity;
+		this.setOpaque(true);
 	}
 
 	/**
 	 * @param graphics
 	 */
-	public void paint(Graphics graphics) {
+	@Override
+	protected void paintComponent(Graphics graphics)  {
 		Graphics2D graphics2D = (Graphics2D) graphics;
 		int firstCenterX = firstEntity.getX() + firstEntity.getWidth() / 2;
 		int firstCenterY = firstEntity.getY() + firstEntity.getHeight() / 3;
