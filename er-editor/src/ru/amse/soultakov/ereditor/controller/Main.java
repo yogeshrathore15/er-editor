@@ -26,7 +26,7 @@ import ru.amse.soultakov.ereditor.view.RelationshipView;
  */
 public class Main {
 	public static void main(String[] args) {
-		// JFrame.setDefaultLookAndFeelDecorated(true);
+	 JFrame.setDefaultLookAndFeelDecorated(true);
 		JFrame frame = new JFrame("Stupid test");
 		JMenuBar menu = new JMenuBar();
 		frame.setJMenuBar(menu);

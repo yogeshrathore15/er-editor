@@ -57,7 +57,7 @@ public class DiagramEditor extends JComponent {
 			throw new IllegalArgumentException("This entity is already in map");
 		}
 		EntityView entityView = new EntityView(entity, x, y);
-		MyMouseInputAdapter listener = new MyMouseInputAdapter(entityView);
+		EntityMouseInputAdapter listener = new EntityMouseInputAdapter(entityView);
 		entityView.addMouseListener(listener);
 		entityView.addMouseMotionListener(listener);
 		entityToView.put(entity, entityView);
@@ -116,7 +116,7 @@ public class DiagramEditor extends JComponent {
 	 * @author sma
 	 * 
 	 */
-	private class MyMouseInputAdapter extends MouseInputAdapter {
+	private class EntityMouseInputAdapter extends MouseInputAdapter {
 		private Point current;
 
 		private EntityView entityView;
@@ -124,7 +124,7 @@ public class DiagramEditor extends JComponent {
 		/**
 		 * 
 		 */
-		public MyMouseInputAdapter(EntityView entityView) {
+		public EntityMouseInputAdapter(EntityView entityView) {
 			this.entityView = entityView;
 		}
 

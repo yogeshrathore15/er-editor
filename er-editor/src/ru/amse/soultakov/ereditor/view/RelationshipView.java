@@ -9,15 +9,13 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
 
-import javax.swing.JComponent;
-
 import ru.amse.soultakov.ereditor.model.Relationship;
 import ru.amse.soultakov.ereditor.model.RelationshipMultiplicity;
 
 /**
  * @author Soultakov Maxim
  */
-public class RelationshipView extends JComponent{
+public class RelationshipView {
 
 	/**
 	 * 
@@ -50,14 +48,12 @@ public class RelationshipView extends JComponent{
 		this.relationship = relationship;
 		this.firstEntity = firstEntity;
 		this.secondEntity = secondEntity;
-		this.setOpaque(true);
 	}
 
 	/**
 	 * @param graphics
 	 */
-	@Override
-	protected void paintComponent(Graphics graphics)  {
+	public void paint(Graphics graphics)  {
 		Graphics2D graphics2D = (Graphics2D) graphics;
 		int firstCenterX = firstEntity.getX() + firstEntity.getWidth() / 2;
 		int firstCenterY = firstEntity.getY() + firstEntity.getHeight() / 3;
@@ -66,26 +62,11 @@ public class RelationshipView extends JComponent{
 
 		int xCenter = (firstCenterX + secondCenterX) / 2;
 		int yCenter = (firstCenterY + secondCenterY) / 2;
-		drawRelationshipEnd(graphics2D, firstCenterX, firstCenterY, xCenter,
+		
+		paintRelationshipEnd(graphics2D, firstCenterX, firstCenterY, xCenter,
 				yCenter, relationship.getFirstEnd().getMultiplicity());
-		drawRelationshipEnd(graphics2D, secondCenterX, secondCenterY, xCenter,
+		paintRelationshipEnd(graphics2D, secondCenterX, secondCenterY, xCenter,
 				yCenter, relationship.getSecondEnd().getMultiplicity());
-		// graphics2D.drawLine(x1, y1, x2, y2);
-		/*
-		 * Graphics2D graphics2D = (Graphics2D) graphics; int x1, x2, y1, y2; if
-		 * (firstEntity.getX() > secondEntity.getX()) { x1 = firstEntity.getX();
-		 * x2 = secondEntity.getX() + secondEntity.getWidth(); } else { x1 =
-		 * firstEntity.getX() + firstEntity.getWidth(); x2 =
-		 * secondEntity.getX(); } if (firstEntity.getY() > secondEntity.getY()) {
-		 * y1 = firstEntity.getY(); y2 = secondEntity.getY() +
-		 * secondEntity.getHeight(); } else { y1 = firstEntity.getY() +
-		 * firstEntity.getHeight(); y2 = secondEntity.getY(); } int xCenter =
-		 * (x1 + x2) / 2; int yCenter = (y1 + y2) / 2;
-		 * drawRelationshipEnd(graphics2D, x1, y1, xCenter, yCenter,
-		 * relationship .getFirstEnd().getMultiplicity());
-		 * drawRelationshipEnd(graphics2D, x2, y2, xCenter, yCenter,
-		 * relationship .getSecondEnd().getMultiplicity());
-		 */
 	}
 
 	/**
@@ -96,7 +77,7 @@ public class RelationshipView extends JComponent{
 	 * @param yCenter
 	 * @param multiplicity
 	 */
-	private void drawRelationshipEnd(Graphics2D graphics2D, int x1, int y1,
+	private void paintRelationshipEnd(Graphics2D graphics2D, int x1, int y1,
 			int xCenter, int yCenter, RelationshipMultiplicity multiplicity) {
 		Stroke old = graphics2D.getStroke();
 		graphics2D.setStroke(multiplicity.isObligatory() ? SIMPLE_STROKE
