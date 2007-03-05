@@ -3,15 +3,15 @@
  */
 package ru.amse.soultakov.ereditor.controller;
 
-public class AutoincrementGenerator {
+class AutoincrementGenerator {
 
-    private static int currentNumber;
+    private int currentNumber;
     
-    private AutoincrementGenerator() {
+    public AutoincrementGenerator() {
         
     }
     
-    public static synchronized int getNextInteger() {
+    public synchronized int getNextInteger() {
         return currentNumber++;
     }
 }
