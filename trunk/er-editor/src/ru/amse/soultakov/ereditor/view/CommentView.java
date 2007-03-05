@@ -8,6 +8,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
+import javax.swing.border.LineBorder;
+
 import ru.amse.soultakov.ereditor.model.Comment;
 
 /**
@@ -20,7 +22,10 @@ public class CommentView extends BlockView {
     public CommentView(Comment comment, int x, int y) {
         super();
         this.comment = comment;
+        setSize(1,1);
+        setOpaque(true);
         setLocation(x, y);
+        setBorder(new LineBorder(Color.BLACK, 1, true));
     }
 
     @Override
@@ -30,11 +35,7 @@ public class CommentView extends BlockView {
         graphics.setColor(Color.LIGHT_GRAY);
         graphics.fillRect(0, 0, getWidth(), getHeight());
         setSize((int) bounds.getWidth() + getInsets().right + getInsets().left, 100);
-        int titleHeight = (int) (getInsets().top + bounds.getHeight() + MARGIN);
         graphics.setColor(Color.BLACK);
-        graphics.drawLine(getInsets().left, titleHeight, getWidth(), titleHeight);
-        graphics.drawLine(getInsets().left, (titleHeight + MARGIN) * 2, getWidth()
-                - getInsets().right, (titleHeight + MARGIN) * 2);
         drawSelection(graphics);
     }
 
@@ -46,6 +47,6 @@ public class CommentView extends BlockView {
      * @return
      */
     protected Rectangle2D getContentBounds(Graphics2D graphics) {
-        return getStringBounds(graphics, "Comment");
+        return getStringBounds(graphics, comment.getComment());
     }
 }

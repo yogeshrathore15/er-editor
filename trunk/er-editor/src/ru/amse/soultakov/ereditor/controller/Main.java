@@ -21,6 +21,7 @@ import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.event.MouseInputAdapter;
 
+import ru.amse.soultakov.ereditor.model.Comment;
 import ru.amse.soultakov.ereditor.model.Entity;
 import ru.amse.soultakov.ereditor.model.Relationship;
 import ru.amse.soultakov.ereditor.model.RelationshipEnd;
@@ -36,6 +37,15 @@ public class Main {
         @Override
         public void mousePressed(MouseEvent e) {
             diagramEditor.addEntity(new Entity("New Entity "
+                    + AutoincrementGenerator.getNextInteger()),
+                    e.getX(), e.getY());
+        }
+    }
+    
+    private static final class CommentAdder extends MouseInputAdapter {
+        @Override
+        public void mousePressed(MouseEvent e) {
+            diagramEditor.addComment(new Comment("New Entity "
                     + AutoincrementGenerator.getNextInteger()),
                     e.getX(), e.getY());
         }
@@ -70,12 +80,27 @@ public class Main {
         JToolBar toolBar = new JToolBar();
         toolBar.add(new JToggleButton(getAddEntityAction()));
         toolBar.add(new JToggleButton(getAddRelationshipAction()));
+        toolBar.add(new JToggleButton(getAddCommentAction()));
         toolBar.add(new JButton(getRemoveEntityAction()));
         frame.add(toolBar, BorderLayout.NORTH);
         frame.add(createDiagramEditor());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+    }
+
+    private static Action getAddCommentAction() {
+        return new AbstractAction("Add comment") {
+
+            public void actionPerformed(ActionEvent e) {
+                if (!((JToggleButton) e.getSource()).isSelected()) {
+                    diagramEditor.setMouseInputAdapter(null);
+                } else {
+                    diagramEditor.setMouseInputAdapter(new CommentAdder());
+                }
+            }
+            
+        };
     }
 
     private static Action getAddRelationshipAction() {

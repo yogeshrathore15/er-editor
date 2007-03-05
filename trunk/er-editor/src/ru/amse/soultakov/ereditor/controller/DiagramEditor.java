@@ -19,8 +19,11 @@ import java.util.Set;
 import javax.swing.JComponent;
 import javax.swing.event.MouseInputAdapter;
 
+import ru.amse.soultakov.ereditor.model.Comment;
 import ru.amse.soultakov.ereditor.model.Entity;
 import ru.amse.soultakov.ereditor.model.Relationship;
+import ru.amse.soultakov.ereditor.view.BlockView;
+import ru.amse.soultakov.ereditor.view.CommentView;
 import ru.amse.soultakov.ereditor.view.EntityView;
 import ru.amse.soultakov.ereditor.view.RelationshipView;
 
@@ -32,11 +35,13 @@ public class DiagramEditor extends JComponent {
 
     private static final Dimension PREFERRED_SIZE = new Dimension(800, 600);
 
-    private final Map<Entity, EntityView> entityToView = new HashMap<Entity, EntityView>();
+    private final Map<Entity, EntityView> entityToView = newHashMap();
+
+    private final Map<Comment, CommentView> commentToView = newHashMap();
+
+    private final Map<Relationship, RelationshipView> relationshipToView = newHashMap();
 
     private MouseInputAdapter mouseHandler;
-
-    private final Map<Relationship, RelationshipView> relationshipToView = new HashMap<Relationship, RelationshipView>();
 
     private final Set<RelationshipView> relationshipViews = new HashSet<RelationshipView>();
 
@@ -48,16 +53,29 @@ public class DiagramEditor extends JComponent {
 
     public EntityView addEntity(Entity entity, int x, int y) {
         if (entityToView.containsKey(entity)) {
-            throw new IllegalArgumentException("This entity is already in map");
+            throw new IllegalArgumentException("This entity is already in diagram");
         }
         EntityView entityView = new EntityView(entity, x, y);
-        EntityMouseInputAdapter listener = new EntityMouseInputAdapter(entityView);
+        BlockMouseInputAdapter listener = new BlockMouseInputAdapter(entityView);
         entityView.addMouseListener(listener);
         entityView.addMouseMotionListener(listener);
         entityToView.put(entity, entityView);
         add(entityView);
-        this.repaint();
         return entityView;
+    }
+
+    public CommentView addComment(Comment comment, int x, int y) {
+        if (commentToView.containsKey(comment)) {
+            throw new IllegalArgumentException("This comment is already in diagram");
+        }
+        CommentView commentView = new CommentView(comment, x, y);
+        BlockMouseInputAdapter listener = new BlockMouseInputAdapter(commentView);
+        commentView.addMouseListener(listener);
+        commentView.addMouseMotionListener(listener);
+        commentToView.put(comment, commentView);
+        add(commentView);
+        System.out.println("DiagramEditor.addComment()");
+        return commentView;
     }
 
     public void addRelationship(Relationship relationship) {
@@ -141,7 +159,7 @@ public class DiagramEditor extends JComponent {
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                if (e.getSource().getClass() == EntityView.class) {
+                if (e.getSource() instanceof BlockView) {
                     return;
                 }
                 boolean clear = true;
@@ -208,21 +226,21 @@ public class DiagramEditor extends JComponent {
      * @author sma
      * 
      */
-    private class EntityMouseInputAdapter extends MouseInputAdapter {
+    private class BlockMouseInputAdapter extends MouseInputAdapter {
 
         private Point current;
 
-        private EntityView entityView;
+        private BlockView blockView;
 
-        public EntityMouseInputAdapter(EntityView entityView) {
-            this.entityView = entityView;
+        public BlockMouseInputAdapter(BlockView blockView) {
+            this.blockView = blockView;
         }
 
         @Override
         public void mouseDragged(MouseEvent e) {
-            int xPos = e.getXOnScreen() - current.x + entityView.getX();
-            int yPos = e.getYOnScreen() - current.y + entityView.getY();
-            entityView.setLocation(xPos >= 0 ? xPos : 0, yPos >= 0 ? yPos : 0);
+            int xPos = e.getXOnScreen() - current.x + blockView.getX();
+            int yPos = e.getYOnScreen() - current.y + blockView.getY();
+            blockView.setLocation(xPos >= 0 ? xPos : 0, yPos >= 0 ? yPos : 0);
             current = e.getLocationOnScreen();
             repaint();
         }
@@ -230,20 +248,24 @@ public class DiagramEditor extends JComponent {
         @Override
         public void mousePressed(MouseEvent e) {
             if (e.isControlDown()) {
-                if (entityView.isSelected()) {
-                    getSelectedItems().remove(entityView);
+                if (blockView.isSelected()) {
+                    getSelectedItems().remove(blockView);
                 } else {
-                    getSelectedItems().add(entityView);
+                    getSelectedItems().add(blockView);
                 }
             } else {
                 getSelectedItems().clear();
-                getSelectedItems().add(entityView);
+                getSelectedItems().add(blockView);
             }
             current = e.getLocationOnScreen();
-            e.translatePoint(-entityView.getX(), -entityView.getY());
+            e.translatePoint(-blockView.getX(), -blockView.getY());
             DiagramEditor.this.dispatchEvent(e);
             repaint();
         }
+    }
+
+    private static <E, T> HashMap<E, T> newHashMap() {
+        return new HashMap<E, T>();
     }
 
 }

@@ -10,7 +10,6 @@ import java.awt.geom.Rectangle2D;
 
 import javax.swing.border.LineBorder;
 
-import ru.amse.soultakov.ereditor.controller.Selectable;
 import ru.amse.soultakov.ereditor.model.Entity;
 
 /**
