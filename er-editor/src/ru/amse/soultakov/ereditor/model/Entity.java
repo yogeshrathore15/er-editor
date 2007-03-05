@@ -3,13 +3,7 @@
  */
 package ru.amse.soultakov.ereditor.model;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -28,7 +22,7 @@ public class Entity implements Iterable<Attribute> {
 	/**
 	 * 
 	 */
-	private List<Attribute> attributes;
+	private final List<Attribute> attributes;
 
     /**
      * 
@@ -41,6 +35,7 @@ public class Entity implements Iterable<Attribute> {
 	public Entity(String name) {
 		super();
 		this.name = name;
+        attributes = new ArrayList<Attribute>();
 	}
 
 	/**
@@ -104,6 +99,10 @@ public class Entity implements Iterable<Attribute> {
     
     public boolean removeRelationship(Relationship relationship) {
     	return relationships.remove(relationship);
+    }
+    
+    public Iterator<Relationship> relationshipsIterator() {
+        return relationships.iterator();
     }
 
 	@Override

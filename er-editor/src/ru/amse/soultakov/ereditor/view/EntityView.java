@@ -65,7 +65,7 @@ public class EntityView extends JComponent implements Selectable {
                 - getInsets().right, (titleHeight + MARGIN) * 2);
         drawSelection(graphics);
     }
-
+    
     /**
      * @return
      */
