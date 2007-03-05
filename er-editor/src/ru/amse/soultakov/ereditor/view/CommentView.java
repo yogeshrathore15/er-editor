@@ -1,5 +1,5 @@
-/**
- * 
+/*
+ * Created on 05.03.2007
  */
 package ru.amse.soultakov.ereditor.view;
 
@@ -8,32 +8,19 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
-import javax.swing.border.LineBorder;
-
-import ru.amse.soultakov.ereditor.controller.Selectable;
-import ru.amse.soultakov.ereditor.model.Entity;
+import ru.amse.soultakov.ereditor.model.Comment;
 
 /**
- * @author sma
- * 
+ * @author Soultakov Maxim
  */
-public class EntityView extends BlockView {
+public class CommentView extends BlockView {
 
-    protected Entity entity;
-    
-    /**
-     * @param diagramEditor
-     * @param entity
-     * @param x
-     * @param y
-     */
-    public EntityView(Entity entity, int x, int y) {
+    private Comment comment;
+
+    public CommentView(Comment comment, int x, int y) {
         super();
-        this.entity = entity;
+        this.comment = comment;
         setLocation(x, y);
-        setSize(1, 1);
-        setOpaque(true);
-        setBorder(new LineBorder(Color.BLACK, 1, true));
     }
 
     @Override
@@ -43,7 +30,6 @@ public class EntityView extends BlockView {
         graphics.setColor(Color.LIGHT_GRAY);
         graphics.fillRect(0, 0, getWidth(), getHeight());
         setSize((int) bounds.getWidth() + getInsets().right + getInsets().left, 100);
-        drawTitle(graphics);
         int titleHeight = (int) (getInsets().top + bounds.getHeight() + MARGIN);
         graphics.setColor(Color.BLACK);
         graphics.drawLine(getInsets().left, titleHeight, getWidth(), titleHeight);
@@ -51,28 +37,15 @@ public class EntityView extends BlockView {
                 - getInsets().right, (titleHeight + MARGIN) * 2);
         drawSelection(graphics);
     }
-    
-    /**
-     * @param graphics
-     * @return
-     */
-    private Rectangle2D drawTitle(Graphics2D graphics) {
-        graphics.setColor(Color.BLACK);
-        Rectangle2D bounds = getStringBounds(graphics, entity.getName());
-        graphics.drawString(entity.getName(), getInsets().left,
-                (int) (getInsets().top + bounds.getHeight()));
-        return bounds;
-    }
 
-    public Entity getEntity() {
-        return entity;
+    public Comment getComment() {
+        return comment;
     }
 
     /**
      * @return
      */
     protected Rectangle2D getContentBounds(Graphics2D graphics) {
-        return getStringBounds(graphics, entity.getName());
+        return getStringBounds(graphics, "Comment");
     }
-
 }
