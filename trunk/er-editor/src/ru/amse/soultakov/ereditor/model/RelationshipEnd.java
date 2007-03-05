@@ -59,4 +59,35 @@ public class RelationshipEnd {
         this.multiplicity = multiplicity;
     }
 
+    @Override
+    public int hashCode() {
+        final int PRIME = 31;
+        int result = 1;
+        result = PRIME * result + ((entity == null) ? 0 : entity.hashCode());
+        result = PRIME * result + ((multiplicity == null) ? 0 : multiplicity.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        final RelationshipEnd other = (RelationshipEnd) obj;
+        if (entity == null) {
+            if (other.entity != null)
+                return false;
+        } else if (!entity.equals(other.entity))
+            return false;
+        if (multiplicity == null) {
+            if (other.multiplicity != null)
+                return false;
+        } else if (!multiplicity.equals(other.multiplicity))
+            return false;
+        return true;
+    }
+
 }

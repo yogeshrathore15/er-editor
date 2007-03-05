@@ -4,13 +4,14 @@
 package ru.amse.soultakov.ereditor.controller;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 
 /**
  * @author Soultakov Maxim
  */
-public class SelectedItems {
+public class SelectedItems implements Iterable<Selectable>{
 
     /**
      * 
@@ -48,6 +49,8 @@ public class SelectedItems {
     public boolean contains(Selectable item) {
         return selectedEntities.contains(item);
     }
+    
+    
 
     /**
      * 
@@ -57,6 +60,10 @@ public class SelectedItems {
             item.setSelected(false);
         }
         selectedEntities.clear();
+    }
+
+    public Iterator<Selectable> iterator() {
+        return selectedEntities.iterator();
     }
 
 }
