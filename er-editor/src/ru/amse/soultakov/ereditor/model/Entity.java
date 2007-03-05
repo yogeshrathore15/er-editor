@@ -14,7 +14,8 @@ import java.util.Set;
  * 
  */
 public class Entity implements Iterable<Attribute> {
-	/**
+	
+    /**
 	 * 
 	 */
 	private String name;
@@ -28,6 +29,8 @@ public class Entity implements Iterable<Attribute> {
      * 
      */
     private final Set<Relationship> relationships = new HashSet<Relationship>();
+    
+    private final Set<Link> links = new HashSet<Link>();
 	
     /**
 	 * @param name
@@ -103,6 +106,18 @@ public class Entity implements Iterable<Attribute> {
     
     public Iterator<Relationship> relationshipsIterator() {
         return relationships.iterator();
+    }
+    
+    public boolean addLink(Link link) {
+        return links.add(link);
+    }
+    
+    public boolean removeLink(Link link) {
+        return links.remove(link);
+    }
+    
+    public Iterator<Link> linksIterator() {
+        return links.iterator();
     }
 
 	@Override
