@@ -34,44 +34,50 @@ import ru.amse.soultakov.ereditor.view.EntityView;
 public class Main {
 
     private static final class EntityAdder extends MouseInputAdapter {
+        
+        private AutoincrementGenerator generator = new AutoincrementGenerator();
+        
         @Override
         public void mousePressed(MouseEvent e) {
+            System.out.println("EntityAdder.mousePressed()");
             diagramEditor.addEntity(new Entity("New Entity "
-                    + AutoincrementGenerator.getNextInteger()),
+                    + generator.getNextInteger()),
                     e.getX(), e.getY());
         }
     }
     
     private static final class CommentAdder extends MouseInputAdapter {
+        
+        private AutoincrementGenerator generator = new AutoincrementGenerator();
+        
         @Override
         public void mousePressed(MouseEvent e) {
-            diagramEditor.addComment(new Comment("New Entity "
-                    + AutoincrementGenerator.getNextInteger()),
+            System.out.println("CommentAdder.mousePressed()");
+            diagramEditor.addComment(new Comment("New Comment "
+                    + generator.getNextInteger()),
                     e.getX(), e.getY());
         }
     }
 
     private static final class RelationshipAdder extends MouseInputAdapter {
-        
-        private boolean selectingFirstEntity = true;
-        
-        private EntityView firstEntity; 
+               
+        private EntityView firstEntity = null; 
         
         @Override
         public void mousePressed(MouseEvent e) {
-            if (selectingFirstEntity) {
+            if (firstEntity == null) {
                 
             }
             diagramEditor.addRelationship(new Relationship("name",
                     new RelationshipEnd(null, ONE_ONLY),
                     new RelationshipEnd(null, ZERO_OR_ONE)));
         }
+        
     }
 
-    static DiagramEditor diagramEditor;
+    private static DiagramEditor diagramEditor;
 
     public static void main(String[] args) {
-        // JFrame.setDefaultLookAndFeelDecorated(true);
         JFrame frame = new JFrame("Stupid test");
         JMenuBar menu = new JMenuBar();
         frame.setJMenuBar(menu);

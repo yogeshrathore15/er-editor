@@ -25,6 +25,7 @@ import ru.amse.soultakov.ereditor.model.Relationship;
 import ru.amse.soultakov.ereditor.view.BlockView;
 import ru.amse.soultakov.ereditor.view.CommentView;
 import ru.amse.soultakov.ereditor.view.EntityView;
+import ru.amse.soultakov.ereditor.view.LinkView;
 import ru.amse.soultakov.ereditor.view.RelationshipView;
 
 /**
@@ -46,6 +47,8 @@ public class DiagramEditor extends JComponent {
     private final Set<RelationshipView> relationshipViews = new HashSet<RelationshipView>();
 
     private final SelectedItems selectedItems = new SelectedItems();
+
+    private final Set<LinkView> linkViews = new HashSet<LinkView>();
 
     public DiagramEditor() {
         initMouseListener();
@@ -175,7 +178,7 @@ public class DiagramEditor extends JComponent {
                         break;
                     }
                 }
-                if (clear) {
+                if (clear && !e.isControlDown()) {
                     selectedItems.clear();
                 }
                 repaint();
@@ -183,9 +186,9 @@ public class DiagramEditor extends JComponent {
         });
     }
 
-    private void removeEntityView(EntityView e) {
-        remove(e);
-        Entity entity = e.getEntity();
+    private void removeEntityView(EntityView view) {
+        remove(view);
+        Entity entity = view.getEntity();
         entityToView.remove(entity);
         for (Iterator<Relationship> i = entity.relationshipsIterator(); i.hasNext();) {
             Relationship relationship = i.next();
@@ -193,16 +196,36 @@ public class DiagramEditor extends JComponent {
             if (relationship.getFirstEnd().getEntity() == entity) {
                 relationship.getFirstEnd().getEntity().removeRelationship(
                         relationship);
-            } else {
-                i.remove();
-            }
-            if (relationship.getSecondEnd().getEntity() == entity) {
+            } else if (relationship.getSecondEnd().getEntity() == entity) {
                 relationship.getSecondEnd().getEntity().removeRelationship(
                         relationship);
             } else {
                 i.remove();
             }
         }
+    }
+    
+    private void removeCommentView(CommentView view) {
+        remove(view);
+        Comment comment = view.getComment();
+        commentToView.remove(comment);
+        /*
+        for (Iterator<Link> i = comment.linksIterator(); i.hasNext();) {
+            Link link = i.next();
+            linkViews.remove(relationshipToView.remove(link));
+            if (link.getFirstEnd().getEntity() == comment) {
+                link.getFirstEnd().getEntity().removeRelationship(
+                        link);
+            } else {
+                i.remove();
+            }
+            if (link.getSecondEnd().getEntity() == comment) {
+                link.getSecondEnd().getEntity().removeRelationship(
+                        link);
+            } else {
+                i.remove();
+            }
+        }*/
     }
 
     private void removeRelationshipView(RelationshipView view) {
@@ -215,10 +238,14 @@ public class DiagramEditor extends JComponent {
     }
 
     private void removeSelectable(Selectable s) {
+        //this awful code will be refactored of course
+        //visitor rules 
         if (s instanceof EntityView) {
             removeEntityView((EntityView) s);
         } else if (s instanceof RelationshipView) {
             removeRelationshipView((RelationshipView) s);
+        } else if (s instanceof CommentView) {
+            removeCommentView((CommentView) s);
         }
     }
 
@@ -258,8 +285,6 @@ public class DiagramEditor extends JComponent {
                 getSelectedItems().add(blockView);
             }
             current = e.getLocationOnScreen();
-            e.translatePoint(-blockView.getX(), -blockView.getY());
-            DiagramEditor.this.dispatchEvent(e);
             repaint();
         }
     }

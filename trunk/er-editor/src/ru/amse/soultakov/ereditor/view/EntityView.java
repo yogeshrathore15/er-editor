@@ -8,8 +8,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
-import javax.swing.border.LineBorder;
-
 import ru.amse.soultakov.ereditor.model.Entity;
 
 /**
@@ -27,12 +25,8 @@ public class EntityView extends BlockView {
      * @param y
      */
     public EntityView(Entity entity, int x, int y) {
-        super();
+        super(x,y);
         this.entity = entity;
-        setLocation(x, y);
-        setSize(1, 1);
-        setOpaque(true);
-        setBorder(new LineBorder(Color.BLACK, 1, true));
     }
 
     @Override

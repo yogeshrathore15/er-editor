@@ -3,11 +3,13 @@
  */
 package ru.amse.soultakov.ereditor.view;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.Rectangle2D;
 
 import javax.swing.JComponent;
+import javax.swing.border.LineBorder;
 
 import ru.amse.soultakov.ereditor.controller.Selectable;
 import ru.amse.soultakov.ereditor.model.Entity;
@@ -23,8 +25,12 @@ public abstract class BlockView extends JComponent implements Selectable {
 
     private boolean selected;
 
-    public BlockView() {
+    public BlockView(int x, int y) {
         super();
+        setSize(1,1);
+        setOpaque(true);
+        setLocation(x, y);
+        setBorder(new LineBorder(Color.BLACK, 1, true));
     }
 
     /**
