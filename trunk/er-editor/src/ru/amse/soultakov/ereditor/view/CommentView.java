@@ -4,7 +4,6 @@
 package ru.amse.soultakov.ereditor.view;
 
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
@@ -23,13 +22,11 @@ public class CommentView extends Block {
         this.comment = comment;
     }
 
-    @Override
-    protected void paintComponent(Graphics g) {
-        Graphics2D graphics = (Graphics2D) g;
+    public void paint(Graphics2D graphics) {
         Rectangle2D bounds = getContentBounds(graphics);
         graphics.setColor(CommentView.BACKGROUND_COLOR);
         graphics.fillRect(0, 0, getWidth(), getHeight());
-        setSize((int) bounds.getWidth() + getInsets().right + getInsets().left, 100);
+        setSize((int) bounds.getWidth(), 100);
         graphics.setColor(Color.BLACK);
         drawTitle(graphics);
         drawSelection(graphics);
@@ -38,8 +35,8 @@ public class CommentView extends Block {
     private Rectangle2D drawTitle(Graphics2D graphics) {
         graphics.setColor(Color.BLACK);
         Rectangle2D bounds = getStringBounds(graphics, comment.getComment());
-        graphics.drawString(comment.getComment(), getInsets().left,
-                (int) (getInsets().top + bounds.getHeight()));
+        graphics.drawString(comment.getComment(), 0,
+                (int) bounds.getHeight());
         return bounds;
     }
 

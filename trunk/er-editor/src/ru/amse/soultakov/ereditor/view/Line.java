@@ -4,13 +4,10 @@
 package ru.amse.soultakov.ereditor.view;
 
 import java.awt.BasicStroke;
-import java.awt.Graphics;
 
-import javax.swing.JComponent;
+import ru.amse.soultakov.ereditor.controller.Viewable;
 
-import ru.amse.soultakov.ereditor.controller.Selectable;
-
-public abstract class Line implements Selectable {
+public abstract class Line implements Viewable {
 
     protected static final BasicStroke SIMPLE_STROKE = new BasicStroke(1.0f);
     
@@ -34,24 +31,22 @@ public abstract class Line implements Selectable {
     protected int secondCenterY;
    
     /**
-     * @param component
+     * @param block
      * @param n
      * @return
      */
-    protected static int getXCenter(JComponent component, int n) {
-        return component.getX() + component.getWidth() / n;
+    protected static int getXCenter(Block block, int n) {
+        return block.getX() + block.getWidth() / n;
     }
 
     /**
-     * @param component
+     * @param block
      * @param n
      * @return
      */
-    protected static int getYCenter(JComponent component, int n) {
-        return component.getY() + component.getHeight() / n;
-    }
-    
-    public abstract void paint(Graphics g); 
+    protected static int getYCenter(Block block, int n) {
+        return block.getY() + block.getHeight() / n;
+    } 
     
     protected abstract void recalculateEndPoints();
 

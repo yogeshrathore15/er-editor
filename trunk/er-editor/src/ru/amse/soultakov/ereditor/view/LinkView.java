@@ -4,7 +4,6 @@
 package ru.amse.soultakov.ereditor.view;
 
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 import ru.amse.soultakov.ereditor.model.Link;
@@ -25,13 +24,11 @@ public class LinkView extends Line {
         recalculateEndPoints();
     }
 
-    @Override
-    public void paint(Graphics graphics) {
+    public void paint(Graphics2D graphics) {
         recalculateEndPoints();
-        Graphics2D graphics2D = (Graphics2D) graphics;
 
-        graphics2D.setColor(isSelected() ? Color.BLUE : Color.BLACK);
-        graphics2D.drawLine(firstCenterX, firstCenterY, secondCenterX, secondCenterY);
+        graphics.setColor(isSelected() ? Color.BLUE : Color.BLACK);
+        graphics.drawLine(firstCenterX, firstCenterY, secondCenterX, secondCenterY);
     }
 
     @Override

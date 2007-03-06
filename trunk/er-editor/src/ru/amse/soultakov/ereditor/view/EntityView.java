@@ -4,7 +4,6 @@
 package ru.amse.soultakov.ereditor.view;
 
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
@@ -29,19 +28,16 @@ public class EntityView extends Block {
         this.entity = entity;
     }
 
-    @Override
-    protected void paintComponent(Graphics g) {
-        Graphics2D graphics = (Graphics2D) g;
+    public void paint(Graphics2D graphics) {
         Rectangle2D bounds = getContentBounds(graphics);
         graphics.setColor(Color.LIGHT_GRAY);
         graphics.fillRect(0, 0, getWidth(), getHeight());
-        setSize((int) bounds.getWidth() + getInsets().right + getInsets().left, 100);
+        setSize((int) bounds.getWidth(), 100);
         drawTitle(graphics);
-        int titleHeight = (int) (getInsets().top + bounds.getHeight() + MARGIN);
+        int titleHeight = (int) (bounds.getHeight() + MARGIN);
         graphics.setColor(Color.BLACK);
-        graphics.drawLine(getInsets().left, titleHeight, getWidth(), titleHeight);
-        graphics.drawLine(getInsets().left, (titleHeight + MARGIN) * 2, getWidth()
-                - getInsets().right, (titleHeight + MARGIN) * 2);
+        graphics.drawLine(0, titleHeight, getWidth(), titleHeight);
+        graphics.drawLine(0, (titleHeight + MARGIN) * 2, getWidth(), (titleHeight + MARGIN) * 2);
         drawSelection(graphics);
     }
     
@@ -52,8 +48,8 @@ public class EntityView extends Block {
     private Rectangle2D drawTitle(Graphics2D graphics) {
         graphics.setColor(Color.BLACK);
         Rectangle2D bounds = getStringBounds(graphics, entity.getName());
-        graphics.drawString(entity.getName(), getInsets().left,
-                (int) (getInsets().top + bounds.getHeight()));
+        graphics.drawString(entity.getName(), 0,
+                (int) bounds.getHeight());
         return bounds;
     }
 
