@@ -96,14 +96,14 @@ public abstract class Line implements Selectable {
     }
 
     public boolean trySelect(int x, int y) {
-        boolean b = contains(x, y);
+        boolean b = containsPoint(x, y);
         if (b) {
             setSelected(true);
         }
         return b;
     }
 
-    public boolean contains(int x, int y) {
+    public boolean containsPoint(int x, int y) {
         if (firstCenterX == secondCenterX) {
             if (y < Math.min(firstCenterY, secondCenterY) || Math.max(firstCenterY, secondCenterY) < y) {
                 return false;

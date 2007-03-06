@@ -12,9 +12,8 @@ import javax.swing.JComponent;
 import javax.swing.border.LineBorder;
 
 import ru.amse.soultakov.ereditor.controller.Selectable;
-import ru.amse.soultakov.ereditor.model.Entity;
 
-public abstract class BlockView extends JComponent implements Selectable {
+public abstract class Block extends JComponent implements Selectable {
 
     private static final int SELECTION_SQUARE_SIZE = 5;
 
@@ -25,7 +24,7 @@ public abstract class BlockView extends JComponent implements Selectable {
 
     private boolean selected;
 
-    public BlockView(int x, int y) {
+    public Block(int x, int y) {
         super();
         setSize(1,1);
         setOpaque(true);

@@ -21,10 +21,12 @@ import javax.swing.event.MouseInputAdapter;
 
 import ru.amse.soultakov.ereditor.model.Comment;
 import ru.amse.soultakov.ereditor.model.Entity;
+import ru.amse.soultakov.ereditor.model.Link;
 import ru.amse.soultakov.ereditor.model.Relationship;
-import ru.amse.soultakov.ereditor.view.BlockView;
+import ru.amse.soultakov.ereditor.view.Block;
 import ru.amse.soultakov.ereditor.view.CommentView;
 import ru.amse.soultakov.ereditor.view.EntityView;
+import ru.amse.soultakov.ereditor.view.Line;
 import ru.amse.soultakov.ereditor.view.LinkView;
 import ru.amse.soultakov.ereditor.view.RelationshipView;
 
@@ -49,6 +51,8 @@ public class DiagramEditor extends JComponent {
     private final SelectedItems selectedItems = new SelectedItems();
 
     private final Set<LinkView> linkViews = new HashSet<LinkView>();
+
+    private final Map<Link, LinkView> linkToView = newHashMap();
 
     public DiagramEditor() {
         initMouseListener();
@@ -81,17 +85,46 @@ public class DiagramEditor extends JComponent {
         return commentView;
     }
 
-    public void addRelationship(Relationship relationship) {
+    public LinkView addLink(Link link) {
+        LinkView linkView = new LinkView(link, entityToView.get(link.getEntity()),
+                commentToView.get(link.getComment()));
+        addLinkView(linkView);
+        return linkView;
+    }
+
+    private void addLinkView(LinkView view) {
+        if (!contains(view.getEntityView()) || !contains(view.getCommentView())) {
+            throw new IllegalArgumentException(
+                    "Entity and comment must belong to DiagramEditor");
+        }
+        linkViews.add(view);
+        linkToView.put(view.getLink(), view);
+    }
+
+    public RelationshipView addRelationship(Relationship relationship) {
         RelationshipView view = new RelationshipView(relationship, entityToView
                 .get(relationship.getFirstEnd().getEntity()), entityToView
                 .get(relationship.getSecondEnd().getEntity()));
-        relationshipToView.put(relationship, view);
         addRelationshipView(view);
+        return view;
     }
 
-    public boolean contains(EntityView entityView) {
+    /**
+     * @param view
+     */
+    private void addRelationshipView(RelationshipView view) {
+        if (!contains(view.getFirstEntityView())
+                || !contains(view.getSecondEntityView())) {
+            throw new IllegalArgumentException(
+                    "Entities must belong to DiagramEditor");
+        }
+        relationshipViews.add(view);
+        relationshipToView.put(view.getRelationship(), view);
+    }
+
+    public boolean contains(Block block) {
         for (Component component : getComponents()) {
-            if (component == entityView) {
+            if (component == block) {
                 return true;
             }
         }
@@ -133,6 +166,9 @@ public class DiagramEditor extends JComponent {
         for (RelationshipView view : relationshipViews) {
             view.paint(g);
         }
+        for (LinkView view : linkViews) {
+            view.paint(g);
+        }
         super.paintChildren(g);
     }
 
@@ -144,44 +180,33 @@ public class DiagramEditor extends JComponent {
     }
 
     /**
-     * @param view
-     */
-    private void addRelationshipView(RelationshipView view) {
-        if (!contains(view.getFirstEntityView())
-                || !contains(view.getSecondEntityView())) {
-            throw new IllegalArgumentException(
-                    "Entities must belong to DiagramEditor");
-        }
-        relationshipViews.add(view);
-    }
-
-    /**
      * 
      */
     private void initMouseListener() {
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                if (e.getSource() instanceof BlockView) {
-                    return;
-                }
-                boolean clear = true;
-                for (RelationshipView rv : relationshipViews) {
-                    if (rv.contains(e.getX(), e.getY())) {
-                        if (e.isControlDown()) {
-                            selectedItems.add(rv);
-                        } else {
-                            selectedItems.clear();
-                            selectedItems.add(rv);
-                        }
-                        clear = false;
-                        break;
-                    }
-                }
-                if (clear && !e.isControlDown()) {
+                boolean clearSelection = selectLines(e, relationshipViews);
+                clearSelection &= selectLines(e, linkViews);
+                if (clearSelection && !e.isControlDown()) {
                     selectedItems.clear();
                 }
                 repaint();
+            }
+
+            private boolean selectLines(MouseEvent e, Set<? extends Line> set) {
+                for (Line line : set) {
+                    if (line.containsPoint(e.getX(), e.getY())) {
+                        if (e.isControlDown()) {
+                            selectedItems.add(line);
+                        } else {
+                            selectedItems.clear();
+                            selectedItems.add(line);
+                        }
+                        return false;
+                    }
+                }
+                return true;
             }
         });
     }
@@ -204,28 +229,15 @@ public class DiagramEditor extends JComponent {
             }
         }
     }
-    
+
     private void removeCommentView(CommentView view) {
         remove(view);
         Comment comment = view.getComment();
         commentToView.remove(comment);
-        /*
         for (Iterator<Link> i = comment.linksIterator(); i.hasNext();) {
             Link link = i.next();
-            linkViews.remove(relationshipToView.remove(link));
-            if (link.getFirstEnd().getEntity() == comment) {
-                link.getFirstEnd().getEntity().removeRelationship(
-                        link);
-            } else {
-                i.remove();
-            }
-            if (link.getSecondEnd().getEntity() == comment) {
-                link.getSecondEnd().getEntity().removeRelationship(
-                        link);
-            } else {
-                i.remove();
-            }
-        }*/
+            link.getEntity().removeLink(link);
+        }
     }
 
     private void removeRelationshipView(RelationshipView view) {
@@ -238,15 +250,21 @@ public class DiagramEditor extends JComponent {
     }
 
     private void removeSelectable(Selectable s) {
-        //this awful code will be refactored of course
-        //visitor rules 
+        // this awful code will be refactored of course
+        // visitor rules
         if (s instanceof EntityView) {
             removeEntityView((EntityView) s);
         } else if (s instanceof RelationshipView) {
             removeRelationshipView((RelationshipView) s);
         } else if (s instanceof CommentView) {
             removeCommentView((CommentView) s);
+        } else if (s instanceof LinkView) {
+            removeLinkView((LinkView) s);
         }
+    }
+
+    private void removeLinkView(LinkView view) {
+
     }
 
     /**
@@ -257,17 +275,17 @@ public class DiagramEditor extends JComponent {
 
         private Point current;
 
-        private BlockView blockView;
+        private Block block;
 
-        public BlockMouseInputAdapter(BlockView blockView) {
-            this.blockView = blockView;
+        public BlockMouseInputAdapter(Block block) {
+            this.block = block;
         }
 
         @Override
         public void mouseDragged(MouseEvent e) {
-            int xPos = e.getXOnScreen() - current.x + blockView.getX();
-            int yPos = e.getYOnScreen() - current.y + blockView.getY();
-            blockView.setLocation(xPos >= 0 ? xPos : 0, yPos >= 0 ? yPos : 0);
+            int xPos = e.getXOnScreen() - current.x + block.getX();
+            int yPos = e.getYOnScreen() - current.y + block.getY();
+            block.setLocation(xPos >= 0 ? xPos : 0, yPos >= 0 ? yPos : 0);
             current = e.getLocationOnScreen();
             repaint();
         }
@@ -275,14 +293,14 @@ public class DiagramEditor extends JComponent {
         @Override
         public void mousePressed(MouseEvent e) {
             if (e.isControlDown()) {
-                if (blockView.isSelected()) {
-                    getSelectedItems().remove(blockView);
+                if (block.isSelected()) {
+                    getSelectedItems().remove(block);
                 } else {
-                    getSelectedItems().add(blockView);
+                    getSelectedItems().add(block);
                 }
             } else {
                 getSelectedItems().clear();
-                getSelectedItems().add(blockView);
+                getSelectedItems().add(block);
             }
             current = e.getLocationOnScreen();
             repaint();
