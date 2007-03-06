@@ -13,7 +13,7 @@ import ru.amse.soultakov.ereditor.model.Comment;
 /**
  * @author Soultakov Maxim
  */
-public class CommentView extends BlockView {
+public class CommentView extends Block {
 
     private static final Color BACKGROUND_COLOR = new Color(247,240,187);
     private Comment comment;

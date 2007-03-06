@@ -19,6 +19,9 @@ public class Link {
     private Comment comment;
 
     public Link(Entity entity, Comment comment) {
+        if ((entity == null) || (comment == null)) {
+            throw new IllegalArgumentException("Arguments must be non null values");
+        }
         this.entity = entity;
         this.comment = comment;
     }

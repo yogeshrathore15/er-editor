@@ -14,7 +14,7 @@ import ru.amse.soultakov.ereditor.model.Entity;
  * @author sma
  * 
  */
-public class EntityView extends BlockView {
+public class EntityView extends Block {
 
     protected Entity entity;
     

@@ -23,6 +23,7 @@ import javax.swing.event.MouseInputAdapter;
 
 import ru.amse.soultakov.ereditor.model.Comment;
 import ru.amse.soultakov.ereditor.model.Entity;
+import ru.amse.soultakov.ereditor.model.Link;
 import ru.amse.soultakov.ereditor.model.Relationship;
 import ru.amse.soultakov.ereditor.model.RelationshipEnd;
 import ru.amse.soultakov.ereditor.view.EntityView;
@@ -132,6 +133,9 @@ public class Main {
         diagramEditor.addRelationship(new Relationship("name",
                         new RelationshipEnd(fooEntity, ONE_ONLY),
                         new RelationshipEnd(barEntity, ZERO_OR_ONE)));
+        Comment comment = new Comment("Stupid comment");
+        diagramEditor.addComment(comment, 100, 300);
+        diagramEditor.addLink(new Link(barEntity, comment));
         return diagramEditor;
     }
 

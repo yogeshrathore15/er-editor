@@ -3,7 +3,9 @@
  */
 package ru.amse.soultakov.ereditor.view;
 
+import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 import ru.amse.soultakov.ereditor.model.Link;
 
@@ -24,8 +26,12 @@ public class LinkView extends Line {
     }
 
     @Override
-    public void paint(Graphics g) {
-        
+    public void paint(Graphics graphics) {
+        recalculateEndPoints();
+        Graphics2D graphics2D = (Graphics2D) graphics;
+
+        graphics2D.setColor(isSelected() ? Color.BLUE : Color.BLACK);
+        graphics2D.drawLine(firstCenterX, firstCenterY, secondCenterX, secondCenterY);
     }
 
     @Override
@@ -35,7 +41,17 @@ public class LinkView extends Line {
         secondCenterX = getXCenter(commentView, 2);
         secondCenterY = getYCenter(commentView, 3);
     }
-
     
-        
+    public CommentView getCommentView() {
+        return commentView;
+    }
+    
+    public Link getLink() {
+        return link;
+    }
+    
+    public EntityView getEntityView() {
+        return entityView;
+    }
+
 }
