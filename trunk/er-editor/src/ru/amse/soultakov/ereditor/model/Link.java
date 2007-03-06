@@ -23,7 +23,9 @@ public class Link {
             throw new IllegalArgumentException("Arguments must be non null values");
         }
         this.entity = entity;
+        entity.addLink(this);
         this.comment = comment;
+        comment.addLink(this);
     }
 
     /**

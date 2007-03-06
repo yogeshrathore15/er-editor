@@ -43,6 +43,8 @@ public class DiagramEditor extends JComponent {
     private final Map<Comment, CommentView> commentToView = newHashMap();
 
     private final Map<Relationship, RelationshipView> relationshipToView = newHashMap();
+    
+    private final Map<Link, LinkView> linkToView = newHashMap();
 
     private MouseInputAdapter mouseHandler;
 
@@ -51,8 +53,6 @@ public class DiagramEditor extends JComponent {
     private final SelectedItems selectedItems = new SelectedItems();
 
     private final Set<LinkView> linkViews = new HashSet<LinkView>();
-
-    private final Map<Link, LinkView> linkToView = newHashMap();
 
     public DiagramEditor() {
         initMouseListener();
@@ -237,6 +237,7 @@ public class DiagramEditor extends JComponent {
         for (Iterator<Link> i = comment.linksIterator(); i.hasNext();) {
             Link link = i.next();
             link.getEntity().removeLink(link);
+            linkViews.remove(linkToView.remove(link));
         }
     }
 
@@ -248,10 +249,17 @@ public class DiagramEditor extends JComponent {
         relationshipToView.remove(view.getRelationship());
         relationshipViews.remove(view);
     }
-
+    
+    private void removeLinkView(LinkView view) {
+        view.getLink().getEntity().removeLink(view.getLink());
+        view.getLink().getComment().removeLink(view.getLink());
+        linkToView.remove(view.getLink());
+        linkViews.remove(view);
+    }
+    
     private void removeSelectable(Selectable s) {
         // this awful code will be refactored of course
-        // visitor rules
+        // visitor rules?
         if (s instanceof EntityView) {
             removeEntityView((EntityView) s);
         } else if (s instanceof RelationshipView) {
@@ -261,10 +269,6 @@ public class DiagramEditor extends JComponent {
         } else if (s instanceof LinkView) {
             removeLinkView((LinkView) s);
         }
-    }
-
-    private void removeLinkView(LinkView view) {
-
     }
 
     /**
