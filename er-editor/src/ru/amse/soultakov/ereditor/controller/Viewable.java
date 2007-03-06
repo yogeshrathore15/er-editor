@@ -3,10 +3,12 @@
  */
 package ru.amse.soultakov.ereditor.controller;
 
+import java.awt.Graphics2D;
+
 /**
  * @author Soultakov Maxim
  */
-public interface Selectable {
+public interface Viewable {
 
     /**
      * @param selected
@@ -17,4 +19,6 @@ public interface Selectable {
      * @return
      */
     boolean isSelected();
+        
+    void paint(Graphics2D graphics);
 }

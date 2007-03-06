@@ -11,12 +11,12 @@ import java.util.Set;
 /**
  * @author Soultakov Maxim
  */
-public class SelectedItems implements Iterable<Selectable>{
+public class SelectedItems implements Iterable<Viewable>{
 
     /**
      * 
      */
-    private Set<Selectable> selectedEntities = new HashSet<Selectable>();
+    private Set<Viewable> selectedEntities = new HashSet<Viewable>();
 
     /**
      * 
@@ -28,7 +28,7 @@ public class SelectedItems implements Iterable<Selectable>{
      * @param item
      * @return
      */
-    public boolean add(Selectable item) {
+    public boolean add(Viewable item) {
         item.setSelected(true);
         return selectedEntities.add(item);
     }
@@ -37,7 +37,7 @@ public class SelectedItems implements Iterable<Selectable>{
      * @param item
      * @return
      */
-    public boolean remove(Selectable item) {
+    public boolean remove(Viewable item) {
         item.setSelected(false);
         return selectedEntities.remove(item);
     }
@@ -46,7 +46,7 @@ public class SelectedItems implements Iterable<Selectable>{
      * @param item
      * @return
      */
-    public boolean contains(Selectable item) {
+    public boolean contains(Viewable item) {
         return selectedEntities.contains(item);
     }
     
@@ -56,13 +56,13 @@ public class SelectedItems implements Iterable<Selectable>{
      * 
      */
     public void clear() {
-        for (Selectable item : selectedEntities) {
+        for (Viewable item : selectedEntities) {
             item.setSelected(false);
         }
         selectedEntities.clear();
     }
 
-    public Iterator<Selectable> iterator() {
+    public Iterator<Viewable> iterator() {
         return selectedEntities.iterator();
     }
 

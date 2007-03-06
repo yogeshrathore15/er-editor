@@ -3,17 +3,13 @@
  */
 package ru.amse.soultakov.ereditor.view;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.Rectangle2D;
 
-import javax.swing.JComponent;
-import javax.swing.border.LineBorder;
+import ru.amse.soultakov.ereditor.controller.Viewable;
 
-import ru.amse.soultakov.ereditor.controller.Selectable;
-
-public abstract class Block extends JComponent implements Selectable {
+public abstract class Block implements Viewable {
 
     private static final int SELECTION_SQUARE_SIZE = 5;
 
@@ -23,13 +19,60 @@ public abstract class Block extends JComponent implements Selectable {
     protected static final int MARGIN = 3;
 
     private boolean selected;
+    
+    private int x;
+    
+    private int y;
+    
+    private int height;
+    
+    private int width;
 
     public Block(int x, int y) {
         super();
         setSize(1,1);
-        setOpaque(true);
         setLocation(x, y);
-        setBorder(new LineBorder(Color.BLACK, 1, true));
+    }
+    
+    public void setSize(int height, int width) {
+    	this.height = height;
+    	this.width = width;
+    }
+    
+    /**
+     * @return the widt
+     */
+    public int getWidth() {
+    	return width;
+    }
+    
+    /**
+	 * @return the height
+	 */
+	public int getHeight()
+	{
+		return height;
+	}
+	
+	/**
+	 * @return the x
+	 */
+	public int getX()
+	{
+		return x;
+	}
+	
+	/**
+	 * @return the y
+	 */
+	public int getY()
+	{
+		return y;
+	}
+    
+    public void setLocation(int x, int y) {
+    	this.x = x;
+    	this.y = y;
     }
 
     /**
@@ -80,7 +123,7 @@ public abstract class Block extends JComponent implements Selectable {
         boolean oldSelected = this.selected;
         if (oldSelected != selected) {
             this.selected = selected;
-            repaint();
+            //paint();
         }
     }
 

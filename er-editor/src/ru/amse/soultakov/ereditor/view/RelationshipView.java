@@ -4,7 +4,6 @@
 package ru.amse.soultakov.ereditor.view;
 
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
 
@@ -47,18 +46,16 @@ public class RelationshipView extends Line {
     /**
      * @param graphics
      */
-    @Override
-    public void paint(Graphics graphics) {
+    public void paint(Graphics2D graphics) {
         recalculateEndPoints();
-        Graphics2D graphics2D = (Graphics2D) graphics;
         
         int xCenter = (firstCenterX + secondCenterX) / 2;
         int yCenter = (firstCenterY + secondCenterY) / 2;
 
-        graphics2D.setColor(isSelected() ? Color.BLUE : Color.BLACK);
-        paintRelationshipEnd(graphics2D, firstCenterX, firstCenterY, xCenter,
+        graphics.setColor(isSelected() ? Color.BLUE : Color.BLACK);
+        paintRelationshipEnd(graphics, firstCenterX, firstCenterY, xCenter,
                 yCenter, relationship.getFirstEnd().getMultiplicity());
-        paintRelationshipEnd(graphics2D, secondCenterX, secondCenterY, xCenter,
+        paintRelationshipEnd(graphics, secondCenterX, secondCenterY, xCenter,
                 yCenter, relationship.getSecondEnd().getMultiplicity());
     }
 

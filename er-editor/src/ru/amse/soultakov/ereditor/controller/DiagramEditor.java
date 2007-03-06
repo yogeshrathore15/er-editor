@@ -147,7 +147,7 @@ public class DiagramEditor extends JComponent {
      * 
      */
     public void removeSelection() {
-        for (Selectable s : getSelectedItems()) {
+        for (Viewable s : getSelectedItems()) {
             removeSelectable(s);
         }
         repaint();
@@ -257,7 +257,7 @@ public class DiagramEditor extends JComponent {
         linkViews.remove(view);
     }
     
-    private void removeSelectable(Selectable s) {
+    private void removeSelectable(Viewable s) {
         // this awful code will be refactored of course
         // visitor rules?
         if (s instanceof EntityView) {
