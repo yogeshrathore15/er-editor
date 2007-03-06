@@ -33,11 +33,13 @@ public class EntityView extends Block {
         setSize((int) bounds.getWidth(), 100);
         graphics.setColor(Color.LIGHT_GRAY);
         graphics.fillRect(x, y, getWidth(), getHeight());
+        graphics.setColor(Color.BLACK);
+        graphics.drawRect(getX(), getY(), getWidth(), getHeight());
         drawTitle(graphics);
         int titleHeight = (int) (bounds.getHeight() + MARGIN);
         graphics.setColor(Color.BLACK);
-        graphics.drawLine(x, titleHeight, getWidth(), titleHeight);
-        graphics.drawLine(x, (titleHeight + MARGIN) * 2, getWidth(), (titleHeight + MARGIN) * 2);
+        graphics.drawLine(x, y + titleHeight, x + getWidth(), y + titleHeight);
+        graphics.drawLine(x, y + (titleHeight + MARGIN) * 2, x + getWidth(), y + (titleHeight + MARGIN) * 2);
         drawSelection(graphics);
     }
     
