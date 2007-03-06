@@ -100,12 +100,12 @@ public class EntityTest {
                         ONE_ONLY), new RelationshipEnd(another, ONE_ONLY));
     }
     
-    private static Link createLink(Entity entity) {
+    public static Link createLink(Entity entity) {
         final Comment comment = new Comment("");
         return new Link(entity, comment);
     }
 
-    private boolean hasRelationship(Entity entity, Relationship relationship) {
+    public static boolean hasRelationship(Entity entity, Relationship relationship) {
         for (Iterator<Relationship> i = entity.relationshipsIterator(); i.hasNext();) {
             if (i.next().equals(relationship)) {
                 return true;
@@ -114,7 +114,7 @@ public class EntityTest {
         return false;
     }
     
-    private boolean hasLink(Entity entity, Link link) {
+    public static boolean hasLink(Entity entity, Link link) {
         for (Iterator<Link> i = entity.linksIterator(); i.hasNext();) {
             if (i.next().equals(link)) {
                 return true;
