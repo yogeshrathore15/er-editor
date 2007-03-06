@@ -62,7 +62,8 @@ public class RelationshipView extends Line {
                 yCenter, relationship.getSecondEnd().getMultiplicity());
     }
 
-    protected void recalculateEndPoints() {
+    @Override
+	protected void recalculateEndPoints() {
         firstCenterX = getXCenter(firstEntity, 2);
         firstCenterY = getYCenter(firstEntity, 3);
         secondCenterX = getXCenter(secondEntity, 2);
