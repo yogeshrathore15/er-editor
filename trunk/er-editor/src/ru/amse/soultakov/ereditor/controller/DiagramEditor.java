@@ -4,9 +4,9 @@
 package ru.amse.soultakov.ereditor.controller;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -53,6 +53,10 @@ public class DiagramEditor extends JComponent {
     private final SelectedItems selectedItems = new SelectedItems();
 
     private final Set<LinkView> linkViews = new HashSet<LinkView>();
+    
+    private final Set<EntityView> entityViews = new HashSet<EntityView>();
+    
+    private final Set<CommentView> commentViews = new HashSet<CommentView>();
 
     public DiagramEditor() {
         initMouseListener();
@@ -63,11 +67,8 @@ public class DiagramEditor extends JComponent {
             throw new IllegalArgumentException("This entity is already in diagram");
         }
         EntityView entityView = new EntityView(entity, x, y);
-        BlockMouseInputAdapter listener = new BlockMouseInputAdapter(entityView);
-        entityView.addMouseListener(listener);
-        entityView.addMouseMotionListener(listener);
         entityToView.put(entity, entityView);
-        add(entityView);
+        entityViews.add(entityView);
         return entityView;
     }
 
@@ -76,12 +77,8 @@ public class DiagramEditor extends JComponent {
             throw new IllegalArgumentException("This comment is already in diagram");
         }
         CommentView commentView = new CommentView(comment, x, y);
-        BlockMouseInputAdapter listener = new BlockMouseInputAdapter(commentView);
-        commentView.addMouseListener(listener);
-        commentView.addMouseMotionListener(listener);
         commentToView.put(comment, commentView);
-        add(commentView);
-        System.out.println("DiagramEditor.addComment()");
+        commentViews.add(commentView);
         return commentView;
     }
 
@@ -123,12 +120,7 @@ public class DiagramEditor extends JComponent {
     }
 
     public boolean contains(Block block) {
-        for (Component component : getComponents()) {
-            if (component == block) {
-                return true;
-            }
-        }
-        return false;
+        return true;
     }
 
     @Override
@@ -163,13 +155,17 @@ public class DiagramEditor extends JComponent {
 
     @Override
     protected void paintChildren(Graphics g) {
-        for (RelationshipView view : relationshipViews) {
-            view.paint(g);
-        }
-        for (LinkView view : linkViews) {
-            view.paint(g);
-        }
-        super.paintChildren(g);
+    	Graphics2D graphics = (Graphics2D) g;
+    	paintSet(relationshipViews, graphics);
+        paintSet(linkViews, graphics);
+        paintSet(entityViews, graphics);
+        paintSet(commentViews, graphics);
+    }
+    
+    private void paintSet(Set<? extends Viewable> setToPaint, Graphics2D graphics) {
+    	for(Viewable v : setToPaint) {
+    		v.paint(graphics);
+    	}
     }
 
     @Override
@@ -212,7 +208,7 @@ public class DiagramEditor extends JComponent {
     }
 
     private void removeEntityView(EntityView view) {
-        remove(view);
+        entityViews.remove(view);
         Entity entity = view.getEntity();
         entityToView.remove(entity);
         for (Iterator<Relationship> i = entity.relationshipsIterator(); i.hasNext();) {
@@ -231,7 +227,7 @@ public class DiagramEditor extends JComponent {
     }
 
     private void removeCommentView(CommentView view) {
-        remove(view);
+        commentViews.remove(view);
         Comment comment = view.getComment();
         commentToView.remove(comment);
         for (Iterator<Link> i = comment.linksIterator(); i.hasNext();) {
