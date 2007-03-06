@@ -31,7 +31,7 @@ public class CommentTest {
         assertTrue(hasLink(comment, link));
     }
     
-    private boolean hasLink(Comment comment, Link link) {
+    public static boolean hasLink(Comment comment, Link link) {
         for (Iterator<Link> i = comment.linksIterator(); i.hasNext();) {
             if (i.next().equals(link)) {
                 return true;
