@@ -20,9 +20,9 @@ public abstract class Block implements Viewable {
 
     private boolean selected;
     
-    private int x;
+    protected int x;
     
-    private int y;
+    protected int y;
     
     private int height;
     
@@ -30,13 +30,12 @@ public abstract class Block implements Viewable {
 
     public Block(int x, int y) {
         super();
-        setSize(1,1);
         setLocation(x, y);
     }
     
-    public void setSize(int height, int width) {
-    	this.height = height;
+    public void setSize(int width, int height) {
     	this.width = width;
+    	this.height = height;
     }
     
     /**
