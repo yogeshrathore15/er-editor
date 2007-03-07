@@ -12,11 +12,11 @@ public class LinkView extends Line {
 
     private Link link;
 
-    private EntityView entityView;
+    private Block entityView;
 
-    private CommentView commentView;
+    private Block commentView;
 
-    public LinkView(Link link, EntityView entityView, CommentView commentView) {
+    public LinkView(Link link, Block entityView, Block commentView) {
         super();
         this.link = link;
         this.entityView = entityView;
@@ -39,7 +39,7 @@ public class LinkView extends Line {
         secondCenterY = getYCenter(commentView, 3);
     }
 
-    public CommentView getCommentView() {
+    public Block getCommentView() {
         return commentView;
     }
 
@@ -47,7 +47,7 @@ public class LinkView extends Line {
         return link;
     }
 
-    public EntityView getEntityView() {
+    public Block getEntityView() {
         return entityView;
     }
 

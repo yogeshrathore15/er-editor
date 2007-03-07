@@ -11,8 +11,8 @@ import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -48,21 +48,21 @@ public class DiagramEditor extends JComponent {
 
     private MouseInputAdapter mouseHandler;
 
-    private final Set<RelationshipView> relationshipViews = new HashSet<RelationshipView>();
+    private final Set<RelationshipView> relationshipViews = new LinkedHashSet<RelationshipView>();
+    
+    private final Set<LinkView> linkViews = new LinkedHashSet<LinkView>();
+
+    private final Set<EntityView> entityViews = new LinkedHashSet<EntityView>();
+
+    private final Set<CommentView> commentViews = new LinkedHashSet<CommentView>();
 
     private final SelectedItems selectedItems = new SelectedItems();
-
-    private final Set<LinkView> linkViews = new HashSet<LinkView>();
-
-    private final Set<EntityView> entityViews = new HashSet<EntityView>();
-
-    private final Set<CommentView> commentViews = new HashSet<CommentView>();
 
     public DiagramEditor() {
         initMouseListener();
     }
 
-    public EntityView addEntity(Entity entity, int x, int y) {
+    public Block addEntity(Entity entity, int x, int y) {
         if (entityToView.containsKey(entity)) {
             throw new IllegalArgumentException("This entity is already in diagram");
         }
@@ -72,7 +72,7 @@ public class DiagramEditor extends JComponent {
         return entityView;
     }
 
-    public CommentView addComment(Comment comment, int x, int y) {
+    public Block addComment(Comment comment, int x, int y) {
         if (commentToView.containsKey(comment)) {
             throw new IllegalArgumentException("This comment is already in diagram");
         }
@@ -156,10 +156,18 @@ public class DiagramEditor extends JComponent {
     @Override
     protected void paintChildren(Graphics g) {
         Graphics2D graphics = (Graphics2D) g;
-        paintSet(relationshipViews, graphics);
+        recalculateSize(commentViews, graphics);
+        recalculateSize(entityViews, graphics);
         paintSet(linkViews, graphics);
-        paintSet(entityViews, graphics);
+        paintSet(relationshipViews, graphics);
         paintSet(commentViews, graphics);
+        paintSet(entityViews, graphics);
+    }
+    
+    private void recalculateSize(Set<? extends Block> set, Graphics2D graphics) {
+        for (Block b : set) {
+            b.recalculateSize(graphics);
+        }
     }
 
     private void paintSet(Set<? extends Viewable> setToPaint, Graphics2D graphics) {

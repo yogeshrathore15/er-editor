@@ -26,7 +26,7 @@ import ru.amse.soultakov.ereditor.model.Entity;
 import ru.amse.soultakov.ereditor.model.Link;
 import ru.amse.soultakov.ereditor.model.Relationship;
 import ru.amse.soultakov.ereditor.model.RelationshipEnd;
-import ru.amse.soultakov.ereditor.view.EntityView;
+import ru.amse.soultakov.ereditor.view.Block;
 
 /**
  * 
@@ -60,7 +60,7 @@ public class Main {
 
     private static final class RelationshipAdder extends MouseInputAdapter {
 
-        private EntityView firstEntity = null;
+        private Block firstEntity = null;
 
         @Override
         public void mousePressed(MouseEvent e) {
@@ -124,16 +124,15 @@ public class Main {
         diagramEditor = new DiagramEditor();
         Entity fooEntity = new Entity("Foo entity");
         diagramEditor.addEntity(fooEntity, 20, 20);
-        // Entity barEntity = new Entity("Bar entity");
-        // diagramEditor.addEntity(barEntity, 150, 10);
-        // diagramEditor.addEntity(new Entity("Buzz entity"), 260, 10);
-        // diagramEditor.addEntity(new Entity("Long named entity"), 260, 200);
-        // diagramEditor.addRelationship(new Relationship("name",
-        // new RelationshipEnd(fooEntity, ONE_ONLY),
-        // new RelationshipEnd(barEntity, ZERO_OR_ONE)));
-        // Comment comment = new Comment("Stupid comment");
-        // diagramEditor.addComment(comment, 100, 300);
-        // diagramEditor.addLink(new Link(barEntity, comment));
+        Entity barEntity = new Entity("Bar entity");
+        diagramEditor.addEntity(barEntity, 150, 10);
+        diagramEditor.addEntity(new Entity("Buzz entity"), 260, 10);
+        diagramEditor.addEntity(new Entity("Long named entity"), 260, 200);
+        diagramEditor.addRelationship(new Relationship("name", new RelationshipEnd(
+                fooEntity, ONE_ONLY), new RelationshipEnd(barEntity, ZERO_OR_ONE)));
+        Comment comment = new Comment("Stupid comment");
+        diagramEditor.addComment(comment, 100, 300);
+        diagramEditor.addLink(new Link(barEntity, comment));
         return diagramEditor;
     }
 
