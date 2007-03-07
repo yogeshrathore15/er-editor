@@ -128,4 +128,15 @@ public class RelationshipView extends Line {
         this.secondEntity = secondEntity;
     }
 
+    public int getX() {
+        return 0;
+    }
+
+    public int getY() {
+        return 0;
+    }
+
+    public void setLocation(int x, int y) {
+    }
+
 }

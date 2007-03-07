@@ -53,5 +53,10 @@ public class Comment {
     public Iterator<Link> linksIterator() {
         return links.iterator();
     }
+    
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
 
 }

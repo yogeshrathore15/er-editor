@@ -21,4 +21,12 @@ public interface Viewable {
     boolean isSelected();
 
     void paint(Graphics2D graphics);
+    
+    int getX();
+    
+    int getY();
+    
+    void setLocation(int x, int y);
+
+    public boolean containsPoint(int x, int y);
 }

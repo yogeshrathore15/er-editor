@@ -49,7 +49,7 @@ public class DiagramEditor extends JComponent {
     private MouseInputAdapter mouseHandler;
 
     private final Set<RelationshipView> relationshipViews = new LinkedHashSet<RelationshipView>();
-    
+
     private final Set<LinkView> linkViews = new LinkedHashSet<LinkView>();
 
     private final Set<EntityView> entityViews = new LinkedHashSet<EntityView>();
@@ -64,7 +64,8 @@ public class DiagramEditor extends JComponent {
 
     public Block addEntity(Entity entity, int x, int y) {
         if (entityToView.containsKey(entity)) {
-            throw new IllegalArgumentException("This entity is already in diagram");
+            throw new IllegalArgumentException("This entity is already in diagram: "
+                    + entity.getName());
         }
         EntityView entityView = new EntityView(entity, x, y);
         entityToView.put(entity, entityView);
@@ -156,6 +157,7 @@ public class DiagramEditor extends JComponent {
     @Override
     protected void paintChildren(Graphics g) {
         Graphics2D graphics = (Graphics2D) g;
+        //for correct relations painting we should recalculate the size of blocks
         recalculateSize(commentViews, graphics);
         recalculateSize(entityViews, graphics);
         paintSet(linkViews, graphics);
@@ -163,7 +165,7 @@ public class DiagramEditor extends JComponent {
         paintSet(commentViews, graphics);
         paintSet(entityViews, graphics);
     }
-    
+
     private void recalculateSize(Set<? extends Block> set, Graphics2D graphics) {
         for (Block b : set) {
             b.recalculateSize(graphics);
@@ -182,37 +184,68 @@ public class DiagramEditor extends JComponent {
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, getWidth(), getHeight());
     }
+    
+    private final class DefaultTool extends MouseAdapter {
+        private volatile Viewable currentElement;
+
+        private volatile Point currentPoint;
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            boolean nothingSelected = true;
+            //&& operator is used to prevent selecting more then one element
+            nothingSelected = nothingSelected && selectViews(e, entityViews);
+            nothingSelected = nothingSelected && selectViews(e, commentViews);
+            nothingSelected = nothingSelected && selectViews(e, relationshipViews);
+            nothingSelected = nothingSelected && selectViews(e, linkViews);
+            
+            if (nothingSelected && !e.isControlDown()) {
+                selectedItems.clear();
+                this.currentElement = null;
+            }
+            currentPoint = e.getLocationOnScreen();
+            repaint();
+        }
+
+        @Override
+        public void mouseDragged(MouseEvent e) {
+            if (currentElement != null) {
+                int xPos = e.getXOnScreen() - currentPoint.x + currentElement.getX();
+                int yPos = e.getYOnScreen() - currentPoint.y + currentElement.getY();
+                currentElement.setLocation(xPos >= 0 ? xPos : 0, yPos >= 0 ? yPos : 0);
+                currentPoint = e.getLocationOnScreen();
+                repaint();
+            }
+        }
+
+        private boolean selectViews(MouseEvent e, Set<? extends Viewable> views) {
+            for (Viewable view : views) {
+                if (view.containsPoint(e.getX(), e.getY())) {
+                    if (e.isControlDown()) {
+                        if (view.isSelected()) {
+                            selectedItems.remove(view);
+                        } else {
+                            selectedItems.add(view);
+                        }
+                    } else {
+                        selectedItems.clear();
+                        selectedItems.add(view);
+                    }
+                    this.currentElement = view;
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
 
     /**
      * 
      */
     private void initMouseListener() {
-        this.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                boolean clearSelection = selectLines(e, relationshipViews);
-                clearSelection &= selectLines(e, linkViews);
-                if (clearSelection && !e.isControlDown()) {
-                    selectedItems.clear();
-                }
-                repaint();
-            }
-
-            private boolean selectLines(MouseEvent e, Set<? extends Line> set) {
-                for (Line line : set) {
-                    if (line.containsPoint(e.getX(), e.getY())) {
-                        if (e.isControlDown()) {
-                            selectedItems.add(line);
-                        } else {
-                            selectedItems.clear();
-                            selectedItems.add(line);
-                        }
-                        return false;
-                    }
-                }
-                return true;
-            }
-        });
+        DefaultTool defaultTool = new DefaultTool();
+        this.addMouseListener(defaultTool);
+        this.addMouseMotionListener(defaultTool);
     }
 
     private void removeEntityView(EntityView view) {
@@ -231,6 +264,11 @@ public class DiagramEditor extends JComponent {
             } else {
                 i.remove();
             }
+        }
+        for (Iterator<Link> i = entity.linksIterator(); i.hasNext();) {
+            Link link = i.next();
+            link.getComment().removeLink(link);
+            linkViews.remove(linkToView.remove(link));
         }
     }
 
@@ -272,46 +310,6 @@ public class DiagramEditor extends JComponent {
             removeCommentView((CommentView) s);
         } else if (s instanceof LinkView) {
             removeLinkView((LinkView) s);
-        }
-    }
-
-    /**
-     * @author sma
-     * 
-     */
-    private class BlockMouseInputAdapter extends MouseInputAdapter {
-
-        private Point current;
-
-        private Block block;
-
-        public BlockMouseInputAdapter(Block block) {
-            this.block = block;
-        }
-
-        @Override
-        public void mouseDragged(MouseEvent e) {
-            int xPos = e.getXOnScreen() - current.x + block.getX();
-            int yPos = e.getYOnScreen() - current.y + block.getY();
-            block.setLocation(xPos >= 0 ? xPos : 0, yPos >= 0 ? yPos : 0);
-            current = e.getLocationOnScreen();
-            repaint();
-        }
-
-        @Override
-        public void mousePressed(MouseEvent e) {
-            if (e.isControlDown()) {
-                if (block.isSelected()) {
-                    getSelectedItems().remove(block);
-                } else {
-                    getSelectedItems().add(block);
-                }
-            } else {
-                getSelectedItems().clear();
-                getSelectedItems().add(block);
-            }
-            current = e.getLocationOnScreen();
-            repaint();
         }
     }
 

@@ -38,9 +38,10 @@ public class EntityView extends Block {
         drawTitle(graphics);
         int titleHeight = (int) (bounds.getHeight() + MARGIN);
         graphics.setColor(Color.BLACK);
-        graphics.drawLine(getX(), getY() + titleHeight, getX() + getWidth(), getY() + titleHeight);
-        graphics.drawLine(getX(), getY() + (titleHeight + MARGIN) * 2, getX() + getWidth(), getY()
-                + (titleHeight + MARGIN) * 2);
+        graphics.drawLine(getX(), getY() + titleHeight, getX() + getWidth(), getY()
+                + titleHeight);
+        graphics.drawLine(getX(), getY() + (titleHeight + MARGIN) * 2, getX()
+                + getWidth(), getY() + (titleHeight + MARGIN) * 2);
         drawSelection(graphics);
     }
 
@@ -51,7 +52,8 @@ public class EntityView extends Block {
     private Rectangle2D drawTitle(Graphics2D graphics) {
         graphics.setColor(Color.BLACK);
         Rectangle2D bounds = getStringBounds(graphics, entity.getName());
-        graphics.drawString(entity.getName(), getX(), getY() + (int) bounds.getHeight());
+        graphics.drawString(entity.getName(), getX(), getY()
+                + (int) bounds.getHeight());
         return bounds;
     }
 
