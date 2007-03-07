@@ -25,6 +25,7 @@ import ru.amse.soultakov.ereditor.model.Link;
 import ru.amse.soultakov.ereditor.model.Relationship;
 import ru.amse.soultakov.ereditor.view.Block;
 import ru.amse.soultakov.ereditor.view.CommentView;
+import ru.amse.soultakov.ereditor.view.DiagramPresentation;
 import ru.amse.soultakov.ereditor.view.EntityView;
 import ru.amse.soultakov.ereditor.view.LinkView;
 import ru.amse.soultakov.ereditor.view.RelationshipView;
@@ -36,91 +37,31 @@ import ru.amse.soultakov.ereditor.view.RelationshipView;
 public class DiagramEditor extends JComponent {
 
     private static final Dimension PREFERRED_SIZE = new Dimension(800, 600);
-
-    private final Map<Entity, EntityView> entityToView = newHashMap();
-
-    private final Map<Comment, CommentView> commentToView = newHashMap();
-
-    private final Map<Relationship, RelationshipView> relationshipToView = newHashMap();
-
-    private final Map<Link, LinkView> linkToView = newHashMap();
+    
+    private DiagramPresentation diagram = new DiagramPresentation();
 
     private MouseInputAdapter mouseHandler;
-
-    private final Set<RelationshipView> relationshipViews = new LinkedHashSet<RelationshipView>();
-
-    private final Set<LinkView> linkViews = new LinkedHashSet<LinkView>();
-
-    private final Set<EntityView> entityViews = new LinkedHashSet<EntityView>();
-
-    private final Set<CommentView> commentViews = new LinkedHashSet<CommentView>();
-
+    
     private final SelectedItems selectedItems = new SelectedItems();
 
     public DiagramEditor() {
         initMouseListener();
     }
 
-    public Block addEntity(Entity entity, int x, int y) {
-        if (entityToView.containsKey(entity)) {
-            throw new IllegalArgumentException("This entity is already in diagram: "
-                    + entity.getName());
-        }
-        EntityView entityView = new EntityView(entity, x, y);
-        entityToView.put(entity, entityView);
-        entityViews.add(entityView);
-        return entityView;
+    public EntityView addEntity(int x, int y) {
+        return diagram.addNewEntityView(x, y);
     }
 
-    public Block addComment(Comment comment, int x, int y) {
-        if (commentToView.containsKey(comment)) {
-            throw new IllegalArgumentException("This comment is already in diagram");
-        }
-        CommentView commentView = new CommentView(comment, x, y);
-        commentToView.put(comment, commentView);
-        commentViews.add(commentView);
-        return commentView;
+    public CommentView addComment(int x, int y) {
+        return diagram.addNewCommentView(x, y);
     }
 
-    public LinkView addLink(Link link) {
-        LinkView linkView = new LinkView(link, entityToView.get(link.getEntity()),
-                commentToView.get(link.getComment()));
-        addLinkView(linkView);
-        return linkView;
+    public LinkView addLink(EntityView entityView, CommentView commentView) {
+        return diagram.addNewLinkView(entityView, commentView);
     }
 
-    private void addLinkView(LinkView view) {
-        if (!contains(view.getEntityView()) || !contains(view.getCommentView())) {
-            throw new IllegalArgumentException(
-                    "Entity and comment must belong to DiagramEditor");
-        }
-        linkViews.add(view);
-        linkToView.put(view.getLink(), view);
-    }
-
-    public RelationshipView addRelationship(Relationship relationship) {
-        RelationshipView view = new RelationshipView(relationship, entityToView
-                .get(relationship.getFirstEnd().getEntity()), entityToView
-                .get(relationship.getSecondEnd().getEntity()));
-        addRelationshipView(view);
-        return view;
-    }
-
-    /**
-     * @param view
-     */
-    private void addRelationshipView(RelationshipView view) {
-        if (!contains(view.getFirstEntityView())
-                || !contains(view.getSecondEntityView())) {
-            throw new IllegalArgumentException(
-                    "Entities must belong to DiagramEditor");
-        }
-        relationshipViews.add(view);
-        relationshipToView.put(view.getRelationship(), view);
-    }
-
-    public boolean contains(Block block) {
-        return true;
+    public RelationshipView addRelationship(String name, EntityView first, EntityView second) {
+        return diagram.addNewRelationshipView(getName(), first, second);
     }
 
     @Override
@@ -157,12 +98,12 @@ public class DiagramEditor extends JComponent {
     protected void paintChildren(Graphics g) {
         Graphics2D graphics = (Graphics2D) g;
         //for correct relations painting we should recalculate the size of blocks
-        recalculateSize(commentViews, graphics);
-        recalculateSize(entityViews, graphics);
-        paintSet(linkViews, graphics);
-        paintSet(relationshipViews, graphics);
-        paintSet(commentViews, graphics);
-        paintSet(entityViews, graphics);
+        recalculateSize(diagram.getCommentViews(), graphics);
+        recalculateSize(diagram.getEntityViews(), graphics);
+        paintSet(diagram.getLinkViews(), graphics);
+        paintSet(diagram.getRelationshipViews(), graphics);
+        paintSet(diagram.getCommentViews(), graphics);
+        paintSet(diagram.getEntityViews(), graphics);
     }
 
     private void recalculateSize(Set<? extends Block> set, Graphics2D graphics) {
@@ -193,10 +134,10 @@ public class DiagramEditor extends JComponent {
         public void mousePressed(MouseEvent e) {
             boolean nothingSelected = true;
             //&& operator is used to prevent selecting more then one element
-            nothingSelected = nothingSelected && selectViews(e, entityViews);
-            nothingSelected = nothingSelected && selectViews(e, commentViews);
-            nothingSelected = nothingSelected && selectViews(e, relationshipViews);
-            nothingSelected = nothingSelected && selectViews(e, linkViews);
+            nothingSelected = nothingSelected && selectViews(e, diagram.getEntityViews());
+            nothingSelected = nothingSelected && selectViews(e, diagram.getCommentViews());
+            nothingSelected = nothingSelected && selectViews(e, diagram.getRelationshipViews());
+            nothingSelected = nothingSelected && selectViews(e, diagram.getLinkViews());
             
             if (nothingSelected && !e.isControlDown()) {
                 selectedItems.clear();
@@ -247,55 +188,20 @@ public class DiagramEditor extends JComponent {
         this.addMouseMotionListener(defaultTool);
     }
 
-    private void removeEntityView(EntityView view) {
-        entityViews.remove(view);
-        Entity entity = view.getEntity();
-        entityToView.remove(entity);
-        for (Iterator<Relationship> i = entity.relationshipsIterator(); i.hasNext();) {
-            Relationship relationship = i.next();
-            relationshipViews.remove(relationshipToView.remove(relationship));
-            if (relationship.getFirstEnd().getEntity() == entity) {
-                relationship.getFirstEnd().getEntity().removeRelationship(
-                        relationship);
-            } else if (relationship.getSecondEnd().getEntity() == entity) {
-                relationship.getSecondEnd().getEntity().removeRelationship(
-                        relationship);
-            } else {
-                i.remove();
-            }
-        }
-        for (Iterator<Link> i = entity.linksIterator(); i.hasNext();) {
-            Link link = i.next();
-            link.getComment().removeLink(link);
-            linkViews.remove(linkToView.remove(link));
-        }
+    public boolean removeEntity(EntityView view) {
+        return diagram.removeEntityView(view);
     }
 
-    private void removeCommentView(CommentView view) {
-        commentViews.remove(view);
-        Comment comment = view.getComment();
-        commentToView.remove(comment);
-        for (Iterator<Link> i = comment.linksIterator(); i.hasNext();) {
-            Link link = i.next();
-            link.getEntity().removeLink(link);
-            linkViews.remove(linkToView.remove(link));
-        }
+    public boolean removeComment(CommentView view) {
+        return diagram.removeCommentView(view);
     }
 
-    private void removeRelationshipView(RelationshipView view) {
-        view.getFirstEntityView().getEntity().removeRelationship(
-                view.getRelationship());
-        view.getSecondEntityView().getEntity().removeRelationship(
-                view.getRelationship());
-        relationshipToView.remove(view.getRelationship());
-        relationshipViews.remove(view);
+    public boolean removeRelationship(RelationshipView view) {
+        return diagram.removeRelationshipView(view);
     }
 
-    private void removeLinkView(LinkView view) {
-        view.getLink().getEntity().removeLink(view.getLink());
-        view.getLink().getComment().removeLink(view.getLink());
-        linkToView.remove(view.getLink());
-        linkViews.remove(view);
+    private void removeLink(LinkView view) {
+        return diagram.removeLinkView(view);
     }
 
     private void removeSelectable(Viewable s) {

@@ -94,24 +94,22 @@ public class DiagramPresentation {
     }
 
     public boolean removeEntityView(EntityView entityView) {
-        if (entityViews.contains(entityView)) {
+        if (diagram.removeEntity(entityView.getEntity())) {
             Entity entity = entityView.getEntity();
             for (Iterator<Relationship> i = entity.relationshipsIterator(); i
                     .hasNext();) {
                 relationshipViews.remove(relationshipToView.remove(i.next()));
             }
-            for (Iterator<Link> i = entity.linksIterator(); i
-                    .hasNext();) {
+            for (Iterator<Link> i = entity.linksIterator(); i.hasNext();) {
                 linkViews.remove(linkToView.remove(i.next()));
             }
-            entityViews.remove(entityToView.remove(entity));
-            return diagram.removeEntity(entity);
+            return entityViews.remove(entityToView.remove(entity));
         }
         return false;
     }
-    
+
     public boolean removeRelationshipView(RelationshipView view) {
-        if(diagram.removeRelationship(view.getRelationship())) {
+        if (diagram.removeRelationship(view.getRelationship())) {
             return relationshipViews.remove(relationshipToView.remove(view));
         }
         return false;
@@ -119,7 +117,18 @@ public class DiagramPresentation {
 
     public boolean removeCommentView(CommentView commentView) {
         if (diagram.removeComment(commentView.getComment())) {
+            Comment comment = commentView.getComment();
+            for (Iterator<Link> i = comment.linksIterator(); i.hasNext();) {
+                linkViews.remove(linkToView.remove(i.next()));
+            }
+            return commentViews.remove(commentToView.remove(commentView));
+        }
+        return false;
+    }
 
+    public boolean removeLinkView(LinkView linkView) {
+        if (diagram.removeLink(linkView.getLink())) {
+            return linkViews.remove(linkToView.remove(linkView));
         }
         return false;
     }
