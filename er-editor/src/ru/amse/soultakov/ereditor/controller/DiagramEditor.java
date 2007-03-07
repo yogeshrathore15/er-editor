@@ -26,7 +26,6 @@ import ru.amse.soultakov.ereditor.model.Relationship;
 import ru.amse.soultakov.ereditor.view.Block;
 import ru.amse.soultakov.ereditor.view.CommentView;
 import ru.amse.soultakov.ereditor.view.EntityView;
-import ru.amse.soultakov.ereditor.view.Line;
 import ru.amse.soultakov.ereditor.view.LinkView;
 import ru.amse.soultakov.ereditor.view.RelationshipView;
 
