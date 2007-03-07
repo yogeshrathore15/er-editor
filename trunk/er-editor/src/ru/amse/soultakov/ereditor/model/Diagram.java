@@ -4,9 +4,9 @@
 package ru.amse.soultakov.ereditor.model;
 
 import static ru.amse.soultakov.ereditor.model.RelationshipMultiplicity.ONE_ONLY;
-import static ru.amse.soultakov.ereditor.util.ArgsUtil.hasNull;
+import static ru.amse.soultakov.ereditor.util.Utils.hasNull;
+import static ru.amse.soultakov.ereditor.util.Utils.newLinkedHashSet;
 
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 import ru.amse.soultakov.ereditor.util.AutoincrementGenerator;
@@ -70,10 +70,6 @@ public class Diagram {
         Link link = new Link(entity, comment);
         links.add(link);
         return link;
-    }
-
-    protected static <T> Set<T> newLinkedHashSet() {
-        return new LinkedHashSet<T>();
     }
 
     /**
