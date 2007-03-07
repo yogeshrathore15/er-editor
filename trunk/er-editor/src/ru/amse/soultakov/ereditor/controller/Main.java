@@ -12,6 +12,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -26,6 +27,7 @@ import ru.amse.soultakov.ereditor.model.Entity;
 import ru.amse.soultakov.ereditor.model.Link;
 import ru.amse.soultakov.ereditor.model.Relationship;
 import ru.amse.soultakov.ereditor.model.RelationshipEnd;
+import ru.amse.soultakov.ereditor.util.AutoincrementGenerator;
 import ru.amse.soultakov.ereditor.view.Block;
 
 /**
@@ -40,7 +42,6 @@ public class Main {
 
         @Override
         public void mousePressed(MouseEvent e) {
-            System.out.println("EntityAdder.mousePressed()");
             diagramEditor.addEntity(new Entity("New Entity "
                     + generator.getNextInteger()), e.getX(), e.getY());
         }
@@ -52,7 +53,6 @@ public class Main {
 
         @Override
         public void mousePressed(MouseEvent e) {
-            System.out.println("CommentAdder.mousePressed()");
             diagramEditor.addComment(new Comment("New Comment "
                     + generator.getNextInteger()), e.getX(), e.getY());
         }
@@ -83,10 +83,19 @@ public class Main {
         menu.add(new JMenu("File"));
         menu.add(new JMenu("Edit"));
         JToolBar toolBar = new JToolBar();
-        toolBar.add(new JToggleButton(getAddEntityAction()));
-        toolBar.add(new JToggleButton(getAddRelationshipAction()));
-        toolBar.add(new JToggleButton(getAddCommentAction()));
+        ButtonGroup buttonsGroup = new ButtonGroup();
+        JToggleButton addEntityButton = new JToggleButton(getAddEntityAction());
+        JToggleButton addRelationshipButton = new JToggleButton(getAddRelationshipAction());
+        JToggleButton addCommentButton = new JToggleButton(getAddCommentAction());
+        toolBar.add(addEntityButton);
+        toolBar.add(addRelationshipButton);
+        toolBar.add(addCommentButton);
         toolBar.add(new JButton(getRemoveEntityAction()));
+        
+        buttonsGroup.add(addEntityButton);
+        buttonsGroup.add(addCommentButton);
+        buttonsGroup.add(addRelationshipButton);
+        
         frame.add(toolBar, BorderLayout.NORTH);
         frame.add(createDiagramEditor());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -138,12 +147,12 @@ public class Main {
 
     private static Action getAddEntityAction() {
         return new AbstractAction("Add entity") {
-
+            private EntityAdder entityAdder = new EntityAdder();
             public void actionPerformed(ActionEvent e) {
                 if (!((JToggleButton) e.getSource()).isSelected()) {
                     diagramEditor.setMouseInputAdapter(null);
                 } else {
-                    diagramEditor.setMouseInputAdapter(new EntityAdder());
+                    diagramEditor.setMouseInputAdapter(entityAdder);
                 }
             }
 

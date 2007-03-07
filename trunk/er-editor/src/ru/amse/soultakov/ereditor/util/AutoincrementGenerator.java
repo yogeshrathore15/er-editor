@@ -1,9 +1,9 @@
 /*
  * Created on 05.03.2007
  */
-package ru.amse.soultakov.ereditor.controller;
+package ru.amse.soultakov.ereditor.util;
 
-class AutoincrementGenerator {
+public class AutoincrementGenerator {
 
     private int currentNumber;
 
