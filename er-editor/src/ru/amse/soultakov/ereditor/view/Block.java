@@ -20,9 +20,9 @@ public abstract class Block implements Viewable {
 
     private boolean selected;
 
-    protected int x;
+    private int x;
 
-    protected int y;
+    private int y;
 
     private int height;
 
@@ -52,23 +52,9 @@ public abstract class Block implements Viewable {
         return height;
     }
 
-    /**
-     * @return the x
-     */
-    public int getX() {
-        return x;
-    }
-
-    /**
-     * @return the y
-     */
-    public int getY() {
-        return y;
-    }
-
     public void setLocation(int x, int y) {
-        this.x = x;
-        this.y = y;
+        this.setX(x);
+        this.setY(y);
     }
 
     /**
@@ -126,5 +112,51 @@ public abstract class Block implements Viewable {
     public boolean isSelected() {
         return selected;
     }
+
+    /**
+     * @param x the x to set
+     */
+    protected void setX(int x) {
+        this.x = x;
+    }
+
+    /**
+     * @return the x
+     */
+    public int getX() {
+        return x;
+    }
+
+    /**
+     * @param y the y to set
+     */
+    protected void setY(int y) {
+        this.y = y;
+    }
+
+    /**
+     * @return the y
+     */
+    public int getY() {
+        return y;
+    }
+
+    /**
+     * @param graphics
+     */
+    protected void drawBorder(Graphics2D graphics) {
+        graphics.drawRect(getX(), getY(), getWidth(), getHeight());
+    }
+
+    /**
+     * @param graphics
+     * @return
+     */
+    public void recalculateSize(Graphics2D graphics) {
+        Rectangle2D bounds = getContentBounds(graphics);
+        setSize((int) bounds.getWidth(), 100);
+    }
+    
+    protected abstract Rectangle2D getContentBounds(Graphics2D graphics);
 
 }
