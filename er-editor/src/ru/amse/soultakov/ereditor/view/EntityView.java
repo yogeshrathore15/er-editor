@@ -16,7 +16,7 @@ import ru.amse.soultakov.ereditor.model.Entity;
 public class EntityView extends Block {
 
     protected Entity entity;
-    
+
     /**
      * @param diagramEditor
      * @param entity
@@ -24,7 +24,7 @@ public class EntityView extends Block {
      * @param y
      */
     public EntityView(Entity entity, int x, int y) {
-        super(x,y);
+        super(x, y);
         this.entity = entity;
     }
 
@@ -39,10 +39,11 @@ public class EntityView extends Block {
         int titleHeight = (int) (bounds.getHeight() + MARGIN);
         graphics.setColor(Color.BLACK);
         graphics.drawLine(x, y + titleHeight, x + getWidth(), y + titleHeight);
-        graphics.drawLine(x, y + (titleHeight + MARGIN) * 2, x + getWidth(), y + (titleHeight + MARGIN) * 2);
+        graphics.drawLine(x, y + (titleHeight + MARGIN) * 2, x + getWidth(), y
+                + (titleHeight + MARGIN) * 2);
         drawSelection(graphics);
     }
-    
+
     /**
      * @param graphics
      * @return
@@ -50,8 +51,7 @@ public class EntityView extends Block {
     private Rectangle2D drawTitle(Graphics2D graphics) {
         graphics.setColor(Color.BLACK);
         Rectangle2D bounds = getStringBounds(graphics, entity.getName());
-        graphics.drawString(entity.getName(), x,
-                y + (int) bounds.getHeight());
+        graphics.drawString(entity.getName(), x, y + (int) bounds.getHeight());
         return bounds;
     }
 

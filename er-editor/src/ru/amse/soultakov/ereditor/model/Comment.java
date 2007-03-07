@@ -12,14 +12,14 @@ import java.util.Set;
  * 
  */
 public class Comment {
-    
+
     /**
      * 
      */
     private String comment;
 
     private Set<Link> links = new HashSet<Link>();
-    
+
     /**
      * @param comment
      */
@@ -41,15 +41,15 @@ public class Comment {
     public void setComment(String comment) {
         this.comment = comment;
     }
-    
+
     public boolean addLink(Link link) {
         return links.add(link);
     }
-    
+
     public boolean removeLink(Link link) {
         return links.remove(link);
     }
-    
+
     public Iterator<Link> linksIterator() {
         return links.iterator();
     }

@@ -19,59 +19,56 @@ public abstract class Block implements Viewable {
     protected static final int MARGIN = 3;
 
     private boolean selected;
-    
+
     protected int x;
-    
+
     protected int y;
-    
+
     private int height;
-    
+
     private int width;
 
     public Block(int x, int y) {
         super();
         setLocation(x, y);
     }
-    
+
     public void setSize(int width, int height) {
-    	this.width = width;
-    	this.height = height;
+        this.width = width;
+        this.height = height;
     }
-    
+
     /**
      * @return the widt
      */
     public int getWidth() {
-    	return width;
+        return width;
     }
-    
+
     /**
-	 * @return the height
-	 */
-	public int getHeight()
-	{
-		return height;
-	}
-	
-	/**
-	 * @return the x
-	 */
-	public int getX()
-	{
-		return x;
-	}
-	
-	/**
-	 * @return the y
-	 */
-	public int getY()
-	{
-		return y;
-	}
-    
+     * @return the height
+     */
+    public int getHeight() {
+        return height;
+    }
+
+    /**
+     * @return the x
+     */
+    public int getX() {
+        return x;
+    }
+
+    /**
+     * @return the y
+     */
+    public int getY() {
+        return y;
+    }
+
     public void setLocation(int x, int y) {
-    	this.x = x;
-    	this.y = y;
+        this.x = x;
+        this.y = y;
     }
 
     /**
@@ -122,7 +119,7 @@ public abstract class Block implements Viewable {
         boolean oldSelected = this.selected;
         if (oldSelected != selected) {
             this.selected = selected;
-            //paint();
+            // paint();
         }
     }
 

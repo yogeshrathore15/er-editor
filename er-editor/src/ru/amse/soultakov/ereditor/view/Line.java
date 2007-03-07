@@ -10,18 +10,18 @@ import ru.amse.soultakov.ereditor.controller.Viewable;
 public abstract class Line implements Viewable {
 
     protected static final BasicStroke SIMPLE_STROKE = new BasicStroke(1.0f);
-    
+
     protected static final BasicStroke DASHED = new BasicStroke(1.0f,
-                BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f,
-                new float[] { 10.0f }, 0.0f);
-    
+            BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f,
+            new float[] { 10.0f }, 0.0f);
+
     private static final double MIN_DISTANCE = 12.0;
-    
+
     /**
      * 
      */
     private boolean selected;
-    
+
     protected int firstCenterX;
 
     protected int firstCenterY;
@@ -29,7 +29,7 @@ public abstract class Line implements Viewable {
     protected int secondCenterX;
 
     protected int secondCenterY;
-   
+
     /**
      * @param block
      * @param n
@@ -46,8 +46,8 @@ public abstract class Line implements Viewable {
      */
     protected static int getYCenter(Block block, int n) {
         return block.getY() + block.getHeight() / n;
-    } 
-    
+    }
+
     protected abstract void recalculateEndPoints();
 
     /**
@@ -61,7 +61,7 @@ public abstract class Line implements Viewable {
         int dy = y2 - y1;
         int dx = x2 - x1;
         double[] prms = new double[3]; // a, b, c
-    
+
         if (dx == 0) {
             prms[1] = 0.0;
             prms[0] = 1.0;
@@ -100,12 +100,14 @@ public abstract class Line implements Viewable {
 
     public boolean containsPoint(int x, int y) {
         if (firstCenterX == secondCenterX) {
-            if (y < Math.min(firstCenterY, secondCenterY) || Math.max(firstCenterY, secondCenterY) < y) {
+            if (y < Math.min(firstCenterY, secondCenterY)
+                    || Math.max(firstCenterY, secondCenterY) < y) {
                 return false;
             }
             return (Math.abs(x - firstCenterX) < MIN_DISTANCE);
         } else if (firstCenterY == secondCenterY) {
-            if (x < Math.min(firstCenterX, secondCenterX) || Math.max(firstCenterX, secondCenterX) < x)
+            if (x < Math.min(firstCenterX, secondCenterX)
+                    || Math.max(firstCenterX, secondCenterX) < x)
                 return false;
             return (Math.abs(y - firstCenterY) < MIN_DISTANCE);
         }
@@ -123,17 +125,18 @@ public abstract class Line implements Viewable {
             if (y < secondCenterY || firstCenterY < y)
                 return false;
         }
-    
-        double[] prms = getLinePrms(firstCenterX, firstCenterY, secondCenterX, secondCenterY);
+
+        double[] prms = getLinePrms(firstCenterX, firstCenterY, secondCenterX,
+                secondCenterY);
         double a = prms[0];
         double b = prms[1];
         double c = prms[2];
-    
+
         double c2 = -(b * x - a * y);
-    
+
         double yt = (a * c2 - b * c) / (a * a + b * b);
         double xt = -(b * yt + c) / a;
-    
+
         return (Math.sqrt((xt - x) * (xt - x) + (yt - y) * (yt - y)) < MIN_DISTANCE);
     }
 

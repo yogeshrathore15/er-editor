@@ -43,7 +43,7 @@ public class DiagramEditor extends JComponent {
     private final Map<Comment, CommentView> commentToView = newHashMap();
 
     private final Map<Relationship, RelationshipView> relationshipToView = newHashMap();
-    
+
     private final Map<Link, LinkView> linkToView = newHashMap();
 
     private MouseInputAdapter mouseHandler;
@@ -53,9 +53,9 @@ public class DiagramEditor extends JComponent {
     private final SelectedItems selectedItems = new SelectedItems();
 
     private final Set<LinkView> linkViews = new HashSet<LinkView>();
-    
+
     private final Set<EntityView> entityViews = new HashSet<EntityView>();
-    
+
     private final Set<CommentView> commentViews = new HashSet<CommentView>();
 
     public DiagramEditor() {
@@ -155,17 +155,17 @@ public class DiagramEditor extends JComponent {
 
     @Override
     protected void paintChildren(Graphics g) {
-    	Graphics2D graphics = (Graphics2D) g;
-    	paintSet(relationshipViews, graphics);
+        Graphics2D graphics = (Graphics2D) g;
+        paintSet(relationshipViews, graphics);
         paintSet(linkViews, graphics);
         paintSet(entityViews, graphics);
         paintSet(commentViews, graphics);
     }
-    
+
     private void paintSet(Set<? extends Viewable> setToPaint, Graphics2D graphics) {
-    	for(Viewable v : setToPaint) {
-    		v.paint(graphics);
-    	}
+        for (Viewable v : setToPaint) {
+            v.paint(graphics);
+        }
     }
 
     @Override
@@ -245,14 +245,14 @@ public class DiagramEditor extends JComponent {
         relationshipToView.remove(view.getRelationship());
         relationshipViews.remove(view);
     }
-    
+
     private void removeLinkView(LinkView view) {
         view.getLink().getEntity().removeLink(view.getLink());
         view.getLink().getComment().removeLink(view.getLink());
         linkToView.remove(view.getLink());
         linkViews.remove(view);
     }
-    
+
     private void removeSelectable(Viewable s) {
         // this awful code will be refactored of course
         // visitor rules?

@@ -87,7 +87,7 @@ public class Entity implements Iterable<Attribute> {
         }
         attributes.add(attribute);
     }
-    
+
     public int getAttributeCount() {
         return attributes.size();
     }
