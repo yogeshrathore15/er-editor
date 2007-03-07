@@ -12,11 +12,11 @@ public class LinkView extends Line {
 
     private Link link;
 
-    private Block entityView;
+    private EntityView entityView;
 
-    private Block commentView;
+    private CommentView commentView;
 
-    public LinkView(Link link, Block entityView, Block commentView) {
+    public LinkView(Link link, EntityView entityView, CommentView commentView) {
         super();
         this.link = link;
         this.entityView = entityView;

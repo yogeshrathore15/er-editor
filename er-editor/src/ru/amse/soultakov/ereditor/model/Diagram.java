@@ -7,6 +7,8 @@ import static ru.amse.soultakov.ereditor.model.RelationshipMultiplicity.ONE_ONLY
 import static ru.amse.soultakov.ereditor.util.Utils.hasNull;
 import static ru.amse.soultakov.ereditor.util.Utils.newLinkedHashSet;
 
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.Set;
 
 import ru.amse.soultakov.ereditor.util.AutoincrementGenerator;
@@ -21,15 +23,15 @@ public class Diagram {
 
     private static final String NEW_COMMENT = "Comment ";
 
-    private Set<Entity> entities = newLinkedHashSet();
+    private final Set<Entity> entities = newLinkedHashSet();
 
-    private Set<Relationship> relationships = newLinkedHashSet();
+    private final Set<Relationship> relationships = newLinkedHashSet();
 
-    private Set<Comment> comments = newLinkedHashSet();
+    private final Set<Comment> comments = newLinkedHashSet();
 
-    private Set<Link> links = newLinkedHashSet();
+    private final Set<Link> links = newLinkedHashSet();
 
-    private NumbersGenerator generator = new NumbersGenerator();
+    private final NumbersGenerator generator = new NumbersGenerator();
 
     public Diagram() {
     }
@@ -70,6 +72,69 @@ public class Diagram {
         Link link = new Link(entity, comment);
         links.add(link);
         return link;
+    }
+    
+    public boolean removeEntity(Entity entity) {
+        if (entities.remove(entity)) {
+            for (Iterator<Relationship> i = entity.relationshipsIterator(); i.hasNext();) {
+                Relationship relationship = i.next();
+                Entity another = relationship.getFirstEnd().getEntity() == entity 
+                        ? relationship.getSecondEnd().getEntity() 
+                        : relationship.getSecondEnd().getEntity();
+                another.removeRelationship(relationship);
+            }
+            for (Iterator<Link> i = entity.linksIterator(); i.hasNext();) {
+                Link link = i.next();
+                link.getComment().removeLink(link);
+            }
+            return true;
+        }
+        return false;
+    }
+    
+    public boolean removeComment(Comment comment) {
+        if (comments.remove(comment)) {
+            for (Iterator<Link> i = comment.linksIterator(); i.hasNext();) {
+                Link link = i.next();
+                link.getEntity().removeLink(link);
+            }
+            return true;
+        }
+        return false;
+    }
+    
+    public boolean removeRelationship(Relationship relationship) {
+        if (relationships.remove(relationship)) {
+            relationship.getFirstEnd().getEntity().removeRelationship(relationship);
+            relationship.getSecondEnd().getEntity().removeRelationship(relationship);
+            return true;
+        }
+        return false;
+    }
+    
+    public boolean removeLink(Link link) {
+        if (links.remove(link)) {
+            link.getComment().removeLink(link);
+            link.getEntity().removeLink(link);
+            return true;
+        }
+        return false;
+    }
+    
+    public Set<Comment> getComments() {
+        return Collections.unmodifiableSet(comments);
+    }
+
+    public Set<Entity> getEntities() {
+        return Collections.unmodifiableSet(entities);
+    }
+
+    public Set<Link> getLinks() {
+        return Collections.unmodifiableSet(links);
+    }
+
+    public Set<Relationship> getRelationships() {
+        return Collections.unmodifiableSet(relationships);
     }
 
     /**
