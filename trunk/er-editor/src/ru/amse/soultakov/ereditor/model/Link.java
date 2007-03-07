@@ -12,7 +12,7 @@ public class Link {
      * 
      */
     private Entity entity;
-    
+
     /**
      * 
      */
@@ -55,6 +55,5 @@ public class Link {
     public void setEntity(Entity entity) {
         this.entity = entity;
     }
-    
-    
+
 }

@@ -8,23 +8,23 @@ package ru.amse.soultakov.ereditor.model;
  */
 public enum RelationshipMultiplicity {
 	/**
-	 * 
-	 */
+     * 
+     */
 	ZERO_OR_ONE(false, false),
 	
     /**
-	 * 
-	 */
+     * 
+     */
 	ONE_ONLY(true, false),
 	
     /**
-	 * 
-	 */
+     * 
+     */
 	ZERO_OR_MORE(false, true),
 	
     /**
-	 * 
-	 */
+     * 
+     */
 	ONE_OR_MORE(true, true);
     
     /**

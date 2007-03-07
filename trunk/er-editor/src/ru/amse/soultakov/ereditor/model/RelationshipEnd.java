@@ -24,7 +24,7 @@ public class RelationshipEnd {
      */
     public RelationshipEnd(Entity entity, RelationshipMultiplicity multiplicity) {
         super();
-        if ((entity == null)||(multiplicity == null)) {
+        if ((entity == null) || (multiplicity == null)) {
             throw new IllegalArgumentException("Arguments must be non-null values");
         }
         this.entity = entity;
@@ -64,7 +64,8 @@ public class RelationshipEnd {
         final int PRIME = 31;
         int result = 1;
         result = PRIME * result + ((entity == null) ? 0 : entity.hashCode());
-        result = PRIME * result + ((multiplicity == null) ? 0 : multiplicity.hashCode());
+        result = PRIME * result
+                + ((multiplicity == null) ? 0 : multiplicity.hashCode());
         return result;
     }
 

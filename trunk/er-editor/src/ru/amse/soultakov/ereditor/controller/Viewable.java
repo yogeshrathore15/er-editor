@@ -14,11 +14,11 @@ public interface Viewable {
      * @param selected
      */
     void setSelected(boolean selected);
-    
+
     /**
      * @return
      */
     boolean isSelected();
-        
+
     void paint(Graphics2D graphics);
 }

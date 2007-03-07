@@ -14,11 +14,12 @@ import ru.amse.soultakov.ereditor.model.Comment;
  */
 public class CommentView extends Block {
 
-    private static final Color BACKGROUND_COLOR = new Color(247,240,187);
+    private static final Color BACKGROUND_COLOR = new Color(247, 240, 187);
+
     private Comment comment;
 
     public CommentView(Comment comment, int x, int y) {
-        super(x,y);
+        super(x, y);
         this.comment = comment;
     }
 
@@ -31,12 +32,11 @@ public class CommentView extends Block {
         drawTitle(graphics);
         drawSelection(graphics);
     }
-    
+
     private Rectangle2D drawTitle(Graphics2D graphics) {
         graphics.setColor(Color.BLACK);
         Rectangle2D bounds = getStringBounds(graphics, comment.getComment());
-        graphics.drawString(comment.getComment(), 0,
-                (int) bounds.getHeight());
+        graphics.drawString(comment.getComment(), 0, (int) bounds.getHeight());
         return bounds;
     }
 

@@ -11,9 +11,9 @@ import ru.amse.soultakov.ereditor.model.Link;
 public class LinkView extends Line {
 
     private Link link;
-    
+
     private EntityView entityView;
-    
+
     private CommentView commentView;
 
     public LinkView(Link link, EntityView entityView, CommentView commentView) {
@@ -38,15 +38,15 @@ public class LinkView extends Line {
         secondCenterX = getXCenter(commentView, 2);
         secondCenterY = getYCenter(commentView, 3);
     }
-    
+
     public CommentView getCommentView() {
         return commentView;
     }
-    
+
     public Link getLink() {
         return link;
     }
-    
+
     public EntityView getEntityView() {
         return entityView;
     }

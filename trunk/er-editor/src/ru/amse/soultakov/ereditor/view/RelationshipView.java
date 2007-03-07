@@ -19,12 +19,12 @@ public class RelationshipView extends Line {
      * 
      */
     private Relationship relationship;
-    
+
     /**
      * 
      */
     protected EntityView firstEntity;
-    
+
     /**
      * 
      */
@@ -48,19 +48,19 @@ public class RelationshipView extends Line {
      */
     public void paint(Graphics2D graphics) {
         recalculateEndPoints();
-        
+
         int xCenter = (firstCenterX + secondCenterX) / 2;
         int yCenter = (firstCenterY + secondCenterY) / 2;
 
         graphics.setColor(isSelected() ? Color.BLUE : Color.BLACK);
-        paintRelationshipEnd(graphics, firstCenterX, firstCenterY, xCenter,
-                yCenter, relationship.getFirstEnd().getMultiplicity());
+        paintRelationshipEnd(graphics, firstCenterX, firstCenterY, xCenter, yCenter,
+                relationship.getFirstEnd().getMultiplicity());
         paintRelationshipEnd(graphics, secondCenterX, secondCenterY, xCenter,
                 yCenter, relationship.getSecondEnd().getMultiplicity());
     }
 
     @Override
-	protected void recalculateEndPoints() {
+    protected void recalculateEndPoints() {
         firstCenterX = getXCenter(firstEntity, 2);
         firstCenterY = getYCenter(firstEntity, 3);
         secondCenterX = getXCenter(secondEntity, 2);
@@ -78,8 +78,7 @@ public class RelationshipView extends Line {
     private void paintRelationshipEnd(Graphics2D graphics2D, int x1, int y1,
             int xCenter, int yCenter, RelationshipMultiplicity multiplicity) {
         Stroke old = graphics2D.getStroke();
-        graphics2D.setStroke(multiplicity.isObligatory() ? SIMPLE_STROKE
-                : DASHED);
+        graphics2D.setStroke(multiplicity.isObligatory() ? SIMPLE_STROKE : DASHED);
         graphics2D.drawLine(x1, y1, xCenter, yCenter);
         graphics2D.setStroke(old);
     }

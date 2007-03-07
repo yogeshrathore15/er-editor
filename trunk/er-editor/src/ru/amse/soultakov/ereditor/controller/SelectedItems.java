@@ -7,11 +7,10 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-
 /**
  * @author Soultakov Maxim
  */
-public class SelectedItems implements Iterable<Viewable>{
+public class SelectedItems implements Iterable<Viewable> {
 
     /**
      * 
@@ -49,8 +48,6 @@ public class SelectedItems implements Iterable<Viewable>{
     public boolean contains(Viewable item) {
         return selectedEntities.contains(item);
     }
-    
-    
 
     /**
      * 
