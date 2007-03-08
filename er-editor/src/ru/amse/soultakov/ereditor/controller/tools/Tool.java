@@ -3,6 +3,7 @@
  */
 package ru.amse.soultakov.ereditor.controller.tools;
 
+import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
@@ -69,5 +70,9 @@ public interface Tool {
      * a key released event.
      */
     public void keyReleased(KeyEvent e);
+    
+    public void paintBefore(Graphics2D graphics);
+    
+    public void paintAfter(Graphics2D graphics);
     
 }

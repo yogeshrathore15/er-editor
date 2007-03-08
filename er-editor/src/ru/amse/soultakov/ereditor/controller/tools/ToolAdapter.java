@@ -3,6 +3,7 @@
  */
 package ru.amse.soultakov.ereditor.controller.tools;
 
+import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
@@ -41,6 +42,12 @@ public abstract class ToolAdapter implements Tool {
     }
 
     public void mouseReleased(MouseEvent e) {
+    }
+    
+    public void paintAfter(Graphics2D graphics) {
+    }
+    
+    public void paintBefore(Graphics2D graphics) {
     }
 
 }
