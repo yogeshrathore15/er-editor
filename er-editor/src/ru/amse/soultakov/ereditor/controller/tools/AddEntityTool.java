@@ -7,11 +7,11 @@ import java.awt.event.MouseEvent;
 
 import ru.amse.soultakov.ereditor.controller.DiagramEditor;
 
-public class EntityAddingTool extends ToolAdapter {
+public class AddEntityTool extends ToolAdapter {
 
     private DiagramEditor diagramEditor;
 
-    public EntityAddingTool(DiagramEditor diagramEditor) {
+    public AddEntityTool(DiagramEditor diagramEditor) {
         this.diagramEditor = diagramEditor;
     }
 
