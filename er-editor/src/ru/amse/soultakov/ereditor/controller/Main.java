@@ -5,7 +5,6 @@ package ru.amse.soultakov.ereditor.controller;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.MouseEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -15,14 +14,14 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JScrollPane;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
-import javax.swing.event.MouseInputAdapter;
 
+import ru.amse.soultakov.ereditor.controller.actions.AddCommentAction;
 import ru.amse.soultakov.ereditor.controller.actions.AddEntityAction;
 import ru.amse.soultakov.ereditor.controller.actions.AddRelationshipAction;
 import ru.amse.soultakov.ereditor.controller.actions.SelectElementAction;
-import ru.amse.soultakov.ereditor.view.Block;
 import ru.amse.soultakov.ereditor.view.CommentView;
 import ru.amse.soultakov.ereditor.view.EntityView;
 
@@ -32,27 +31,6 @@ import ru.amse.soultakov.ereditor.view.EntityView;
  */
 public class Main {
 
-    private static final class CommentAdder extends MouseInputAdapter {
-        @Override
-        public void mousePressed(MouseEvent e) {
-            diagramEditor.addComment(e.getX(), e.getY());
-        }
-    }
-
-    private static final class RelationshipAdder extends MouseInputAdapter {
-
-        private Block firstEntity = null;
-
-        @Override
-        public void mousePressed(MouseEvent e) {
-            if (firstEntity == null) {
-
-            }
-            throw new UnsupportedOperationException("");
-        }
-
-    }
-
     private static DiagramEditor diagramEditor = new DiagramEditor();;
 
     public static void main(String[] args) {
@@ -61,21 +39,23 @@ public class Main {
         frame.setJMenuBar(menu);
         menu.add(new JMenu("File"));
         menu.add(new JMenu("Edit"));
-        frame.add(createDiagramEditor());
+        frame.add(new JScrollPane(createDiagramEditor()));
         JToolBar toolBar = new JToolBar();
         ButtonGroup buttonsGroup = new ButtonGroup();
-        
+
         JToggleButton addEntityButton = new JToggleButton(new AddEntityAction(
                 diagramEditor, "Add Entity"));
-        
+
         JToggleButton addRelationshipButton = new JToggleButton(
                 new AddRelationshipAction(diagramEditor, "Add relationship"));
-        
-        JToggleButton addCommentButton = new JToggleButton(getAddCommentAction());
-        
-        JToggleButton defaultToolButton = new JToggleButton(new SelectElementAction(diagramEditor, "Default"));
+
+        JToggleButton addCommentButton = new JToggleButton(new AddCommentAction(
+                diagramEditor, "Add comment"));
+
+        JToggleButton defaultToolButton = new JToggleButton(new SelectElementAction(
+                diagramEditor, "Default"));
         defaultToolButton.setSelected(true);
-        
+
         toolBar.add(defaultToolButton);
         toolBar.add(addEntityButton);
         toolBar.add(addRelationshipButton);
