@@ -12,6 +12,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import ru.amse.soultakov.ereditor.controller.SelectedItems;
 import ru.amse.soultakov.ereditor.model.Comment;
 import ru.amse.soultakov.ereditor.model.Diagram;
 import ru.amse.soultakov.ereditor.model.Entity;
@@ -20,7 +21,7 @@ import ru.amse.soultakov.ereditor.model.Relationship;
 
 public class DiagramPresentation {
 
-    private final Diagram diagram;
+    private final Diagram diagram = new Diagram();
 
     private final Set<EntityView> entityViews = newLinkedHashSet();
 
@@ -37,9 +38,10 @@ public class DiagramPresentation {
     private final Map<Relationship, RelationshipView> relationshipToView = newHashMap();
 
     private final Map<Link, LinkView> linkToView = newHashMap();
+    
+    private final SelectedItems selectedItems = new SelectedItems();
 
-    public DiagramPresentation() {
-        diagram = new Diagram();
+    public DiagramPresentation() {;
     }
 
     public EntityView addNewEntityView(int x, int y) {
@@ -62,7 +64,7 @@ public class DiagramPresentation {
             EntityView second) {
         if (hasNull(first, second)) {
             throw new IllegalArgumentException("Both EntityViews must be non-null");
-        } else if (!commentViews.contains(first) || !entityViews.contains(second)
+        } else if (!entityViews.contains(first) || !entityViews.contains(second)
                 || first.equals(second)) {
             throw new IllegalArgumentException(
                     "Both EntityViews must present in diagram and be unequal");
@@ -147,6 +149,10 @@ public class DiagramPresentation {
 
     public Set<RelationshipView> getRelationshipViews() {
         return Collections.unmodifiableSet(relationshipViews);
+    }
+    
+    public SelectedItems getSelectedItems() {
+        return selectedItems;
     }
 
 }

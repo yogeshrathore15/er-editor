@@ -26,9 +26,10 @@ public class LinkView extends Line {
 
     public void paint(Graphics2D graphics) {
         recalculateEndPoints();
-
+        graphics.setStroke(SMALL_DASHED);
         graphics.setColor(isSelected() ? Color.BLUE : Color.BLACK);
         graphics.drawLine(firstCenterX, firstCenterY, secondCenterX, secondCenterY);
+        graphics.setStroke(SIMPLE_STROKE);
     }
 
     @Override

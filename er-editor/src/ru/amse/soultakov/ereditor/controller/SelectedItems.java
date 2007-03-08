@@ -58,6 +58,11 @@ public class SelectedItems implements Iterable<Viewable> {
         }
         selectedEntities.clear();
     }
+    
+    public void setSelection(Viewable viewable) {
+        clear();
+        add(viewable);
+    }
 
     public Iterator<Viewable> iterator() {
         return selectedEntities.iterator();

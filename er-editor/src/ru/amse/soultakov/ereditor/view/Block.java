@@ -169,7 +169,7 @@ public abstract class Block implements Viewable {
     @Override
     public String toString() {
         return "[X = " + getX() + ", Y = " + getY() + ", W = " + getWidth()
-                + ", H = " + getHeight() + "]" + this.getClass();
+                + ", H = " + getHeight() + "]";
     }
 
 }
