@@ -74,6 +74,8 @@ public class DiagramEditor extends JComponent {
     }
 
     public void setTool(Tool tool) {
+        getSelectedItems().clear();
+        repaint();
         currentTool = tool;
     }
 
@@ -89,6 +91,7 @@ public class DiagramEditor extends JComponent {
         paintSet(diagram.getRelationshipViews(), graphics);
         paintSet(diagram.getCommentViews(), graphics);
         paintSet(diagram.getEntityViews(), graphics);
+        
         currentTool.paintAfter(graphics);
     }
 
@@ -122,6 +125,7 @@ public class DiagramEditor extends JComponent {
         currentTool = getDefaultTool();
         this.addMouseListener(new MouseListener() {
             public void mouseClicked(MouseEvent e) {
+                requestFocusInWindow();
                 currentTool.mouseClicked(e);
             }
 
@@ -206,6 +210,11 @@ public class DiagramEditor extends JComponent {
      */
     private SelectedItems getSelectedItems() {
         return diagram.getSelectedItems();
+    }
+    
+    @Override
+    public boolean isFocusable() {
+        return true;
     }
 
 }

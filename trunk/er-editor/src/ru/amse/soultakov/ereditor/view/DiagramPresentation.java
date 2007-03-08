@@ -39,10 +39,11 @@ public class DiagramPresentation {
     private final Map<Relationship, RelationshipView> relationshipToView = newHashMap();
 
     private final Map<Link, LinkView> linkToView = newHashMap();
-    
+
     private final SelectedItems selectedItems = new SelectedItems();
 
-    public DiagramPresentation() {;
+    public DiagramPresentation() {
+        ;
     }
 
     public EntityView addNewEntityView(int x, int y) {
@@ -115,7 +116,8 @@ public class DiagramPresentation {
 
     public boolean removeRelationshipView(RelationshipView view) {
         if (diagram.removeRelationship(view.getRelationship())) {
-            return relationshipViews.remove(relationshipToView.remove(view));
+            return relationshipViews.remove(relationshipToView.remove(view
+                    .getRelationship()));
         }
         return false;
     }
@@ -135,7 +137,7 @@ public class DiagramPresentation {
 
     public boolean removeLinkView(LinkView linkView) {
         if (diagram.removeLink(linkView.getLink())) {
-            return linkViews.remove(linkToView.remove(linkView));
+            return linkViews.remove(linkToView.remove(linkView.getLink()));
         }
         return false;
     }
@@ -155,13 +157,13 @@ public class DiagramPresentation {
     public Set<RelationshipView> getRelationshipViews() {
         return Collections.unmodifiableSet(relationshipViews);
     }
-    
+
     public SelectedItems getSelectedItems() {
         return selectedItems;
     }
-    
+
     public EntityView getEntityView(int x, int y) {
-        for(EntityView view : entityViews) {
+        for (EntityView view : entityViews) {
             if (view.containsPoint(x, y)) {
                 return view;
             }

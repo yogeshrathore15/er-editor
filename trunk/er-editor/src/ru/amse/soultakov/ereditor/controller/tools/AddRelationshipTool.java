@@ -3,6 +3,7 @@
  */
 package ru.amse.soultakov.ereditor.controller.tools;
 
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 import ru.amse.soultakov.ereditor.controller.DiagramEditor;
@@ -25,7 +26,9 @@ public class AddRelationshipTool extends ToolAdapter {
         if (first == null) {
             first = diagramEditor.getDiagram().getEntityView(e.getX(),
                     e.getY());
-            diagramEditor.getDiagram().getSelectedItems().add(first);
+            if (first != null) {
+                diagramEditor.getDiagram().getSelectedItems().add(first);
+            }
         } else {
             second = diagramEditor.getDiagram().getEntityView(e.getX(),
                     e.getY());
@@ -39,6 +42,16 @@ public class AddRelationshipTool extends ToolAdapter {
             }
         }
         diagramEditor.repaint();
+    }
+    
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            first = null;
+            second = null;
+            diagramEditor.getDiagram().getSelectedItems().clear();
+            diagramEditor.repaint();
+        }
     }
     
 }
