@@ -118,5 +118,10 @@ public class Relationship {
             return false;
         return true;
     }
+    
+    @Override
+    public String toString() {
+        return firstEnd.getEntity() + " "+ secondEnd.getEntity().toString();
+    }
 
 }

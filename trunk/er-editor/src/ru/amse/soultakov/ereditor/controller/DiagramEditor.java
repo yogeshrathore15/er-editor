@@ -7,22 +7,17 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.event.MouseAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.Map;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.Set;
 
 import javax.swing.JComponent;
-import javax.swing.event.MouseInputAdapter;
 
-import ru.amse.soultakov.ereditor.model.Comment;
-import ru.amse.soultakov.ereditor.model.Entity;
-import ru.amse.soultakov.ereditor.model.Link;
-import ru.amse.soultakov.ereditor.model.Relationship;
+import ru.amse.soultakov.ereditor.controller.tools.ElementsSelectingTool;
+import ru.amse.soultakov.ereditor.controller.tools.Tool;
 import ru.amse.soultakov.ereditor.view.Block;
 import ru.amse.soultakov.ereditor.view.CommentView;
 import ru.amse.soultakov.ereditor.view.DiagramPresentation;
@@ -37,10 +32,10 @@ import ru.amse.soultakov.ereditor.view.RelationshipView;
 public class DiagramEditor extends JComponent {
 
     private static final Dimension PREFERRED_SIZE = new Dimension(800, 600);
-    
+
     private final DiagramPresentation diagram = new DiagramPresentation();
 
-    private MouseInputAdapter mouseHandler;
+    private Tool currentTool;
 
     public DiagramEditor() {
         initMouseListener();
@@ -58,7 +53,8 @@ public class DiagramEditor extends JComponent {
         return diagram.addNewLinkView(entityView, commentView);
     }
 
-    public RelationshipView addRelationship(String name, EntityView first, EntityView second) {
+    public RelationshipView addRelationship(String name, EntityView first,
+            EntityView second) {
         return diagram.addNewRelationshipView(name, first, second);
     }
 
@@ -72,23 +68,20 @@ public class DiagramEditor extends JComponent {
      */
     public void removeSelection() {
         for (Viewable s : getSelectedItems()) {
-            removeSelectable(s);
+            System.out.println(removeSelectable(s));
         }
         repaint();
     }
 
-    public void setMouseInputAdapter(MouseInputAdapter adapter) {
-        this.removeMouseListener(mouseHandler);
-        this.removeMouseMotionListener(mouseHandler);
-        this.addMouseListener(adapter);
-        this.addMouseMotionListener(adapter);
-        mouseHandler = adapter;
+    public void setTool(Tool tool) {
+        currentTool = tool;
     }
 
     @Override
     protected void paintChildren(Graphics g) {
         Graphics2D graphics = (Graphics2D) g;
-        //for correct relations painting we should recalculate the size of blocks
+        // for correct relations painting we should recalculate the size of
+        // blocks
         recalculateSize(diagram.getCommentViews(), graphics);
         recalculateSize(diagram.getEntityViews(), graphics);
         paintSet(diagram.getLinkViews(), graphics);
@@ -116,66 +109,63 @@ public class DiagramEditor extends JComponent {
         g.fillRect(0, 0, getWidth(), getHeight());
     }
     
-    private final class DefaultTool extends MouseAdapter {
-        private volatile Viewable currentElement;
-
-        private volatile Point currentPoint;
-
-        @Override
-        public void mousePressed(MouseEvent e) {
-            boolean nothingSelected = true;
-            //&& operator is used to prevent selecting more then one element
-            nothingSelected = nothingSelected && selectViews(e, diagram.getEntityViews());
-            nothingSelected = nothingSelected && selectViews(e, diagram.getCommentViews());
-            nothingSelected = nothingSelected && selectViews(e, diagram.getRelationshipViews());
-            nothingSelected = nothingSelected && selectViews(e, diagram.getLinkViews());
-            
-            if (nothingSelected && !e.isControlDown()) {
-                getSelectedItems().clear();
-                this.currentElement = null;
-            }
-            currentPoint = e.getLocationOnScreen();
-            repaint();
-        }
-
-        @Override
-        public void mouseDragged(MouseEvent e) {
-            if (currentElement != null) {
-                int xPos = e.getXOnScreen() - currentPoint.x + currentElement.getX();
-                int yPos = e.getYOnScreen() - currentPoint.y + currentElement.getY();
-                currentElement.setLocation(xPos >= 0 ? xPos : 0, yPos >= 0 ? yPos : 0);
-                currentPoint = e.getLocationOnScreen();
-                repaint();
-            }
-        }
-
-        private boolean selectViews(MouseEvent e, Set<? extends Viewable> views) {
-            for (Viewable view : views) {
-                if (view.containsPoint(e.getX(), e.getY())) {
-                    if (e.isControlDown()) {
-                        if (view.isSelected()) {
-                            getSelectedItems().remove(view);
-                        } else {
-                            getSelectedItems().add(view);
-                        }
-                    } else {
-                        getSelectedItems().setSelection(view);
-                    }
-                    this.currentElement = view;
-                    return false;
-                }
-            }
-            return true;
-        }
+    public DiagramPresentation getDiagram() {
+        return diagram;
     }
-
+    
     /**
      * 
      */
     private void initMouseListener() {
-        DefaultTool defaultTool = new DefaultTool();
-        this.addMouseListener(defaultTool);
-        this.addMouseMotionListener(defaultTool);
+        currentTool = getDefaultTool();
+        this.addMouseListener(new MouseListener() {
+            public void mouseClicked(MouseEvent e) {
+                currentTool.mouseClicked(e);
+            }
+
+            public void mouseEntered(MouseEvent e) {
+                currentTool.mouseEntered(e);
+            }
+
+            public void mouseExited(MouseEvent e) {
+                currentTool.mouseExited(e);
+            }
+
+            public void mousePressed(MouseEvent e) {
+                currentTool.mousePressed(e);
+            }
+
+            public void mouseReleased(MouseEvent e) {
+                currentTool.mouseReleased(e);
+            }
+        });
+        this.addMouseMotionListener(new MouseMotionListener() {
+            public void mouseDragged(MouseEvent e) {
+                currentTool.mouseDragged(e);
+            }
+
+            public void mouseMoved(MouseEvent e) {
+                currentTool.mouseMoved(e);
+            }
+        });
+        this.addKeyListener(new KeyListener() {
+            public void keyPressed(KeyEvent e) {
+                currentTool.keyPressed(e);
+            }
+
+            public void keyReleased(KeyEvent e) {
+                currentTool.keyReleased(e);
+            }
+
+            public void keyTyped(KeyEvent e) {
+                currentTool.keyTyped(e);
+            }
+            
+        });
+    }
+
+    public ElementsSelectingTool getDefaultTool() {
+        return new ElementsSelectingTool(this);
     }
 
     public boolean removeEntity(EntityView view) {
@@ -194,18 +184,19 @@ public class DiagramEditor extends JComponent {
         return diagram.removeLinkView(view);
     }
 
-    private void removeSelectable(Viewable s) {
+    private boolean removeSelectable(Viewable s) {
         // this awful code will be refactored of course
         // visitor rules?
         if (s instanceof EntityView) {
-            removeEntity((EntityView) s);
+            return removeEntity((EntityView) s);
         } else if (s instanceof RelationshipView) {
-            removeRelationship((RelationshipView) s);
+            return removeRelationship((RelationshipView) s);
         } else if (s instanceof CommentView) {
-            removeComment((CommentView) s);
+            return removeComment((CommentView) s);
         } else if (s instanceof LinkView) {
-            removeLink((LinkView) s);
+            return removeLink((LinkView) s);
         }
+        return false;
     }
 
     /**
