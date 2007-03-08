@@ -16,7 +16,7 @@ import java.util.Set;
 
 import javax.swing.JComponent;
 
-import ru.amse.soultakov.ereditor.controller.tools.ElementsSelectingTool;
+import ru.amse.soultakov.ereditor.controller.tools.ElementSelectingTool;
 import ru.amse.soultakov.ereditor.controller.tools.Tool;
 import ru.amse.soultakov.ereditor.view.Block;
 import ru.amse.soultakov.ereditor.view.CommentView;
@@ -164,8 +164,8 @@ public class DiagramEditor extends JComponent {
         });
     }
 
-    public ElementsSelectingTool getDefaultTool() {
-        return new ElementsSelectingTool(this);
+    public ElementSelectingTool getDefaultTool() {
+        return new ElementSelectingTool(this);
     }
 
     public boolean removeEntity(EntityView view) {

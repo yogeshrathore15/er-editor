@@ -10,14 +10,14 @@ import java.util.Set;
 import ru.amse.soultakov.ereditor.controller.DiagramEditor;
 import ru.amse.soultakov.ereditor.controller.Viewable;
 
-public class ElementsSelectingTool extends ToolAdapter {
+public class ElementSelectingTool extends ToolAdapter {
     private Viewable currentElement;
 
     private Point currentPoint;
 
     private DiagramEditor diagramEditor;
 
-    public ElementsSelectingTool(DiagramEditor diagramEditor) {
+    public ElementSelectingTool(DiagramEditor diagramEditor) {
         this.diagramEditor = diagramEditor;
     }
 
