@@ -28,7 +28,7 @@ public class AddRelationshipTool extends ToolAdapter {
                     e.getY());
             if (first != null) {
                 diagramEditor.getDiagram().getSelectedItems().add(first);
-            }
+            } 
         } else {
             second = diagramEditor.getDiagram().getEntityView(e.getX(),
                     e.getY());
