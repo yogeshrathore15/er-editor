@@ -4,6 +4,7 @@
 package ru.amse.soultakov.ereditor.util;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 
 public class Utils {
@@ -23,6 +24,14 @@ public class Utils {
     
     public static <T,E> HashMap<T,E> newHashMap() {
         return new HashMap<T,E>();
+    }
+    
+    public static <T> void printIterator(Iterator<T> iterator) {
+        System.out.println("{");
+        for(;iterator.hasNext();) {
+            System.out.println(iterator.next());
+        }
+        System.out.println("}");
     }
     
 }

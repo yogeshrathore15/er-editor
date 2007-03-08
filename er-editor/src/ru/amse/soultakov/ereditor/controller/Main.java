@@ -73,7 +73,7 @@ public class Main {
         JToggleButton addCommentButton = new JToggleButton(getAddCommentAction());
         JToggleButton defaultToolButton = new JToggleButton(new AbstractAction("Default") {
                     public void actionPerformed(ActionEvent e) {
-                        diagramEditor.setMouseInputAdapter(null);
+                        diagramEditor.setTool(diagramEditor.getDefaultTool());
                     }
                 });
         defaultToolButton.setSelected(true);
@@ -100,9 +100,9 @@ public class Main {
 
             public void actionPerformed(ActionEvent e) {
                 if (!((JToggleButton) e.getSource()).isSelected()) {
-                    diagramEditor.setMouseInputAdapter(null);
+                    diagramEditor.setTool(diagramEditor.getDefaultTool());
                 } else {
-                    diagramEditor.setMouseInputAdapter(new CommentAdder());
+                    //diagramEditor.setTool(new CommentAdder());
                 }
             }
 
@@ -113,9 +113,9 @@ public class Main {
         return new AbstractAction("Add relationship") {
             public void actionPerformed(ActionEvent e) {
                 if (!((JToggleButton) e.getSource()).isSelected()) {
-                    diagramEditor.setMouseInputAdapter(null);
+                    diagramEditor.setTool(diagramEditor.getDefaultTool());
                 } else {
-                    diagramEditor.setMouseInputAdapter(new RelationshipAdder());
+                    //diagramEditor.setMouseInputAdapter(new RelationshipAdder());
                 }
             }
         };
@@ -139,9 +139,9 @@ public class Main {
 
             public void actionPerformed(ActionEvent e) {
                 if (!((JToggleButton) e.getSource()).isSelected()) {
-                    diagramEditor.setMouseInputAdapter(null);
+                    diagramEditor.setTool(diagramEditor.getDefaultTool());
                 } else {
-                    diagramEditor.setMouseInputAdapter(entityAdder);
+                    //diagramEditor.setMouseInputAdapter(entityAdder);
                 }
             }
 

@@ -154,5 +154,10 @@ public class Entity implements Iterable<Attribute> {
             return false;
         return true;
     }
+    
+    @Override
+    public String toString() {
+        return name;
+    }
 
 }

@@ -100,10 +100,12 @@ public class DiagramPresentation {
             Entity entity = entityView.getEntity();
             for (Iterator<Relationship> i = entity.relationshipsIterator(); i
                     .hasNext();) {
-                relationshipViews.remove(relationshipToView.remove(i.next()));
+                Relationship relationship = i.next();
+                relationshipViews.remove(relationshipToView.remove(relationship));
             }
             for (Iterator<Link> i = entity.linksIterator(); i.hasNext();) {
-                linkViews.remove(linkToView.remove(i.next()));
+                Link link = i.next();
+                linkViews.remove(linkToView.remove(link));
             }
             return entityViews.remove(entityToView.remove(entity));
         }
@@ -118,12 +120,14 @@ public class DiagramPresentation {
     }
 
     public boolean removeCommentView(CommentView commentView) {
+        System.out.println(commentViews);
+        System.out.println(commentView);
         if (diagram.removeComment(commentView.getComment())) {
             Comment comment = commentView.getComment();
             for (Iterator<Link> i = comment.linksIterator(); i.hasNext();) {
                 linkViews.remove(linkToView.remove(i.next()));
             }
-            return commentViews.remove(commentToView.remove(commentView));
+            return commentViews.remove(commentToView.remove(comment));
         }
         return false;
     }

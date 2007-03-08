@@ -80,7 +80,7 @@ public class Diagram {
                 Relationship relationship = i.next();
                 Entity another = relationship.getFirstEnd().getEntity() == entity 
                         ? relationship.getSecondEnd().getEntity() 
-                        : relationship.getSecondEnd().getEntity();
+                        : relationship.getFirstEnd().getEntity();
                 another.removeRelationship(relationship);
             }
             for (Iterator<Link> i = entity.linksIterator(); i.hasNext();) {
