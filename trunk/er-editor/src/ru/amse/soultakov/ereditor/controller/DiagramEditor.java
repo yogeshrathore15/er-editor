@@ -38,11 +38,9 @@ public class DiagramEditor extends JComponent {
 
     private static final Dimension PREFERRED_SIZE = new Dimension(800, 600);
     
-    private DiagramPresentation diagram = new DiagramPresentation();
+    private final DiagramPresentation diagram = new DiagramPresentation();
 
     private MouseInputAdapter mouseHandler;
-    
-    private final SelectedItems selectedItems = new SelectedItems();
 
     public DiagramEditor() {
         initMouseListener();
@@ -61,19 +59,12 @@ public class DiagramEditor extends JComponent {
     }
 
     public RelationshipView addRelationship(String name, EntityView first, EntityView second) {
-        return diagram.addNewRelationshipView(getName(), first, second);
+        return diagram.addNewRelationshipView(name, first, second);
     }
 
     @Override
     public Dimension getPreferredSize() {
         return PREFERRED_SIZE;
-    }
-
-    /**
-     * @return
-     */
-    public SelectedItems getSelectedItems() {
-        return selectedItems;
     }
 
     /**
@@ -140,7 +131,7 @@ public class DiagramEditor extends JComponent {
             nothingSelected = nothingSelected && selectViews(e, diagram.getLinkViews());
             
             if (nothingSelected && !e.isControlDown()) {
-                selectedItems.clear();
+                getSelectedItems().clear();
                 this.currentElement = null;
             }
             currentPoint = e.getLocationOnScreen();
@@ -163,13 +154,12 @@ public class DiagramEditor extends JComponent {
                 if (view.containsPoint(e.getX(), e.getY())) {
                     if (e.isControlDown()) {
                         if (view.isSelected()) {
-                            selectedItems.remove(view);
+                            getSelectedItems().remove(view);
                         } else {
-                            selectedItems.add(view);
+                            getSelectedItems().add(view);
                         }
                     } else {
-                        selectedItems.clear();
-                        selectedItems.add(view);
+                        getSelectedItems().setSelection(view);
                     }
                     this.currentElement = view;
                     return false;
@@ -200,7 +190,7 @@ public class DiagramEditor extends JComponent {
         return diagram.removeRelationshipView(view);
     }
 
-    private void removeLink(LinkView view) {
+    public boolean removeLink(LinkView view) {
         return diagram.removeLinkView(view);
     }
 
@@ -208,18 +198,21 @@ public class DiagramEditor extends JComponent {
         // this awful code will be refactored of course
         // visitor rules?
         if (s instanceof EntityView) {
-            removeEntityView((EntityView) s);
+            removeEntity((EntityView) s);
         } else if (s instanceof RelationshipView) {
-            removeRelationshipView((RelationshipView) s);
+            removeRelationship((RelationshipView) s);
         } else if (s instanceof CommentView) {
-            removeCommentView((CommentView) s);
+            removeComment((CommentView) s);
         } else if (s instanceof LinkView) {
-            removeLinkView((LinkView) s);
+            removeLink((LinkView) s);
         }
     }
 
-    private static <E, T> HashMap<E, T> newHashMap() {
-        return new HashMap<E, T>();
+    /**
+     * @return
+     */
+    private SelectedItems getSelectedItems() {
+        return diagram.getSelectedItems();
     }
 
 }

@@ -25,6 +25,9 @@ public class EntityView extends Block {
      */
     public EntityView(Entity entity, int x, int y) {
         super(x, y);
+        if (entity == null) {
+            throw new IllegalArgumentException("Entity must be non-null");
+        }
         this.entity = entity;
     }
 

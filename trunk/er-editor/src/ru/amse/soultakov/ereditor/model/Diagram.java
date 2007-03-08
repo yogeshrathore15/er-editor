@@ -19,9 +19,9 @@ import ru.amse.soultakov.ereditor.util.AutoincrementGenerator;
  */
 public class Diagram {
 
-    private static final String NEW_ENTITY = "Entity ";
+    private static final String NEW_ENTITY = "New Entity ";
 
-    private static final String NEW_COMMENT = "Comment ";
+    private static final String NEW_COMMENT = "New Comment ";
 
     private final Set<Entity> entities = newLinkedHashSet();
 
