@@ -10,7 +10,6 @@ import java.awt.event.MouseEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -21,8 +20,8 @@ import javax.swing.JToolBar;
 import javax.swing.event.MouseInputAdapter;
 
 import ru.amse.soultakov.ereditor.controller.actions.AddEntityAction;
-import ru.amse.soultakov.ereditor.controller.tools.AddEntityTool;
-import ru.amse.soultakov.ereditor.controller.tools.SelectElementTool;
+import ru.amse.soultakov.ereditor.controller.actions.AddRelationshipAction;
+import ru.amse.soultakov.ereditor.controller.actions.SelectElementAction;
 import ru.amse.soultakov.ereditor.view.Block;
 import ru.amse.soultakov.ereditor.view.CommentView;
 import ru.amse.soultakov.ereditor.view.EntityView;
@@ -65,21 +64,18 @@ public class Main {
         frame.add(createDiagramEditor());
         JToolBar toolBar = new JToolBar();
         ButtonGroup buttonsGroup = new ButtonGroup();
+        
         JToggleButton addEntityButton = new JToggleButton(new AddEntityAction(
                 diagramEditor, "Add Entity"));
+        
         JToggleButton addRelationshipButton = new JToggleButton(
-                getAddRelationshipAction());
+                new AddRelationshipAction(diagramEditor, "Add relationship"));
+        
         JToggleButton addCommentButton = new JToggleButton(getAddCommentAction());
-        JToggleButton defaultToolButton = new JToggleButton(new AbstractAction(
-                "Default") {
-            private SelectElementTool selectElementTool = new SelectElementTool(
-                    diagramEditor);
-
-            public void actionPerformed(ActionEvent e) {
-                diagramEditor.setTool(selectElementTool);
-            }
-        });
+        
+        JToggleButton defaultToolButton = new JToggleButton(new SelectElementAction(diagramEditor, "Default"));
         defaultToolButton.setSelected(true);
+        
         toolBar.add(defaultToolButton);
         toolBar.add(addEntityButton);
         toolBar.add(addRelationshipButton);
@@ -109,19 +105,6 @@ public class Main {
                 }
             }
 
-        };
-    }
-
-    private static Action getAddRelationshipAction() {
-        return new AbstractAction("Add relationship") {
-            public void actionPerformed(ActionEvent e) {
-                if (!((JToggleButton) e.getSource()).isSelected()) {
-                    diagramEditor.setTool(diagramEditor.getDefaultTool());
-                } else {
-                    // diagramEditor.setMouseInputAdapter(new
-                    // RelationshipAdder());
-                }
-            }
         };
     }
 

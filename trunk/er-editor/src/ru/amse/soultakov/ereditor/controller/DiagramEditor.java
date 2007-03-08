@@ -80,6 +80,7 @@ public class DiagramEditor extends JComponent {
     @Override
     protected void paintChildren(Graphics g) {
         Graphics2D graphics = (Graphics2D) g;
+        currentTool.paintBefore(graphics);
         // for correct relations painting we should recalculate the size of
         // blocks
         recalculateSize(diagram.getCommentViews(), graphics);
@@ -88,6 +89,7 @@ public class DiagramEditor extends JComponent {
         paintSet(diagram.getRelationshipViews(), graphics);
         paintSet(diagram.getCommentViews(), graphics);
         paintSet(diagram.getEntityViews(), graphics);
+        currentTool.paintAfter(graphics);
     }
 
     private void recalculateSize(Set<? extends Block> set, Graphics2D graphics) {

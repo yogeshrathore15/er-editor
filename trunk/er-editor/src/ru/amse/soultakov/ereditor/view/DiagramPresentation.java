@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Set;
 
 import ru.amse.soultakov.ereditor.controller.SelectedItems;
+import ru.amse.soultakov.ereditor.controller.Viewable;
 import ru.amse.soultakov.ereditor.model.Comment;
 import ru.amse.soultakov.ereditor.model.Diagram;
 import ru.amse.soultakov.ereditor.model.Entity;
@@ -157,6 +158,15 @@ public class DiagramPresentation {
     
     public SelectedItems getSelectedItems() {
         return selectedItems;
+    }
+    
+    public EntityView getEntityView(int x, int y) {
+        for(EntityView view : entityViews) {
+            if (view.containsPoint(x, y)) {
+                return view;
+            }
+        }
+        return null;
     }
 
 }
