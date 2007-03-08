@@ -19,6 +19,8 @@ import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.event.MouseInputAdapter;
 
+import ru.amse.soultakov.ereditor.controller.tools.ElementSelectingTool;
+import ru.amse.soultakov.ereditor.controller.tools.EntityAddingTool;
 import ru.amse.soultakov.ereditor.view.Block;
 import ru.amse.soultakov.ereditor.view.CommentView;
 import ru.amse.soultakov.ereditor.view.EntityView;
@@ -28,13 +30,6 @@ import ru.amse.soultakov.ereditor.view.EntityView;
  * @author Soultakov Maxim
  */
 public class Main {
-
-    private static final class EntityAdder extends MouseInputAdapter {
-        @Override
-        public void mousePressed(MouseEvent e) {
-            diagramEditor.addEntity(e.getX(), e.getY());
-        }
-    }
 
     private static final class CommentAdder extends MouseInputAdapter {
         @Override
@@ -57,7 +52,7 @@ public class Main {
 
     }
 
-    private static DiagramEditor diagramEditor;
+    private static DiagramEditor diagramEditor = new DiagramEditor(); ;
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("Stupid test");
@@ -72,8 +67,10 @@ public class Main {
                 getAddRelationshipAction());
         JToggleButton addCommentButton = new JToggleButton(getAddCommentAction());
         JToggleButton defaultToolButton = new JToggleButton(new AbstractAction("Default") {
+                    private ElementSelectingTool elementSelectingTool = new ElementSelectingTool(diagramEditor);
+                    
                     public void actionPerformed(ActionEvent e) {
-                        diagramEditor.setTool(diagramEditor.getDefaultTool());
+                        diagramEditor.setTool(elementSelectingTool);
                     }
                 });
         defaultToolButton.setSelected(true);
@@ -122,7 +119,6 @@ public class Main {
     }
 
     private static JComponent createDiagramEditor() {
-        diagramEditor = new DiagramEditor();
         EntityView v1 = diagramEditor.addEntity(20, 20);
         EntityView v2 = diagramEditor.addEntity(150, 10);
         diagramEditor.addEntity(260, 10);
@@ -135,13 +131,13 @@ public class Main {
 
     private static Action getAddEntityAction() {
         return new AbstractAction("Add entity") {
-            private EntityAdder entityAdder = new EntityAdder();
+            private EntityAddingTool tool = new EntityAddingTool(diagramEditor);
 
             public void actionPerformed(ActionEvent e) {
                 if (!((JToggleButton) e.getSource()).isSelected()) {
                     diagramEditor.setTool(diagramEditor.getDefaultTool());
                 } else {
-                    //diagramEditor.setMouseInputAdapter(entityAdder);
+                    diagramEditor.setTool(tool);
                 }
             }
 
