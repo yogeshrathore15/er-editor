@@ -24,6 +24,7 @@ import ru.amse.soultakov.ereditor.view.DiagramPresentation;
 import ru.amse.soultakov.ereditor.view.EntityView;
 import ru.amse.soultakov.ereditor.view.LinkView;
 import ru.amse.soultakov.ereditor.view.RelationshipView;
+import ru.amse.soultakov.ereditor.view.SelectedItems;
 
 /**
  * @author sma

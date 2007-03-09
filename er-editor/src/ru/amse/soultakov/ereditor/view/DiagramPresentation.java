@@ -12,7 +12,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import ru.amse.soultakov.ereditor.controller.SelectedItems;
 import ru.amse.soultakov.ereditor.controller.Viewable;
 import ru.amse.soultakov.ereditor.model.Comment;
 import ru.amse.soultakov.ereditor.model.Diagram;

@@ -1,11 +1,13 @@
 /**
  * 
  */
-package ru.amse.soultakov.ereditor.controller;
+package ru.amse.soultakov.ereditor.view;
 
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+
+import ru.amse.soultakov.ereditor.controller.Viewable;
 
 /**
  * @author Soultakov Maxim

@@ -4,10 +4,7 @@
 package ru.amse.soultakov.ereditor.controller;
 
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
 
-import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -21,6 +18,7 @@ import javax.swing.JToolBar;
 import ru.amse.soultakov.ereditor.controller.actions.AddCommentAction;
 import ru.amse.soultakov.ereditor.controller.actions.AddEntityAction;
 import ru.amse.soultakov.ereditor.controller.actions.AddRelationshipAction;
+import ru.amse.soultakov.ereditor.controller.actions.RemoveSelectionAction;
 import ru.amse.soultakov.ereditor.controller.actions.SelectElementAction;
 import ru.amse.soultakov.ereditor.view.CommentView;
 import ru.amse.soultakov.ereditor.view.EntityView;
@@ -60,7 +58,7 @@ public class Main {
         toolBar.add(addEntityButton);
         toolBar.add(addRelationshipButton);
         toolBar.add(addCommentButton);
-        toolBar.add(new JButton(getRemoveEntityAction()));
+        toolBar.add(new JButton(new RemoveSelectionAction(diagramEditor, "Remove")));
 
         buttonsGroup.add(defaultToolButton);
         buttonsGroup.add(addEntityButton);
@@ -68,24 +66,9 @@ public class Main {
         buttonsGroup.add(addRelationshipButton);
 
         frame.add(toolBar, BorderLayout.NORTH);
-
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
-    }
-
-    private static Action getAddCommentAction() {
-        return new AbstractAction("Add comment") {
-
-            public void actionPerformed(ActionEvent e) {
-                if (!((JToggleButton) e.getSource()).isSelected()) {
-                    diagramEditor.setTool(diagramEditor.getDefaultTool());
-                } else {
-                    // diagramEditor.setTool(new CommentAdder());
-                }
-            }
-
-        };
     }
 
     private static JComponent createDiagramEditor() {
@@ -97,16 +80,6 @@ public class Main {
         CommentView c1 = diagramEditor.addComment(100, 300);
         diagramEditor.addLink(v2, c1);
         return diagramEditor;
-    }
-
-    private static Action getRemoveEntityAction() {
-        return new AbstractAction("Remove") {
-
-            public void actionPerformed(ActionEvent e) {
-                diagramEditor.removeSelection();
-            }
-
-        };
     }
 
 }
