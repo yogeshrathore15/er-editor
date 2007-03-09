@@ -8,7 +8,7 @@ import java.awt.event.MouseEvent;
 import java.util.Set;
 
 import ru.amse.soultakov.ereditor.controller.DiagramEditor;
-import ru.amse.soultakov.ereditor.controller.Viewable;
+import ru.amse.soultakov.ereditor.view.Viewable;
 
 public class SelectElementTool extends ToolAdapter {
     
@@ -33,7 +33,7 @@ public class SelectElementTool extends ToolAdapter {
         nothingSelected = nothingSelected
                 && selectViews(e, diagramEditor.getDiagram().getLinkViews());
 
-        if (nothingSelected && !e.isControlDown()) {
+        if (nothingSelected ) {//&& !e.isControlDown()) {
             diagramEditor.getDiagram().getSelectedItems().clear();
         }
         currentPoint = e.getLocationOnScreen();

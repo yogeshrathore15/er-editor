@@ -1,7 +1,7 @@
 /*
  * Created on 27.02.2007
  */
-package ru.amse.soultakov.ereditor.controller;
+package ru.amse.soultakov.ereditor.view;
 
 import java.awt.Graphics2D;
 
