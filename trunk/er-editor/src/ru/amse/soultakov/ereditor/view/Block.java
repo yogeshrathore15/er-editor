@@ -7,7 +7,6 @@ import java.awt.Graphics2D;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.Rectangle2D;
 
-import ru.amse.soultakov.ereditor.controller.Viewable;
 
 public abstract class Block implements Viewable {
 

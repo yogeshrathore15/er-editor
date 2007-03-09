@@ -5,7 +5,6 @@ package ru.amse.soultakov.ereditor.view;
 
 import java.awt.BasicStroke;
 
-import ru.amse.soultakov.ereditor.controller.Viewable;
 
 public abstract class Line implements Viewable {
 
