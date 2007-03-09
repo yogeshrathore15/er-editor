@@ -36,8 +36,6 @@ public class Relationship {
         this.name = name;
         this.firstEnd = firstEnd;
         this.secondEnd = secondEnd;
-        firstEnd.getEntity().addRelationship(this);
-        secondEnd.getEntity().addRelationship(this);
     }
 
     /**

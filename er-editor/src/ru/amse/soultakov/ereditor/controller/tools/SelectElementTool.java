@@ -11,9 +11,8 @@ import ru.amse.soultakov.ereditor.controller.DiagramEditor;
 import ru.amse.soultakov.ereditor.controller.Viewable;
 
 public class SelectElementTool extends ToolAdapter {
-    private Viewable currentElement;
-
-    private Point currentPoint;
+    
+	private Point currentPoint;
 
     private DiagramEditor diagramEditor;
 
@@ -36,7 +35,6 @@ public class SelectElementTool extends ToolAdapter {
 
         if (nothingSelected && !e.isControlDown()) {
             diagramEditor.getDiagram().getSelectedItems().clear();
-            this.currentElement = null;
         }
         currentPoint = e.getLocationOnScreen();
         diagramEditor.repaint();
@@ -44,13 +42,13 @@ public class SelectElementTool extends ToolAdapter {
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        if (currentElement != null) {
-            int xPos = e.getXOnScreen() - currentPoint.x + currentElement.getX();
-            int yPos = e.getYOnScreen() - currentPoint.y + currentElement.getY();
-            currentElement.setLocation(xPos >= 0 ? xPos : 0, yPos >= 0 ? yPos : 0);
-            currentPoint = e.getLocationOnScreen();
-            diagramEditor.repaint();
-        }
+    	for (Viewable v : diagramEditor.getDiagram().getSelectedItems()) {
+        	int xPos = e.getXOnScreen() - currentPoint.x + v.getX();
+            int yPos = e.getYOnScreen() - currentPoint.y + v.getY();
+            v.setLocation(xPos >= 0 ? xPos : 0, yPos >= 0 ? yPos : 0);
+    	}
+    	currentPoint = e.getLocationOnScreen();
+    	diagramEditor.repaint();
     }
 
     private boolean selectViews(MouseEvent e, Set<? extends Viewable> views) {
@@ -63,9 +61,10 @@ public class SelectElementTool extends ToolAdapter {
                         diagramEditor.getDiagram().getSelectedItems().add(view);
                     }
                 } else {
-                    diagramEditor.getDiagram().getSelectedItems().setSelection(view);
+                	if (!view.isSelected()) {
+                		diagramEditor.getDiagram().getSelectedItems().setSelection(view);
+                	}
                 }
-                this.currentElement = view;
                 return false;
             }
         }

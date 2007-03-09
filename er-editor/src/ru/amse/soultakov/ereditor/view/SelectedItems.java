@@ -17,7 +17,7 @@ public class SelectedItems implements Iterable<Viewable> {
     /**
      * 
      */
-    private Set<Viewable> selectedEntities = new HashSet<Viewable>();
+    private Set<Viewable> selectedViews = new HashSet<Viewable>();
 
     /**
      * 
@@ -31,7 +31,7 @@ public class SelectedItems implements Iterable<Viewable> {
      */
     public boolean add(Viewable item) {
         item.setSelected(true);
-        return selectedEntities.add(item);
+        return selectedViews.add(item);
     }
 
     /**
@@ -40,7 +40,7 @@ public class SelectedItems implements Iterable<Viewable> {
      */
     public boolean remove(Viewable item) {
         item.setSelected(false);
-        return selectedEntities.remove(item);
+        return selectedViews.remove(item);
     }
 
     /**
@@ -48,17 +48,17 @@ public class SelectedItems implements Iterable<Viewable> {
      * @return
      */
     public boolean contains(Viewable item) {
-        return selectedEntities.contains(item);
+        return selectedViews.contains(item);
     }
 
     /**
      * 
      */
     public void clear() {
-        for (Viewable item : selectedEntities) {
+        for (Viewable item : selectedViews) {
             item.setSelected(false);
         }
-        selectedEntities.clear();
+        selectedViews.clear();
     }
     
     public void setSelection(Viewable viewable) {
@@ -67,7 +67,22 @@ public class SelectedItems implements Iterable<Viewable> {
     }
 
     public Iterator<Viewable> iterator() {
-        return selectedEntities.iterator();
+        return selectedViews.iterator();
     }
+
+	/**
+	 * @return
+	 */
+	public boolean isEmpty() {
+		return selectedViews.isEmpty();
+	}
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return selectedViews.toString();
+	}
 
 }
