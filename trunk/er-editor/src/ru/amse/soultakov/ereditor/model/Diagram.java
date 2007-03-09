@@ -47,20 +47,22 @@ public class Diagram {
         comments.add(comment);
         return comment;
     }
-
+    
     public Relationship addNewRealtionship(String name, Entity first, Entity second) {
-        if (hasNull(name, first, second)) {
-            throw new IllegalArgumentException(
-                    "Name and both entities must be non-null");
-        } else if (first.equals(second) || !entities.contains(first)
-                || !entities.contains(second)) {
-            throw new IllegalArgumentException(
-                    "Both entities must present in diagram and be unequal to each other");
-        }
-        Relationship relationship = new Relationship(name, new RelationshipEnd(
-                first, ONE_ONLY), new RelationshipEnd(second, ONE_ONLY));
-        relationships.add(relationship);
-        return relationship;
+    	if (hasNull(name, first, second)) {
+    		throw new IllegalArgumentException(
+    				"Name and both entities must be non-null");
+    	} else if (first.equals(second) || !entities.contains(first)
+    			|| !entities.contains(second)) {
+    		throw new IllegalArgumentException(
+    				"Both entities must present in diagram and be unequal to each other");
+    	}
+    	Relationship relationship = new Relationship(name, new RelationshipEnd(
+    			first, ONE_ONLY), new RelationshipEnd(second, ONE_ONLY));
+    	relationships.add(relationship);
+    	first.addRelationship(relationship);
+    	second.addRelationship(relationship);
+    	return relationship;
     }
     
     public Link addNewLink(Entity entity, Comment comment) {

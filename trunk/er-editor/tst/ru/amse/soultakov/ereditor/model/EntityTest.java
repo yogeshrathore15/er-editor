@@ -91,7 +91,7 @@ public class EntityTest {
     public void testAddRelationship() {
         Entity entity = new Entity(NAME);
         Relationship relationship = createRelationship(entity);
-        assertTrue(hasRelationship(entity, relationship));
+        assertFalse(hasRelationship(entity, relationship));
     }
 
     private static Relationship createRelationship(Entity entity) {

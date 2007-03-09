@@ -16,8 +16,8 @@ public class RelationshipTest {
         Entity entity2 = new Entity("2");
         Relationship relationship = new Relationship("name", new RelationshipEnd(
                 entity1, ONE_ONLY), new RelationshipEnd(entity2, ONE_ONLY));
-        assertTrue(EntityTest.hasRelationship(entity1, relationship));
-        assertTrue(EntityTest.hasRelationship(entity2, relationship));
+        assertFalse(EntityTest.hasRelationship(entity1, relationship));
+        assertFalse(EntityTest.hasRelationship(entity2, relationship));
         assertEquals(relationship.getName(), "name");
     }
 

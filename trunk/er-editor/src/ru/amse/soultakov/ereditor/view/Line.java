@@ -144,4 +144,15 @@ public abstract class Line implements Viewable {
         return (Math.sqrt((xt - x) * (xt - x) + (yt - y) * (yt - y)) < MIN_DISTANCE);
     }
 
+	public int getX() {
+	    return 0;
+	}
+
+	public int getY() {
+	    return 0;
+	}
+
+	public void setLocation(int x, int y) {
+	}
+
 }

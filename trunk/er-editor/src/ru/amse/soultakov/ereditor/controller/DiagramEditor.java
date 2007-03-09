@@ -22,6 +22,7 @@ import ru.amse.soultakov.ereditor.view.Block;
 import ru.amse.soultakov.ereditor.view.CommentView;
 import ru.amse.soultakov.ereditor.view.DiagramPresentation;
 import ru.amse.soultakov.ereditor.view.EntityView;
+import ru.amse.soultakov.ereditor.view.Line;
 import ru.amse.soultakov.ereditor.view.LinkView;
 import ru.amse.soultakov.ereditor.view.RelationshipView;
 import ru.amse.soultakov.ereditor.view.SelectedItems;
@@ -50,7 +51,7 @@ public class DiagramEditor extends JComponent {
         return diagram.addNewCommentView(x, y);
     }
 
-    public LinkView addLink(EntityView entityView, CommentView commentView) {
+    public Line addLink(EntityView entityView, CommentView commentView) {
         return diagram.addNewLinkView(entityView, commentView);
     }
 
@@ -69,7 +70,7 @@ public class DiagramEditor extends JComponent {
      */
     public void removeSelection() {
         for (Viewable s : getSelectedItems()) {
-            System.out.println(removeSelectable(s));
+            removeSelectable(s);
         }
         repaint();
     }
@@ -84,6 +85,7 @@ public class DiagramEditor extends JComponent {
     protected void paintChildren(Graphics g) {
         Graphics2D graphics = (Graphics2D) g;
         currentTool.paintBefore(graphics);
+        
         // for correct relations painting we should recalculate the size of
         // blocks
         recalculateSize(diagram.getCommentViews(), graphics);

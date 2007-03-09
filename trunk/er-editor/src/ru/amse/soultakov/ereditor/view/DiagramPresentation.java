@@ -78,7 +78,7 @@ public class DiagramPresentation {
         return relationshipView;
     }
 
-    public LinkView addNewLinkView(EntityView entityView, CommentView commentView) {
+    public Line addNewLinkView(EntityView entityView, CommentView commentView) {
         if (hasNull(entityView, commentView)) {
             throw new IllegalArgumentException(
                     "EntityView and CommentView must be non-null");
