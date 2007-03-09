@@ -122,8 +122,6 @@ public class DiagramPresentation {
     }
 
     public boolean removeCommentView(CommentView commentView) {
-        System.out.println(commentViews);
-        System.out.println(commentView);
         if (diagram.removeComment(commentView.getComment())) {
             Comment comment = commentView.getComment();
             for (Iterator<Link> i = comment.linksIterator(); i.hasNext();) {
