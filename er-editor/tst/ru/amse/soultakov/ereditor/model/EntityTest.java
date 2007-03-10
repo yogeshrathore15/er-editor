@@ -72,7 +72,7 @@ public class EntityTest {
             }
         }
         assertTrue("Count != 2",count == 3);
-        assertTrue("AttributeCount != 3",entity.getAttributeCount() == 3);
+        assertTrue("AttributeCount != 3",entity.getAttributes().size() == 3);
     }
 
     @Test
@@ -81,9 +81,9 @@ public class EntityTest {
         Attribute attribute = new Attribute("1");
         entity.addAttribute(attribute);
         entity.addAttribute(new Attribute("2"));
-        assertTrue(entity.getAttributeCount() == 2);
+        assertTrue(entity.getAttributes().size() == 2);
         entity.removeAttribute(attribute);
-        assertTrue(entity.getAttributeCount() == 1);
+        assertTrue(entity.getAttributes().size() == 1);
         assertTrue(entity.iterator().next() != attribute);
     }
 

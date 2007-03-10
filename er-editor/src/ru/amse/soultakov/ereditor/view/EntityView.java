@@ -63,6 +63,10 @@ public class EntityView extends Block {
     public Entity getEntity() {
         return entity;
     }
+    
+    public boolean acceptRelationshipWith(EntityView entityView) {
+        return entity.acceptRelationshipWith(entityView.getEntity());
+    }
 
     /**
      * @return

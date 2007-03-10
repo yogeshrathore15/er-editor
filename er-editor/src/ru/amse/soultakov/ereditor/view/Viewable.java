@@ -10,14 +10,8 @@ import java.awt.Graphics2D;
  */
 public interface Viewable {
 
-    /**
-     * @param selected
-     */
     void setSelected(boolean selected);
 
-    /**
-     * @return
-     */
     boolean isSelected();
 
     void paint(Graphics2D graphics);
@@ -28,5 +22,7 @@ public interface Viewable {
     
     void setLocation(int x, int y);
 
-    public boolean containsPoint(int x, int y);
+    boolean containsPoint(int x, int y);
+    
+    boolean isInsideRectangle(int x1, int y1, int x2, int y2);
 }
