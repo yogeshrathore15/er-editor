@@ -4,6 +4,7 @@
 package ru.amse.soultakov.ereditor.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -88,10 +89,6 @@ public class Entity implements Iterable<Attribute> {
         attributes.add(attribute);
     }
 
-    public int getAttributeCount() {
-        return attributes.size();
-    }
-
     /**
      * @param attribute
      * @return
@@ -158,6 +155,27 @@ public class Entity implements Iterable<Attribute> {
     @Override
     public String toString() {
         return name;
+    }
+    
+    public List<Attribute> getAttributes() {
+        return Collections.unmodifiableList(attributes);
+    }
+
+    public Set<Link> getLinks() {
+        return Collections.unmodifiableSet(links);
+    }
+    
+    public Set<Relationship> getRelationships() {
+        return Collections.unmodifiableSet(relationships);
+    }
+
+    public boolean acceptRelationshipWith(Entity entity) {
+        for (Relationship r : relationships) {
+            if ((r.getFirstEnd().getEntity() == entity)||(r.getSecondEnd().getEntity() == entity)) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }

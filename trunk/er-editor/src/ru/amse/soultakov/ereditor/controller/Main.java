@@ -76,7 +76,7 @@ public class Main {
         EntityView v2 = diagramEditor.addEntity(150, 10);
         diagramEditor.addEntity(260, 10);
         diagramEditor.addEntity(260, 200);
-        diagramEditor.addRelationship("", v1, v2);
+        diagramEditor.addRelationship(v1, v2);
         CommentView c1 = diagramEditor.addComment(100, 300);
         diagramEditor.addLink(v2, c1);
         return diagramEditor;

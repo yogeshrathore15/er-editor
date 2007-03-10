@@ -162,6 +162,14 @@ public abstract class Block implements Viewable {
         return (getX() <= x) && (getY() <= y) && (getX() + getWidth() >= x)
                         && (getY() + getHeight() >= y);
     }
+    
+    public boolean isInsideRectangle(int x1, int y1, int x2, int y2) {
+        int left = Math.min(x1, x2);
+        int top = Math.min(y1, y2);
+        int right = Math.max(x1, x2);
+        int bottom = Math.max(y1, y2);
+        return (left < x) && (top < y) && (right > x + width) && ( bottom > y + height);
+    }
 
     protected abstract Rectangle2D getContentBounds(Graphics2D graphics);
     

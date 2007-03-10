@@ -16,7 +16,7 @@ public abstract class Line implements Viewable {
 
     protected static final BasicStroke SMALL_DASHED = new BasicStroke(1.0f,
             BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f,
-            new float[] { 5.0f }, 0.0f);
+            new float[] { 10.0f }, 1.0f);
 
     private static final double MIN_DISTANCE = 12.0;
 
@@ -153,5 +153,18 @@ public abstract class Line implements Viewable {
 
 	public void setLocation(int x, int y) {
 	}
+    
+    public boolean isInsideRectangle(int x1, int y1, int x2, int y2) {
+        int left = Math.min(x1, x2);
+        int top = Math.min(y1, y2);
+        int right = Math.max(x1, x2);
+        int bottom = Math.max(y1, y2);
+        int leftCenterX = Math.min(firstCenterX, secondCenterX);
+        int rightCenterX = Math.max(firstCenterX, secondCenterX);
+        int topCenterY = Math.min(firstCenterY, secondCenterY);
+        int bottomCenterY = Math.max(firstCenterY, secondCenterY);
+        return (left < leftCenterX) && (top < topCenterY) 
+                && (right > rightCenterX) && ( bottom > bottomCenterY);
+    }
 
 }

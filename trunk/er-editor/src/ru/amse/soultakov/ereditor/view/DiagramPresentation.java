@@ -60,7 +60,7 @@ public class DiagramPresentation {
         return commentView;
     }
 
-    public RelationshipView addNewRelationshipView(String name, EntityView first,
+    public RelationshipView addNewRelationshipView(EntityView first,
             EntityView second) {
         if (hasNull(first, second)) {
             throw new IllegalArgumentException("Both EntityViews must be non-null");
@@ -69,8 +69,8 @@ public class DiagramPresentation {
             throw new IllegalArgumentException(
                     "Both EntityViews must present in diagram and be unequal");
         }
-        Relationship relationship = diagram.addNewRealtionship(name, first
-                .getEntity(), second.getEntity());
+        Relationship relationship = diagram.addNewRealtionship(first.getEntity(),
+                second.getEntity());
         RelationshipView relationshipView = new RelationshipView(relationship,
                 first, second);
         relationshipViews.add(relationshipView);
@@ -159,9 +159,17 @@ public class DiagramPresentation {
     }
 
     public EntityView getEntityView(int x, int y) {
-        for (EntityView view : entityViews) {
-            if (view.containsPoint(x, y)) {
-                return view;
+        return getViewInPoint(entityViews, x, y);
+    }
+
+    public CommentView getCommentVeiw(int x, int y) {
+        return getViewInPoint(commentViews, x, y);
+    }
+
+    private static <E extends Viewable> E getViewInPoint(Set<E> set, int x, int y) {
+        for (E v : set) {
+            if (v.containsPoint(x, y)) {
+                return v;
             }
         }
         return null;

@@ -56,9 +56,9 @@ public class DiagramEditor extends JComponent {
         return diagram.addNewLinkView(entityView, commentView);
     }
 
-    public RelationshipView addRelationship(String name, EntityView first,
+    public RelationshipView addRelationship(EntityView first,
             EntityView second) {
-        return diagram.addNewRelationshipView(name, first, second);
+        return diagram.addNewRelationshipView(first, second);
     }
 
     @Override
