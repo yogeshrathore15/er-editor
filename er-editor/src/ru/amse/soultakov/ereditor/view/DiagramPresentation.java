@@ -41,7 +41,7 @@ public class DiagramPresentation {
     private final SelectedItems selectedItems = new SelectedItems();
 
     public DiagramPresentation() {
-        ;
+        
     }
 
     public EntityView addNewEntityView(int x, int y) {
@@ -162,7 +162,7 @@ public class DiagramPresentation {
         return getViewInPoint(entityViews, x, y);
     }
 
-    public CommentView getCommentVeiw(int x, int y) {
+    public CommentView getCommentView(int x, int y) {
         return getViewInPoint(commentViews, x, y);
     }
 

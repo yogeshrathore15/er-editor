@@ -8,6 +8,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Stroke;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.Set;
 
@@ -149,5 +150,12 @@ public class SelectElementTool extends ToolAdapter {
             }
         }
         return true;
+    }
+    
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+            diagramEditor.removeSelection();
+        }
     }
 }

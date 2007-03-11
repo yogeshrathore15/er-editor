@@ -178,4 +178,13 @@ public class Entity implements Iterable<Attribute> {
         return true;
     }
 
+    public boolean acceptLinkWith(Comment comment) {
+        for (Link l : links) {
+            if (l.getComment() == comment) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }

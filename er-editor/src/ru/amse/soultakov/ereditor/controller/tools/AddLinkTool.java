@@ -3,9 +3,11 @@
  */
 package ru.amse.soultakov.ereditor.controller.tools;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Stroke;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
@@ -16,12 +18,18 @@ import ru.amse.soultakov.ereditor.view.SelectedItems;
 
 public class AddLinkTool extends ToolAdapter {
 
+    protected static final BasicStroke DASHED = new BasicStroke(1.0f,
+            BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 10.0f,
+            new float[] { 10.0f }, 0.0f);
+
     private DiagramEditor diagramEditor;
 
     private EntityView entity;
 
     private CommentView comment;
-    
+
+    private boolean entityIsSource = false;
+
     private Point current;
 
     public AddLinkTool(DiagramEditor diagramEditor) {
@@ -33,12 +41,14 @@ public class AddLinkTool extends ToolAdapter {
         if (comment == null && entity == null) {
             entity = diagramEditor.getDiagram().getEntityView(e.getX(), e.getY());
             if (entity != null) {
+                entityIsSource = true;
                 getSelectedItems().setSelection(entity);
                 comment = null;
             } else {
-                comment = diagramEditor.getDiagram().getCommentVeiw(e.getX(),
+                comment = diagramEditor.getDiagram().getCommentView(e.getX(),
                         e.getY());
                 if (comment != null) {
+                    entityIsSource = false;
                     getSelectedItems().setSelection(comment);
                 }
             }
@@ -49,19 +59,20 @@ public class AddLinkTool extends ToolAdapter {
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        second = diagramEditor.getDiagram().getEntityView(e.getX(), e.getY());
-        second = second == first ? null : second;
-        if (second != null && first != null && first.acceptRelationshipWith(second)) {
-            diagramEditor.addRelationship(first, second);
-            getSelectedItems().remove(first);
-            getSelectedItems().remove(second);
-            first = null;
-            second = null;
-        } else {
-            first = null;
-            getSelectedItems().clear();
+        if (entity != null && comment != null) {
+            diagramEditor.addLink(entity, comment);
         }
+        reset();
         diagramEditor.repaint();
+    }
+
+    /**
+     * 
+     */
+    private void reset() {
+        entity = null;
+        comment = null;
+        getSelectedItems().clear();
     }
 
     /**
@@ -73,13 +84,28 @@ public class AddLinkTool extends ToolAdapter {
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        if (second != null && second != first) {
-            getSelectedItems().remove(second);
-        }
-        second = diagramEditor.getDiagram().getEntityView(e.getX(), e.getY());
-        second = second == first ? null : second;
-        if (second != null && first != null && first.acceptRelationshipWith(second)) {
-            getSelectedItems().add(second);
+        if (entity != null || comment != null) {
+            if (entityIsSource) {
+                getSelectedItems().remove(comment);
+                comment = diagramEditor.getDiagram().getCommentView(e.getX(),
+                        e.getY());
+                if (comment != null) {
+                    comment = entity.acceptLinkWith(comment) ? comment : null;
+                    if (comment != null) {
+                        getSelectedItems().add(comment);
+                    }
+                }
+            } else {
+                getSelectedItems().remove(entity);
+                entity = diagramEditor.getDiagram()
+                        .getEntityView(e.getX(), e.getY());
+                if (entity != null) {
+                    entity = comment.acceptLinkWith(entity) ? entity : null;
+                    if (entity != null) {
+                        getSelectedItems().add(entity);
+                    }
+                }
+            }
         }
         current = e.getPoint();
         diagramEditor.repaint();
@@ -87,19 +113,29 @@ public class AddLinkTool extends ToolAdapter {
 
     @Override
     public void paintBefore(Graphics2D graphics) {
-        if (first != null) {
+        boolean fromEntity = entity != null && entityIsSource;
+        boolean fromComment = comment != null && !entityIsSource;
+        if (fromEntity || fromComment) {
             graphics.setColor(Color.BLACK);
-            graphics.drawLine(first.getX() + first.getWidth() / 2, first.getY()
-                    + first.getHeight() / 3, current.x, current.y);
+            Stroke stroke = graphics.getStroke();
+            graphics.setStroke(DASHED);
+            if (fromEntity) {
+                graphics.drawLine(entity.getX() + entity.getWidth() / 2, entity
+                        .getY()
+                        + entity.getHeight() / 3, current.x, current.y);
+            } else if (fromComment) {
+                graphics.drawLine(comment.getX() + comment.getWidth() / 2, comment
+                        .getY()
+                        + comment.getHeight() / 3, current.x, current.y);
+            }
+            graphics.setStroke(stroke);
         }
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-            first = null;
-            second = null;
-            getSelectedItems().clear();
+            reset();
             diagramEditor.repaint();
         }
     }

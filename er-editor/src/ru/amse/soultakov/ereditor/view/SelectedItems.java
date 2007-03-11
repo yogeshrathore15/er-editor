@@ -38,8 +38,11 @@ public class SelectedItems implements Iterable<Viewable> {
      * @return
      */
     public boolean remove(Viewable item) {
-        item.setSelected(false);
-        return selectedViews.remove(item);
+        if (item != null) {
+            item.setSelected(false);
+            return selectedViews.remove(item);
+        }
+        return false;
     }
 
     /**

@@ -17,6 +17,7 @@ import javax.swing.JToolBar;
 
 import ru.amse.soultakov.ereditor.controller.actions.AddCommentAction;
 import ru.amse.soultakov.ereditor.controller.actions.AddEntityAction;
+import ru.amse.soultakov.ereditor.controller.actions.AddLinkAction;
 import ru.amse.soultakov.ereditor.controller.actions.AddRelationshipAction;
 import ru.amse.soultakov.ereditor.controller.actions.RemoveSelectionAction;
 import ru.amse.soultakov.ereditor.controller.actions.SelectElementAction;
@@ -37,7 +38,7 @@ public class Main {
         frame.setJMenuBar(menu);
         menu.add(new JMenu("File"));
         menu.add(new JMenu("Edit"));
-        frame.add(new JScrollPane(createDiagramEditor()));
+        frame.add(new JScrollPane(diagramEditor));
         JToolBar toolBar = new JToolBar();
         ButtonGroup buttonsGroup = new ButtonGroup();
 
@@ -52,34 +53,26 @@ public class Main {
 
         JToggleButton defaultToolButton = new JToggleButton(new SelectElementAction(
                 diagramEditor, "Default"));
+        JToggleButton addLinkButton = new JToggleButton(new AddLinkAction(diagramEditor, "Add link"));
         defaultToolButton.setSelected(true);
 
         toolBar.add(defaultToolButton);
         toolBar.add(addEntityButton);
         toolBar.add(addRelationshipButton);
         toolBar.add(addCommentButton);
+        toolBar.add(addLinkButton);
         toolBar.add(new JButton(new RemoveSelectionAction(diagramEditor, "Remove")));
 
         buttonsGroup.add(defaultToolButton);
         buttonsGroup.add(addEntityButton);
         buttonsGroup.add(addCommentButton);
         buttonsGroup.add(addRelationshipButton);
+        buttonsGroup.add(addLinkButton);
 
         frame.add(toolBar, BorderLayout.NORTH);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
-    }
-
-    private static JComponent createDiagramEditor() {
-        EntityView v1 = diagramEditor.addEntity(20, 20);
-        EntityView v2 = diagramEditor.addEntity(150, 10);
-        diagramEditor.addEntity(260, 10);
-        diagramEditor.addEntity(260, 200);
-        diagramEditor.addRelationship(v1, v2);
-        CommentView c1 = diagramEditor.addComment(100, 300);
-        diagramEditor.addLink(v2, c1);
-        return diagramEditor;
     }
 
 }
