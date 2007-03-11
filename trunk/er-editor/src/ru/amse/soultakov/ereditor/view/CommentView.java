@@ -44,6 +44,10 @@ public class CommentView extends Block {
     public Comment getComment() {
         return comment;
     }
+    
+    public boolean acceptLinkWith(EntityView entityView) {
+        return comment.acceptLinkWith(entityView.getEntity());
+    }
 
     /**
      * @return

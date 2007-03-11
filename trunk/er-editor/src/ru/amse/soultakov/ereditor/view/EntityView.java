@@ -67,6 +67,10 @@ public class EntityView extends Block {
     public boolean acceptRelationshipWith(EntityView entityView) {
         return entity.acceptRelationshipWith(entityView.getEntity());
     }
+    
+    public boolean acceptLinkWith(CommentView commentView) {
+        return entity.acceptLinkWith(commentView.getComment());
+    }
 
     /**
      * @return

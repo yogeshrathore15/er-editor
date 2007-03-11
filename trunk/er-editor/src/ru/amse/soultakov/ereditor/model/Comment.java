@@ -59,4 +59,13 @@ public class Comment {
         return super.equals(obj);
     }
 
+    public boolean acceptLinkWith(Entity entity) {
+        for (Link l : links) {
+            if (l.getEntity() == entity) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }
