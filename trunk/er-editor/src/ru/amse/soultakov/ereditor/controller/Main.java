@@ -7,7 +7,6 @@ import java.awt.BorderLayout;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -21,8 +20,6 @@ import ru.amse.soultakov.ereditor.controller.actions.AddLinkAction;
 import ru.amse.soultakov.ereditor.controller.actions.AddRelationshipAction;
 import ru.amse.soultakov.ereditor.controller.actions.RemoveSelectionAction;
 import ru.amse.soultakov.ereditor.controller.actions.SelectElementAction;
-import ru.amse.soultakov.ereditor.view.CommentView;
-import ru.amse.soultakov.ereditor.view.EntityView;
 
 /**
  * 
@@ -53,7 +50,8 @@ public class Main {
 
         JToggleButton defaultToolButton = new JToggleButton(new SelectElementAction(
                 diagramEditor, "Default"));
-        JToggleButton addLinkButton = new JToggleButton(new AddLinkAction(diagramEditor, "Add link"));
+        JToggleButton addLinkButton = new JToggleButton(new AddLinkAction(
+                diagramEditor, "Add link"));
         defaultToolButton.setSelected(true);
 
         toolBar.add(defaultToolButton);
