@@ -52,6 +52,10 @@ public class Diagram {
                 || !entities.contains(second)) {
             throw new IllegalArgumentException(
                     "Both entities must present in diagram and be unequal to each other");
+        } else if (!first.acceptRelationshipWith(second)
+                || !second.acceptRelationshipWith(first)) {
+            throw new IllegalArgumentException(
+                    "Entities already have relationship with each other");
         }
         Relationship relationship = new Relationship(
                 generator.getRelationshipName(),
@@ -68,7 +72,11 @@ public class Diagram {
             throw new IllegalArgumentException("Entity and comment must be non-null");
         } else if (!entities.contains(entity) || !comments.contains(comment)) {
             throw new IllegalArgumentException(
-                    "Enity and comment must present in diagram");
+                    "Entity and comment must present in diagram");
+        } else if (!entity.acceptLinkWith(comment)
+                || !comment.acceptLinkWith(entity)) {
+            throw new IllegalArgumentException(
+                    "One or both elemenents doesn't accept link");
         }
         Link link = new Link(entity, comment);
         links.add(link);
@@ -84,10 +92,12 @@ public class Diagram {
                         .getSecondEnd().getEntity()
                         : relationship.getFirstEnd().getEntity();
                 another.removeRelationship(relationship);
+                relationships.remove(relationship);
             }
             for (Iterator<Link> i = entity.linksIterator(); i.hasNext();) {
                 Link link = i.next();
                 link.getComment().removeLink(link);
+                links.remove(link);
             }
             return true;
         }
@@ -99,6 +109,7 @@ public class Diagram {
             for (Iterator<Link> i = comment.linksIterator(); i.hasNext();) {
                 Link link = i.next();
                 link.getEntity().removeLink(link);
+                links.remove(link);
             }
             return true;
         }
