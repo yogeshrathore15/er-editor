@@ -3,18 +3,18 @@
  */
 package ru.amse.soultakov.ereditor.model;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class DiagramTest {
 
 
-    private Diagram diagram = new Diagram();
+    private Diagram diagram;
 
     @Before
     public void setUp() throws Exception {
@@ -23,7 +23,6 @@ public class DiagramTest {
 
     @After
     public void tearDown() throws Exception {
-        diagram = null;
     }
 
     @Test
@@ -86,7 +85,6 @@ public class DiagramTest {
         } catch (IllegalArgumentException e) {
         }
         Entity e3 = diagram.addNewEntity();
-        Entity e4 = diagram.addNewEntity();
         try {
             diagram.addNewRealtionship(e3, e3);
             fail();
