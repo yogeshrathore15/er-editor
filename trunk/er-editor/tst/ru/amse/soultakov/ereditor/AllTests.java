@@ -9,6 +9,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import ru.amse.soultakov.ereditor.model.AttributeTest;
 import ru.amse.soultakov.ereditor.model.CommentTest;
+import ru.amse.soultakov.ereditor.model.DiagramTest;
 import ru.amse.soultakov.ereditor.model.EntityTest;
 import ru.amse.soultakov.ereditor.model.LinkTest;
 import ru.amse.soultakov.ereditor.model.RelationshipTest;
@@ -19,7 +20,8 @@ import ru.amse.soultakov.ereditor.model.RelationshipTest;
          CommentTest.class,
          EntityTest.class,
          LinkTest.class,
-         RelationshipTest.class})
+         RelationshipTest.class,
+         DiagramTest.class})
 public class AllTests {
 
 }
