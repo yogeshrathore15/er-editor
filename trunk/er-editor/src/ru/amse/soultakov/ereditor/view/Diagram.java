@@ -7,8 +7,10 @@ import static ru.amse.soultakov.ereditor.util.Utils.hasNull;
 import static ru.amse.soultakov.ereditor.util.Utils.newHashMap;
 import static ru.amse.soultakov.ereditor.util.Utils.newLinkedHashSet;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -37,14 +39,15 @@ public class Diagram {
     private final Map<Relationship, RelationshipView> relationshipToView = newHashMap();
 
     private final Map<Link, LinkView> linkToView = newHashMap();
-
-    private final SelectedItems selectedItems = new SelectedItems();
+    
+    private final List<DiagramListener> listeners = new ArrayList<DiagramListener>();
 
     public Diagram() {
         
     }
 
     public EntityView addNewEntityView(int x, int y) {
+    	notifyListeners();
         Entity entity = erModel.addNewEntity();
         EntityView entityView = new EntityView(entity, x, y);
         entityViews.add(entityView);
@@ -53,6 +56,7 @@ public class Diagram {
     }
 
     public CommentView addNewCommentView(int x, int y) {
+        notifyListeners();
         Comment comment = erModel.addNewComment();
         CommentView commentView = new CommentView(comment, x, y);
         commentViews.add(commentView);
@@ -69,6 +73,7 @@ public class Diagram {
             throw new IllegalArgumentException(
                     "Both EntityViews must present in diagram and be unequal");
         }
+        notifyListeners();
         Relationship relationship = erModel.addNewRealtionship(first.getEntity(),
                 second.getEntity());
         RelationshipView relationshipView = new RelationshipView(relationship,
@@ -87,6 +92,7 @@ public class Diagram {
             throw new IllegalArgumentException(
                     "EntityView and CommentView must present in diagram");
         }
+        notifyListeners();
         Link link = erModel.addNewLink(entityView.getEntity(), commentView
                 .getComment());
         LinkView linkView = new LinkView(link, entityView, commentView);
@@ -96,6 +102,7 @@ public class Diagram {
     }
 
     public boolean removeEntityView(EntityView entityView) {
+    	notifyListeners();
         if (erModel.removeEntity(entityView.getEntity())) {
             Entity entity = entityView.getEntity();
             for (Iterator<Relationship> i = entity.relationshipsIterator(); i
@@ -113,6 +120,7 @@ public class Diagram {
     }
 
     public boolean removeRelationshipView(RelationshipView view) {
+    	notifyListeners();
         if (erModel.removeRelationship(view.getRelationship())) {
             return relationshipViews.remove(relationshipToView.remove(view
                     .getRelationship()));
@@ -121,7 +129,8 @@ public class Diagram {
     }
 
     public boolean removeCommentView(CommentView commentView) {
-        if (erModel.removeComment(commentView.getComment())) {
+    	notifyListeners();
+    	if (erModel.removeComment(commentView.getComment())) {
             Comment comment = commentView.getComment();
             for (Iterator<Link> i = comment.linksIterator(); i.hasNext();) {
                 linkViews.remove(linkToView.remove(i.next()));
@@ -132,6 +141,7 @@ public class Diagram {
     }
 
     public boolean removeLinkView(LinkView linkView) {
+    	notifyListeners();
         if (erModel.removeLink(linkView.getLink())) {
             return linkViews.remove(linkToView.remove(linkView.getLink()));
         }
@@ -154,10 +164,6 @@ public class Diagram {
         return Collections.unmodifiableSet(relationshipViews);
     }
 
-    public SelectedItems getSelectedItems() {
-        return selectedItems;
-    }
-
     public EntityView getEntityView(int x, int y) {
         return getViewInPoint(entityViews, x, y);
     }
@@ -173,6 +179,20 @@ public class Diagram {
             }
         }
         return null;
+    }
+    
+    public void addDiagramListener(DiagramListener diagramListener) {
+    	listeners.add(diagramListener);
+    }
+    
+    public boolean removeListener(DiagramListener diagramListener) {
+    	return listeners.remove(diagramListener);
+    }
+    
+    private void notifyListeners() {
+    	for (DiagramListener dl : listeners) {
+    		dl.diagramModified(this);
+    	}
     }
 
 }

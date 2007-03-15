@@ -18,7 +18,6 @@ public class AddEntityTool extends ToolAdapter {
     @Override
     public void mousePressed(MouseEvent e) {
         diagramEditor.addEntity(e.getX(), e.getY());
-        diagramEditor.repaint();
     }
 
 }

@@ -9,5 +9,5 @@ package ru.amse.soultakov.ereditor.view;
  */
 public interface DiagramListener
 {
-	void notifyListener();
+	void diagramModified(Diagram diagram);
 }
