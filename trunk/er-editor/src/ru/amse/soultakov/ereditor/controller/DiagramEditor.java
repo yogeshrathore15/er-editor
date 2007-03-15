@@ -20,7 +20,7 @@ import ru.amse.soultakov.ereditor.controller.tools.SelectElementTool;
 import ru.amse.soultakov.ereditor.controller.tools.Tool;
 import ru.amse.soultakov.ereditor.view.Block;
 import ru.amse.soultakov.ereditor.view.CommentView;
-import ru.amse.soultakov.ereditor.view.DiagramPresentation;
+import ru.amse.soultakov.ereditor.view.Diagram;
 import ru.amse.soultakov.ereditor.view.EntityView;
 import ru.amse.soultakov.ereditor.view.Line;
 import ru.amse.soultakov.ereditor.view.LinkView;
@@ -37,7 +37,7 @@ public class DiagramEditor extends JComponent {
 
     private static final Dimension PREFERRED_SIZE = new Dimension(800, 600);
 
-    private final DiagramPresentation diagramPresentation = new DiagramPresentation();
+    private final Diagram diagram = new Diagram();
 
     private Tool currentTool;
     
@@ -48,20 +48,20 @@ public class DiagramEditor extends JComponent {
     }
 
     public EntityView addEntity(int x, int y) {
-        return diagramPresentation.addNewEntityView(x, y);
+        return diagram.addNewEntityView(x, y);
     }
 
     public CommentView addComment(int x, int y) {
-        return diagramPresentation.addNewCommentView(x, y);
+        return diagram.addNewCommentView(x, y);
     }
 
     public Line addLink(EntityView entityView, CommentView commentView) {
-        return diagramPresentation.addNewLinkView(entityView, commentView);
+        return diagram.addNewLinkView(entityView, commentView);
     }
 
     public RelationshipView addRelationship(EntityView first,
             EntityView second) {
-        return diagramPresentation.addNewRelationshipView(first, second);
+        return diagram.addNewRelationshipView(first, second);
     }
 
     @Override
@@ -92,12 +92,12 @@ public class DiagramEditor extends JComponent {
         
         // for correct relations painting we should recalculate the size of
         // blocks
-        recalculateSize(diagramPresentation.getCommentViews(), graphics);
-        recalculateSize(diagramPresentation.getEntityViews(), graphics);
-        paintSet(diagramPresentation.getLinkViews(), graphics);
-        paintSet(diagramPresentation.getRelationshipViews(), graphics);
-        paintSet(diagramPresentation.getCommentViews(), graphics);
-        paintSet(diagramPresentation.getEntityViews(), graphics);
+        recalculateSize(diagram.getCommentViews(), graphics);
+        recalculateSize(diagram.getEntityViews(), graphics);
+        paintSet(diagram.getLinkViews(), graphics);
+        paintSet(diagram.getRelationshipViews(), graphics);
+        paintSet(diagram.getCommentViews(), graphics);
+        paintSet(diagram.getEntityViews(), graphics);
         
         currentTool.paintAfter(graphics);
     }
@@ -121,8 +121,8 @@ public class DiagramEditor extends JComponent {
         g.fillRect(0, 0, getWidth(), getHeight());
     }
     
-    public DiagramPresentation getDiagram() {
-        return diagramPresentation;
+    public Diagram getDiagram() {
+        return diagram;
     }
     
     /**
@@ -182,19 +182,19 @@ public class DiagramEditor extends JComponent {
     }
 
     public boolean removeEntity(EntityView view) {
-        return diagramPresentation.removeEntityView(view);
+        return diagram.removeEntityView(view);
     }
 
     public boolean removeComment(CommentView view) {
-        return diagramPresentation.removeCommentView(view);
+        return diagram.removeCommentView(view);
     }
 
     public boolean removeRelationship(RelationshipView view) {
-        return diagramPresentation.removeRelationshipView(view);
+        return diagram.removeRelationshipView(view);
     }
 
     public boolean removeLink(LinkView view) {
-        return diagramPresentation.removeLinkView(view);
+        return diagram.removeLinkView(view);
     }
 
     private boolean removeSelectable(Viewable s) {
@@ -205,7 +205,7 @@ public class DiagramEditor extends JComponent {
      * @return
      */
     private SelectedItems getSelectedItems() {
-        return diagramPresentation.getSelectedItems();
+        return diagram.getSelectedItems();
     }
     
     private class RemoveItemsVisitor implements Visitor<Boolean, Void> {
