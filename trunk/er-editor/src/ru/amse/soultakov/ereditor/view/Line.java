@@ -4,6 +4,8 @@
 package ru.amse.soultakov.ereditor.view;
 
 import java.awt.BasicStroke;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public abstract class Line implements Viewable {
@@ -24,6 +26,8 @@ public abstract class Line implements Viewable {
      * 
      */
     private boolean selected;
+    
+    
 
     protected int firstCenterX;
 
@@ -32,6 +36,8 @@ public abstract class Line implements Viewable {
     protected int secondCenterX;
 
     protected int secondCenterY;
+
+	private final List<ViewableListener> listeners = new ArrayList<ViewableListener>();
 
     /**
      * @param block
@@ -165,6 +171,14 @@ public abstract class Line implements Viewable {
         int bottomCenterY = Math.max(firstCenterY, secondCenterY);
         return (left < leftCenterX) && (top < topCenterY) 
                 && (right > rightCenterX) && ( bottom > bottomCenterY);
+    }
+    
+    public void addListener(ViewableListener viewableListener) {
+    	listeners .add(viewableListener);
+    }
+    
+    public boolean removeListener(ViewableListener viewableListener) {
+    	return listeners.remove(viewableListener);
     }
 
 }

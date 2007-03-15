@@ -6,6 +6,8 @@ package ru.amse.soultakov.ereditor.view;
 import java.awt.Graphics2D;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public abstract class Block implements Viewable {
@@ -16,6 +18,8 @@ public abstract class Block implements Viewable {
             null, false, false);
 
     protected static final int MARGIN = 3;
+    
+    private final List<ViewableListener> listeners = new ArrayList<ViewableListener>();
 
     private boolean selected;
 
@@ -35,6 +39,7 @@ public abstract class Block implements Viewable {
     public void setSize(int width, int height) {
         this.width = width;
         this.height = height;
+        notifyListeners();
     }
 
     /**
@@ -54,6 +59,7 @@ public abstract class Block implements Viewable {
     public void setLocation(int x, int y) {
         this.setX(x);
         this.setY(y);
+        notifyListeners();
     }
 
     /**
@@ -169,6 +175,20 @@ public abstract class Block implements Viewable {
         int right = Math.max(x1, x2);
         int bottom = Math.max(y1, y2);
         return (left < x) && (top < y) && (right > x + width) && ( bottom > y + height);
+    }
+    
+    protected void notifyListeners() {
+    	for(ViewableListener vl : listeners) {
+    		vl.notify(this);
+    	}
+    }
+    
+    public void addListener(ViewableListener viewableListener) {
+    	listeners.add(viewableListener);
+    }
+    
+    public boolean removeListener(ViewableListener viewableListener) {
+    	return listeners.remove(viewableListener);
     }
 
     protected abstract Rectangle2D getContentBounds(Graphics2D graphics);

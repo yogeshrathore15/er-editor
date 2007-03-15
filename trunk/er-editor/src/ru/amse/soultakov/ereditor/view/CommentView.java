@@ -52,7 +52,13 @@ public class CommentView extends Block {
     /**
      * @return
      */
-    protected Rectangle2D getContentBounds(Graphics2D graphics) {
+    @Override
+	protected Rectangle2D getContentBounds(Graphics2D graphics) {
         return getStringBounds(graphics, comment.getComment());
     }
+
+	public <R,D> R acceptVisitor(Visitor<R,D> visitor, D data) {
+		return visitor.visit(this, data);
+	}
+	
 }

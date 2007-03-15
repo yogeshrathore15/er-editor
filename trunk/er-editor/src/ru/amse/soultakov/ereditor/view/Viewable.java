@@ -25,4 +25,10 @@ public interface Viewable {
     boolean containsPoint(int x, int y);
     
     boolean isInsideRectangle(int x1, int y1, int x2, int y2);
+    
+    <R,D> R acceptVisitor(Visitor<R,D> visitor, D data);
+    
+    void addListener(ViewableListener viewableListener);
+    
+    boolean removeListener(ViewableListener viewableListener);
 }
