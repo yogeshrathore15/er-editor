@@ -18,7 +18,7 @@ import ru.amse.soultakov.ereditor.model.Entity;
 import ru.amse.soultakov.ereditor.model.Link;
 import ru.amse.soultakov.ereditor.model.Relationship;
 
-public class DiagramPresentation {
+public class Diagram {
 
     private final ERModel erModel = new ERModel();
 
@@ -40,7 +40,7 @@ public class DiagramPresentation {
 
     private final SelectedItems selectedItems = new SelectedItems();
 
-    public DiagramPresentation() {
+    public Diagram() {
         
     }
 
