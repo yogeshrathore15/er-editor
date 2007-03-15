@@ -107,11 +107,8 @@ public abstract class Block implements Viewable {
     }
 
     public void setSelected(boolean selected) {
-        boolean oldSelected = this.selected;
-        if (oldSelected != selected) {
-            this.selected = selected;
-            // paint();
-        }
+    	this.selected = selected;
+    	notifyListeners();
     }
 
     public boolean isSelected() {

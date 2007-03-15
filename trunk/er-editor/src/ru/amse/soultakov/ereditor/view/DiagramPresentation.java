@@ -13,14 +13,14 @@ import java.util.Map;
 import java.util.Set;
 
 import ru.amse.soultakov.ereditor.model.Comment;
-import ru.amse.soultakov.ereditor.model.Diagram;
+import ru.amse.soultakov.ereditor.model.ERModel;
 import ru.amse.soultakov.ereditor.model.Entity;
 import ru.amse.soultakov.ereditor.model.Link;
 import ru.amse.soultakov.ereditor.model.Relationship;
 
 public class DiagramPresentation {
 
-    private final Diagram diagram = new Diagram();
+    private final ERModel erModel = new ERModel();
 
     private final Set<EntityView> entityViews = newLinkedHashSet();
 
@@ -45,7 +45,7 @@ public class DiagramPresentation {
     }
 
     public EntityView addNewEntityView(int x, int y) {
-        Entity entity = diagram.addNewEntity();
+        Entity entity = erModel.addNewEntity();
         EntityView entityView = new EntityView(entity, x, y);
         entityViews.add(entityView);
         entityToView.put(entity, entityView);
@@ -53,7 +53,7 @@ public class DiagramPresentation {
     }
 
     public CommentView addNewCommentView(int x, int y) {
-        Comment comment = diagram.addNewComment();
+        Comment comment = erModel.addNewComment();
         CommentView commentView = new CommentView(comment, x, y);
         commentViews.add(commentView);
         commentToView.put(comment, commentView);
@@ -69,7 +69,7 @@ public class DiagramPresentation {
             throw new IllegalArgumentException(
                     "Both EntityViews must present in diagram and be unequal");
         }
-        Relationship relationship = diagram.addNewRealtionship(first.getEntity(),
+        Relationship relationship = erModel.addNewRealtionship(first.getEntity(),
                 second.getEntity());
         RelationshipView relationshipView = new RelationshipView(relationship,
                 first, second);
@@ -87,7 +87,7 @@ public class DiagramPresentation {
             throw new IllegalArgumentException(
                     "EntityView and CommentView must present in diagram");
         }
-        Link link = diagram.addNewLink(entityView.getEntity(), commentView
+        Link link = erModel.addNewLink(entityView.getEntity(), commentView
                 .getComment());
         LinkView linkView = new LinkView(link, entityView, commentView);
         linkViews.add(linkView);
@@ -96,7 +96,7 @@ public class DiagramPresentation {
     }
 
     public boolean removeEntityView(EntityView entityView) {
-        if (diagram.removeEntity(entityView.getEntity())) {
+        if (erModel.removeEntity(entityView.getEntity())) {
             Entity entity = entityView.getEntity();
             for (Iterator<Relationship> i = entity.relationshipsIterator(); i
                     .hasNext();) {
@@ -113,7 +113,7 @@ public class DiagramPresentation {
     }
 
     public boolean removeRelationshipView(RelationshipView view) {
-        if (diagram.removeRelationship(view.getRelationship())) {
+        if (erModel.removeRelationship(view.getRelationship())) {
             return relationshipViews.remove(relationshipToView.remove(view
                     .getRelationship()));
         }
@@ -121,7 +121,7 @@ public class DiagramPresentation {
     }
 
     public boolean removeCommentView(CommentView commentView) {
-        if (diagram.removeComment(commentView.getComment())) {
+        if (erModel.removeComment(commentView.getComment())) {
             Comment comment = commentView.getComment();
             for (Iterator<Link> i = comment.linksIterator(); i.hasNext();) {
                 linkViews.remove(linkToView.remove(i.next()));
@@ -132,7 +132,7 @@ public class DiagramPresentation {
     }
 
     public boolean removeLinkView(LinkView linkView) {
-        if (diagram.removeLink(linkView.getLink())) {
+        if (erModel.removeLink(linkView.getLink())) {
             return linkViews.remove(linkToView.remove(linkView.getLink()));
         }
         return false;

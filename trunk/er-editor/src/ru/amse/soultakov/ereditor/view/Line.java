@@ -97,6 +97,7 @@ public abstract class Line implements Viewable {
      */
     public void setSelected(boolean selected) {
         this.selected = selected;
+        notifyListeners();
     }
 
     public boolean trySelect(int x, int y) {
@@ -105,6 +106,12 @@ public abstract class Line implements Viewable {
             setSelected(true);
         }
         return b;
+    }
+    
+    protected void notifyListeners() {
+    	for(ViewableListener vl : listeners) {
+    		vl.notify(this);
+    	}
     }
 
     public boolean containsPoint(int x, int y) {
