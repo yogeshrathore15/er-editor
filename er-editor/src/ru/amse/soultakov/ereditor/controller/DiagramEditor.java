@@ -21,12 +21,14 @@ import ru.amse.soultakov.ereditor.controller.tools.Tool;
 import ru.amse.soultakov.ereditor.view.Block;
 import ru.amse.soultakov.ereditor.view.CommentView;
 import ru.amse.soultakov.ereditor.view.Diagram;
+import ru.amse.soultakov.ereditor.view.DiagramListener;
 import ru.amse.soultakov.ereditor.view.EntityView;
 import ru.amse.soultakov.ereditor.view.Line;
 import ru.amse.soultakov.ereditor.view.LinkView;
 import ru.amse.soultakov.ereditor.view.RelationshipView;
 import ru.amse.soultakov.ereditor.view.SelectedItems;
 import ru.amse.soultakov.ereditor.view.Viewable;
+import ru.amse.soultakov.ereditor.view.ViewableListener;
 import ru.amse.soultakov.ereditor.view.Visitor;
 
 /**
@@ -35,33 +37,53 @@ import ru.amse.soultakov.ereditor.view.Visitor;
  */
 public class DiagramEditor extends JComponent {
 
-    private static final Dimension PREFERRED_SIZE = new Dimension(800, 600);
+    /**
+	 * 
+	 */
+	private static final Dimension PREFERRED_SIZE = new Dimension(800, 600);
 
     private final Diagram diagram = new Diagram();
+    
+    private final SelectedItems selectedItems = new SelectedItems();
 
     private Tool currentTool;
     
-    private RemoveItemsVisitor itemsRemover = new RemoveItemsVisitor();
+    private final RemoveItemsVisitor itemsRemover = new RemoveItemsVisitor();
+    
+    private final ViewableListener viewableListener = new MyViewableListener();
 
     public DiagramEditor() {
         initMouseListener();
+        diagram.addDiagramListener(new DiagramListener() {
+			public void diagramModified(Diagram diagram) {
+				repaint();
+			}
+        });
     }
 
     public EntityView addEntity(int x, int y) {
-        return diagram.addNewEntityView(x, y);
+        EntityView entity = diagram.addNewEntityView(x, y);
+        entity.addListener(viewableListener);
+		return entity;
     }
 
     public CommentView addComment(int x, int y) {
-        return diagram.addNewCommentView(x, y);
+        CommentView comment = diagram.addNewCommentView(x, y);
+        comment.addListener(viewableListener);
+		return comment;
     }
 
     public Line addLink(EntityView entityView, CommentView commentView) {
-        return diagram.addNewLinkView(entityView, commentView);
+        Line link = diagram.addNewLinkView(entityView, commentView);
+        link.addListener(viewableListener);
+		return link;
     }
 
     public RelationshipView addRelationship(EntityView first,
             EntityView second) {
-        return diagram.addNewRelationshipView(first, second);
+        RelationshipView relationship = diagram.addNewRelationshipView(first, second);
+        relationship.addListener(viewableListener);
+		return relationship;
     }
 
     @Override
@@ -124,6 +146,14 @@ public class DiagramEditor extends JComponent {
     public Diagram getDiagram() {
         return diagram;
     }
+    
+    /**
+	 * @return the selectedItems
+	 */
+	public SelectedItems getSelectedItems()
+	{
+		return selectedItems;
+	}
     
     /**
      * 
@@ -200,15 +230,22 @@ public class DiagramEditor extends JComponent {
     private boolean removeSelectable(Viewable s) {
         return s.acceptVisitor(itemsRemover, null);
     }
-
-    /**
-     * @return
-     */
-    private SelectedItems getSelectedItems() {
-        return diagram.getSelectedItems();
-    }
     
-    private class RemoveItemsVisitor implements Visitor<Boolean, Void> {
+    
+    
+    /**
+	 * @author sma
+	 *
+	 */
+	private final class MyViewableListener implements ViewableListener
+	{
+		public void notify(Viewable viewable) {
+			System.out.println("viewable painted");
+			repaint();
+		}
+	}
+
+	private class RemoveItemsVisitor implements Visitor<Boolean, Void> {
 
     	public RemoveItemsVisitor() {
     	}

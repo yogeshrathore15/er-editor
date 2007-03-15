@@ -52,7 +52,6 @@ public class SelectElementTool extends ToolAdapter {
         }
         currentPoint = e.getLocationOnScreen();
         startPoint = e.getPoint();
-        diagramEditor.repaint();
     }
 
     @Override
@@ -64,7 +63,6 @@ public class SelectElementTool extends ToolAdapter {
             tryToSelectAllViews();
         }
         currentPoint = e.getLocationOnScreen();
-        diagramEditor.repaint();
     }
 
     @Override
@@ -73,7 +71,6 @@ public class SelectElementTool extends ToolAdapter {
             tryToSelectAllViews();
             endPoint = null;
         }
-        diagramEditor.repaint();
     }
 
     /**
@@ -84,6 +81,7 @@ public class SelectElementTool extends ToolAdapter {
         tryToSelectViews(diagramEditor.getDiagram().getCommentViews());
         tryToSelectViews(diagramEditor.getDiagram().getRelationshipViews());
         tryToSelectViews(diagramEditor.getDiagram().getLinkViews());
+        diagramEditor.repaint();
     }
 
     /**
@@ -101,15 +99,14 @@ public class SelectElementTool extends ToolAdapter {
 
 	private boolean canDragSelection(MouseEvent e)
 	{
-		boolean canDrag = true;
     	for (Viewable v : getSelectedItems()) {
             int xPos = e.getXOnScreen() - currentPoint.x + v.getX();
             int yPos = e.getYOnScreen() - currentPoint.y + v.getY();
             if (xPos < 0 || yPos < 0) {
-            	canDrag = false;
+            	return false;
             }
         }
-		return canDrag;
+		return true;
 	}
 
     @Override
@@ -133,7 +130,7 @@ public class SelectElementTool extends ToolAdapter {
      * @return
      */
     private SelectedItems getSelectedItems() {
-        return diagramEditor.getDiagram().getSelectedItems();
+        return diagramEditor.getSelectedItems();
     }
 
     private void tryToSelectViews(Set<? extends Viewable> views) {

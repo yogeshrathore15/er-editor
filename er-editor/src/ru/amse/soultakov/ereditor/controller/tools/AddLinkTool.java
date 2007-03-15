@@ -79,7 +79,7 @@ public class AddLinkTool extends ToolAdapter {
      * @return
      */
     private SelectedItems getSelectedItems() {
-        return diagramEditor.getDiagram().getSelectedItems();
+        return diagramEditor.getSelectedItems();
     }
 
     @Override

@@ -37,9 +37,11 @@ public abstract class Block implements Viewable {
     }
 
     public void setSize(int width, int height) {
-        this.width = width;
-        this.height = height;
-        notifyListeners();
+        if (width != getWidth() || height != getHeight()) {
+        	this.width = width;
+            this.height = height;
+            notifyListeners();
+        }
     }
 
     /**
@@ -57,9 +59,11 @@ public abstract class Block implements Viewable {
     }
 
     public void setLocation(int x, int y) {
-        this.setX(x);
-        this.setY(y);
-        notifyListeners();
+        if (getX() != x || getY() != y) {
+        	notifyListeners();
+        	this.setX(x);
+            this.setY(y);
+        }
     }
 
     /**
