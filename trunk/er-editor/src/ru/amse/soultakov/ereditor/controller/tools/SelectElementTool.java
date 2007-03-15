@@ -90,12 +90,27 @@ public class SelectElementTool extends ToolAdapter {
      * @param e
      */
     private void dragSelection(MouseEvent e) {
-        for (Viewable v : getSelectedItems()) {
+    	if (canDragSelection(e)) {
+    		for (Viewable v : getSelectedItems()) {
+    			int xPos = e.getXOnScreen() - currentPoint.x + v.getX();
+    			int yPos = e.getYOnScreen() - currentPoint.y + v.getY();
+    			v.setLocation(xPos >= 0 ? xPos : 0, yPos >= 0 ? yPos : 0);
+    		}
+    	}
+    }
+
+	private boolean canDragSelection(MouseEvent e)
+	{
+		boolean canDrag = true;
+    	for (Viewable v : getSelectedItems()) {
             int xPos = e.getXOnScreen() - currentPoint.x + v.getX();
             int yPos = e.getYOnScreen() - currentPoint.y + v.getY();
-            v.setLocation(xPos >= 0 ? xPos : 0, yPos >= 0 ? yPos : 0);
+            if (xPos < 0 || yPos < 0) {
+            	canDrag = false;
+            }
         }
-    }
+		return canDrag;
+	}
 
     @Override
     public void paintAfter(Graphics2D graphics) {
@@ -158,4 +173,5 @@ public class SelectElementTool extends ToolAdapter {
             diagramEditor.removeSelection();
         }
     }
+    
 }

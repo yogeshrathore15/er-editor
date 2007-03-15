@@ -27,6 +27,7 @@ import ru.amse.soultakov.ereditor.view.LinkView;
 import ru.amse.soultakov.ereditor.view.RelationshipView;
 import ru.amse.soultakov.ereditor.view.SelectedItems;
 import ru.amse.soultakov.ereditor.view.Viewable;
+import ru.amse.soultakov.ereditor.view.Visitor;
 
 /**
  * @author sma
@@ -39,6 +40,8 @@ public class DiagramEditor extends JComponent {
     private final DiagramPresentation diagram = new DiagramPresentation();
 
     private Tool currentTool;
+    
+    private RemoveItemsVisitor itemsRemover = new RemoveItemsVisitor();
 
     public DiagramEditor() {
         initMouseListener();
@@ -195,18 +198,7 @@ public class DiagramEditor extends JComponent {
     }
 
     private boolean removeSelectable(Viewable s) {
-        // this awful code will be refactored of course
-        // visitor rules?
-        if (s instanceof EntityView) {
-            return removeEntity((EntityView) s);
-        } else if (s instanceof RelationshipView) {
-            return removeRelationship((RelationshipView) s);
-        } else if (s instanceof CommentView) {
-            return removeComment((CommentView) s);
-        } else if (s instanceof LinkView) {
-            return removeLink((LinkView) s);
-        }
-        return false;
+        return s.acceptVisitor(itemsRemover, null);
     }
 
     /**
@@ -216,9 +208,31 @@ public class DiagramEditor extends JComponent {
         return diagram.getSelectedItems();
     }
     
-    @Override
-    public boolean isFocusable() {
-        return true;
+    private class RemoveItemsVisitor implements Visitor<Boolean, Void> {
+
+    	public RemoveItemsVisitor() {
+    	}
+    	
+    	public Boolean visit(CommentView commentView, Void data)
+		{
+			return removeComment(commentView);
+		}
+
+		public Boolean visit(EntityView entityView, Void data)
+		{
+			return removeEntity(entityView);
+		}
+
+		public Boolean visit(LinkView linkView, Void data)
+		{
+			return removeLink(linkView);
+		}
+
+		public Boolean visit(RelationshipView relationshipView, Void data)
+		{
+			return removeRelationship(relationshipView);
+		}
+
     }
 
 }
