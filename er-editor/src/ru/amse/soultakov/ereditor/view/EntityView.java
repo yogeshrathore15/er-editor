@@ -34,7 +34,7 @@ public class EntityView extends Block {
     public void paint(Graphics2D graphics) {
         Rectangle2D bounds = getContentBounds(graphics);
         setSize((int) bounds.getWidth(), 100);
-        graphics.setColor(Color.LIGHT_GRAY);
+        graphics.setColor(Color.WHITE);
         graphics.fillRect(getX(), getY(), getWidth(), getHeight());
         graphics.setColor(Color.BLACK);
         drawBorder(graphics);
@@ -75,8 +75,13 @@ public class EntityView extends Block {
     /**
      * @return
      */
-    protected Rectangle2D getContentBounds(Graphics2D graphics) {
+    @Override
+	protected Rectangle2D getContentBounds(Graphics2D graphics) {
         return getStringBounds(graphics, entity.getName());
     }
+    
+	public <R,D> R acceptVisitor(Visitor<R,D> visitor, D data) {
+		return visitor.visit(this, data);
+	}
 
 }

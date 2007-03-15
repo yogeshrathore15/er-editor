@@ -51,5 +51,9 @@ public class LinkView extends Line {
     public Block getEntityView() {
         return entityView;
     }
+    
+	public <R,D> R acceptVisitor(Visitor<R,D> visitor, D data) {
+		return visitor.visit(this, data);
+	}
 
 }
