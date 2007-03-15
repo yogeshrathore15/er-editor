@@ -37,7 +37,7 @@ public class DiagramEditor extends JComponent {
 
     private static final Dimension PREFERRED_SIZE = new Dimension(800, 600);
 
-    private final DiagramPresentation diagram = new DiagramPresentation();
+    private final DiagramPresentation diagramPresentation = new DiagramPresentation();
 
     private Tool currentTool;
     
@@ -48,20 +48,20 @@ public class DiagramEditor extends JComponent {
     }
 
     public EntityView addEntity(int x, int y) {
-        return diagram.addNewEntityView(x, y);
+        return diagramPresentation.addNewEntityView(x, y);
     }
 
     public CommentView addComment(int x, int y) {
-        return diagram.addNewCommentView(x, y);
+        return diagramPresentation.addNewCommentView(x, y);
     }
 
     public Line addLink(EntityView entityView, CommentView commentView) {
-        return diagram.addNewLinkView(entityView, commentView);
+        return diagramPresentation.addNewLinkView(entityView, commentView);
     }
 
     public RelationshipView addRelationship(EntityView first,
             EntityView second) {
-        return diagram.addNewRelationshipView(first, second);
+        return diagramPresentation.addNewRelationshipView(first, second);
     }
 
     @Override
@@ -92,12 +92,12 @@ public class DiagramEditor extends JComponent {
         
         // for correct relations painting we should recalculate the size of
         // blocks
-        recalculateSize(diagram.getCommentViews(), graphics);
-        recalculateSize(diagram.getEntityViews(), graphics);
-        paintSet(diagram.getLinkViews(), graphics);
-        paintSet(diagram.getRelationshipViews(), graphics);
-        paintSet(diagram.getCommentViews(), graphics);
-        paintSet(diagram.getEntityViews(), graphics);
+        recalculateSize(diagramPresentation.getCommentViews(), graphics);
+        recalculateSize(diagramPresentation.getEntityViews(), graphics);
+        paintSet(diagramPresentation.getLinkViews(), graphics);
+        paintSet(diagramPresentation.getRelationshipViews(), graphics);
+        paintSet(diagramPresentation.getCommentViews(), graphics);
+        paintSet(diagramPresentation.getEntityViews(), graphics);
         
         currentTool.paintAfter(graphics);
     }
@@ -122,7 +122,7 @@ public class DiagramEditor extends JComponent {
     }
     
     public DiagramPresentation getDiagram() {
-        return diagram;
+        return diagramPresentation;
     }
     
     /**
@@ -182,19 +182,19 @@ public class DiagramEditor extends JComponent {
     }
 
     public boolean removeEntity(EntityView view) {
-        return diagram.removeEntityView(view);
+        return diagramPresentation.removeEntityView(view);
     }
 
     public boolean removeComment(CommentView view) {
-        return diagram.removeCommentView(view);
+        return diagramPresentation.removeCommentView(view);
     }
 
     public boolean removeRelationship(RelationshipView view) {
-        return diagram.removeRelationshipView(view);
+        return diagramPresentation.removeRelationshipView(view);
     }
 
     public boolean removeLink(LinkView view) {
-        return diagram.removeLinkView(view);
+        return diagramPresentation.removeLinkView(view);
     }
 
     private boolean removeSelectable(Viewable s) {
@@ -205,7 +205,7 @@ public class DiagramEditor extends JComponent {
      * @return
      */
     private SelectedItems getSelectedItems() {
-        return diagram.getSelectedItems();
+        return diagramPresentation.getSelectedItems();
     }
     
     private class RemoveItemsVisitor implements Visitor<Boolean, Void> {

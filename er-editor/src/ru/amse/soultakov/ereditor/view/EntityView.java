@@ -34,7 +34,7 @@ public class EntityView extends Block {
     public void paint(Graphics2D graphics) {
         Rectangle2D bounds = getContentBounds(graphics);
         setSize((int) bounds.getWidth(), 100);
-        graphics.setColor(Color.WHITE);
+        graphics.setColor(Color.LIGHT_GRAY);
         graphics.fillRect(getX(), getY(), getWidth(), getHeight());
         graphics.setColor(Color.BLACK);
         drawBorder(graphics);
