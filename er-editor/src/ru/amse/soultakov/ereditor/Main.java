@@ -15,12 +15,13 @@ import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 
 import ru.amse.soultakov.ereditor.controller.DiagramEditor;
-import ru.amse.soultakov.ereditor.controller.actions.AddCommentAction;
-import ru.amse.soultakov.ereditor.controller.actions.AddEntityAction;
-import ru.amse.soultakov.ereditor.controller.actions.AddLinkAction;
-import ru.amse.soultakov.ereditor.controller.actions.AddRelationshipAction;
+import ru.amse.soultakov.ereditor.controller.actions.DiagramEditorAction;
 import ru.amse.soultakov.ereditor.controller.actions.RemoveSelectionAction;
-import ru.amse.soultakov.ereditor.controller.actions.SelectElementAction;
+import ru.amse.soultakov.ereditor.controller.tools.AddCommentTool;
+import ru.amse.soultakov.ereditor.controller.tools.AddEntityTool;
+import ru.amse.soultakov.ereditor.controller.tools.AddLinkTool;
+import ru.amse.soultakov.ereditor.controller.tools.AddRelationshipTool;
+import ru.amse.soultakov.ereditor.controller.tools.SelectElementTool;
 
 /**
  * 
@@ -40,18 +41,20 @@ public class Main {
         JToolBar toolBar = new JToolBar();
         ButtonGroup buttonsGroup = new ButtonGroup();
 
-        JToggleButton addEntityButton = new JToggleButton(new AddEntityAction(
-                diagramEditor, "Add Entity"));
+        JToggleButton addEntityButton = new JToggleButton(new DiagramEditorAction(
+                diagramEditor, "Add Entity", new AddEntityTool(diagramEditor)));
 
         JToggleButton addRelationshipButton = new JToggleButton(
-                new AddRelationshipAction(diagramEditor, "Add relationship"));
+                new DiagramEditorAction(diagramEditor, "Add relationship",
+                        new AddRelationshipTool(diagramEditor)));
 
-        JToggleButton addCommentButton = new JToggleButton(new AddCommentAction(
-                diagramEditor, "Add comment"));
+        JToggleButton addCommentButton = new JToggleButton(new DiagramEditorAction(
+                diagramEditor, "Add comment", new AddCommentTool(diagramEditor)));
 
-        JToggleButton defaultToolButton = new JToggleButton(new SelectElementAction(
-                diagramEditor, "Default"));
-        JToggleButton addLinkButton = new JToggleButton(new AddLinkAction(diagramEditor, "Add link"));
+        JToggleButton defaultToolButton = new JToggleButton(new DiagramEditorAction(
+                diagramEditor, "Default", new SelectElementTool(diagramEditor)));
+        JToggleButton addLinkButton = new JToggleButton(new DiagramEditorAction(
+                diagramEditor, "Add link", new AddLinkTool(diagramEditor)));
         defaultToolButton.setSelected(true);
 
         toolBar.add(defaultToolButton);
