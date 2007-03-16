@@ -7,36 +7,36 @@ package ru.amse.soultakov.ereditor.model;
  * @author Soultakov Maxim
  */
 public enum RelationshipMultiplicity {
-	/**
-     * 
-     */
-	ZERO_OR_ONE(false, false),
-	
     /**
      * 
      */
-	ONE_ONLY(true, false),
-	
+    ZERO_OR_ONE(false, false),
+
     /**
      * 
      */
-	ZERO_OR_MORE(false, true),
-	
+    ONE_ONLY(true, false),
+
     /**
      * 
      */
-	ONE_OR_MORE(true, true);
-    
+    ZERO_OR_MORE(false, true),
+
+    /**
+     * 
+     */
+    ONE_OR_MORE(true, true);
+
     /**
      * 
      */
     boolean obligatory;
-    
+
     /**
      * 
      */
     boolean plural;
-    
+
     /**
      * @param obligatory
      * @param plural
@@ -52,7 +52,7 @@ public enum RelationshipMultiplicity {
     public boolean isObligatory() {
         return obligatory;
     }
-    
+
     /**
      * @return
      */
