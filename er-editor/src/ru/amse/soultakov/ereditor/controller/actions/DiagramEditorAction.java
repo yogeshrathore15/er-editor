@@ -10,19 +10,20 @@ import javax.swing.AbstractAction;
 import ru.amse.soultakov.ereditor.controller.DiagramEditor;
 import ru.amse.soultakov.ereditor.controller.tools.Tool;
 
-public abstract class DiagramEditorAction extends AbstractAction {
-    
-    protected final DiagramEditor diagramEditor;
-    
-    protected Tool tool;
+public class DiagramEditorAction extends AbstractAction {
 
-    public DiagramEditorAction(DiagramEditor diagramEditor, String name) {
+    private final DiagramEditor diagramEditor;
+
+    private final Tool tool;
+
+    public DiagramEditorAction(DiagramEditor diagramEditor, String name, Tool tool) {
         super(name);
         this.diagramEditor = diagramEditor;
+        this.tool = tool;
     }
-    
+
     public void actionPerformed(ActionEvent e) {
         diagramEditor.setTool(tool);
     }
-    
+
 }
