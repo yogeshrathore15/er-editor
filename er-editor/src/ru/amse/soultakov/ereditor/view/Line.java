@@ -7,7 +7,6 @@ import java.awt.BasicStroke;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public abstract class Line implements Viewable {
 
     protected static final BasicStroke SIMPLE_STROKE = new BasicStroke(1.0f);
@@ -35,7 +34,7 @@ public abstract class Line implements Viewable {
 
     protected int secondCenterY;
 
-	private final List<ViewableListener> listeners = new ArrayList<ViewableListener>();
+    private final List<ViewablesListener> listeners = new ArrayList<ViewablesListener>();
 
     /**
      * @param block
@@ -105,11 +104,11 @@ public abstract class Line implements Viewable {
         }
         return b;
     }
-    
+
     protected void notifyListeners() {
-    	for(ViewableListener vl : listeners) {
-    		vl.notify(this);
-    	}
+        for (ViewablesListener vl : listeners) {
+            vl.notify(this);
+        }
     }
 
     public boolean containsPoint(int x, int y) {
@@ -154,17 +153,17 @@ public abstract class Line implements Viewable {
         return (Math.sqrt((xt - x) * (xt - x) + (yt - y) * (yt - y)) < MIN_DISTANCE);
     }
 
-	public int getX() {
-	    return firstCenterX;
-	}
+    public int getX() {
+        return firstCenterX;
+    }
 
-	public int getY() {
-	    return firstCenterY;
-	}
+    public int getY() {
+        return firstCenterY;
+    }
 
-	public void setLocation(int x, int y) {
-	}
-    
+    public void setLocation(int x, int y) {
+    }
+
     public boolean isInsideRectangle(int x1, int y1, int x2, int y2) {
         int left = Math.min(x1, x2);
         int top = Math.min(y1, y2);
@@ -174,16 +173,16 @@ public abstract class Line implements Viewable {
         int rightCenterX = Math.max(firstCenterX, secondCenterX);
         int topCenterY = Math.min(firstCenterY, secondCenterY);
         int bottomCenterY = Math.max(firstCenterY, secondCenterY);
-        return (left < leftCenterX) && (top < topCenterY) 
-                && (right > rightCenterX) && ( bottom > bottomCenterY);
+        return (left < leftCenterX) && (top < topCenterY) && (right > rightCenterX)
+                && (bottom > bottomCenterY);
     }
-    
-    public void addListener(ViewableListener viewableListener) {
-    	listeners .add(viewableListener);
+
+    public void addListener(ViewablesListener viewablesListener) {
+        listeners.add(viewablesListener);
     }
-    
-    public boolean removeListener(ViewableListener viewableListener) {
-    	return listeners.remove(viewableListener);
+
+    public boolean removeListener(ViewablesListener viewablesListener) {
+        return listeners.remove(viewablesListener);
     }
 
 }
