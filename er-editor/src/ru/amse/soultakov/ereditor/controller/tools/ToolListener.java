@@ -6,5 +6,5 @@ package ru.amse.soultakov.ereditor.controller.tools;
 public interface ToolListener {
 
     void operationFinished();
-    
+
 }

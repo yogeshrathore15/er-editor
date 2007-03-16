@@ -10,8 +10,8 @@ import java.awt.event.MouseEvent;
 public interface Tool {
 
     /**
-     * Invoked when the mouse button has been clicked (pressed
-     * and released) on a component.
+     * Invoked when the mouse button has been clicked (pressed and released) on
+     * a component.
      */
     public void mouseClicked(MouseEvent e);
 
@@ -34,45 +34,46 @@ public interface Tool {
      * Invoked when the mouse exits a component.
      */
     public void mouseExited(MouseEvent e);
-    
+
     /**
-     * Invoked when a mouse button is pressed on a component and then 
-     * dragged.  <code>MOUSE_DRAGGED</code> events will continue to be 
-     * delivered to the component where the drag originated until the 
-     * mouse button is released (regardless of whether the mouse position 
-     * is within the bounds of the component).
+     * Invoked when a mouse button is pressed on a component and then dragged.
+     * <code>MOUSE_DRAGGED</code> events will continue to be delivered to the
+     * component where the drag originated until the mouse button is released
+     * (regardless of whether the mouse position is within the bounds of the
+     * component).
      */
     public void mouseDragged(MouseEvent e);
 
     /**
-     * Invoked when the mouse cursor has been moved onto a component
-     * but no buttons have been pushed.
+     * Invoked when the mouse cursor has been moved onto a component but no
+     * buttons have been pushed.
      */
     public void mouseMoved(MouseEvent e);
-    
+
     /**
-     * Invoked when a key has been typed.
-     * See the class description for {@link KeyEvent} for a definition of 
-     * a key typed event.
+     * Invoked when a key has been typed. See the class description for
+     * {@link KeyEvent} for a definition of a key typed event.
      */
     public void keyTyped(KeyEvent e);
 
     /**
-     * Invoked when a key has been pressed. 
-     * See the class description for {@link KeyEvent} for a definition of 
-     * a key pressed event.
+     * Invoked when a key has been pressed. See the class description for
+     * {@link KeyEvent} for a definition of a key pressed event.
      */
     public void keyPressed(KeyEvent e);
 
     /**
-     * Invoked when a key has been released.
-     * See the class description for {@link KeyEvent} for a definition of 
-     * a key released event.
+     * Invoked when a key has been released. See the class description for
+     * {@link KeyEvent} for a definition of a key released event.
      */
     public void keyReleased(KeyEvent e);
-    
+
     public void paintBefore(Graphics2D graphics);
-    
+
     public void paintAfter(Graphics2D graphics);
-    
+
+    public void addListener(ToolListener listener);
+
+    public boolean removeListener(ToolListener listener);
+
 }

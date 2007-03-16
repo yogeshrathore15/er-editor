@@ -10,28 +10,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * An abstract <code>Tool</code> class. All its methods are empty. 
+ * An abstract <code>Tool</code> class. All its methods are empty.
  * 
  * @author Soultakov Maxim
  */
 public abstract class ToolAdapter implements Tool {
 
     private final List<ToolListener> toolListeners = new ArrayList<ToolListener>();
-    
+
     public void addListener(ToolListener listener) {
         toolListeners.add(listener);
     }
-    
+
     public boolean removeListener(ToolListener listener) {
         return toolListeners.remove(listener);
     }
-    
+
     protected void operationFinished() {
-        for(ToolListener tl : toolListeners) {
+        for (ToolListener tl : toolListeners) {
             tl.operationFinished();
         }
     }
-    
+
     public void keyPressed(KeyEvent e) {
     }
 
@@ -61,10 +61,10 @@ public abstract class ToolAdapter implements Tool {
 
     public void mouseReleased(MouseEvent e) {
     }
-    
+
     public void paintAfter(Graphics2D graphics) {
     }
-    
+
     public void paintBefore(Graphics2D graphics) {
     }
 
