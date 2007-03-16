@@ -151,12 +151,12 @@ public class Entity implements Iterable<Attribute> {
             return false;
         return true;
     }
-    
+
     @Override
     public String toString() {
         return name;
     }
-    
+
     public List<Attribute> getAttributes() {
         return Collections.unmodifiableList(attributes);
     }
@@ -164,14 +164,15 @@ public class Entity implements Iterable<Attribute> {
     public Set<Link> getLinks() {
         return Collections.unmodifiableSet(links);
     }
-    
+
     public Set<Relationship> getRelationships() {
         return Collections.unmodifiableSet(relationships);
     }
 
     public boolean acceptRelationshipWith(Entity entity) {
         for (Relationship r : relationships) {
-            if ((r.getFirstEnd().getEntity() == entity)||(r.getSecondEnd().getEntity() == entity)) {
+            if ((r.getFirstEnd().getEntity() == entity)
+                    || (r.getSecondEnd().getEntity() == entity)) {
                 return false;
             }
         }
