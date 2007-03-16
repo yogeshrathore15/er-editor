@@ -6,6 +6,8 @@ package ru.amse.soultakov.ereditor.controller.tools;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * An abstract <code>Tool</code> class. All its methods are empty. 
@@ -14,6 +16,22 @@ import java.awt.event.MouseEvent;
  */
 public abstract class ToolAdapter implements Tool {
 
+    private final List<ToolListener> toolListeners = new ArrayList<ToolListener>();
+    
+    public void addListener(ToolListener listener) {
+        toolListeners.add(listener);
+    }
+    
+    public boolean removeListener(ToolListener listener) {
+        return toolListeners.remove(listener);
+    }
+    
+    protected void notifyListeners() {
+        for(ToolListener tl : toolListeners) {
+            tl.operationFinished();
+        }
+    }
+    
     public void keyPressed(KeyEvent e) {
     }
 

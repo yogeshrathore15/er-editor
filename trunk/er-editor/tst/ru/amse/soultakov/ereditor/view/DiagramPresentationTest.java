@@ -11,11 +11,11 @@ import org.junit.Test;
 
 public class DiagramPresentationTest {
 
-    DiagramPresentation dp;
+    Diagram diagram;
     
     @Before
     public void setUp() throws Exception {
-        dp = new DiagramPresentation();
+        diagram = new Diagram();
     }
 
     @After
@@ -24,17 +24,17 @@ public class DiagramPresentationTest {
 
     @Test
     public void testAddNewEntityView() {
-        EntityView ev1 = dp.addNewEntityView(0, 0);
-        EntityView ev2 = dp.addNewEntityView(0, 0);
+        EntityView ev1 = diagram.addNewEntityView(0, 0);
+        EntityView ev2 = diagram.addNewEntityView(0, 0);
         assertFalse(ev1.equals(ev2));
         assertNotNull(ev2);
         assertNotNull(ev1);
-        assertTrue(dp.getEntityViews().contains(ev1));
-        assertTrue(dp.getEntityViews().contains(ev2));
-        assertTrue(dp.getEntityViews().size() == 1);
-        assertTrue(dp.getCommentViews().size() == 0);
-        assertTrue(dp.getLinkViews().size() == 0);
-        assertTrue(dp.getRelationshipViews().size() == 0);
+        assertTrue(diagram.getEntityViews().contains(ev1));
+        assertTrue(diagram.getEntityViews().contains(ev2));
+        assertTrue(diagram.getEntityViews().size() == 1);
+        assertTrue(diagram.getCommentViews().size() == 0);
+        assertTrue(diagram.getLinkViews().size() == 0);
+        assertTrue(diagram.getRelationshipViews().size() == 0);
     }
 
     @Test

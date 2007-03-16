@@ -3,6 +3,8 @@
  */
 package ru.amse.soultakov.ereditor.controller;
 
+import static ru.amse.soultakov.ereditor.util.Utils.newArrayList;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -12,6 +14,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.List;
 import java.util.Set;
 
 import javax.swing.JComponent;
@@ -52,6 +55,8 @@ public class DiagramEditor extends JComponent {
     
     private final ViewableListener viewableListener = new MyViewableListener();
 
+    private final List<CurrentToolListener> listeners = newArrayList();
+    
     public DiagramEditor() {
         initMouseListener();
         diagram.addDiagramListener(new DiagramListener() {
@@ -104,6 +109,7 @@ public class DiagramEditor extends JComponent {
     public void setTool(Tool tool) {
         getSelectedItems().clear();
         repaint();
+        notifyListeners(currentTool, tool);
         currentTool = tool;
     }
 
@@ -212,18 +218,22 @@ public class DiagramEditor extends JComponent {
     }
 
     public boolean removeEntity(EntityView view) {
+        view.removeListener(viewableListener);
         return diagram.removeEntityView(view);
     }
 
     public boolean removeComment(CommentView view) {
+        view.removeListener(viewableListener);
         return diagram.removeCommentView(view);
     }
 
     public boolean removeRelationship(RelationshipView view) {
+        view.removeListener(viewableListener);
         return diagram.removeRelationshipView(view);
     }
 
     public boolean removeLink(LinkView view) {
+        view.removeListener(viewableListener);
         return diagram.removeLinkView(view);
     }
 
@@ -231,8 +241,20 @@ public class DiagramEditor extends JComponent {
         return s.acceptVisitor(itemsRemover, null);
     }
     
+    public void addToolChangeListener(CurrentToolListener ctl) {
+        listeners.add(ctl);
+    }
     
+    public boolean removeToolChangeListener(CurrentToolListener ctl) {
+        return listeners.remove(ctl);
+    }
     
+    protected void notifyListeners(Tool oldTool, Tool newTool) {
+        for (CurrentToolListener ctl : listeners) {
+            ctl.currentToolChanged(oldTool, newTool);
+        }
+    }
+        
     /**
 	 * @author sma
 	 *
@@ -240,7 +262,6 @@ public class DiagramEditor extends JComponent {
 	private final class MyViewableListener implements ViewableListener
 	{
 		public void notify(Viewable viewable) {
-			System.out.println("viewable painted");
 			repaint();
 		}
 	}
