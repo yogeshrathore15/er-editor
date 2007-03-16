@@ -44,6 +44,7 @@ public class AddRelationshipTool extends ToolAdapter {
     public void mouseReleased(MouseEvent e) {
         if (second != null && first != null && first.acceptRelationshipWith(second)) {
             diagramEditor.addRelationship(first, second);
+            operationFinished();
         }
         reset();
         diagramEditor.repaint();

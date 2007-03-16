@@ -26,7 +26,7 @@ public abstract class ToolAdapter implements Tool {
         return toolListeners.remove(listener);
     }
     
-    protected void notifyListeners() {
+    protected void operationFinished() {
         for(ToolListener tl : toolListeners) {
             tl.operationFinished();
         }

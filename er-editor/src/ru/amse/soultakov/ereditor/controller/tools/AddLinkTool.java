@@ -61,6 +61,7 @@ public class AddLinkTool extends ToolAdapter {
     public void mouseReleased(MouseEvent e) {
         if (entity != null && comment != null) {
             diagramEditor.addLink(entity, comment);
+            operationFinished();
         }
         reset();
         diagramEditor.repaint();

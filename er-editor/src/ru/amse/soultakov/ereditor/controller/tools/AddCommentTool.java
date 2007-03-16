@@ -18,5 +18,6 @@ public class AddCommentTool extends ToolAdapter {
     @Override
     public void mousePressed(MouseEvent e) {
         diagramEditor.addComment(e.getX(), e.getY());
+        operationFinished();
     }
 }
