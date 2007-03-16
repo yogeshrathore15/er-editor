@@ -26,8 +26,6 @@ public abstract class Line implements Viewable {
      * 
      */
     private boolean selected;
-    
-    
 
     protected int firstCenterX;
 
@@ -157,11 +155,11 @@ public abstract class Line implements Viewable {
     }
 
 	public int getX() {
-	    return 0;
+	    return firstCenterX;
 	}
 
 	public int getY() {
-	    return 0;
+	    return firstCenterY;
 	}
 
 	public void setLocation(int x, int y) {

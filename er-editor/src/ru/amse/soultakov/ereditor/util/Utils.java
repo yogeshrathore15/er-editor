@@ -3,6 +3,7 @@
  */
 package ru.amse.soultakov.ereditor.util;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -24,6 +25,10 @@ public class Utils {
     
     public static <T,E> HashMap<T,E> newHashMap() {
         return new HashMap<T,E>();
+    }
+    
+    public static <T> ArrayList<T> newArrayList() {
+        return new ArrayList<T>();
     }
     
     public static <T> void printIterator(Iterator<T> iterator) {

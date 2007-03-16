@@ -13,7 +13,7 @@ import ru.amse.soultakov.ereditor.model.DiagramTest;
 import ru.amse.soultakov.ereditor.model.EntityTest;
 import ru.amse.soultakov.ereditor.model.LinkTest;
 import ru.amse.soultakov.ereditor.model.RelationshipTest;
-import ru.amse.soultakov.ereditor.view.DiagramPresentation;
+import ru.amse.soultakov.ereditor.view.DiagramPresentationTest;
 
 @RunWith(Suite.class)
 @SuiteClasses(
@@ -23,7 +23,7 @@ import ru.amse.soultakov.ereditor.view.DiagramPresentation;
          LinkTest.class,
          RelationshipTest.class,
          DiagramTest.class,
-         DiagramPresentation.class})
+         DiagramPresentationTest.class})
 public class AllTests {
 
 }
