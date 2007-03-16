@@ -88,26 +88,25 @@ public class SelectElementTool extends ToolAdapter {
      * @param e
      */
     private void dragSelection(MouseEvent e) {
-    	if (canDragSelection(e)) {
-    		for (Viewable v : getSelectedItems()) {
-    			int xPos = e.getXOnScreen() - currentPoint.x + v.getX();
-    			int yPos = e.getYOnScreen() - currentPoint.y + v.getY();
-    			v.setLocation(xPos >= 0 ? xPos : 0, yPos >= 0 ? yPos : 0);
-    		}
-    	}
+        if (canDragSelection(e)) {
+            for (Viewable v : getSelectedItems()) {
+                int xPos = e.getXOnScreen() - currentPoint.x + v.getX();
+                int yPos = e.getYOnScreen() - currentPoint.y + v.getY();
+                v.setLocation(xPos >= 0 ? xPos : 0, yPos >= 0 ? yPos : 0);
+            }
+        }
     }
 
-	private boolean canDragSelection(MouseEvent e)
-	{
-    	for (Viewable v : getSelectedItems()) {
+    private boolean canDragSelection(MouseEvent e) {
+        for (Viewable v : getSelectedItems()) {
             int xPos = e.getXOnScreen() - currentPoint.x + v.getX();
             int yPos = e.getYOnScreen() - currentPoint.y + v.getY();
             if (xPos < 0 || yPos < 0) {
-            	return false;
+                return false;
             }
         }
-		return true;
-	}
+        return true;
+    }
 
     @Override
     public void paintAfter(Graphics2D graphics) {
@@ -163,12 +162,12 @@ public class SelectElementTool extends ToolAdapter {
         }
         return true;
     }
-    
+
     @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_DELETE) {
             diagramEditor.removeSelection();
         }
     }
-    
+
 }
