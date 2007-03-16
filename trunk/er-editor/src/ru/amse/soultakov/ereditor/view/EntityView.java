@@ -63,11 +63,11 @@ public class EntityView extends Block {
     public Entity getEntity() {
         return entity;
     }
-    
+
     public boolean acceptRelationshipWith(EntityView entityView) {
         return entity.acceptRelationshipWith(entityView.getEntity());
     }
-    
+
     public boolean acceptLinkWith(CommentView commentView) {
         return entity.acceptLinkWith(commentView.getComment());
     }
@@ -76,12 +76,12 @@ public class EntityView extends Block {
      * @return
      */
     @Override
-	protected Rectangle2D getContentBounds(Graphics2D graphics) {
+    protected Rectangle2D getContentBounds(Graphics2D graphics) {
         return getStringBounds(graphics, entity.getName());
     }
-    
-	public <R,D> R acceptVisitor(Visitor<R,D> visitor, D data) {
-		return visitor.visit(this, data);
-	}
+
+    public <R, D> R acceptVisitor(Visitor<R, D> visitor, D data) {
+        return visitor.visit(this, data);
+    }
 
 }

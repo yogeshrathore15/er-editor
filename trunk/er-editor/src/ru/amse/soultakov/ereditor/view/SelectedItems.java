@@ -7,7 +7,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-
 /**
  * @author Soultakov Maxim
  */
@@ -62,7 +61,7 @@ public class SelectedItems implements Iterable<Viewable> {
         }
         selectedViews.clear();
     }
-    
+
     public void setSelection(Viewable viewable) {
         clear();
         add(viewable);
@@ -72,19 +71,21 @@ public class SelectedItems implements Iterable<Viewable> {
         return selectedViews.iterator();
     }
 
-	/**
-	 * @return
-	 */
-	public boolean isEmpty() {
-		return selectedViews.isEmpty();
-	}
-	
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return selectedViews.toString();
-	}
+    /**
+     * @return
+     */
+    public boolean isEmpty() {
+        return selectedViews.isEmpty();
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return selectedViews.toString();
+    }
 
 }

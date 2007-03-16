@@ -15,20 +15,20 @@ public interface Viewable {
     boolean isSelected();
 
     void paint(Graphics2D graphics);
-    
+
     int getX();
-    
+
     int getY();
-    
+
     void setLocation(int x, int y);
 
     boolean containsPoint(int x, int y);
-    
+
     boolean isInsideRectangle(int x1, int y1, int x2, int y2);
-    
-    <R,D> R acceptVisitor(Visitor<R,D> visitor, D data);
-    
-    void addListener(ViewableListener viewableListener);
-    
-    boolean removeListener(ViewableListener viewableListener);
+
+    <R, D> R acceptVisitor(Visitor<R, D> visitor, D data);
+
+    void addListener(ViewablesListener viewablesListener);
+
+    boolean removeListener(ViewablesListener viewablesListener);
 }

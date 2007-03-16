@@ -39,15 +39,15 @@ public class Diagram {
     private final Map<Relationship, RelationshipView> relationshipToView = newHashMap();
 
     private final Map<Link, LinkView> linkToView = newHashMap();
-    
+
     private final List<DiagramListener> listeners = new ArrayList<DiagramListener>();
 
     public Diagram() {
-        
+
     }
 
     public EntityView addNewEntityView(int x, int y) {
-    	notifyListeners();
+        notifyListeners();
         Entity entity = erModel.addNewEntity();
         EntityView entityView = new EntityView(entity, x, y);
         entityViews.add(entityView);
@@ -102,7 +102,7 @@ public class Diagram {
     }
 
     public boolean removeEntityView(EntityView entityView) {
-    	notifyListeners();
+        notifyListeners();
         if (erModel.removeEntity(entityView.getEntity())) {
             Entity entity = entityView.getEntity();
             for (Iterator<Relationship> i = entity.relationshipsIterator(); i
@@ -120,7 +120,7 @@ public class Diagram {
     }
 
     public boolean removeRelationshipView(RelationshipView view) {
-    	notifyListeners();
+        notifyListeners();
         if (erModel.removeRelationship(view.getRelationship())) {
             return relationshipViews.remove(relationshipToView.remove(view
                     .getRelationship()));
@@ -129,8 +129,8 @@ public class Diagram {
     }
 
     public boolean removeCommentView(CommentView commentView) {
-    	notifyListeners();
-    	if (erModel.removeComment(commentView.getComment())) {
+        notifyListeners();
+        if (erModel.removeComment(commentView.getComment())) {
             Comment comment = commentView.getComment();
             for (Iterator<Link> i = comment.linksIterator(); i.hasNext();) {
                 linkViews.remove(linkToView.remove(i.next()));
@@ -141,7 +141,7 @@ public class Diagram {
     }
 
     public boolean removeLinkView(LinkView linkView) {
-    	notifyListeners();
+        notifyListeners();
         if (erModel.removeLink(linkView.getLink())) {
             return linkViews.remove(linkToView.remove(linkView.getLink()));
         }
@@ -180,19 +180,19 @@ public class Diagram {
         }
         return null;
     }
-    
+
     public void addDiagramListener(DiagramListener diagramListener) {
-    	listeners.add(diagramListener);
+        listeners.add(diagramListener);
     }
-    
+
     public boolean removeListener(DiagramListener diagramListener) {
-    	return listeners.remove(diagramListener);
+        return listeners.remove(diagramListener);
     }
-    
+
     private void notifyListeners() {
-    	for (DiagramListener dl : listeners) {
-    		dl.diagramModified(this);
-    	}
+        for (DiagramListener dl : listeners) {
+            dl.diagramModified(this);
+        }
     }
 
 }

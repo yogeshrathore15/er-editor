@@ -37,14 +37,15 @@ public class CommentView extends Block {
     private Rectangle2D drawTitle(Graphics2D graphics) {
         graphics.setColor(Color.BLACK);
         Rectangle2D bounds = getStringBounds(graphics, comment.getComment());
-        graphics.drawString(comment.getComment(), getX(), getY() + (int) bounds.getHeight());
+        graphics.drawString(comment.getComment(), getX(), getY()
+                + (int) bounds.getHeight());
         return bounds;
     }
 
     public Comment getComment() {
         return comment;
     }
-    
+
     public boolean acceptLinkWith(EntityView entityView) {
         return comment.acceptLinkWith(entityView.getEntity());
     }
@@ -53,12 +54,12 @@ public class CommentView extends Block {
      * @return
      */
     @Override
-	protected Rectangle2D getContentBounds(Graphics2D graphics) {
+    protected Rectangle2D getContentBounds(Graphics2D graphics) {
         return getStringBounds(graphics, comment.getComment());
     }
 
-	public <R,D> R acceptVisitor(Visitor<R,D> visitor, D data) {
-		return visitor.visit(this, data);
-	}
-	
+    public <R, D> R acceptVisitor(Visitor<R, D> visitor, D data) {
+        return visitor.visit(this, data);
+    }
+
 }

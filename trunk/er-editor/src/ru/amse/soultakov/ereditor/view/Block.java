@@ -9,7 +9,6 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public abstract class Block implements Viewable {
 
     private static final int SELECTION_SQUARE_SIZE = 5;
@@ -18,8 +17,8 @@ public abstract class Block implements Viewable {
             null, false, false);
 
     protected static final int MARGIN = 3;
-    
-    private final List<ViewableListener> listeners = new ArrayList<ViewableListener>();
+
+    private final List<ViewablesListener> listeners = new ArrayList<ViewablesListener>();
 
     private boolean selected;
 
@@ -38,7 +37,7 @@ public abstract class Block implements Viewable {
 
     public void setSize(int width, int height) {
         if (width != getWidth() || height != getHeight()) {
-        	this.width = width;
+            this.width = width;
             this.height = height;
             notifyListeners();
         }
@@ -60,8 +59,8 @@ public abstract class Block implements Viewable {
 
     public void setLocation(int x, int y) {
         if (getX() != x || getY() != y) {
-        	notifyListeners();
-        	this.setX(x);
+            notifyListeners();
+            this.setX(x);
             this.setY(y);
         }
     }
@@ -107,12 +106,13 @@ public abstract class Block implements Viewable {
      * @param y
      */
     private void drawSelectionSquare(Graphics2D graphics, int x, int y) {
-        graphics.drawRect(getX() + x, getY() + y, SELECTION_SQUARE_SIZE, SELECTION_SQUARE_SIZE);
+        graphics.drawRect(getX() + x, getY() + y, SELECTION_SQUARE_SIZE,
+                SELECTION_SQUARE_SIZE);
     }
 
     public void setSelected(boolean selected) {
-    	this.selected = selected;
-    	notifyListeners();
+        this.selected = selected;
+        notifyListeners();
     }
 
     public boolean isSelected() {
@@ -167,33 +167,34 @@ public abstract class Block implements Viewable {
 
     public boolean containsPoint(int x, int y) {
         return (getX() <= x) && (getY() <= y) && (getX() + getWidth() >= x)
-                        && (getY() + getHeight() >= y);
+                && (getY() + getHeight() >= y);
     }
-    
+
     public boolean isInsideRectangle(int x1, int y1, int x2, int y2) {
         int left = Math.min(x1, x2);
         int top = Math.min(y1, y2);
         int right = Math.max(x1, x2);
         int bottom = Math.max(y1, y2);
-        return (left < x) && (top < y) && (right > x + width) && ( bottom > y + height);
+        return (left < x) && (top < y) && (right > x + width)
+                && (bottom > y + height);
     }
-    
+
     protected void notifyListeners() {
-    	for(ViewableListener vl : listeners) {
-    		vl.notify(this);
-    	}
+        for (ViewablesListener vl : listeners) {
+            vl.notify(this);
+        }
     }
-    
-    public void addListener(ViewableListener viewableListener) {
-    	listeners.add(viewableListener);
+
+    public void addListener(ViewablesListener viewablesListener) {
+        listeners.add(viewablesListener);
     }
-    
-    public boolean removeListener(ViewableListener viewableListener) {
-    	return listeners.remove(viewableListener);
+
+    public boolean removeListener(ViewablesListener viewablesListener) {
+        return listeners.remove(viewablesListener);
     }
 
     protected abstract Rectangle2D getContentBounds(Graphics2D graphics);
-    
+
     @Override
     public String toString() {
         return "[X = " + getX() + ", Y = " + getY() + ", W = " + getWidth()
