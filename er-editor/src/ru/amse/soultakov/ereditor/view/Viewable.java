@@ -19,6 +19,10 @@ public interface Viewable {
     int getX();
 
     int getY();
+    
+    int getWidth();
+    
+    int getHeight();
 
     void setLocation(int x, int y);
 
