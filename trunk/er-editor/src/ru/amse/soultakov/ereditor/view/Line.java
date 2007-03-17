@@ -163,6 +163,14 @@ public abstract class Line implements Viewable {
 
     public void setLocation(int x, int y) {
     }
+    
+    public int getHeight() {
+        return Math.abs(firstCenterY - secondCenterY);
+    }
+    
+    public int getWidth() {
+        return Math.abs(secondCenterX - firstCenterX);
+    }
 
     public boolean isInsideRectangle(int x1, int y1, int x2, int y2) {
         int left = Math.min(x1, x2);

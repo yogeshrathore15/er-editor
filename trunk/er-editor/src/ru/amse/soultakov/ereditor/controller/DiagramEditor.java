@@ -40,7 +40,7 @@ import ru.amse.soultakov.ereditor.view.Visitor;
  */
 public class DiagramEditor extends JComponent {
 
-    private static final Dimension PREFERRED_SIZE = new Dimension(800, 600);
+    private Dimension preferredSize = new Dimension(800, 600);
 
     private final Diagram diagram = new Diagram();
 
@@ -58,6 +58,7 @@ public class DiagramEditor extends JComponent {
         initMouseListener();
         diagram.addDiagramListener(new DiagramListener() {
             public void diagramModified(Diagram diagram) {
+                setPreferredSize(diagram.getSize());
                 repaint();
             }
         });
@@ -88,10 +89,10 @@ public class DiagramEditor extends JComponent {
         return relationship;
     }
 
-    @Override
-    public Dimension getPreferredSize() {
-        return PREFERRED_SIZE;
-    }
+//    @Override
+//    public Dimension getPreferredSize() {
+//        return diagram.getSize();
+//    }
 
     /**
      * 
@@ -259,6 +260,7 @@ public class DiagramEditor extends JComponent {
      */
     private final class MyViewablesListener implements ViewablesListener {
         public void notify(Viewable viewable) {
+            setPreferredSize(diagram.getSize());
             repaint();
         }
     }

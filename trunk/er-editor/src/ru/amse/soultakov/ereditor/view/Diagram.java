@@ -7,6 +7,8 @@ import static ru.amse.soultakov.ereditor.util.Utils.hasNull;
 import static ru.amse.soultakov.ereditor.util.Utils.newHashMap;
 import static ru.amse.soultakov.ereditor.util.Utils.newLinkedHashSet;
 
+import java.awt.Dimension;
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -179,6 +181,25 @@ public class Diagram {
             }
         }
         return null;
+    }
+    
+    private static Point getRightBottomPoint(Set<? extends Viewable> set, Point currentMax) {
+        for(Viewable v : set) {
+            if (v.getY() + v.getHeight() > currentMax.y) {
+                currentMax.y = v.getY() + v.getHeight();
+            }
+            if (v.getX() + v.getWidth() > currentMax.x) {
+                currentMax.x = v.getX() + v.getWidth();
+            }
+        }
+        return currentMax;
+    }
+    
+    public Dimension getSize() {
+        Point currentMax = new Point(0,0);
+        getRightBottomPoint(entityViews,currentMax);
+        getRightBottomPoint(commentViews, currentMax);
+        return new Dimension(currentMax.x, currentMax.y);
     }
 
     public void addDiagramListener(DiagramListener diagramListener) {
