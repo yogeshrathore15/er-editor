@@ -3,7 +3,7 @@
  */
 package ru.amse.soultakov.ereditor.controller;
 
-import static ru.amse.soultakov.ereditor.util.Utils.newArrayList;
+import static ru.amse.soultakov.ereditor.util.CommonUtils.newArrayList;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -165,7 +165,7 @@ public class DiagramEditor extends JComponent {
      * 
      */
     private void initMouseListener() {
-        currentTool = getDefaultTool();
+        currentTool = new SelectElementTool(this);
         this.addMouseListener(new MouseListener() {
             public void mouseClicked(MouseEvent e) {
                 requestFocusInWindow();
@@ -211,10 +211,6 @@ public class DiagramEditor extends JComponent {
             }
 
         });
-    }
-
-    public SelectElementTool getDefaultTool() {
-        return new SelectElementTool(this);
     }
 
     public boolean removeEntity(EntityView view) {

@@ -9,7 +9,7 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-public class Utils {
+public class CommonUtils {
 
     public static boolean hasNull(Object... arguments) {
         for (Object o : arguments) {

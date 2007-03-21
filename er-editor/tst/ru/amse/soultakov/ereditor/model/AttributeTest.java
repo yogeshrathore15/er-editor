@@ -11,13 +11,13 @@ public class AttributeTest {
 
     @Test
     public void testAttribute() {
-        Attribute attribute = new Attribute("0");
+        Attribute attribute = new Attribute("0", AttributeType.INTEGER, true);
         assertEquals(attribute.getName(), "0");
     }
 
     @Test
     public void testSetName() {
-        Attribute attribute = new Attribute("0");
+        Attribute attribute = new Attribute("0", AttributeType.CHAR, false);
         attribute.setName("new name");
         assertEquals(attribute.getName(), "new name");
     }

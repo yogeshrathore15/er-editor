@@ -4,8 +4,8 @@
 package ru.amse.soultakov.ereditor.model;
 
 import static ru.amse.soultakov.ereditor.model.RelationshipMultiplicity.ONE_ONLY;
-import static ru.amse.soultakov.ereditor.util.Utils.hasNull;
-import static ru.amse.soultakov.ereditor.util.Utils.newLinkedHashSet;
+import static ru.amse.soultakov.ereditor.util.CommonUtils.hasNull;
+import static ru.amse.soultakov.ereditor.util.CommonUtils.newLinkedHashSet;
 
 import java.util.Collections;
 import java.util.Iterator;
