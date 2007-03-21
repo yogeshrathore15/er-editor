@@ -30,7 +30,7 @@ import ru.amse.soultakov.ereditor.controller.tools.ToolListener;
  */
 public class Main {
 
-    private static DiagramEditor diagramEditor;
+    private static DiagramEditor diagramEditor = new DiagramEditor();
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("Stupid test");
@@ -39,9 +39,7 @@ public class Main {
         menu.add(new JMenu("File"));
         menu.add(new JMenu("Edit"));
         
-        JScrollPane scrollPane = new JScrollPane();
-        diagramEditor = new DiagramEditor(scrollPane);
-        scrollPane.setViewportView(diagramEditor);
+        JScrollPane scrollPane = new JScrollPane(diagramEditor);
         
 		frame.add(scrollPane);
         JToolBar toolBar = new JToolBar();

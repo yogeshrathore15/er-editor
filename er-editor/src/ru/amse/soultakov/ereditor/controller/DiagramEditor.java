@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Set;
 
 import javax.swing.JComponent;
-import javax.swing.JScrollPane;
 
 import ru.amse.soultakov.ereditor.controller.tools.SelectElementTool;
 import ru.amse.soultakov.ereditor.controller.tools.Tool;
@@ -56,11 +55,8 @@ public class DiagramEditor extends JComponent {
     private final ViewablesListener viewablesListener = new MyViewablesListener();
 
     private final List<CurrentToolListener> listeners = newArrayList();
-    
-    private JScrollPane scrollPane;
 
-    public DiagramEditor(JScrollPane scrollPane) {
-    	this.scrollPane = scrollPane;
+    public DiagramEditor() {
         initMouseListener();
         diagram.addDiagramListener(new DiagramListener() {
             public void diagramModified(Diagram diagram) {
@@ -68,14 +64,6 @@ public class DiagramEditor extends JComponent {
             }
         });
     }
-    
-    /**
-	 * @return the scrollPane
-	 */
-	public JScrollPane getScrollPane()
-	{
-		return scrollPane;
-	}
 
     public EntityView addEntity(int x, int y) {
         EntityView entity = diagram.addNewEntityView(x, y);
@@ -102,11 +90,6 @@ public class DiagramEditor extends JComponent {
         return relationship;
     }
 
-//    @Override
-//    public Dimension getPreferredSize() {
-//        return diagram.getSize();
-//    }
-
     /**
      * 
      */
@@ -125,21 +108,21 @@ public class DiagramEditor extends JComponent {
             currentTool = tool;
         }
     }
-    
-    /* (non-Javadoc)
+
+    /*
+     * (non-Javadoc)
+     * 
      * @see javax.swing.JComponent#getPreferredSize()
      */
     @Override
-    public Dimension getPreferredSize()
-    {
-    	System.out.println("DiagramEditor.getPreferredSize()");
-    	Dimension newDim = diagram.getSize();
-    	System.out.println(newDim);
-    	double height = newDim.getHeight() < MIN_SIZE.getHeight() ? MIN_SIZE.getHeight() : newDim.getHeight();
-    	double width = newDim.getWidth() < MIN_SIZE.getWidth() ? MIN_SIZE.getWidth() : newDim.getWidth();
-    	newDim.setSize(width, height);
-    	System.out.println(newDim);
-    	return newDim;
+    public Dimension getPreferredSize() {
+        Dimension newDim = diagram.getSize();
+        double height = newDim.getHeight() < MIN_SIZE.getHeight() ? MIN_SIZE
+                .getHeight() : newDim.getHeight();
+        double width = newDim.getWidth() < MIN_SIZE.getWidth() ? MIN_SIZE.getWidth()
+                : newDim.getWidth();
+        newDim.setSize(width, height);
+        return newDim;
     }
 
     @Override

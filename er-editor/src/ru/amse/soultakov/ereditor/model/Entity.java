@@ -161,8 +161,8 @@ public class Entity implements Iterable<Attribute> {
 
     public boolean acceptRelationshipWith(Entity entity) {
         for (Relationship r : relationships) {
-            if ((r.getFirstEnd().getEntity() == entity)
-                    || (r.getSecondEnd().getEntity() == entity)) {
+            if ((r.getFirstEnd().getEntity().equals(entity))
+                    || (r.getSecondEnd().getEntity().equals(entity))) {
                 return false;
             }
         }
@@ -183,8 +183,16 @@ public class Entity implements Iterable<Attribute> {
         attributes.add(attribute);
     }
     
+    public Set<Attribute> getPrimaryKey() {
+        return Collections.unmodifiableSet(primaryKey);
+    }
+    
     public boolean removeFromPrimaryKey(Attribute attribute) {
     	return primaryKey.remove(attribute);
+    }
+    
+    public Set<? extends Set<Attribute>> getUniqueAttributes() {
+        return Collections.unmodifiableSet(uniqueAttributes);
     }
     
     public void addToUniqueAttributes(Set<Attribute> set) {
