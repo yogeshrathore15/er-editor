@@ -14,6 +14,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 
+import ru.amse.soultakov.ereditor.controller.CurrentToolListener;
 import ru.amse.soultakov.ereditor.controller.DiagramEditor;
 import ru.amse.soultakov.ereditor.controller.actions.DiagramEditorAction;
 import ru.amse.soultakov.ereditor.controller.actions.RemoveSelectionAction;
@@ -22,6 +23,7 @@ import ru.amse.soultakov.ereditor.controller.tools.AddEntityTool;
 import ru.amse.soultakov.ereditor.controller.tools.AddLinkTool;
 import ru.amse.soultakov.ereditor.controller.tools.AddRelationshipTool;
 import ru.amse.soultakov.ereditor.controller.tools.SelectElementTool;
+import ru.amse.soultakov.ereditor.controller.tools.Tool;
 import ru.amse.soultakov.ereditor.controller.tools.ToolListener;
 
 /**

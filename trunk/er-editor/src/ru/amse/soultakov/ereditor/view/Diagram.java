@@ -3,9 +3,9 @@
  */
 package ru.amse.soultakov.ereditor.view;
 
-import static ru.amse.soultakov.ereditor.util.Utils.hasNull;
-import static ru.amse.soultakov.ereditor.util.Utils.newHashMap;
-import static ru.amse.soultakov.ereditor.util.Utils.newLinkedHashSet;
+import static ru.amse.soultakov.ereditor.util.CommonUtils.hasNull;
+import static ru.amse.soultakov.ereditor.util.CommonUtils.newHashMap;
+import static ru.amse.soultakov.ereditor.util.CommonUtils.newLinkedHashSet;
 
 import java.awt.Dimension;
 import java.awt.Point;

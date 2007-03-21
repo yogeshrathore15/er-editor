@@ -3,11 +3,10 @@
  */
 package ru.amse.soultakov.ereditor.model;
 
-import static ru.amse.soultakov.ereditor.util.Utils.newLinkedHashSet;
+import static ru.amse.soultakov.ereditor.util.CommonUtils.newLinkedHashSet;
 
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -18,13 +17,9 @@ public class Entity implements Iterable<Attribute> {
 
     private static final String PARAM_CANT_BE_NULL = "Param must be non null value"; //$NON-NLS-1$
 
-    private static final String ATTIBUTES_CANT_BE_NULL = "Attributes can't be null"; //$NON-NLS-1$
-
     private static final String RELATIONSHIP_CANT_BE_NULL = "Relationship can't be null"; //$NON-NLS-1$
 
-    private String name;
-
-    private final Set<Attribute> attributes;
+    private final Set<Attribute> attributes = newLinkedHashSet();;
     
     private final Set<Attribute> primaryKey = newLinkedHashSet();
     
@@ -33,25 +28,14 @@ public class Entity implements Iterable<Attribute> {
     private final Set<Relationship> relationships = newLinkedHashSet();
 
     private final Set<Link> links = newLinkedHashSet();
+    
+    private String name;
 
     /**
      * @param name
      */
     public Entity(String name) {
         setName(name);
-        attributes = newLinkedHashSet();
-    }
-
-    /**
-     * @param name
-     * @param attributes
-     */
-    public Entity(String name, Set<Attribute> attributes) {
-        if (attributes == null) {
-            throw new IllegalArgumentException(ATTIBUTES_CANT_BE_NULL);
-        }
-        setName(name);
-        this.attributes = newLinkedHashSet(attributes);
     }
 
     /**
@@ -193,5 +177,12 @@ public class Entity implements Iterable<Attribute> {
         }
         return true;
     }
+    
+    public void addToPrimaryKey(Attribute attribute) {
+        primaryKey.add(attribute);
+        attributes.add(attribute);
+    }
+    
+     
 
 }

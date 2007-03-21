@@ -3,6 +3,8 @@
  */
 package ru.amse.soultakov.ereditor.model;
 
-public class AttributeType {
-
+public enum AttributeType {
+    INTEGER,
+    CHAR,
+    DOUBLE;
 }

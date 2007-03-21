@@ -70,6 +70,7 @@ public class SelectElementTool extends ToolAdapter {
         if (endPoint != null && startPoint != null) {
             tryToSelectAllViews();
             endPoint = null;
+            startPoint = null;
         }
     }
 
@@ -110,7 +111,7 @@ public class SelectElementTool extends ToolAdapter {
 
     @Override
     public void paintAfter(Graphics2D graphics) {
-        if (endPoint != null) {
+        if (endPoint != null && startPoint != null) {
             drawRectangle(graphics, startPoint.x, startPoint.y, endPoint.x,
                     endPoint.y);
         }
@@ -133,6 +134,9 @@ public class SelectElementTool extends ToolAdapter {
     }
 
     private void tryToSelectViews(Set<? extends Viewable> views) {
+        if (startPoint == null) {
+            return;
+        }
         for (Viewable view : views) {
             if (view.isInsideRectangle(startPoint.x, startPoint.y, endPoint.x,
                     endPoint.y)) {

@@ -15,6 +15,9 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.sun.org.apache.bcel.internal.classfile.Attribute;
+import com.sun.xml.internal.bind.v2.schemagen.xmlschema.AttributeType;
+
 public class EntityTest {
 
     private static final String NAME = "name";
@@ -37,7 +40,7 @@ public class EntityTest {
     @Test
     public void testEntityStringListOfAttribute() {
         List<Attribute> attributes = new ArrayList<Attribute>();
-        attributes.add(new Attribute("Attribute1"));
+        attributes.add(new Attribute("Attribute1", AttributeType.INTEGER));
         Entity entity = new Entity(NAME, attributes);
         assertEquals(entity.iterator().next().getName(), "Attribute1");
     }
