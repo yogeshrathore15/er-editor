@@ -27,7 +27,6 @@ public class RemoveSelectionAction extends AbstractAction {
         this.diagramEditor = diagramEditor;
     }
 
-    @Override
     public void actionPerformed(ActionEvent e) {
         diagramEditor.removeSelection();
     }

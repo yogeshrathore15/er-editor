@@ -6,6 +6,7 @@ package ru.amse.soultakov.ereditor.controller;
 import static ru.amse.soultakov.ereditor.util.CommonUtils.newArrayList;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.swing.JComponent;
+import javax.swing.JScrollPane;
 
 import ru.amse.soultakov.ereditor.controller.tools.SelectElementTool;
 import ru.amse.soultakov.ereditor.controller.tools.Tool;
@@ -39,7 +41,7 @@ import ru.amse.soultakov.ereditor.view.Visitor;
  */
 public class DiagramEditor extends JComponent {
 
-    //private Dimension preferredSize = new Dimension(800, 600);
+    private static final Dimension MIN_SIZE = new Dimension(300, 300);
 
     static final long serialVersionUID = 1L;
 
@@ -54,16 +56,26 @@ public class DiagramEditor extends JComponent {
     private final ViewablesListener viewablesListener = new MyViewablesListener();
 
     private final List<CurrentToolListener> listeners = newArrayList();
+    
+    private JScrollPane scrollPane;
 
-    public DiagramEditor() {
+    public DiagramEditor(JScrollPane scrollPane) {
+    	this.scrollPane = scrollPane;
         initMouseListener();
         diagram.addDiagramListener(new DiagramListener() {
             public void diagramModified(Diagram diagram) {
-                setPreferredSize(diagram.getSize());
                 repaint();
             }
         });
     }
+    
+    /**
+	 * @return the scrollPane
+	 */
+	public JScrollPane getScrollPane()
+	{
+		return scrollPane;
+	}
 
     public EntityView addEntity(int x, int y) {
         EntityView entity = diagram.addNewEntityView(x, y);
@@ -112,6 +124,22 @@ public class DiagramEditor extends JComponent {
             notifyListeners(currentTool, tool);
             currentTool = tool;
         }
+    }
+    
+    /* (non-Javadoc)
+     * @see javax.swing.JComponent#getPreferredSize()
+     */
+    @Override
+    public Dimension getPreferredSize()
+    {
+    	System.out.println("DiagramEditor.getPreferredSize()");
+    	Dimension newDim = diagram.getSize();
+    	System.out.println(newDim);
+    	double height = newDim.getHeight() < MIN_SIZE.getHeight() ? MIN_SIZE.getHeight() : newDim.getHeight();
+    	double width = newDim.getWidth() < MIN_SIZE.getWidth() ? MIN_SIZE.getWidth() : newDim.getWidth();
+    	newDim.setSize(width, height);
+    	System.out.println(newDim);
+    	return newDim;
     }
 
     @Override
@@ -257,7 +285,6 @@ public class DiagramEditor extends JComponent {
      */
     private final class MyViewablesListener implements ViewablesListener {
         public void notify(Viewable viewable) {
-            setPreferredSize(diagram.getSize());
             repaint();
         }
     }
