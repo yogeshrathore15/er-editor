@@ -14,7 +14,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 
-import ru.amse.soultakov.ereditor.controller.CurrentToolListener;
 import ru.amse.soultakov.ereditor.controller.DiagramEditor;
 import ru.amse.soultakov.ereditor.controller.actions.DiagramEditorAction;
 import ru.amse.soultakov.ereditor.controller.actions.RemoveSelectionAction;
@@ -23,7 +22,6 @@ import ru.amse.soultakov.ereditor.controller.tools.AddEntityTool;
 import ru.amse.soultakov.ereditor.controller.tools.AddLinkTool;
 import ru.amse.soultakov.ereditor.controller.tools.AddRelationshipTool;
 import ru.amse.soultakov.ereditor.controller.tools.SelectElementTool;
-import ru.amse.soultakov.ereditor.controller.tools.Tool;
 import ru.amse.soultakov.ereditor.controller.tools.ToolListener;
 
 /**
@@ -32,7 +30,7 @@ import ru.amse.soultakov.ereditor.controller.tools.ToolListener;
  */
 public class Main {
 
-    private static DiagramEditor diagramEditor = new DiagramEditor();;
+    private static DiagramEditor diagramEditor;
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("Stupid test");
@@ -40,7 +38,12 @@ public class Main {
         frame.setJMenuBar(menu);
         menu.add(new JMenu("File"));
         menu.add(new JMenu("Edit"));
-        frame.add(new JScrollPane(diagramEditor));
+        
+        JScrollPane scrollPane = new JScrollPane();
+        diagramEditor = new DiagramEditor(scrollPane);
+        scrollPane.setViewportView(diagramEditor);
+        
+		frame.add(scrollPane);
         JToolBar toolBar = new JToolBar();
         ButtonGroup buttonsGroup = new ButtonGroup();
 

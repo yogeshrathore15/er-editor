@@ -23,7 +23,7 @@ public class Entity implements Iterable<Attribute> {
     
     private final Set<Attribute> primaryKey = newLinkedHashSet();
     
-    private final Set<Attribute> uniqueAttributes = newLinkedHashSet();
+    private final Set<Set<Attribute>> uniqueAttributes = newLinkedHashSet();
 
     private final Set<Relationship> relationships = newLinkedHashSet();
 
@@ -183,6 +183,17 @@ public class Entity implements Iterable<Attribute> {
         attributes.add(attribute);
     }
     
-     
+    public boolean removeFromPrimaryKey(Attribute attribute) {
+    	return primaryKey.remove(attribute);
+    }
+    
+    public void addToUniqueAttributes(Set<Attribute> set) {
+    	attributes.addAll(set);
+    	uniqueAttributes.add(set);
+    }
+    
+    public boolean removeFromUniqueAttributes(Set<Attribute> set) {
+    	return uniqueAttributes.remove(set);
+    }
 
 }

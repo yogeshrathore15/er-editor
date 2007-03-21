@@ -185,11 +185,11 @@ public class Diagram {
     
     private static Point getRightBottomPoint(Set<? extends Viewable> set, Point currentMax) {
         for(Viewable v : set) {
+        	if (v.getX() + v.getWidth() > currentMax.x) {
+        		currentMax.x = v.getX() + v.getWidth();
+        	}
             if (v.getY() + v.getHeight() > currentMax.y) {
                 currentMax.y = v.getY() + v.getHeight();
-            }
-            if (v.getX() + v.getWidth() > currentMax.x) {
-                currentMax.x = v.getX() + v.getWidth();
             }
         }
         return currentMax;
@@ -197,7 +197,7 @@ public class Diagram {
     
     public Dimension getSize() {
         Point currentMax = new Point(0,0);
-        getRightBottomPoint(entityViews,currentMax);
+        getRightBottomPoint(entityViews, currentMax);
         getRightBottomPoint(commentViews, currentMax);
         return new Dimension(currentMax.x, currentMax.y);
     }

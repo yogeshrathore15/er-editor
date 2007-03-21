@@ -95,6 +95,9 @@ public class SelectElementTool extends ToolAdapter {
                 int yPos = e.getYOnScreen() - currentPoint.y + v.getY();
                 v.setLocation(xPos >= 0 ? xPos : 0, yPos >= 0 ? yPos : 0);
             }
+            diagramEditor.getScrollPane().revalidate();
+            diagramEditor.getScrollPane().doLayout();
+            diagramEditor.getScrollPane().repaint();
         }
     }
 
