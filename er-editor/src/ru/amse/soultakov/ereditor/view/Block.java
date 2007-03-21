@@ -34,7 +34,7 @@ public abstract class Block implements Viewable {
         super();
         setLocation(x, y);
     }
-
+    
     public void setSize(int width, int height) {
         if (width != getWidth() || height != getHeight()) {
             this.width = width;
@@ -57,7 +57,7 @@ public abstract class Block implements Viewable {
         return height;
     }
 
-    public void setLocation(int x, int y) {
+    public final void setLocation(int x, int y) {
         if (getX() != x || getY() != y) {
             notifyListeners();
             this.setX(x);
@@ -162,7 +162,9 @@ public abstract class Block implements Viewable {
      */
     public void recalculateSize(Graphics2D graphics) {
         Rectangle2D bounds = getContentBounds(graphics);
-        setSize((int) bounds.getWidth(), 100);
+        //$ANALYSIS-IGNORE,codereview.java.rules.casting.RuleCastingPrimitives
+        setSize((int)bounds.getWidth(),100);
+        
     }
 
     public boolean containsPoint(int x, int y) {

@@ -67,7 +67,7 @@ public class SelectElementTool extends ToolAdapter {
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if (endPoint != null) {
+        if (endPoint != null && startPoint != null) {
             tryToSelectAllViews();
             endPoint = null;
         }

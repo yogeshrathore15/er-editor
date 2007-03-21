@@ -39,7 +39,9 @@ public class EntityView extends Block {
         graphics.setColor(Color.BLACK);
         drawBorder(graphics);
         drawTitle(graphics);
-        int titleHeight = (int) (bounds.getHeight() + MARGIN);
+        //$ANALYSIS-IGNORE,codereview.java.rules.casting.RuleCastingPrimitives
+        int titleHeight=(int)(bounds.getHeight() + MARGIN);
+        
         graphics.setColor(Color.BLACK);
         graphics.drawLine(getX(), getY() + titleHeight, getX() + getWidth(), getY()
                 + titleHeight);

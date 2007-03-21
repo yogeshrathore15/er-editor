@@ -71,23 +71,30 @@ public class RelationshipEnd {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         final RelationshipEnd other = (RelationshipEnd) obj;
         if (entity == null) {
-            if (other.entity != null)
+            if (other.entity != null) {
                 return false;
-        } else if (!entity.equals(other.entity))
+            }
+        } else if (!entity.equals(other.entity)) {
             return false;
+        }
         if (multiplicity == null) {
-            if (other.multiplicity != null)
+            if (other.multiplicity != null) {
                 return false;
-        } else if (!multiplicity.equals(other.multiplicity))
+            }
+        } else if (!multiplicity.equals(other.multiplicity)) {
             return false;
+        }
         return true;
     }
 

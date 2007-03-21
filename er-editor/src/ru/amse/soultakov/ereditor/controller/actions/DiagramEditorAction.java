@@ -12,6 +12,8 @@ import ru.amse.soultakov.ereditor.controller.tools.Tool;
 
 public class DiagramEditorAction extends AbstractAction {
 
+    static final long serialVersionUID = 1L;
+
     private final DiagramEditor diagramEditor;
 
     private final Tool tool;

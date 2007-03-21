@@ -6,7 +6,6 @@ package ru.amse.soultakov.ereditor.controller;
 import static ru.amse.soultakov.ereditor.util.Utils.newArrayList;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
@@ -40,7 +39,9 @@ import ru.amse.soultakov.ereditor.view.Visitor;
  */
 public class DiagramEditor extends JComponent {
 
-    private Dimension preferredSize = new Dimension(800, 600);
+    //private Dimension preferredSize = new Dimension(800, 600);
+
+    static final long serialVersionUID = 1L;
 
     private final Diagram diagram = new Diagram();
 

@@ -25,7 +25,9 @@ public class CommentView extends Block {
 
     public void paint(Graphics2D graphics) {
         Rectangle2D bounds = getContentBounds(graphics);
-        setSize((int) bounds.getWidth(), 100);
+        //$ANALYSIS-IGNORE,codereview.java.rules.casting.RuleCastingPrimitives
+        setSize((int)bounds.getWidth(),100);
+        
         graphics.setColor(CommentView.BACKGROUND_COLOR);
         graphics.fillRect(getX(), getY(), getWidth(), getHeight());
         graphics.setColor(Color.BLACK);
@@ -37,8 +39,9 @@ public class CommentView extends Block {
     private Rectangle2D drawTitle(Graphics2D graphics) {
         graphics.setColor(Color.BLACK);
         Rectangle2D bounds = getStringBounds(graphics, comment.getComment());
-        graphics.drawString(comment.getComment(), getX(), getY()
-                + (int) bounds.getHeight());
+        //$ANALYSIS-IGNORE,codereview.java.rules.casting.RuleCastingPrimitives
+        graphics.drawString(comment.getComment(),getX(),getY() + (int)bounds.getHeight());
+        
         return bounds;
     }
 

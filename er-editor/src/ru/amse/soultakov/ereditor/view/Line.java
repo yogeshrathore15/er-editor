@@ -120,23 +120,28 @@ public abstract class Line implements Viewable {
             return (Math.abs(x - firstCenterX) < MIN_DISTANCE);
         } else if (firstCenterY == secondCenterY) {
             if (x < Math.min(firstCenterX, secondCenterX)
-                    || Math.max(firstCenterX, secondCenterX) < x)
+                    || Math.max(firstCenterX, secondCenterX) < x) {
                 return false;
+            }
             return (Math.abs(y - firstCenterY) < MIN_DISTANCE);
         }
         if (firstCenterX < secondCenterX) {
-            if (x < firstCenterX || secondCenterX < x)
+            if (x < firstCenterX || secondCenterX < x) {
                 return false;
+            }
         } else {
-            if (x < secondCenterX || firstCenterX < x)
+            if (x < secondCenterX || firstCenterX < x) {
                 return false;
+            }
         }
         if (firstCenterY < secondCenterY) {
-            if (y < firstCenterY || secondCenterY < y)
+            if (y < firstCenterY || secondCenterY < y) {
                 return false;
+            }
         } else {
-            if (y < secondCenterY || firstCenterY < y)
+            if (y < secondCenterY || firstCenterY < y) {
                 return false;
+            }
         }
 
         double[] prms = getLinePrms(firstCenterX, firstCenterY, secondCenterX,
