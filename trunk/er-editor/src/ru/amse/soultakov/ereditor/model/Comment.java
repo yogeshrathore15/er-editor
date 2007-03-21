@@ -58,10 +58,15 @@ public class Comment {
     public boolean equals(Object obj) {
         return super.equals(obj);
     }
+    
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 
     public boolean acceptLinkWith(Entity entity) {
         for (Link l : links) {
-            if (l.getEntity() == entity) {
+            if (l.getEntity().equals(entity)) {
                 return false;
             }
         }

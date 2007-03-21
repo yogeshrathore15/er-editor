@@ -3,9 +3,9 @@
  */
 package ru.amse.soultakov.ereditor.model;
 
-import java.util.ArrayList;
+import static ru.amse.soultakov.ereditor.util.Utils.newLinkedHashSet;
+
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -16,41 +16,42 @@ import java.util.Set;
  */
 public class Entity implements Iterable<Attribute> {
 
-    /**
-     * 
-     */
+    private static final String PARAM_CANT_BE_NULL = "Param must be non null value"; //$NON-NLS-1$
+
+    private static final String ATTIBUTES_CANT_BE_NULL = "Attributes can't be null"; //$NON-NLS-1$
+
+    private static final String RELATIONSHIP_CANT_BE_NULL = "Relationship can't be null"; //$NON-NLS-1$
+
     private String name;
 
-    /**
-     * 
-     */
-    private final List<Attribute> attributes;
+    private final Set<Attribute> attributes;
+    
+    private final Set<Attribute> primaryKey = newLinkedHashSet();
+    
+    private final Set<Attribute> uniqueAttributes = newLinkedHashSet();
 
-    /**
-     * 
-     */
-    private final Set<Relationship> relationships = new HashSet<Relationship>();
+    private final Set<Relationship> relationships = newLinkedHashSet();
 
-    private final Set<Link> links = new HashSet<Link>();
+    private final Set<Link> links = newLinkedHashSet();
 
     /**
      * @param name
      */
     public Entity(String name) {
         setName(name);
-        attributes = new ArrayList<Attribute>();
+        attributes = newLinkedHashSet();
     }
 
     /**
      * @param name
      * @param attributes
      */
-    public Entity(String name, List<Attribute> attributes) {
+    public Entity(String name, Set<Attribute> attributes) {
         if (attributes == null) {
-            throw new IllegalArgumentException("Attributes can't be null");
+            throw new IllegalArgumentException(ATTIBUTES_CANT_BE_NULL);
         }
         setName(name);
-        this.attributes = new ArrayList<Attribute>(attributes);
+        this.attributes = newLinkedHashSet(attributes);
     }
 
     /**
@@ -65,7 +66,7 @@ public class Entity implements Iterable<Attribute> {
      */
     public void setName(String name) {
         if (name == null) {
-            throw new IllegalArgumentException("Param must be non null value");
+            throw new IllegalArgumentException(PARAM_CANT_BE_NULL);
         }
         this.name = name;
     }
@@ -99,7 +100,7 @@ public class Entity implements Iterable<Attribute> {
 
     public boolean addRelationship(Relationship relationship) {
         if (relationship == null) {
-            throw new IllegalArgumentException("Relationship can't be null");
+            throw new IllegalArgumentException(RELATIONSHIP_CANT_BE_NULL);
         }
         return relationships.add(relationship);
     }
@@ -114,7 +115,7 @@ public class Entity implements Iterable<Attribute> {
 
     public boolean addLink(Link link) {
         if (link == null) {
-            throw new IllegalArgumentException("Relationship can't be null");
+            throw new IllegalArgumentException(RELATIONSHIP_CANT_BE_NULL);
         }
         return links.add(link);
     }
@@ -137,18 +138,23 @@ public class Entity implements Iterable<Attribute> {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         final Entity other = (Entity) obj;
         if (name == null) {
-            if (other.name != null)
+            if (other.name != null) {
                 return false;
-        } else if (!name.equals(other.name))
+            }
+        } else if (!name.equals(other.name)) {
             return false;
+        }
         return true;
     }
 
@@ -157,8 +163,8 @@ public class Entity implements Iterable<Attribute> {
         return name;
     }
 
-    public List<Attribute> getAttributes() {
-        return Collections.unmodifiableList(attributes);
+    public Set<Attribute> getAttributes() {
+        return Collections.unmodifiableSet(attributes);
     }
 
     public Set<Link> getLinks() {

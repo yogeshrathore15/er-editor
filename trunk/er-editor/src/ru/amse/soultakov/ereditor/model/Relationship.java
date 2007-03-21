@@ -92,28 +92,37 @@ public class Relationship {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         final Relationship other = (Relationship) obj;
         if (firstEnd == null) {
-            if (other.firstEnd != null)
+            if (other.firstEnd != null) {
                 return false;
-        } else if (!firstEnd.equals(other.firstEnd))
+            }
+        } else if (!firstEnd.equals(other.firstEnd)) {
             return false;
+        }
         if (name == null) {
-            if (other.name != null)
+            if (other.name != null) {
                 return false;
-        } else if (!name.equals(other.name))
+            }
+        } else if (!name.equals(other.name)) {
             return false;
+        }
         if (secondEnd == null) {
-            if (other.secondEnd != null)
+            if (other.secondEnd != null) {
                 return false;
-        } else if (!secondEnd.equals(other.secondEnd))
+            }
+        } else if (!secondEnd.equals(other.secondEnd)) {
             return false;
+        }
         return true;
     }
 

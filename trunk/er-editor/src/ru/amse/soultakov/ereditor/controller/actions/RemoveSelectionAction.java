@@ -15,6 +15,7 @@ import ru.amse.soultakov.ereditor.controller.DiagramEditor;
  */
 public class RemoveSelectionAction extends AbstractAction {
 
+    static final long serialVersionUID = 1L;
     private DiagramEditor diagramEditor;
 
     /**

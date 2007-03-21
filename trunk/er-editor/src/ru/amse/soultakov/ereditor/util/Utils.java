@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.Set;
 
 public class Utils {
 
@@ -22,6 +23,10 @@ public class Utils {
     public static <T> LinkedHashSet<T> newLinkedHashSet() {
         return new LinkedHashSet<T>();
     }
+    
+    public static <T> LinkedHashSet<T> newLinkedHashSet(Set<T> set) {
+        return new LinkedHashSet<T>(set);
+    }    
 
     public static <T, E> HashMap<T, E> newHashMap() {
         return new HashMap<T, E>();
