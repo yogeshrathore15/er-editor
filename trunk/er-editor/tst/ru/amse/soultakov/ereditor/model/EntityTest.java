@@ -9,14 +9,9 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static ru.amse.soultakov.ereditor.model.RelationshipMultiplicity.ONE_ONLY;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import org.junit.Test;
-
-import com.sun.org.apache.bcel.internal.classfile.Attribute;
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.AttributeType;
 
 public class EntityTest {
 
@@ -38,14 +33,6 @@ public class EntityTest {
     }
 
     @Test
-    public void testEntityStringListOfAttribute() {
-        List<Attribute> attributes = new ArrayList<Attribute>();
-        attributes.add(new Attribute("Attribute1", AttributeType.INTEGER));
-        Entity entity = new Entity(NAME, attributes);
-        assertEquals(entity.iterator().next().getName(), "Attribute1");
-    }
-
-    @Test
     public void testGetName() {
         Entity entity = new Entity(NAME);
         assertEquals(entity.getName(), NAME);
@@ -63,9 +50,9 @@ public class EntityTest {
     @Test
     public void testIterator() {
         Entity entity = new Entity(NAME);
-        entity.addAttribute(new Attribute("1"));
-        entity.addAttribute(new Attribute("2"));
-        Attribute attribute = new Attribute("3");
+        entity.addAttribute(new Attribute("1", null, false));
+        entity.addAttribute(new Attribute("2", null, false));
+        Attribute attribute = new Attribute("3", null, false);
         entity.addAttribute(attribute);
         int count = 0;
         for (Attribute a : entity) {
@@ -81,9 +68,9 @@ public class EntityTest {
     @Test
     public void testRemoveAttributeAttribute() {
         Entity entity = new Entity(NAME);
-        Attribute attribute = new Attribute("1");
+        Attribute attribute = new Attribute("1", null, false);
         entity.addAttribute(attribute);
-        entity.addAttribute(new Attribute("2"));
+        entity.addAttribute(new Attribute("2", null, false));
         assertTrue(entity.getAttributes().size() == 2);
         entity.removeAttribute(attribute);
         assertTrue(entity.getAttributes().size() == 1);
@@ -153,7 +140,7 @@ public class EntityTest {
     @Test
     public void testEqualsObject() {
         Entity entity1 = new Entity(NAME);
-        Attribute attribute = new Attribute("1");
+        Attribute attribute = new Attribute("1", null, false);
         entity1.addAttribute(attribute);
         Entity entity2 = new Entity(NAME);
         entity2.addAttribute(attribute);
