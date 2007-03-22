@@ -3,11 +3,14 @@
  */
 package ru.amse.soultakov.ereditor.util;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
+
+import ru.amse.soultakov.ereditor.view.Viewable;
 
 public class CommonUtils {
 
@@ -42,6 +45,22 @@ public class CommonUtils {
             System.out.println(iterator.next());
         }
         System.out.println("}");
+    }
+    
+    public static Point getRightBottomPoint(Set<? extends Viewable> set) {
+        return getRightBottomPoint(set, new Point(0,0));
+    }
+    
+    public static Point getRightBottomPoint(Set<? extends Viewable> set, Point currentMax) {
+        for(Viewable v : set) {
+            if (v.getX() + v.getWidth() > currentMax.x) {
+                currentMax.x = v.getX() + v.getWidth();
+            }
+            if (v.getY() + v.getHeight() > currentMax.y) {
+                currentMax.y = v.getY() + v.getHeight();
+            }
+        }
+        return currentMax;
     }
 
 }

@@ -3,6 +3,7 @@
  */
 package ru.amse.soultakov.ereditor.view;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -76,6 +77,10 @@ public class SelectedItems implements Iterable<Viewable> {
      */
     public boolean isEmpty() {
         return selectedViews.isEmpty();
+    }
+    
+    public Set<Viewable> getAsSet() {
+        return Collections.unmodifiableSet(selectedViews);
     }
 
     /*

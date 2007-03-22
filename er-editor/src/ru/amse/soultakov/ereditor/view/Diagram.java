@@ -21,6 +21,7 @@ import ru.amse.soultakov.ereditor.model.ERModel;
 import ru.amse.soultakov.ereditor.model.Entity;
 import ru.amse.soultakov.ereditor.model.Link;
 import ru.amse.soultakov.ereditor.model.Relationship;
+import ru.amse.soultakov.ereditor.util.CommonUtils;
 
 public class Diagram {
 
@@ -182,23 +183,11 @@ public class Diagram {
         }
         return null;
     }
-    
-    private static Point getRightBottomPoint(Set<? extends Viewable> set, Point currentMax) {
-        for(Viewable v : set) {
-        	if (v.getX() + v.getWidth() > currentMax.x) {
-        		currentMax.x = v.getX() + v.getWidth();
-        	}
-            if (v.getY() + v.getHeight() > currentMax.y) {
-                currentMax.y = v.getY() + v.getHeight();
-            }
-        }
-        return currentMax;
-    }
-    
+        
     public Dimension getSize() {
         Point currentMax = new Point(0,0);
-        getRightBottomPoint(entityViews, currentMax);
-        getRightBottomPoint(commentViews, currentMax);
+        CommonUtils.getRightBottomPoint(entityViews, currentMax);
+        CommonUtils.getRightBottomPoint(commentViews, currentMax);
         return new Dimension(currentMax.x, currentMax.y);
     }
 
