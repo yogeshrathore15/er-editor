@@ -42,7 +42,7 @@ public class DiagramEditor extends JComponent {
 
     private static final Dimension MIN_SIZE = new Dimension(300, 300);
 
-    static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     private final Diagram diagram = new Diagram();
 
@@ -52,7 +52,11 @@ public class DiagramEditor extends JComponent {
 
     private final RemoveItemsVisitor itemsRemover = new RemoveItemsVisitor();
 
-    private final ViewablesListener viewablesListener = new MyViewablesListener();
+    private final ViewablesListener viewablesListener = new ViewablesListener() {
+        public void notify(Viewable viewable) {
+            repaint();
+        }
+    };
 
     private final List<CurrentToolListener> listeners = newArrayList();
 
@@ -259,16 +263,6 @@ public class DiagramEditor extends JComponent {
     protected void notifyListeners(Tool oldTool, Tool newTool) {
         for (CurrentToolListener ctl : listeners) {
             ctl.currentToolChanged(oldTool, newTool);
-        }
-    }
-
-    /**
-     * @author sma
-     * 
-     */
-    private final class MyViewablesListener implements ViewablesListener {
-        public void notify(Viewable viewable) {
-            repaint();
         }
     }
 

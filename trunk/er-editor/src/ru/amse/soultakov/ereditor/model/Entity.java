@@ -191,7 +191,7 @@ public class Entity implements Iterable<Attribute> {
     	return primaryKey.remove(attribute);
     }
     
-    public Set<? extends Set<Attribute>> getUniqueAttributes() {
+    public Set<? extends Set<? extends Attribute>> getUniqueAttributes() {
         return Collections.unmodifiableSet(uniqueAttributes);
     }
     

@@ -5,7 +5,6 @@ package ru.amse.soultakov.ereditor.controller.tools;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -15,6 +14,7 @@ import java.awt.event.MouseEvent;
 import java.util.Set;
 
 import ru.amse.soultakov.ereditor.controller.DiagramEditor;
+import ru.amse.soultakov.ereditor.util.CommonUtils;
 import ru.amse.soultakov.ereditor.view.SelectedItems;
 import ru.amse.soultakov.ereditor.view.Viewable;
 
@@ -98,8 +98,10 @@ public class SelectElementTool extends ToolAdapter {
                 v.setLocation(xPos >= 0 ? xPos : 0, yPos >= 0 ? yPos : 0);
             }
             diagramEditor.revalidate();
-            Dimension ps = diagramEditor.getPreferredSize();
-            diagramEditor.scrollRectToVisible(new Rectangle(ps.width ,ps.height,0,0));
+            Point p = CommonUtils.getRightBottomPoint(diagramEditor
+                    .getSelectedItems().getAsSet());
+            diagramEditor.scrollRectToVisible(new Rectangle(p.x, p.y, 0,
+                    0));
         }
     }
 
