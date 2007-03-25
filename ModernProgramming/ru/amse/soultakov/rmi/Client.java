@@ -44,10 +44,10 @@ public class Client {
         System.out.println("LastName : " + localPerson.getLastName());
         System.out.println("--------");
         System.out.println("Remote person:");
-        RemotePerson remotePerson = account.getRemotePerson();
-        System.out.println("FirstName : " + remotePerson.getFirstName());
-        System.out.println("LastName : " + remotePerson.getLastName());
-        System.out.println("--------");
+//        RemotePerson remotePerson = account.getRemotePerson();
+//        System.out.println("FirstName : " + remotePerson.getFirstName());
+//        System.out.println("LastName : " + remotePerson.getLastName());
+//        System.out.println("--------");
         System.out.println("Money: " + account.getAmount());
         System.out.println("Adding money");
         account.setAmount(account.getAmount() + 100);

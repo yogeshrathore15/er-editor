@@ -23,12 +23,7 @@ public class PriorityQueue<E extends Comparable<? super E>>{
     
     public void insert(E element) {
         contents.add(element);
-        System.out.println("**before inserting " + element);
-        showMaps();
         updateMaps(++currentNumber, contents.size() - 1);
-        System.out.println("--");
-        showMaps();
-        System.out.println("**after inserting " + element);
         siftUp(contents.size() - 1);
     }
     
@@ -59,15 +54,8 @@ public class PriorityQueue<E extends Comparable<? super E>>{
     public void decreaseKey(Integer number, E newValue) {
         currentNumber++;
         Integer index = numbersToIndices.get(number);
-        System.out.println("**before decreasing");
-        showMaps();
         contents.set(index, newValue);
         siftUp(index);
-    }
-
-    private void showMaps() {
-        System.out.println("Numbers to indices :" + numbersToIndices);
-        System.out.println("Indices to numbers :" + indicesToNumbers);
     }
 
     private int findIndex(E oldValue, int curIndex) {

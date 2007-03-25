@@ -1,0 +1,1 @@
+java ru.amse.soultakov.rmi.Client

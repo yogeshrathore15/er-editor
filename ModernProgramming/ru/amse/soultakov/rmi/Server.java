@@ -1,8 +1,9 @@
 package ru.amse.soultakov.rmi;
 
-import java.rmi.*;
-import java.rmi.server.*;
-import java.net.*;
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 
 /**
  * ƒанный класс демонстрирует работу с удаленными вызовоми методов на примере

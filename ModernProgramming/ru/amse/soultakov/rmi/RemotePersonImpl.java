@@ -3,6 +3,8 @@
  */
 package ru.amse.soultakov.rmi;
 
+import java.rmi.RemoteException;
+
 /**
  *  ласс, представл€ющий данные о владельце счета.  ласс поддерживает
  * RMI
@@ -36,9 +38,10 @@ public class RemotePersonImpl implements RemotePerson {
      *            фамили€ пользовател€
      * @param password
      *            пароль
+     * @throws RemoteException в случае ошибки при вызове удаленного метода
      */
     public RemotePersonImpl(final String firstName, final String lastName,
-            final String password) {
+            final String password) throws RemoteException {
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;

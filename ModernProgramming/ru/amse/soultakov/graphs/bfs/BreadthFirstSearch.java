@@ -78,9 +78,6 @@ public class BreadthFirstSearch {
         readData();
         bfs(1);
         printResult();
-        for (int i = 1; i < visited.length; i++) {
-            System.out.print(visited[i] + " ");
-        }
     }
 
     

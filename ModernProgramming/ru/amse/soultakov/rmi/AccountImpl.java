@@ -1,6 +1,7 @@
 package ru.amse.soultakov.rmi;
 
-import java.rmi.*;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 
 /**
  * Данный класс является реализацией интерфейса <code>Account</code>,
@@ -80,9 +81,9 @@ public class AccountImpl implements Account {
     /**
      * Возвращает данные о владельце, инкапсулированные в сериализуемом классе
      * 
-     * @return дынные о владельце
+     * @return данные о владельце
      */
-    public LocalPerson getLocalPerson() throws RemoteException {
+    public LocalPerson getLocalPerson() {
         return new LocalPersonImpl(firstName, lastName, password);
     }
 
@@ -93,7 +94,9 @@ public class AccountImpl implements Account {
      * @return данные о владельце
      */
     public RemotePerson getRemotePerson() throws RemoteException {
-        return new RemotePersonImpl(firstName, lastName, password);
+        RemotePersonImpl remotePersonImpl = new RemotePersonImpl(firstName, lastName, password);
+        UnicastRemoteObject.exportObject(remotePersonImpl);
+        return remotePersonImpl;
     }
 
     /**

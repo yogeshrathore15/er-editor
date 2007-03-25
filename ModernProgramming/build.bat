@@ -1,0 +1,1 @@
+call "D:\j2sdk\j2sdk_5_0\bin\rmic" ru.amse.soultakov.rmi.BankImpl
