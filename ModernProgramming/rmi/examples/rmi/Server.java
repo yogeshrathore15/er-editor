@@ -4,6 +4,12 @@ import java.rmi.*;
 import java.rmi.server.*;
 import java.net.*;
 
+/**
+ * Данный класс демонстрирует работу с удаленными вызовоми методов на примере
+ * банка и счетов. Он играет роль сервера, обрабатывающего забросы клиента.
+ * 
+ * @author Soultakov Maxim
+ */
 public class Server {
     public static void main(String[] args) {
         Bank bank = new BankImpl();
