@@ -2,11 +2,44 @@ package ru.amse.soultakov.rmi;
 
 import java.rmi.*;
 
+/**
+ * Данный интерфейс предоставляет функциональность банка. Доступны функции
+ * создания и получения счета по заданному уникальному номеру. анный интерфейс
+ * расширяет интерфейс <code>Remote</code>, что позволяет его использовать
+ * при выполнении удаленных методов (RMI).
+ * 
+ * @author Soultakov Maxim
+ */
 public interface Bank extends Remote {
-    // ‘®§¤ Ґв бзҐв
-    public Account createAccount(String id) 
-        throws RemoteException;
-    // ‚®§ўа й Ґв бзҐв
-    public Account getAccount(String id) 
-        throws RemoteException;
+
+    /**
+     * Создает счет с заданными параметрами.
+     * 
+     * @param id
+     *            уникальный номер счета
+     * @param firstName
+     *            имя владельца
+     * @param lastName
+     *            фамилия владельца
+     * @param password
+     *            пароль
+     * @return созданный счет
+     * @throws RemoteException
+     *             если возникает проблема с удаленным вызовом метода
+     */
+    public Account createAccount(String id, String firstName, String lastName,
+            String password) throws RemoteException;
+
+    /**
+     * Возвращает существующий счет или <code>null</code>, если счет с
+     * указаным уникальным номером не существует
+     * 
+     * @param id
+     *            уникальный номер счета
+     * @return существующий счет или <code>null</code>, если счет с указаным
+     *         уникальным номером не существует
+     * @throws RemoteException
+     *             если возникает проблема с удаленным вызовом метода
+     */
+    public Account getAccount(String id) throws RemoteException;
 }

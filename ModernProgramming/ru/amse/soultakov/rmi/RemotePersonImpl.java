@@ -1,30 +1,31 @@
-/*
- * Created on 13.03.2007
+/**
+ * 
  */
 package ru.amse.soultakov.rmi;
 
 /**
  * Класс, представляющий данные о владельце счета. Класс поддерживает
- * сериализацию
+ * RMI
  * 
  * @author Soultakov Maxim
+ * 
  */
-public class LocalPersonImpl implements LocalPerson {
+public class RemotePersonImpl implements RemotePerson {
 
     /**
      * Имя владельца
      */
-    private String firstName;
+    private final String firstName;
 
     /**
      * Фамилия владельца
      */
-    private String lastName;
+    private final String lastName;
 
     /**
      * Пароль владельца
      */
-    private String password;
+    private final String password;
 
     /**
      * Создает владельца с указанными именеи, фамилией и паролем.
@@ -36,7 +37,8 @@ public class LocalPersonImpl implements LocalPerson {
      * @param password
      *            пароль
      */
-    public LocalPersonImpl(String firstName, String lastName, String password) {
+    public RemotePersonImpl(final String firstName, final String lastName,
+            final String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
