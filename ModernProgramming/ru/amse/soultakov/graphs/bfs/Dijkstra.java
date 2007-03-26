@@ -9,11 +9,14 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 public class Dijkstra {
-    private static final int IMPOSSIBLE = Integer.MAX_VALUE;
+    private static final int INFINITY = Integer.MAX_VALUE;
 
     private static final String OUTPUT = "dijkstra.out";
 
@@ -97,21 +100,30 @@ public class Dijkstra {
         in.close();
     }
 
-    /**
-     * @param vertex
-     */
     private static void dijkstra() {
         if (results.length > 2) {
-            Arrays.fill(results, IMPOSSIBLE);
+            Arrays.fill(results, INFINITY);
             results[1] = 0;
             for (Edge e : graph[1]) {
                 results[e.getSecond()] = e.getCost();
             }
-            for(int i = 1; i < graph.length; i++) {
-                
+            Set<Integer> set = new HashSet<Integer>(results.length, 1.0f);
+            for(int i = 2; i < graph.length; i++) {
+            	set.add(i);
             }
-            for (int i = 1; i < results.length - 1; i++) {
-
+            while(!set.isEmpty()) {
+            	Integer u = null;
+            	int min = INFINITY;
+            	for(Integer tmp : set) {
+            		if(results[tmp] < min) {
+            			min = results[tmp];
+            			u = tmp;
+            		}
+            	}
+            	set.remove(u);
+            	for(Edge e : graph[u]) {
+            		results[e.getSecond()] = Math.min(e.getSecond(), results[u] + e.getCost()); 
+            	}
             }
         }
     }

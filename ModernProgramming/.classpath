@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path=""/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/j2sdk_5_0"/>
-	<classpathentry kind="lib" path="lib/rmi.jar"/>
-	<classpathentry kind="output" path=""/>
+	<classpathentry path="" kind="src"/>
+	<classpathentry path="org.eclipse.jdt.launching.JRE_CONTAINER" kind="con"/>
+	<classpathentry path="lib/rmi.jar" kind="lib"/>
+	<classpathentry path="" kind="output"/>
 </classpath>
