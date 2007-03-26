@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 public class Dijkstra {
-    private static final int INFINITY = Integer.MAX_VALUE;
+    private static final int INFINITY = 10001;
 
     private static final String OUTPUT = "dijkstra.out";
 
@@ -75,6 +75,15 @@ public class Dijkstra {
         public int compareTo(Edge o) {
             return this.cost - o.cost;
         }
+        
+        /* (non-Javadoc)
+         * @see java.lang.Object#toString()
+         */
+        @Override
+        public String toString()
+        {
+        	return "f = " + first + " s = " + second + " c = " + cost;
+        }
     }
 
     private static List<Edge>[] graph;
@@ -107,6 +116,7 @@ public class Dijkstra {
             for (Edge e : graph[1]) {
                 results[e.getSecond()] = e.getCost();
             }
+            System.out.println(Arrays.toString(results));
             Set<Integer> set = new HashSet<Integer>(results.length, 1.0f);
             for(int i = 2; i < graph.length; i++) {
             	set.add(i);
@@ -121,9 +131,13 @@ public class Dijkstra {
             		}
             	}
             	set.remove(u);
+            	System.out.println("u = " + u + "  graph[u]" + graph[u]);
             	for(Edge e : graph[u]) {
+            		System.out.println(results[e.getSecond()]);
+            		System.out.println(results[u] + e.getCost());
             		results[e.getSecond()] = Math.min(e.getSecond(), results[u] + e.getCost()); 
             	}
+            	System.out.println(Arrays.toString(results));
             }
         }
     }
