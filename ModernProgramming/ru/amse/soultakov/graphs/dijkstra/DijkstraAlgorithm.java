@@ -62,7 +62,7 @@ public class DijkstraAlgorithm {
         int verticesCount = Integer.parseInt(strings[0]) + 1;
         int edgesCount = Integer.parseInt(strings[1]);
         graph = new Graph(verticesCount);
-        for (int i = 0; i < verticesCount - 1; i++) {
+        for (int i = 1; i < verticesCount; i++) {
             graph.addVertex(new Vertex());
         }
         for (int i = 0; i < edgesCount; i++) {
