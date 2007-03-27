@@ -1,1 +1,0 @@
-call "D:\j2sdk\j2sdk_5_0\bin\rmic" "F:\eclipse_workspace\ModernProgrammingSVN\rmi\examples\rmi\AccountImpl.class" BankImpl.class LocalPersonImpl.class RemotePersonImpl.class

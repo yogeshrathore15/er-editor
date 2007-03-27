@@ -40,7 +40,6 @@ public class LocalPersonImpl implements LocalPerson {
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
-//        System.out.println(firstName, lastName, password);
     }
 
     /**
