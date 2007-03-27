@@ -57,6 +57,7 @@ public class FloydAlgorithm {
         graph = new int[size][size];
         for (int i = 1; i < graph.length; i++) {
             Arrays.fill(graph[i], IMPOSSIBLE);
+            graph[i][i] = 0;
         }
         sc.nextInt();
         while (sc.hasNext()) {
