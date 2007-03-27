@@ -24,11 +24,6 @@ public class Graph {
     }
 
     public Edge getEdge(Vertex v1, Vertex v2) {
-        for (int i = 0; i < graph[v1.getNumber()].size(); i++) {
-            if ((graph[v1.getNumber()].get(i)).getEnd() == v2.getNumber()) {
-                return graph[v1.getNumber()].get(i);
-            }
-        }
         for (Edge e : graph[v1.getNumber()]) {
             if (e.getEnd() == v2.getNumber()) {
                 return e;

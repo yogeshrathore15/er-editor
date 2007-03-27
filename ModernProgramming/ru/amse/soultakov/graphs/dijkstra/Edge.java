@@ -1,21 +1,21 @@
 package ru.amse.soultakov.graphs.dijkstra;
 
 public class Edge {
-	private int weight;
+	private int setCost;
 
 	private int finish;
 
 	public Edge(int weight, int finish) {
-		this.weight = weight;
+		this.setCost = weight;
 		this.finish = finish;
 	}
 
-	public int getWeight() {
-		return weight;
+	public int getSetCost() {
+		return setCost;
 	}
 
-	public void setWeight(int weight) {
-		this.weight = weight;
+	public void setSetCost(int weight) {
+		this.setCost = weight;
 	}
 
 	public int getEnd() {
