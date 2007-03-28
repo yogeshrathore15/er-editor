@@ -21,9 +21,11 @@ public class Entity implements Iterable<Attribute> {
 
     private final Set<Attribute> attributes = newLinkedHashSet();;
     
-    private final Set<Attribute> primaryKey = newLinkedHashSet();
+    private final Index<Attribute> primaryKey = new Index<Attribute>();
     
-    private final Set<Set<Attribute>> uniqueAttributes = newLinkedHashSet();
+    private final Set<Index<FKAttribute>> foreignKey = newLinkedHashSet();
+    
+    private final Set<Index<Attribute>> uniqueAttributes = newLinkedHashSet();
 
     private final Set<Relationship> relationships = newLinkedHashSet();
 
@@ -183,21 +185,21 @@ public class Entity implements Iterable<Attribute> {
         attributes.add(attribute);
     }
     
-    public Set<Attribute> getPrimaryKey() {
-        return Collections.unmodifiableSet(primaryKey);
+    public Index<Attribute> getPrimaryKey() {
+        return primaryKey;
     }
     
     public boolean removeFromPrimaryKey(Attribute attribute) {
     	return primaryKey.remove(attribute);
     }
     
-    public Set<? extends Set<? extends Attribute>> getUniqueAttributes() {
+    public Set<Index<Attribute>> getUniqueAttributes() {
         return Collections.unmodifiableSet(uniqueAttributes);
     }
     
     public void addToUniqueAttributes(Set<Attribute> set) {
     	attributes.addAll(set);
-    	uniqueAttributes.add(set);
+    	uniqueAttributes.add(new Index<Attribute>(set));
     }
     
     public boolean removeFromUniqueAttributes(Set<Attribute> set) {
