@@ -8,6 +8,6 @@ package ru.amse.soultakov.ereditor.view;
  * 
  */
 public interface ViewablesListener {
-    public void notify(Viewable viewable);
+    public void notify(IViewable viewable);
 
 }

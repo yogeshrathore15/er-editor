@@ -128,7 +128,7 @@ public class RelationshipView extends Line {
         this.secondEntity = secondEntity;
     }
 
-    public <R, D> R acceptVisitor(Visitor<R, D> visitor, D data) {
+    public <R, D> R acceptVisitor(IVisitor<R, D> visitor, D data) {
         return visitor.visit(this, data);
     }
 

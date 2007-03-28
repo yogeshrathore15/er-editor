@@ -43,7 +43,7 @@ public class Diagram {
 
     private final Map<Link, LinkView> linkToView = newHashMap();
 
-    private final List<DiagramListener> listeners = new ArrayList<DiagramListener>();
+    private final List<IDiagramListener> listeners = new ArrayList<IDiagramListener>();
 
     public Diagram() {
 
@@ -175,7 +175,7 @@ public class Diagram {
         return getViewInPoint(commentViews, x, y);
     }
 
-    private static <E extends Viewable> E getViewInPoint(Set<E> set, int x, int y) {
+    private static <E extends IViewable> E getViewInPoint(Set<E> set, int x, int y) {
         for (E v : set) {
             if (v.containsPoint(x, y)) {
                 return v;
@@ -191,16 +191,16 @@ public class Diagram {
         return new Dimension(currentMax.x, currentMax.y);
     }
 
-    public void addDiagramListener(DiagramListener diagramListener) {
-        listeners.add(diagramListener);
+    public void addDiagramListener(IDiagramListener iDiagramListener) {
+        listeners.add(iDiagramListener);
     }
 
-    public boolean removeListener(DiagramListener diagramListener) {
-        return listeners.remove(diagramListener);
+    public boolean removeListener(IDiagramListener iDiagramListener) {
+        return listeners.remove(iDiagramListener);
     }
 
     private void notifyListeners() {
-        for (DiagramListener dl : listeners) {
+        for (IDiagramListener dl : listeners) {
             dl.diagramModified(this);
         }
     }

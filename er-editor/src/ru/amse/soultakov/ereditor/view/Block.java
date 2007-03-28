@@ -9,7 +9,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Block implements Viewable {
+public abstract class Block implements IViewable {
 
     private static final int SELECTION_SQUARE_SIZE = 5;
 
