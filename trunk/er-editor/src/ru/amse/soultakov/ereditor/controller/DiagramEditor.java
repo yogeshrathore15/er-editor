@@ -24,15 +24,15 @@ import ru.amse.soultakov.ereditor.controller.tools.Tool;
 import ru.amse.soultakov.ereditor.view.Block;
 import ru.amse.soultakov.ereditor.view.CommentView;
 import ru.amse.soultakov.ereditor.view.Diagram;
-import ru.amse.soultakov.ereditor.view.DiagramListener;
+import ru.amse.soultakov.ereditor.view.IDiagramListener;
 import ru.amse.soultakov.ereditor.view.EntityView;
 import ru.amse.soultakov.ereditor.view.Line;
 import ru.amse.soultakov.ereditor.view.LinkView;
 import ru.amse.soultakov.ereditor.view.RelationshipView;
 import ru.amse.soultakov.ereditor.view.SelectedItems;
-import ru.amse.soultakov.ereditor.view.Viewable;
+import ru.amse.soultakov.ereditor.view.IViewable;
 import ru.amse.soultakov.ereditor.view.ViewablesListener;
-import ru.amse.soultakov.ereditor.view.Visitor;
+import ru.amse.soultakov.ereditor.view.IVisitor;
 
 /**
  * @author sma
@@ -53,7 +53,7 @@ public class DiagramEditor extends JComponent {
     private final RemoveItemsVisitor itemsRemover = new RemoveItemsVisitor();
 
     private final ViewablesListener viewablesListener = new ViewablesListener() {
-        public void notify(Viewable viewable) {
+        public void notify(IViewable iViewable) {
             repaint();
         }
     };
@@ -62,7 +62,7 @@ public class DiagramEditor extends JComponent {
 
     public DiagramEditor() {
         initMouseListener();
-        diagram.addDiagramListener(new DiagramListener() {
+        diagram.addDiagramListener(new IDiagramListener() {
             public void diagramModified(Diagram diagram) {
                 repaint();
             }
@@ -98,7 +98,7 @@ public class DiagramEditor extends JComponent {
      * 
      */
     public void removeSelection() {
-        for (Viewable s : getSelectedItems()) {
+        for (IViewable s : getSelectedItems()) {
             removeSelectable(s);
         }
         repaint();
@@ -152,8 +152,8 @@ public class DiagramEditor extends JComponent {
         }
     }
 
-    private void paintSet(Set<? extends Viewable> setToPaint, Graphics2D graphics) {
-        for (Viewable v : setToPaint) {
+    private void paintSet(Set<? extends IViewable> setToPaint, Graphics2D graphics) {
+        for (IViewable v : setToPaint) {
             v.paint(graphics);
         }
     }
@@ -248,7 +248,7 @@ public class DiagramEditor extends JComponent {
         return diagram.removeLinkView(view);
     }
 
-    private boolean removeSelectable(Viewable s) {
+    private boolean removeSelectable(IViewable s) {
         return s.acceptVisitor(itemsRemover, null);
     }
 
@@ -266,7 +266,7 @@ public class DiagramEditor extends JComponent {
         }
     }
 
-    private class RemoveItemsVisitor implements Visitor<Boolean, Void> {
+    private class RemoveItemsVisitor implements IVisitor<Boolean, Void> {
 
         public RemoveItemsVisitor() {
         }
