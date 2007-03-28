@@ -7,14 +7,14 @@ package ru.amse.soultakov.ereditor.model;
  */
 public class Attribute extends AbstractAttribute {
     
-    private SimpleAttributeType type;
+    private IAttributeType type;
 
     private boolean notNull;
 
     /**
      * @param name
      */
-    public Attribute(String name, SimpleAttributeType type, boolean notNull,
+    public Attribute(String name, IAttributeType type, boolean notNull,
             String defaultValue) {
         super(name, defaultValue);
         this.type = type;
@@ -28,7 +28,7 @@ public class Attribute extends AbstractAttribute {
         this.name = name;
     }
 
-    public void setType(SimpleAttributeType type) {
+    public void setType(IAttributeType type) {
         this.type = type;
     }
 
@@ -41,13 +41,18 @@ public class Attribute extends AbstractAttribute {
     }
 
     @Override
-    public SimpleAttributeType getType() {
+    public IAttributeType getType() {
         return type;
     }
 
     @Override
     public boolean isNotNull() {
         return notNull;
+    }
+    
+    @Override
+    public String toString() {
+        return super.toString();
     }
 
 }

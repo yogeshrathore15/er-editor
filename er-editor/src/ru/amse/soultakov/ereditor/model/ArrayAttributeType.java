@@ -20,7 +20,7 @@ public class ArrayAttributeType implements IAttributeType {
     }
 
     public String getName() {
-        return "Array of " + arrayType.getName();
+        return arrayType.getName() + "[]";
     }
 
     public boolean isCorrectString(String value) {

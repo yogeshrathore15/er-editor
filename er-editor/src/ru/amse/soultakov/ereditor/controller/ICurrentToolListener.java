@@ -5,7 +5,7 @@ package ru.amse.soultakov.ereditor.controller;
 
 import ru.amse.soultakov.ereditor.controller.tools.Tool;
 
-public interface CurrentToolListener {
+public interface ICurrentToolListener {
 
     void currentToolChanged(Tool oldTool, Tool newTool);
 

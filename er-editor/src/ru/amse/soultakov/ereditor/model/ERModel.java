@@ -7,6 +7,7 @@ import static ru.amse.soultakov.ereditor.model.RelationshipMultiplicity.ONE_ONLY
 
 import static ru.amse.soultakov.ereditor.util.CommonUtils.hasNull;
 import static ru.amse.soultakov.ereditor.util.CommonUtils.newLinkedHashSet;
+import static ru.amse.soultakov.ereditor.model.SimpleAttributeType.*;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -36,6 +37,15 @@ public class ERModel {
     public Entity addNewEntity() {
         Entity entity = new Entity(generator.getEntityName());
         entities.add(entity);
+        
+        entity.addAttribute(new Attribute("Attribute1", INTEGER, false, null));
+        entity.addAttribute(new Attribute("Attr2", DOUBLE, false, null));
+        entity.addAttribute(new Attribute("Attr3", CHAR, false, null));
+        entity.addAttribute(new Attribute("Attr4", new ArrayAttributeType(CHAR), false, null));
+        
+        for(int i = 5; i < 10 - System.currentTimeMillis() % 5; i++) {
+            entity.addAttribute(new Attribute("Attr" + i, new ArrayAttributeType(INTEGER), false, null));
+        }
         return entity;
     }
 

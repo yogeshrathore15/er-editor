@@ -28,8 +28,8 @@ public class EntityView extends Block {
             return (int) o1.getWidth() - (int) o2.getWidth();
         }
     };
-    
-    protected static final Dimension MIN_SIZE = new Dimension(50,100);
+
+    protected static final Dimension MIN_SIZE = new Dimension(50, 100);
 
     protected Entity entity;
 
@@ -43,26 +43,40 @@ public class EntityView extends Block {
 
     public void paint(Graphics2D graphics) {
         recalculateSize(graphics);
-        
+
         drawBackground(graphics);
         drawBorder(graphics);
-        
-        drawTitle(graphics);                
+
+        int curY = drawTitle(graphics);
+        drawAttributes(graphics, curY);
         drawSelection(graphics);
+    }
+
+    private int drawAttributes(Graphics2D graphics, int curY) {
+        int newCurY = curY;
+        for (Attribute a : entity) {
+            newCurY = drawString(graphics, a.toString(), newCurY);
+        }
+        return newCurY;
     }
 
     private void drawBackground(Graphics2D graphics) {
         graphics.setColor(Color.LIGHT_GRAY);
         graphics.fillRect(getX(), getY(), getWidth(), getHeight());
-        graphics.setColor(Color.BLACK);
     }
 
-    private Rectangle2D drawTitle(Graphics2D graphics) {
+    private int drawTitle(Graphics2D graphics) {
         graphics.setColor(Color.BLACK);
-        Rectangle2D bounds = getStringBounds(graphics, entity.getName());
-        graphics.drawString(entity.getName(), getX(), getY()
-                + (int) bounds.getHeight());
-        return bounds;
+        int titleY = drawString(graphics, entity.getName(), getY());
+        graphics.drawLine(getX(), titleY, getX() + getWidth(), titleY);
+        return titleY;
+    }
+
+    private int drawString(Graphics2D graphics, String string, int curY) {
+        Rectangle2D bounds = getStringBounds(graphics, string);
+        int newCurY = curY + (int) bounds.getHeight();
+        graphics.drawString(string, MARGIN * 2 + getX(), newCurY);
+        return newCurY + MARGIN;
     }
 
     @Override
@@ -71,12 +85,18 @@ public class EntityView extends Block {
                 .size() + 1);
         bounds.add(getStringBounds(graphics, entity.getName()));
         for (Attribute a : entity) {
-            bounds.add(getStringBounds(graphics, a.getName()));
+            bounds.add(getStringBounds(graphics, a.toString()));
         }
-        Rectangle2D withMaxHeight = Collections.max(bounds, HEIGHT_COMPARATOR);
+        int height = 0;
+        for (Rectangle2D r : bounds) {
+            height += r.getHeight() + MARGIN * 2;
+        }
         Rectangle2D withMaxWidth = Collections.max(bounds, WIDTH_COMPARATOR);
-        return new Dimension((int)withMaxWidth.getWidth(), (int)withMaxHeight
-                .getHeight());
+        height = (int) (height < MIN_SIZE.getHeight() ? MIN_SIZE.getHeight()
+                : height);
+        int width = (int) (withMaxWidth.getWidth() < MIN_SIZE.getWidth() ? MIN_SIZE
+                .getWidth() : withMaxWidth.getWidth());
+        return new Dimension(width + MARGIN * 4, height + MARGIN * 2);
     }
 
     public Entity getEntity() {
