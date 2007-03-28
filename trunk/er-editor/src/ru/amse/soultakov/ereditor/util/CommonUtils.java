@@ -10,7 +10,7 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import ru.amse.soultakov.ereditor.view.Viewable;
+import ru.amse.soultakov.ereditor.view.IViewable;
 
 public class CommonUtils {
 
@@ -47,12 +47,12 @@ public class CommonUtils {
         System.out.println("}");
     }
     
-    public static Point getRightBottomPoint(Set<? extends Viewable> set) {
+    public static Point getRightBottomPoint(Set<? extends IViewable> set) {
         return getRightBottomPoint(set, new Point(0,0));
     }
     
-    public static Point getRightBottomPoint(Set<? extends Viewable> set, Point currentMax) {
-        for(Viewable v : set) {
+    public static Point getRightBottomPoint(Set<? extends IViewable> set, Point currentMax) {
+        for(IViewable v : set) {
             if (v.getX() + v.getWidth() > currentMax.x) {
                 currentMax.x = v.getX() + v.getWidth();
             }
