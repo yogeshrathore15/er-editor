@@ -16,7 +16,7 @@ import java.util.Set;
 import ru.amse.soultakov.ereditor.controller.DiagramEditor;
 import ru.amse.soultakov.ereditor.util.CommonUtils;
 import ru.amse.soultakov.ereditor.view.SelectedItems;
-import ru.amse.soultakov.ereditor.view.Viewable;
+import ru.amse.soultakov.ereditor.view.IViewable;
 
 public class SelectElementTool extends ToolAdapter {
 
@@ -92,7 +92,7 @@ public class SelectElementTool extends ToolAdapter {
      */
     private void dragSelection(MouseEvent e) {
         if (canDragSelection(e)) {
-            for (Viewable v : getSelectedItems()) {
+            for (IViewable v : getSelectedItems()) {
                 int xPos = e.getXOnScreen() - currentPoint.x + v.getX();
                 int yPos = e.getYOnScreen() - currentPoint.y + v.getY();
                 v.setLocation(xPos >= 0 ? xPos : 0, yPos >= 0 ? yPos : 0);
@@ -106,7 +106,7 @@ public class SelectElementTool extends ToolAdapter {
     }
 
     private boolean canDragSelection(MouseEvent e) {
-        for (Viewable v : getSelectedItems()) {
+        for (IViewable v : getSelectedItems()) {
             int xPos = e.getXOnScreen() - currentPoint.x + v.getX();
             int yPos = e.getYOnScreen() - currentPoint.y + v.getY();
             if (xPos < 0 || yPos < 0) {
@@ -140,11 +140,11 @@ public class SelectElementTool extends ToolAdapter {
         return diagramEditor.getSelectedItems();
     }
 
-    private void tryToSelectViews(Set<? extends Viewable> views) {
+    private void tryToSelectViews(Set<? extends IViewable> views) {
         if (startPoint == null) {
             return;
         }
-        for (Viewable view : views) {
+        for (IViewable view : views) {
             if (view.isInsideRectangle(startPoint.x, startPoint.y, endPoint.x,
                     endPoint.y)) {
                 getSelectedItems().add(view);
@@ -154,8 +154,8 @@ public class SelectElementTool extends ToolAdapter {
         }
     }
 
-    private boolean selectViews(MouseEvent e, Set<? extends Viewable> views) {
-        for (Viewable view : views) {
+    private boolean selectViews(MouseEvent e, Set<? extends IViewable> views) {
+        for (IViewable view : views) {
             if (view.containsPoint(e.getX(), e.getY())) {
                 if (e.isControlDown()) {
                     if (view.isSelected()) {
