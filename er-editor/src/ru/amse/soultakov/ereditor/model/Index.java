@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.Set;
 
-public class Index<T extends Attribute> implements Iterable<T> {
+public class Index<T extends AbstractAttribute> implements Iterable<T> {
 
     private final Set<T> attributes;
 

@@ -31,7 +31,7 @@ import ru.amse.soultakov.ereditor.view.LinkView;
 import ru.amse.soultakov.ereditor.view.RelationshipView;
 import ru.amse.soultakov.ereditor.view.SelectedItems;
 import ru.amse.soultakov.ereditor.view.IViewable;
-import ru.amse.soultakov.ereditor.view.ViewablesListener;
+import ru.amse.soultakov.ereditor.view.IViewableListener;
 import ru.amse.soultakov.ereditor.view.IVisitor;
 
 /**
@@ -52,7 +52,7 @@ public class DiagramEditor extends JComponent {
 
     private final RemoveItemsVisitor itemsRemover = new RemoveItemsVisitor();
 
-    private final ViewablesListener viewablesListener = new ViewablesListener() {
+    private final IViewableListener iViewableListener = new IViewableListener() {
         public void notify(IViewable iViewable) {
             repaint();
         }
@@ -71,26 +71,26 @@ public class DiagramEditor extends JComponent {
 
     public EntityView addEntity(int x, int y) {
         EntityView entity = diagram.addNewEntityView(x, y);
-        entity.addListener(viewablesListener);
+        entity.addListener(iViewableListener);
         return entity;
     }
 
     public CommentView addComment(int x, int y) {
         CommentView comment = diagram.addNewCommentView(x, y);
-        comment.addListener(viewablesListener);
+        comment.addListener(iViewableListener);
         return comment;
     }
 
     public Line addLink(EntityView entityView, CommentView commentView) {
         Line link = diagram.addNewLinkView(entityView, commentView);
-        link.addListener(viewablesListener);
+        link.addListener(iViewableListener);
         return link;
     }
 
     public RelationshipView addRelationship(EntityView first, EntityView second) {
         RelationshipView relationship = diagram
                 .addNewRelationshipView(first, second);
-        relationship.addListener(viewablesListener);
+        relationship.addListener(iViewableListener);
         return relationship;
     }
 
@@ -229,22 +229,22 @@ public class DiagramEditor extends JComponent {
     }
 
     public boolean removeEntity(EntityView view) {
-        view.removeListener(viewablesListener);
+        view.removeListener(iViewableListener);
         return diagram.removeEntityView(view);
     }
 
     public boolean removeComment(CommentView view) {
-        view.removeListener(viewablesListener);
+        view.removeListener(iViewableListener);
         return diagram.removeCommentView(view);
     }
 
     public boolean removeRelationship(RelationshipView view) {
-        view.removeListener(viewablesListener);
+        view.removeListener(iViewableListener);
         return diagram.removeRelationshipView(view);
     }
 
     public boolean removeLink(LinkView view) {
-        view.removeListener(viewablesListener);
+        view.removeListener(iViewableListener);
         return diagram.removeLinkView(view);
     }
 

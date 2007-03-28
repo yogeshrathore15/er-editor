@@ -18,7 +18,7 @@ public abstract class Block implements IViewable {
 
     protected static final int MARGIN = 3;
 
-    private final List<ViewablesListener> listeners = new ArrayList<ViewablesListener>();
+    private final List<IViewableListener> listeners = new ArrayList<IViewableListener>();
 
     private boolean selected;
 
@@ -182,17 +182,17 @@ public abstract class Block implements IViewable {
     }
 
     protected void notifyListeners() {
-        for (ViewablesListener vl : listeners) {
+        for (IViewableListener vl : listeners) {
             vl.notify(this);
         }
     }
 
-    public void addListener(ViewablesListener viewablesListener) {
-        listeners.add(viewablesListener);
+    public void addListener(IViewableListener iViewableListener) {
+        listeners.add(iViewableListener);
     }
 
-    public boolean removeListener(ViewablesListener viewablesListener) {
-        return listeners.remove(viewablesListener);
+    public boolean removeListener(IViewableListener iViewableListener) {
+        return listeners.remove(iViewableListener);
     }
 
     protected abstract Rectangle2D getContentBounds(Graphics2D graphics);
