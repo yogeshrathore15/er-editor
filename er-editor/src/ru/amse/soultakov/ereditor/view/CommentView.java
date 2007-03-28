@@ -4,6 +4,7 @@
 package ru.amse.soultakov.ereditor.view;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
@@ -24,16 +25,18 @@ public class CommentView extends Block {
     }
 
     public void paint(Graphics2D graphics) {
-        Rectangle2D bounds = getContentBounds(graphics);
-        //$ANALYSIS-IGNORE,codereview.java.rules.casting.RuleCastingPrimitives
-        setSize((int)bounds.getWidth(),100);
+        recalculateSize(graphics);
         
-        graphics.setColor(CommentView.BACKGROUND_COLOR);
-        graphics.fillRect(getX(), getY(), getWidth(), getHeight());
-        graphics.setColor(Color.BLACK);
+        drawBackground(graphics);
         drawBorder(graphics);
         drawTitle(graphics);
         drawSelection(graphics);
+    }
+
+    private void drawBackground(Graphics2D graphics) {
+        graphics.setColor(CommentView.BACKGROUND_COLOR);
+        graphics.fillRect(getX(), getY(), getWidth(), getHeight());
+        graphics.setColor(Color.BLACK);
     }
 
     private Rectangle2D drawTitle(Graphics2D graphics) {
@@ -57,8 +60,9 @@ public class CommentView extends Block {
      * @return
      */
     @Override
-    protected Rectangle2D getContentBounds(Graphics2D graphics) {
-        return getStringBounds(graphics, comment.getComment());
+    protected Dimension getContentBounds(Graphics2D graphics) {
+        Rectangle2D r = getStringBounds(graphics, comment.getComment());
+        return new Dimension((int)r.getWidth(), 100);//(int)r.getHeight());
     }
 
     public <R, D> R acceptVisitor(IVisitor<R, D> visitor, D data) {

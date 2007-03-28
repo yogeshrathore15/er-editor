@@ -72,8 +72,8 @@ public interface Tool {
 
     public void paintAfter(Graphics2D graphics);
 
-    public void addListener(ToolListener listener);
+    public void addListener(IToolListener listener);
 
-    public boolean removeListener(ToolListener listener);
+    public boolean removeListener(IToolListener listener);
 
 }

@@ -5,6 +5,7 @@ package ru.amse.soultakov.ereditor.model;
 
 import static ru.amse.soultakov.ereditor.util.CommonUtils.newLinkedHashSet;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Set;
@@ -15,9 +16,9 @@ import java.util.Set;
  */
 public class Entity implements Iterable<Attribute> {
 
-    private static final String PARAM_CANT_BE_NULL = "Param must be non null value"; //$NON-NLS-1$
+    private static final String PARAM_CANT_BE_NULL = "Param must be non null value"; 
 
-    private static final String RELATIONSHIP_CANT_BE_NULL = "Relationship can't be null"; //$NON-NLS-1$
+    private static final String RELATIONSHIP_CANT_BE_NULL = "Relationship can't be null"; 
 
     private final Set<Attribute> attributes = newLinkedHashSet();;
     
@@ -149,15 +150,15 @@ public class Entity implements Iterable<Attribute> {
         return name;
     }
 
-    public Set<Attribute> getAttributes() {
+    public Collection<Attribute> getAttributes() {
         return Collections.unmodifiableSet(attributes);
     }
 
-    public Set<Link> getLinks() {
+    public Collection<Link> getLinks() {
         return Collections.unmodifiableSet(links);
     }
 
-    public Set<Relationship> getRelationships() {
+    public Collection<Relationship> getRelationships() {
         return Collections.unmodifiableSet(relationships);
     }
 
@@ -193,7 +194,7 @@ public class Entity implements Iterable<Attribute> {
     	return primaryKey.remove(attribute);
     }
     
-    public Set<Index<Attribute>> getUniqueAttributes() {
+    public Collection<Index<Attribute>> getUniqueAttributes() {
         return Collections.unmodifiableSet(uniqueAttributes);
     }
     
@@ -204,6 +205,10 @@ public class Entity implements Iterable<Attribute> {
     
     public boolean removeFromUniqueAttributes(Set<Attribute> set) {
     	return uniqueAttributes.remove(set);
+    }
+    
+    public Collection<Index<FKAttribute>> getForeignKey() {
+        return Collections.unmodifiableSet(foreignKey);
     }
 
 }
