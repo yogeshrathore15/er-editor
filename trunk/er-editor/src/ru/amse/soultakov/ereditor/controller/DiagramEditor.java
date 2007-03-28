@@ -58,7 +58,7 @@ public class DiagramEditor extends JComponent {
         }
     };
 
-    private final List<CurrentToolListener> listeners = newArrayList();
+    private final List<ICurrentToolListener> listeners = newArrayList();
 
     public DiagramEditor() {
         initMouseListener();
@@ -252,16 +252,16 @@ public class DiagramEditor extends JComponent {
         return s.acceptVisitor(itemsRemover, null);
     }
 
-    public void addToolChangeListener(CurrentToolListener ctl) {
+    public void addToolChangeListener(ICurrentToolListener ctl) {
         listeners.add(ctl);
     }
 
-    public boolean removeToolChangeListener(CurrentToolListener ctl) {
+    public boolean removeToolChangeListener(ICurrentToolListener ctl) {
         return listeners.remove(ctl);
     }
 
     protected void notifyListeners(Tool oldTool, Tool newTool) {
-        for (CurrentToolListener ctl : listeners) {
+        for (ICurrentToolListener ctl : listeners) {
             ctl.currentToolChanged(oldTool, newTool);
         }
     }

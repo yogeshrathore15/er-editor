@@ -18,12 +18,17 @@ public abstract class AbstractAttribute {
         return name;
     }
 
-    public abstract SimpleAttributeType getType();
+    public abstract IAttributeType getType();
 
     public abstract boolean isNotNull();
 
     public String getDefaultValue() {
         return this.defaultValue;
+    }
+    
+    @Override
+    public String toString() {
+        return getName() + " : " + getType().getName();
     }
 
 }

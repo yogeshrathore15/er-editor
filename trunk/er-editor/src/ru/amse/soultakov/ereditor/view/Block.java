@@ -3,6 +3,7 @@
  */
 package ru.amse.soultakov.ereditor.view;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.font.FontRenderContext;
@@ -154,6 +155,7 @@ public abstract class Block implements IViewable {
      * @param graphics
      */
     protected void drawBorder(Graphics2D graphics) {
+        graphics.setColor(Color.BLACK);
         graphics.drawRect(getX(), getY(), getWidth(), getHeight());
     }
 

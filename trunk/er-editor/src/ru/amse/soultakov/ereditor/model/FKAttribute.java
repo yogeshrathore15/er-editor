@@ -17,7 +17,7 @@ public class FKAttribute extends AbstractAttribute {
     }
 
     @Override
-    public SimpleAttributeType getType() {
+    public IAttributeType getType() {
         return attribute.getType();
     }
 
