@@ -34,7 +34,7 @@ public abstract class Line implements IViewable {
 
     protected int secondCenterY;
 
-    private final List<ViewablesListener> listeners = new ArrayList<ViewablesListener>();
+    private final List<IViewableListener> listeners = new ArrayList<IViewableListener>();
 
     /**
      * @param block
@@ -106,7 +106,7 @@ public abstract class Line implements IViewable {
     }
 
     protected void notifyListeners() {
-        for (ViewablesListener vl : listeners) {
+        for (IViewableListener vl : listeners) {
             vl.notify(this);
         }
     }
@@ -190,12 +190,12 @@ public abstract class Line implements IViewable {
                 && (bottom > bottomCenterY);
     }
 
-    public void addListener(ViewablesListener viewablesListener) {
-        listeners.add(viewablesListener);
+    public void addListener(IViewableListener iViewableListener) {
+        listeners.add(iViewableListener);
     }
 
-    public boolean removeListener(ViewablesListener viewablesListener) {
-        return listeners.remove(viewablesListener);
+    public boolean removeListener(IViewableListener iViewableListener) {
+        return listeners.remove(iViewableListener);
     }
 
 }

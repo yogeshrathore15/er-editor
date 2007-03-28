@@ -32,7 +32,7 @@ public interface IViewable {
 
     <R, D> R acceptVisitor(IVisitor<R, D> visitor, D data);
 
-    void addListener(ViewablesListener viewablesListener);
+    void addListener(IViewableListener iViewableListener);
 
-    boolean removeListener(ViewablesListener viewablesListener);
+    boolean removeListener(IViewableListener iViewableListener);
 }
