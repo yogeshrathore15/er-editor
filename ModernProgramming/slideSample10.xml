@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<!DOCTYPE slideshow SYSTEM "slideshow3.dtd" [
+  <!ENTITY product  "WonderWidget">
+  <!ENTITY products "WonderWidgets">   
+  <!ENTITY copyright SYSTEM "copyright.xml">
+]> 
+
+<slideshow 
+    title="&product; Slide Show"
+    date="Date of publication"
+    author="Yours Truly"
+    >
+    
+    <?my.presentation.Program QUERY="exec, tech, all"?>
+    
+    <myElement price="1.0" />
+    
+    <myElement price="3.0" />
+    
+    <myElement price="-1.1" />
+   
+    <myElement price="-1.9" />  
+    
+</slideshow>
