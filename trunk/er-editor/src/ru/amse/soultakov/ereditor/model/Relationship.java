@@ -1,17 +1,10 @@
-/**
- * 
- */
 package ru.amse.soultakov.ereditor.model;
 
+
 /**
- * @author sma
- * 
+ * @author Soultakov Maxim
  */
 public class Relationship {
-    /**
-     * 
-     */
-    private String name;
 
     /**
      * 
@@ -28,28 +21,12 @@ public class Relationship {
      * @param firstEnd
      * @param secondEnd
      */
-    public Relationship(String name, RelationshipEnd firstEnd,
-            RelationshipEnd secondEnd) {
-        if ((name == null) || (firstEnd == null) || (secondEnd == null)) {
+    public Relationship(RelationshipEnd firstEnd, RelationshipEnd secondEnd) {
+        if ((firstEnd == null) || (secondEnd == null)) {
             throw new IllegalArgumentException("Arguments must be non null values");
         }
-        this.name = name;
         this.firstEnd = firstEnd;
         this.secondEnd = secondEnd;
-    }
-
-    /**
-     * @return
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * @param name
-     */
-    public void setName(String name) {
-        this.name = name;
     }
 
     /**
@@ -85,7 +62,6 @@ public class Relationship {
         final int PRIME = 31;
         int result = 1;
         result = PRIME * result + ((firstEnd == null) ? 0 : firstEnd.hashCode());
-        result = PRIME * result + ((name == null) ? 0 : name.hashCode());
         result = PRIME * result + ((secondEnd == null) ? 0 : secondEnd.hashCode());
         return result;
     }
@@ -107,13 +83,6 @@ public class Relationship {
                 return false;
             }
         } else if (!firstEnd.equals(other.firstEnd)) {
-            return false;
-        }
-        if (name == null) {
-            if (other.name != null) {
-                return false;
-            }
-        } else if (!name.equals(other.name)) {
             return false;
         }
         if (secondEnd == null) {

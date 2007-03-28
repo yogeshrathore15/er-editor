@@ -4,6 +4,7 @@
 package ru.amse.soultakov.ereditor.model;
 
 import static ru.amse.soultakov.ereditor.model.RelationshipMultiplicity.ONE_ONLY;
+
 import static ru.amse.soultakov.ereditor.util.CommonUtils.hasNull;
 import static ru.amse.soultakov.ereditor.util.CommonUtils.newLinkedHashSet;
 
@@ -54,9 +55,8 @@ public class ERModel {
                     "Both entities must present in diagram and be unequal to each other");
         }
         Relationship relationship = new Relationship(
-                generator.getRelationshipName(),
-                new RelationshipEnd(first, ONE_ONLY), new RelationshipEnd(second,
-                        ONE_ONLY));
+                new RelationshipEnd(first, ONE_ONLY, "End1"), new RelationshipEnd(second,
+                        ONE_ONLY,"End2"));
         relationships.add(relationship);
         first.addRelationship(relationship);
         second.addRelationship(relationship);

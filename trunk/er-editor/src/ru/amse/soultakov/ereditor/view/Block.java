@@ -3,6 +3,7 @@
  */
 package ru.amse.soultakov.ereditor.view;
 
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.Rectangle2D;
@@ -34,7 +35,7 @@ public abstract class Block implements IViewable {
         super();
         setLocation(x, y);
     }
-    
+
     public void setSize(int width, int height) {
         if (width != getWidth() || height != getHeight()) {
             this.width = width;
@@ -161,10 +162,8 @@ public abstract class Block implements IViewable {
      * @return
      */
     public void recalculateSize(Graphics2D graphics) {
-        Rectangle2D bounds = getContentBounds(graphics);
-        //$ANALYSIS-IGNORE,codereview.java.rules.casting.RuleCastingPrimitives
-        setSize((int)bounds.getWidth(),100);
-        
+        Dimension bounds = getContentBounds(graphics);
+        setSize(bounds.width, bounds.height);
     }
 
     public boolean containsPoint(int x, int y) {
@@ -195,7 +194,7 @@ public abstract class Block implements IViewable {
         return listeners.remove(iViewableListener);
     }
 
-    protected abstract Rectangle2D getContentBounds(Graphics2D graphics);
+    protected abstract Dimension getContentBounds(Graphics2D graphics);
 
     @Override
     public String toString() {

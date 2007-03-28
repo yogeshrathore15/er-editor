@@ -3,7 +3,7 @@
  */
 package ru.amse.soultakov.ereditor.controller.tools;
 
-public interface ToolListener {
+public interface IToolListener {
 
     void operationFinished();
 

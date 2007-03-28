@@ -16,18 +16,18 @@ import java.util.List;
  */
 public abstract class ToolAdapter implements Tool {
 
-    private final List<ToolListener> toolListeners = new ArrayList<ToolListener>();
+    private final List<IToolListener> iToolListeners = new ArrayList<IToolListener>();
 
-    public void addListener(ToolListener listener) {
-        toolListeners.add(listener);
+    public void addListener(IToolListener listener) {
+        iToolListeners.add(listener);
     }
 
-    public boolean removeListener(ToolListener listener) {
-        return toolListeners.remove(listener);
+    public boolean removeListener(IToolListener listener) {
+        return iToolListeners.remove(listener);
     }
 
     protected void operationFinished() {
-        for (ToolListener tl : toolListeners) {
+        for (IToolListener tl : iToolListeners) {
             tl.operationFinished();
         }
     }

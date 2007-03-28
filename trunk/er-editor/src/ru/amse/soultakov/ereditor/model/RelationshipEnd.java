@@ -8,6 +8,9 @@ package ru.amse.soultakov.ereditor.model;
  * 
  */
 public class RelationshipEnd {
+    
+    private String name;
+    
     /**
      * 
      */
@@ -22,11 +25,12 @@ public class RelationshipEnd {
      * @param entity
      * @param multiplicity
      */
-    public RelationshipEnd(Entity entity, RelationshipMultiplicity multiplicity) {
+    public RelationshipEnd(Entity entity, RelationshipMultiplicity multiplicity, String name) {
         super();
         if ((entity == null) || (multiplicity == null)) {
             throw new IllegalArgumentException("Arguments must be non-null values");
         }
+        this.name = name;
         this.entity = entity;
         this.multiplicity = multiplicity;
     }
@@ -50,6 +54,14 @@ public class RelationshipEnd {
      */
     public RelationshipMultiplicity getMultiplicity() {
         return multiplicity;
+    }
+    
+    public String getName() {
+        return this.name;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**
