@@ -8,7 +8,7 @@ import java.awt.Graphics2D;
 /**
  * @author Soultakov Maxim
  */
-public interface Viewable {
+public interface IViewable {
 
     void setSelected(boolean selected);
 
@@ -30,7 +30,7 @@ public interface Viewable {
 
     boolean isInsideRectangle(int x1, int y1, int x2, int y2);
 
-    <R, D> R acceptVisitor(Visitor<R, D> visitor, D data);
+    <R, D> R acceptVisitor(IVisitor<R, D> visitor, D data);
 
     void addListener(ViewablesListener viewablesListener);
 

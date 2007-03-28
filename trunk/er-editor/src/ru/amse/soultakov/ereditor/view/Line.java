@@ -7,7 +7,7 @@ import java.awt.BasicStroke;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Line implements Viewable {
+public abstract class Line implements IViewable {
 
     protected static final BasicStroke SIMPLE_STROKE = new BasicStroke(1.0f);
 

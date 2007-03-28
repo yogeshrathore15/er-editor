@@ -7,7 +7,7 @@ package ru.amse.soultakov.ereditor.view;
  * @author sma
  * 
  */
-public interface Visitor<R, D> {
+public interface IVisitor<R, D> {
 
     R visit(CommentView commentView, D data);
 

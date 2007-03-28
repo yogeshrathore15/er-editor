@@ -85,7 +85,7 @@ public class EntityView extends Block {
         return getStringBounds(graphics, entity.getName());
     }
 
-    public <R, D> R acceptVisitor(Visitor<R, D> visitor, D data) {
+    public <R, D> R acceptVisitor(IVisitor<R, D> visitor, D data) {
         return visitor.visit(this, data);
     }
 

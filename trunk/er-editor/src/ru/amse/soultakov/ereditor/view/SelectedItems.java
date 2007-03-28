@@ -11,12 +11,12 @@ import java.util.Set;
 /**
  * @author Soultakov Maxim
  */
-public class SelectedItems implements Iterable<Viewable> {
+public class SelectedItems implements Iterable<IViewable> {
 
     /**
      * 
      */
-    private Set<Viewable> selectedViews = new HashSet<Viewable>();
+    private Set<IViewable> selectedViews = new HashSet<IViewable>();
 
     /**
      * 
@@ -28,7 +28,7 @@ public class SelectedItems implements Iterable<Viewable> {
      * @param item
      * @return
      */
-    public boolean add(Viewable item) {
+    public boolean add(IViewable item) {
         item.setSelected(true);
         return selectedViews.add(item);
     }
@@ -37,7 +37,7 @@ public class SelectedItems implements Iterable<Viewable> {
      * @param item
      * @return
      */
-    public boolean remove(Viewable item) {
+    public boolean remove(IViewable item) {
         if (item != null) {
             item.setSelected(false);
             return selectedViews.remove(item);
@@ -49,7 +49,7 @@ public class SelectedItems implements Iterable<Viewable> {
      * @param item
      * @return
      */
-    public boolean contains(Viewable item) {
+    public boolean contains(IViewable item) {
         return selectedViews.contains(item);
     }
 
@@ -57,18 +57,18 @@ public class SelectedItems implements Iterable<Viewable> {
      * 
      */
     public void clear() {
-        for (Viewable item : selectedViews) {
+        for (IViewable item : selectedViews) {
             item.setSelected(false);
         }
         selectedViews.clear();
     }
 
-    public void setSelection(Viewable viewable) {
+    public void setSelection(IViewable viewable) {
         clear();
         add(viewable);
     }
 
-    public Iterator<Viewable> iterator() {
+    public Iterator<IViewable> iterator() {
         return selectedViews.iterator();
     }
 
@@ -79,7 +79,7 @@ public class SelectedItems implements Iterable<Viewable> {
         return selectedViews.isEmpty();
     }
     
-    public Set<Viewable> getAsSet() {
+    public Set<IViewable> getAsSet() {
         return Collections.unmodifiableSet(selectedViews);
     }
 
