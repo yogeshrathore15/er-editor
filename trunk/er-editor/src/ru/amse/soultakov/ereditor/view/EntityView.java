@@ -17,11 +17,7 @@ import ru.amse.soultakov.ereditor.model.Entity;
  */
 public class EntityView extends Block {
 
-    private static final Comparator<Rectangle2D> HEIGHT_COMPARATOR = new Comparator<Rectangle2D>() {
-        public int compare(Rectangle2D o1, Rectangle2D o2) {
-            return (int) o1.getHeight() - (int) o2.getHeight();
-        }
-    };
+    private static final Color BACKGROUND_COLOR = new Color(210, 210, 210);
 
     private static final Comparator<Rectangle2D> WIDTH_COMPARATOR = new Comparator<Rectangle2D>() {
         public int compare(Rectangle2D o1, Rectangle2D o2) {
@@ -48,20 +44,30 @@ public class EntityView extends Block {
         drawBorder(graphics);
 
         int curY = drawTitle(graphics);
+        curY = drawPK(graphics, curY);
         drawAttributes(graphics, curY);
         drawSelection(graphics);
     }
 
+    private int drawPK(Graphics2D graphics, int curY) {
+        int newCurY = curY;
+        for (Attribute a : entity.getPrimaryKey()) {
+            newCurY = drawString(graphics, a.toString(), newCurY);
+        }
+        graphics.drawLine(getX(), newCurY, getX() + getWidth(), newCurY);
+        return newCurY;
+    }
+
     private int drawAttributes(Graphics2D graphics, int curY) {
         int newCurY = curY;
-        for (Attribute a : entity) {
+        for (Attribute a : entity.getAttributesExceptPK()) {
             newCurY = drawString(graphics, a.toString(), newCurY);
         }
         return newCurY;
     }
 
     private void drawBackground(Graphics2D graphics) {
-        graphics.setColor(Color.LIGHT_GRAY);
+        graphics.setColor(BACKGROUND_COLOR);
         graphics.fillRect(getX(), getY(), getWidth(), getHeight());
     }
 
@@ -96,7 +102,7 @@ public class EntityView extends Block {
                 : height);
         int width = (int) (withMaxWidth.getWidth() < MIN_SIZE.getWidth() ? MIN_SIZE
                 .getWidth() : withMaxWidth.getWidth());
-        return new Dimension(width + MARGIN * 4, height + MARGIN * 2);
+        return new Dimension(width + MARGIN * 4, height);
     }
 
     public Entity getEntity() {

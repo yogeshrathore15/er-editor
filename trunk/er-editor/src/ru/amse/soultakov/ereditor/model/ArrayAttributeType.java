@@ -6,13 +6,23 @@ package ru.amse.soultakov.ereditor.model;
 public class ArrayAttributeType implements IAttributeType {
 
     private SimpleAttributeType arrayType;
+    private int dimension;
     
-    public ArrayAttributeType(SimpleAttributeType arrayType) {
+    public ArrayAttributeType(SimpleAttributeType arrayType, int dimension) {
         this.arrayType = arrayType;
+        this.dimension = dimension;
     }
     
     public SimpleAttributeType getArrayType() {
         return this.arrayType;
+    }
+    
+    public int getDimension() {
+        return this.dimension;
+    }
+    
+    public void setDimension(int dimension) {
+        this.dimension = dimension;
     }
     
     public void setArrayType(SimpleAttributeType arrayType) {
@@ -20,7 +30,7 @@ public class ArrayAttributeType implements IAttributeType {
     }
 
     public String getName() {
-        return arrayType.getName() + "[]";
+        return arrayType.getName() + "[" + dimension + "]";
     }
 
     public boolean isCorrectString(String value) {
