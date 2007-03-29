@@ -38,14 +38,18 @@ public class ERModel {
         Entity entity = new Entity(generator.getEntityName());
         entities.add(entity);
         
-        entity.addAttribute(new Attribute("Attribute1", INTEGER, false, null));
-        entity.addAttribute(new Attribute("Attr2", DOUBLE, false, null));
+        Attribute pk1 = new Attribute("Attribute1", INTEGER, false, null);
+        entity.addAttribute(pk1);
+        Attribute pk2 = new Attribute("Attr2", DOUBLE, false, null);
+        entity.addAttribute(pk2);
         entity.addAttribute(new Attribute("Attr3", CHAR, false, null));
-        entity.addAttribute(new Attribute("Attr4", new ArrayAttributeType(CHAR), false, null));
+        entity.addAttribute(new Attribute("Attr4", new ArrayAttributeType(CHAR, 5), false, null));
         
-        for(int i = 5; i < 10 - System.currentTimeMillis() % 5; i++) {
-            entity.addAttribute(new Attribute("Attr" + i, new ArrayAttributeType(INTEGER), false, null));
+        for(int i = 5; i < 5 + System.currentTimeMillis() % 3; i++) {
+            entity.addAttribute(new Attribute("Attr" + i, new ArrayAttributeType(INTEGER, 10), false, null));
         }
+        entity.addToPrimaryKey(pk2);
+        entity.addToPrimaryKey(pk1);
         return entity;
     }
 

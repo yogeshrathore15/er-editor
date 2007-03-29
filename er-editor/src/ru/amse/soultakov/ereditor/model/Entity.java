@@ -186,6 +186,12 @@ public class Entity implements Iterable<Attribute> {
         attributes.add(attribute);
     }
     
+    public Collection<Attribute> getAttributesExceptPK() {
+        Set<Attribute> set = newLinkedHashSet(attributes);
+        set.removeAll(primaryKey.getAttributes());
+        return set;
+    }
+    
     public Index<Attribute> getPrimaryKey() {
         return primaryKey;
     }

@@ -133,7 +133,6 @@ public class DiagramEditor extends JComponent {
     protected void paintChildren(Graphics g) {
         Graphics2D graphics = (Graphics2D) g;
         currentTool.paintBefore(graphics);
-
         // for correct relations painting we should recalculate the size of
         // blocks
         recalculateSize(diagram.getCommentViews(), graphics);
