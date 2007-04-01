@@ -6,8 +6,6 @@ package ru.amse.soultakov.ereditor.view;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.font.FontRenderContext;
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,10 +13,7 @@ public abstract class Block implements IViewable {
 
     private static final int SELECTION_SQUARE_SIZE = 5;
 
-    private static final FontRenderContext FONT_RENDER_CONTEXT = new FontRenderContext(
-            null, false, false);
-
-    protected static final int MARGIN = 3;
+    public static final int MARGIN = 3;
 
     private final List<IViewableListener> listeners = new ArrayList<IViewableListener>();
 
@@ -31,9 +26,11 @@ public abstract class Block implements IViewable {
     private int height;
 
     private int width;
+    
+    protected Diagram diagram;
 
-    public Block(int x, int y) {
-        super();
+    public Block(Diagram diagram, int x, int y) {
+        this.diagram = diagram;
         setLocation(x, y);
     }
 
@@ -65,14 +62,6 @@ public abstract class Block implements IViewable {
             this.setX(x);
             this.setY(y);
         }
-    }
-
-    /**
-     * @param graphics
-     * @return
-     */
-    protected Rectangle2D getStringBounds(Graphics2D graphics, String string) {
-        return graphics.getFont().getStringBounds(string, FONT_RENDER_CONTEXT);
     }
 
     protected void drawSelection(Graphics2D graphics) {

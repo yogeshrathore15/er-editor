@@ -40,7 +40,7 @@ import ru.amse.soultakov.ereditor.view.IVisitor;
  */
 public class DiagramEditor extends JComponent {
 
-    private static final Dimension MIN_SIZE = new Dimension(300, 300);
+    private static final Dimension MIN_SIZE = new Dimension(400, 400);
 
     private static final long serialVersionUID = 1L;
 
@@ -52,8 +52,8 @@ public class DiagramEditor extends JComponent {
 
     private final RemoveItemsVisitor itemsRemover = new RemoveItemsVisitor();
 
-    private final IViewableListener iViewableListener = new IViewableListener() {
-        public void notify(IViewable iViewable) {
+    private final IViewableListener viewableListener = new IViewableListener() {
+        public void notify(IViewable viewable) {
             repaint();
         }
     };
@@ -71,26 +71,26 @@ public class DiagramEditor extends JComponent {
 
     public EntityView addEntity(int x, int y) {
         EntityView entity = diagram.addNewEntityView(x, y);
-        entity.addListener(iViewableListener);
+        entity.addListener(viewableListener);
         return entity;
     }
 
     public CommentView addComment(int x, int y) {
         CommentView comment = diagram.addNewCommentView(x, y);
-        comment.addListener(iViewableListener);
+        comment.addListener(viewableListener);
         return comment;
     }
 
     public Line addLink(EntityView entityView, CommentView commentView) {
         Line link = diagram.addNewLinkView(entityView, commentView);
-        link.addListener(iViewableListener);
+        link.addListener(viewableListener);
         return link;
     }
 
     public RelationshipView addRelationship(EntityView first, EntityView second) {
         RelationshipView relationship = diagram
                 .addNewRelationshipView(first, second);
-        relationship.addListener(iViewableListener);
+        relationship.addListener(viewableListener);
         return relationship;
     }
 
@@ -138,9 +138,9 @@ public class DiagramEditor extends JComponent {
         recalculateSize(diagram.getCommentViews(), graphics);
         recalculateSize(diagram.getEntityViews(), graphics);
         paintSet(diagram.getLinkViews(), graphics);
-        paintSet(diagram.getRelationshipViews(), graphics);
         paintSet(diagram.getCommentViews(), graphics);
         paintSet(diagram.getEntityViews(), graphics);
+        paintSet(diagram.getRelationshipViews(), graphics);
 
         currentTool.paintAfter(graphics);
     }
@@ -228,22 +228,22 @@ public class DiagramEditor extends JComponent {
     }
 
     public boolean removeEntity(EntityView view) {
-        view.removeListener(iViewableListener);
+        view.removeListener(viewableListener);
         return diagram.removeEntityView(view);
     }
 
     public boolean removeComment(CommentView view) {
-        view.removeListener(iViewableListener);
+        view.removeListener(viewableListener);
         return diagram.removeCommentView(view);
     }
 
     public boolean removeRelationship(RelationshipView view) {
-        view.removeListener(iViewableListener);
+        view.removeListener(viewableListener);
         return diagram.removeRelationshipView(view);
     }
 
     public boolean removeLink(LinkView view) {
-        view.removeListener(iViewableListener);
+        view.removeListener(viewableListener);
         return diagram.removeLinkView(view);
     }
 

@@ -52,7 +52,7 @@ public class Diagram {
     public EntityView addNewEntityView(int x, int y) {
         notifyListeners();
         Entity entity = erModel.addNewEntity();
-        EntityView entityView = new EntityView(entity, x, y);
+        EntityView entityView = new EntityView(this, entity, x, y);
         entityViews.add(entityView);
         entityToView.put(entity, entityView);
         return entityView;
@@ -61,7 +61,7 @@ public class Diagram {
     public CommentView addNewCommentView(int x, int y) {
         notifyListeners();
         Comment comment = erModel.addNewComment();
-        CommentView commentView = new CommentView(comment, x, y);
+        CommentView commentView = new CommentView(this, comment, x, y);
         commentViews.add(commentView);
         commentToView.put(comment, commentView);
         return commentView;
@@ -76,13 +76,12 @@ public class Diagram {
             throw new IllegalArgumentException(
                     "Both EntityViews must present in diagram and be unequal");
         }
-        notifyListeners();
         Relationship relationship = erModel.addNewRealtionship(first.getEntity(),
                 second.getEntity());
-        RelationshipView relationshipView = new RelationshipView(relationship,
-                first, second);
+        RelationshipView relationshipView = new RelationshipView(this, relationship);
         relationshipViews.add(relationshipView);
         relationshipToView.put(relationship, relationshipView);
+        notifyListeners();
         return relationshipView;
     }
 
@@ -95,17 +94,16 @@ public class Diagram {
             throw new IllegalArgumentException(
                     "EntityView and CommentView must present in diagram");
         }
-        notifyListeners();
         Link link = erModel.addNewLink(entityView.getEntity(), commentView
                 .getComment());
-        LinkView linkView = new LinkView(link, entityView, commentView);
+        LinkView linkView = new LinkView(this, link);
         linkViews.add(linkView);
         linkToView.put(link, linkView);
+        notifyListeners();
         return linkView;
     }
 
     public boolean removeEntityView(EntityView entityView) {
-        notifyListeners();
         if (erModel.removeEntity(entityView.getEntity())) {
             Entity entity = entityView.getEntity();
             for (Iterator<Relationship> i = entity.relationshipsIterator(); i
@@ -117,14 +115,15 @@ public class Diagram {
                 Link link = i.next();
                 linkViews.remove(linkToView.remove(link));
             }
+            notifyListeners();
             return entityViews.remove(entityToView.remove(entity));
         }
         return false;
     }
 
     public boolean removeRelationshipView(RelationshipView view) {
-        notifyListeners();
         if (erModel.removeRelationship(view.getRelationship())) {
+            notifyListeners();
             return relationshipViews.remove(relationshipToView.remove(view
                     .getRelationship()));
         }
@@ -132,20 +131,20 @@ public class Diagram {
     }
 
     public boolean removeCommentView(CommentView commentView) {
-        notifyListeners();
         if (erModel.removeComment(commentView.getComment())) {
             Comment comment = commentView.getComment();
             for (Iterator<Link> i = comment.linksIterator(); i.hasNext();) {
                 linkViews.remove(linkToView.remove(i.next()));
             }
+            notifyListeners();
             return commentViews.remove(commentToView.remove(comment));
         }
         return false;
     }
 
     public boolean removeLinkView(LinkView linkView) {
-        notifyListeners();
         if (erModel.removeLink(linkView.getLink())) {
+            notifyListeners();
             return linkViews.remove(linkToView.remove(linkView.getLink()));
         }
         return false;
@@ -203,6 +202,14 @@ public class Diagram {
         for (IDiagramListener dl : listeners) {
             dl.diagramModified(this);
         }
+    }
+
+    public EntityView getEntityView(Entity entity) {
+        return entityToView.get(entity);
+    }
+
+    public CommentView getCommentView(Comment comment) {
+        return commentToView.get(comment);
     }
 
 }

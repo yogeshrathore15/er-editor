@@ -9,6 +9,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
 import ru.amse.soultakov.ereditor.model.Comment;
+import ru.amse.soultakov.ereditor.util.GraphicsUtils;
 
 /**
  * @author Soultakov Maxim
@@ -19,8 +20,8 @@ public class CommentView extends Block {
 
     private Comment comment;
 
-    public CommentView(Comment comment, int x, int y) {
-        super(x, y);
+    public CommentView(Diagram diagram, Comment comment, int x, int y) {
+        super(diagram, x, y);
         this.comment = comment;
     }
 
@@ -41,7 +42,7 @@ public class CommentView extends Block {
 
     private Rectangle2D drawTitle(Graphics2D graphics) {
         graphics.setColor(Color.BLACK);
-        Rectangle2D bounds = getStringBounds(graphics, comment.getComment());
+        Rectangle2D bounds = GraphicsUtils.getStringBounds(graphics, comment.getComment());
         //$ANALYSIS-IGNORE,codereview.java.rules.casting.RuleCastingPrimitives
         graphics.drawString(comment.getComment(),getX(),getY() + (int)bounds.getHeight());
         
@@ -61,7 +62,7 @@ public class CommentView extends Block {
      */
     @Override
     protected Dimension getContentBounds(Graphics2D graphics) {
-        Rectangle2D r = getStringBounds(graphics, comment.getComment());
+        Rectangle2D r = GraphicsUtils.getStringBounds(graphics, comment.getComment());
         return new Dimension((int)r.getWidth(), 100);//(int)r.getHeight());
     }
 
