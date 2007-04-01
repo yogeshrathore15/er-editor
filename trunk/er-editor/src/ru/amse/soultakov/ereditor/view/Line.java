@@ -4,6 +4,7 @@
 package ru.amse.soultakov.ereditor.view;
 
 import java.awt.BasicStroke;
+import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,36 +34,23 @@ public abstract class Line implements IViewable {
     protected int secondCenterX;
 
     protected int secondCenterY;
+    
+    protected Diagram diagram;
 
     private final List<IViewableListener> listeners = new ArrayList<IViewableListener>();
 
-    /**
-     * @param block
-     * @param n
-     * @return
-     */
+    public Line(Diagram diagram) {
+        this.diagram = diagram;
+    }
+    
     protected static int getXCenter(Block block, int n) {
         return block.getX() + block.getWidth() / n;
     }
 
-    /**
-     * @param block
-     * @param n
-     * @return
-     */
     protected static int getYCenter(Block block, int n) {
         return block.getY() + block.getHeight() / n;
     }
 
-    protected abstract void recalculateEndPoints();
-
-    /**
-     * @param x1
-     * @param y1
-     * @param x2
-     * @param y2
-     * @return
-     */
     private static double[] getLinePrms(int x1, int y1, int x2, int y2) {
         int dy = y2 - y1;
         int dx = x2 - x1;
@@ -197,5 +185,9 @@ public abstract class Line implements IViewable {
     public boolean removeListener(IViewableListener iViewableListener) {
         return listeners.remove(iViewableListener);
     }
-
+    
+    public Diagram getDiagram() {
+        return this.diagram;
+    }
+    
 }

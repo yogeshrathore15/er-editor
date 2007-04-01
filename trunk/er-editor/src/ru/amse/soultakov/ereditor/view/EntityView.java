@@ -1,5 +1,7 @@
 package ru.amse.soultakov.ereditor.view;
 
+import static ru.amse.soultakov.ereditor.util.CommonUtils.newArrayList;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -11,6 +13,7 @@ import java.util.List;
 
 import ru.amse.soultakov.ereditor.model.Attribute;
 import ru.amse.soultakov.ereditor.model.Entity;
+import ru.amse.soultakov.ereditor.util.GraphicsUtils;
 
 /**
  * @author Soultakov Maxim
@@ -28,13 +31,25 @@ public class EntityView extends Block {
     protected static final Dimension MIN_SIZE = new Dimension(50, 100);
 
     protected Entity entity;
+    
+    protected List<AttributeView> attributeViews = newArrayList();
+    
+    protected List<AttributeView> pkAttributesViews = newArrayList(); 
 
-    public EntityView(Entity entity, int x, int y) {
-        super(x, y);
+    public EntityView(Diagram diagram, Entity entity, int x, int y) {
+        super(diagram, x, y);
         if (entity == null) {
             throw new IllegalArgumentException("Entity must be non-null");
         }
         this.entity = entity;
+        int counter = 0;
+        for(Attribute a : entity.getPrimaryKey()) {
+            pkAttributesViews.add(new AttributeView(a, this, counter++));
+        }
+        counter = 0;
+        for(Attribute a : entity.getAttributesExceptPK()) {
+            attributeViews.add(new AttributeView(a, this, counter++));
+        }
     }
 
     public void paint(Graphics2D graphics) {
@@ -54,8 +69,13 @@ public class EntityView extends Block {
         for (Attribute a : entity.getPrimaryKey()) {
             newCurY = drawString(graphics, a.toString(), newCurY);
         }
-        graphics.drawLine(getX(), newCurY, getX() + getWidth(), newCurY);
+        newCurY += MARGIN;
+        drawHorizontalLine(graphics, newCurY);
         return newCurY;
+    }
+
+    private void drawHorizontalLine(Graphics2D graphics, int newCurY) {
+        graphics.drawLine(getX(), newCurY, getX() + getWidth(), newCurY);
     }
 
     private int drawAttributes(Graphics2D graphics, int curY) {
@@ -63,7 +83,7 @@ public class EntityView extends Block {
         for (Attribute a : entity.getAttributesExceptPK()) {
             newCurY = drawString(graphics, a.toString(), newCurY);
         }
-        return newCurY;
+        return newCurY + MARGIN;
     }
 
     private void drawBackground(Graphics2D graphics) {
@@ -73,25 +93,25 @@ public class EntityView extends Block {
 
     private int drawTitle(Graphics2D graphics) {
         graphics.setColor(Color.BLACK);
-        int titleY = drawString(graphics, entity.getName(), getY());
+        int titleY = drawString(graphics, entity.getName(), getY()) + MARGIN;
         graphics.drawLine(getX(), titleY, getX() + getWidth(), titleY);
         return titleY;
     }
 
     private int drawString(Graphics2D graphics, String string, int curY) {
-        Rectangle2D bounds = getStringBounds(graphics, string);
+        Rectangle2D bounds = GraphicsUtils.getStringBounds(graphics, string);
         int newCurY = curY + (int) bounds.getHeight();
         graphics.drawString(string, MARGIN * 2 + getX(), newCurY);
-        return newCurY + MARGIN;
+        return newCurY;
     }
 
     @Override
     protected Dimension getContentBounds(Graphics2D graphics) {
         List<Rectangle2D> bounds = new ArrayList<Rectangle2D>(entity.getAttributes()
                 .size() + 1);
-        bounds.add(getStringBounds(graphics, entity.getName()));
+        bounds.add(GraphicsUtils.getStringBounds(graphics, entity.getName()));
         for (Attribute a : entity) {
-            bounds.add(getStringBounds(graphics, a.toString()));
+            bounds.add(GraphicsUtils.getStringBounds(graphics, a.toString()));
         }
         int height = 0;
         for (Rectangle2D r : bounds) {

@@ -12,15 +12,9 @@ public class LinkView extends Line {
 
     private Link link;
 
-    private EntityView entityView;
-
-    private CommentView commentView;
-
-    public LinkView(Link link, EntityView entityView, CommentView commentView) {
-        super();
+    public LinkView(Diagram diagram, Link link) {
+        super(diagram);
         this.link = link;
-        this.entityView = entityView;
-        this.commentView = commentView;
         recalculateEndPoints();
     }
 
@@ -32,24 +26,25 @@ public class LinkView extends Line {
         graphics.setStroke(SIMPLE_STROKE);
     }
 
-    @Override
     protected void recalculateEndPoints() {
+        EntityView entityView = getEntityView();
+        CommentView commentView = getCommentView();
         firstCenterX = getXCenter(entityView, 2);
         firstCenterY = getYCenter(entityView, 3);
         secondCenterX = getXCenter(commentView, 2);
         secondCenterY = getYCenter(commentView, 3);
     }
 
-    public Block getCommentView() {
-        return commentView;
+    public CommentView getCommentView() {
+        return diagram.getCommentView(link.getComment());
     }
 
     public Link getLink() {
         return link;
     }
 
-    public Block getEntityView() {
-        return entityView;
+    public EntityView getEntityView() {
+        return diagram.getEntityView(link.getEntity());
     }
 
     public <R, D> R acceptVisitor(IVisitor<R, D> visitor, D data) {

@@ -3,14 +3,16 @@
  */
 package ru.amse.soultakov.ereditor.model;
 
-import static ru.amse.soultakov.ereditor.model.RelationshipMultiplicity.ONE_ONLY;
+import static ru.amse.soultakov.ereditor.model.SimpleAttributeType.CHAR;
+import static ru.amse.soultakov.ereditor.model.SimpleAttributeType.DOUBLE;
+import static ru.amse.soultakov.ereditor.model.SimpleAttributeType.INTEGER;
 
 import static ru.amse.soultakov.ereditor.util.CommonUtils.hasNull;
 import static ru.amse.soultakov.ereditor.util.CommonUtils.newLinkedHashSet;
-import static ru.amse.soultakov.ereditor.model.SimpleAttributeType.*;
 
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.Random;
 import java.util.Set;
 
 import ru.amse.soultakov.ereditor.util.AutoincrementGenerator;
@@ -68,9 +70,10 @@ public class ERModel {
             throw new IllegalArgumentException(
                     "Both entities must present in diagram and be unequal to each other");
         }
+        Random r = new Random();
         Relationship relationship = new Relationship(
-                new RelationshipEnd(first, ONE_ONLY, "End1"), new RelationshipEnd(second,
-                        ONE_ONLY,"End2"));
+                new RelationshipEnd(first, RelationshipMultiplicity.values()[r.nextInt(4)], "End1"), new RelationshipEnd(second,
+                        RelationshipMultiplicity.values()[r.nextInt(4)],"End2"));
         relationships.add(relationship);
         first.addRelationship(relationship);
         second.addRelationship(relationship);
