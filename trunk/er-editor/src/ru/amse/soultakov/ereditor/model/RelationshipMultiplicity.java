@@ -10,22 +10,23 @@ public enum RelationshipMultiplicity {
     /**
      * 
      */
+    ONE_ONLY(true, false),
+    
+    /**
+     * 
+     */
+    ONE_OR_MORE(true, true),
+    
+    /**
+     * 
+     */
     ZERO_OR_ONE(false, false),
 
-    /**
-     * 
-     */
-    ONE_ONLY(true, false),
 
     /**
      * 
      */
-    ZERO_OR_MORE(false, true),
-
-    /**
-     * 
-     */
-    ONE_OR_MORE(true, true);
+    ZERO_OR_MORE(false, true);
 
     /**
      * 

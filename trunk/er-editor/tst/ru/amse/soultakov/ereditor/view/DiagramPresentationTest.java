@@ -31,7 +31,7 @@ public class DiagramPresentationTest {
         assertNotNull(ev1);
         assertTrue(diagram.getEntityViews().contains(ev1));
         assertTrue(diagram.getEntityViews().contains(ev2));
-        assertTrue(diagram.getEntityViews().size() == 1);
+        assertEquals(diagram.getEntityViews().size(),2);
         assertTrue(diagram.getCommentViews().size() == 0);
         assertTrue(diagram.getLinkViews().size() == 0);
         assertTrue(diagram.getRelationshipViews().size() == 0);

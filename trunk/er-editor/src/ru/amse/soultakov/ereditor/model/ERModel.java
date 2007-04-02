@@ -10,7 +10,9 @@ import static ru.amse.soultakov.ereditor.model.SimpleAttributeType.INTEGER;
 import static ru.amse.soultakov.ereditor.util.CommonUtils.hasNull;
 import static ru.amse.soultakov.ereditor.util.CommonUtils.newLinkedHashSet;
 
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Random;
 import java.util.Set;
@@ -39,16 +41,21 @@ public class ERModel {
     public Entity addNewEntity() {
         Entity entity = new Entity(generator.getEntityName());
         entities.add(entity);
-        
+
         Attribute pk1 = new Attribute("Attribute1", INTEGER, false, null);
         entity.addAttribute(pk1);
         Attribute pk2 = new Attribute("Attr2", DOUBLE, false, null);
         entity.addAttribute(pk2);
-        entity.addAttribute(new Attribute("Attr3", CHAR, false, null));
-        entity.addAttribute(new Attribute("Attr4", new ArrayAttributeType(CHAR, 5), false, null));
-        
-        for(int i = 5; i < 5 + System.currentTimeMillis() % 3; i++) {
-            entity.addAttribute(new Attribute("Attr" + i, new ArrayAttributeType(INTEGER, 10), false, null));
+        Attribute u1 = new Attribute("Attr3", CHAR, false, null);
+        entity.addAttribute(u1);
+        Attribute u2 = new Attribute("Attr4", new ArrayAttributeType(CHAR, 5),
+                false, null);
+        entity.addAttribute(u2);
+        entity.addToUniqueAttributes(new HashSet<AbstractAttribute>(Arrays.asList(
+                u1, u2)));
+        for (int i = 5; i < 5 + System.currentTimeMillis() % 3; i++) {
+            entity.addAttribute(new Attribute("Attr" + i, new ArrayAttributeType(
+                    INTEGER, 10), false, null));
         }
         entity.addToPrimaryKey(pk2);
         entity.addToPrimaryKey(pk1);
@@ -69,11 +76,15 @@ public class ERModel {
                 || !entities.contains(second)) {
             throw new IllegalArgumentException(
                     "Both entities must present in diagram and be unequal to each other");
+        } else if (!first.acceptRelationshipWith(second)
+                || !second.acceptRelationshipWith(first)) {
+            throw new IllegalArgumentException("Entities don't accept relationhsip");
         }
         Random r = new Random();
-        Relationship relationship = new Relationship(
-                new RelationshipEnd(first, RelationshipMultiplicity.values()[r.nextInt(4)], "End1"), new RelationshipEnd(second,
-                        RelationshipMultiplicity.values()[r.nextInt(4)],"End2"));
+        Relationship relationship = new Relationship(new FKRelationshipEnd(first,
+                RelationshipMultiplicity.values()[r.nextInt(2)], "End1"),
+                new FKRelationshipEnd(second, RelationshipMultiplicity.values()[r
+                        .nextInt(2)], "End2"));
         relationships.add(relationship);
         first.addRelationship(relationship);
         second.addRelationship(relationship);
@@ -86,6 +97,10 @@ public class ERModel {
         } else if (!entities.contains(entity) || !comments.contains(comment)) {
             throw new IllegalArgumentException(
                     "Enity and comment must present in diagram");
+        } else if (!entity.acceptLinkWith(comment)
+                || !comment.acceptLinkWith(entity)) {
+            throw new IllegalArgumentException(
+                    "Entity or diagram doesn't accept link");
         }
         Link link = new Link(entity, comment);
         links.add(link);
@@ -101,10 +116,12 @@ public class ERModel {
                         .getSecondEnd().getEntity()
                         : relationship.getFirstEnd().getEntity();
                 another.removeRelationship(relationship);
+                relationships.remove(relationship);
             }
             for (Iterator<Link> i = entity.linksIterator(); i.hasNext();) {
                 Link link = i.next();
                 link.getComment().removeLink(link);
+                links.remove(link);
             }
             return true;
         }
@@ -116,6 +133,7 @@ public class ERModel {
             for (Iterator<Link> i = comment.linksIterator(); i.hasNext();) {
                 Link link = i.next();
                 link.getEntity().removeLink(link);
+                links.remove(link);
             }
             return true;
         }
