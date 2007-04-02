@@ -37,4 +37,10 @@ public class Index<T extends AbstractAttribute> implements Iterable<T> {
         return attributes.iterator();
     }
 
+    public boolean contains(AbstractAttribute o) {
+        return this.attributes.contains(o);
+    }
+    
+    
+
 }

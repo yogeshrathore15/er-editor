@@ -4,7 +4,6 @@
 package ru.amse.soultakov.ereditor.view;
 
 import java.awt.BasicStroke;
-import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
 import java.util.List;
 

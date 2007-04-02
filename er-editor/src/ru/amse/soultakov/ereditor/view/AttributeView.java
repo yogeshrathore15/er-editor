@@ -3,7 +3,7 @@ package ru.amse.soultakov.ereditor.view;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
-import ru.amse.soultakov.ereditor.model.Attribute;
+import ru.amse.soultakov.ereditor.model.AbstractAttribute;
 import ru.amse.soultakov.ereditor.util.GraphicsUtils;
 
 /**
@@ -12,23 +12,23 @@ import ru.amse.soultakov.ereditor.util.GraphicsUtils;
  */
 public class AttributeView {
 
-    private Attribute attribute;
+    private AbstractAttribute attribute;
 
     private EntityView entityView;
 
     private int index;
 
-    public AttributeView(Attribute attribute, EntityView entityView, int index) {
+    public AttributeView(AbstractAttribute attribute, EntityView entityView, int index) {
         this.attribute = attribute;
         this.entityView = entityView;
         this.index = index;
     }
 
-    public Attribute getAttribute() {
+    public AbstractAttribute getAttribute() {
         return this.attribute;
     }
 
-    public void setAttribute(Attribute attribute) {
+    public void setAttribute(AbstractAttribute attribute) {
         this.attribute = attribute;
     }
 
@@ -58,7 +58,6 @@ public class AttributeView {
     }
 
     private int getTopByIndex() {
-        int y = index * 0;
         return 0;
     }
 

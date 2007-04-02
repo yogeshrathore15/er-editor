@@ -7,10 +7,10 @@ package ru.amse.soultakov.ereditor.model;
  * @author sma
  * 
  */
-public class RelationshipEnd {
-    
+public abstract class RelationshipEnd {
+
     private String name;
-    
+
     /**
      * 
      */
@@ -25,10 +25,14 @@ public class RelationshipEnd {
      * @param entity
      * @param multiplicity
      */
-    public RelationshipEnd(Entity entity, RelationshipMultiplicity multiplicity, String name) {
+    public RelationshipEnd(Entity entity, RelationshipMultiplicity multiplicity,
+            String name) {
         super();
         if ((entity == null) || (multiplicity == null)) {
             throw new IllegalArgumentException("Arguments must be non-null values");
+        } else if (!acceptMultiplicity(multiplicity)) {
+            throw new IllegalArgumentException(
+                    "This relationship doesn't accept this multiplicity");
         }
         this.name = name;
         this.entity = entity;
@@ -55,11 +59,11 @@ public class RelationshipEnd {
     public RelationshipMultiplicity getMultiplicity() {
         return multiplicity;
     }
-    
+
     public String getName() {
         return this.name;
     }
-    
+
     public void setName(String name) {
         this.name = name;
     }
@@ -68,6 +72,10 @@ public class RelationshipEnd {
      * @param multiplicity
      */
     public void setMultiplicity(RelationshipMultiplicity multiplicity) {
+        if (!acceptMultiplicity(multiplicity)) {
+            throw new IllegalArgumentException(
+                    "This relationship doesn't accept this multiplicity");
+        }
         this.multiplicity = multiplicity;
     }
 
@@ -109,5 +117,7 @@ public class RelationshipEnd {
         }
         return true;
     }
+
+    public abstract boolean acceptMultiplicity(RelationshipMultiplicity multiplicity);
 
 }

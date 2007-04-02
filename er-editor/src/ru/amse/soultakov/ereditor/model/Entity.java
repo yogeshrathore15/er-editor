@@ -14,19 +14,19 @@ import java.util.Set;
  * @author sma
  * 
  */
-public class Entity implements Iterable<Attribute> {
+public class Entity implements Iterable<AbstractAttribute> {
 
     private static final String PARAM_CANT_BE_NULL = "Param must be non null value"; 
 
     private static final String RELATIONSHIP_CANT_BE_NULL = "Relationship can't be null"; 
 
-    private final Set<Attribute> attributes = newLinkedHashSet();;
+    private final Set<AbstractAttribute> attributes = newLinkedHashSet();;
     
-    private final Index<Attribute> primaryKey = new Index<Attribute>();
+    private final Index<AbstractAttribute> primaryKey = new Index<AbstractAttribute>();
     
     private final Set<Index<FKAttribute>> foreignKey = newLinkedHashSet();
     
-    private final Set<Index<Attribute>> uniqueAttributes = newLinkedHashSet();
+    private final Set<Index<AbstractAttribute>> uniqueAttributes = newLinkedHashSet();
 
     private final Set<Relationship> relationships = newLinkedHashSet();
 
@@ -63,7 +63,7 @@ public class Entity implements Iterable<Attribute> {
      * 
      * @see java.lang.Iterable#iterator()
      */
-    public Iterator<Attribute> iterator() {
+    public Iterator<AbstractAttribute> iterator() {
         return attributes.iterator();
     }
 
@@ -150,7 +150,7 @@ public class Entity implements Iterable<Attribute> {
         return name;
     }
 
-    public Collection<Attribute> getAttributes() {
+    public Collection<AbstractAttribute> getAttributes() {
         return Collections.unmodifiableSet(attributes);
     }
 
@@ -186,13 +186,13 @@ public class Entity implements Iterable<Attribute> {
         attributes.add(attribute);
     }
     
-    public Collection<Attribute> getAttributesExceptPK() {
-        Set<Attribute> set = newLinkedHashSet(attributes);
+    public Collection<AbstractAttribute> getAttributesExceptPK() {
+        Set<AbstractAttribute> set = newLinkedHashSet(attributes);
         set.removeAll(primaryKey.getAttributes());
         return set;
     }
     
-    public Index<Attribute> getPrimaryKey() {
+    public Index<AbstractAttribute> getPrimaryKey() {
         return primaryKey;
     }
     
@@ -200,13 +200,13 @@ public class Entity implements Iterable<Attribute> {
     	return primaryKey.remove(attribute);
     }
     
-    public Collection<Index<Attribute>> getUniqueAttributes() {
+    public Collection<Index<AbstractAttribute>> getUniqueAttributes() {
         return Collections.unmodifiableSet(uniqueAttributes);
     }
     
-    public void addToUniqueAttributes(Set<Attribute> set) {
+    public void addToUniqueAttributes(Set<AbstractAttribute> set) {
     	attributes.addAll(set);
-    	uniqueAttributes.add(new Index<Attribute>(set));
+    	uniqueAttributes.add(new Index<AbstractAttribute>(set));
     }
     
     public boolean removeFromUniqueAttributes(Set<Attribute> set) {

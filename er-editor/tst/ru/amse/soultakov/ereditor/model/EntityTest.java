@@ -50,12 +50,12 @@ public class EntityTest {
     @Test
     public void testIterator() {
         Entity entity = new Entity(NAME);
-        entity.addAttribute(new Attribute("1", null, false));
-        entity.addAttribute(new Attribute("2", null, false));
-        Attribute attribute = new Attribute("3", null, false);
+        entity.addAttribute(new Attribute("1", null, false, null));
+        entity.addAttribute(new Attribute("2", null, false, null));
+        Attribute attribute = new Attribute("3", null, false, null);
         entity.addAttribute(attribute);
         int count = 0;
-        for (Attribute a : entity) {
+        for (AbstractAttribute a : entity) {
             count++;
             if (count == 3) {
                 assertSame(a, attribute);
@@ -68,9 +68,9 @@ public class EntityTest {
     @Test
     public void testRemoveAttributeAttribute() {
         Entity entity = new Entity(NAME);
-        Attribute attribute = new Attribute("1", null, false);
+        Attribute attribute = new Attribute("1", null, false, null);
         entity.addAttribute(attribute);
-        entity.addAttribute(new Attribute("2", null, false));
+        entity.addAttribute(new Attribute("2", null, false, null));
         assertTrue(entity.getAttributes().size() == 2);
         entity.removeAttribute(attribute);
         assertTrue(entity.getAttributes().size() == 1);
@@ -86,8 +86,8 @@ public class EntityTest {
 
     private static Relationship createRelationship(Entity entity) {
         final Entity another = new Entity("abc");
-        return new Relationship("", new RelationshipEnd(entity,
-                        ONE_ONLY), new RelationshipEnd(another, ONE_ONLY));
+        return new Relationship(new FKRelationshipEnd(entity,
+                        ONE_ONLY, ""), new FKRelationshipEnd(another, ONE_ONLY, ""));
     }
     
     public static Link createLink(Entity entity) {
@@ -140,7 +140,7 @@ public class EntityTest {
     @Test
     public void testEqualsObject() {
         Entity entity1 = new Entity(NAME);
-        Attribute attribute = new Attribute("1", null, false);
+        Attribute attribute = new Attribute("1", null, false, null);
         entity1.addAttribute(attribute);
         Entity entity2 = new Entity(NAME);
         entity2.addAttribute(attribute);

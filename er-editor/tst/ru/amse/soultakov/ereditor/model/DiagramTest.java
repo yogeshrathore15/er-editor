@@ -3,6 +3,7 @@
  */
 package ru.amse.soultakov.ereditor.model;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -36,7 +37,7 @@ public class DiagramTest {
         assertTrue(erModel.getLinks().size() == 0);
         assertTrue(erModel.getRelationships().size() == 0);
     }
-    
+
     @Test
     public void testAddNewComment() {
         Comment c1 = erModel.addNewComment();
@@ -68,7 +69,7 @@ public class DiagramTest {
         } catch (IllegalArgumentException e) {
         }
     }
-    
+
     @Test
     public void testAddNewRelationshipWithIllegalArgument() {
         try {
@@ -116,17 +117,18 @@ public class DiagramTest {
         assertTrue(erModel.removeEntity(e));
         assertTrue(erModel.getEntities().size() == 0);
         assertFalse(erModel.removeEntity(e));
-        
+
         Entity e1 = erModel.addNewEntity();
         Entity e2 = erModel.addNewEntity();
         Comment c = erModel.addNewComment();
         erModel.addNewRealtionship(e2, e1);
         erModel.addNewLink(e1, c);
-        
+
         assertTrue(erModel.removeEntity(e1));
         assertTrue(erModel.getEntities().size() == 1);
         assertTrue(erModel.getComments().size() == 1);
-        assertTrue(erModel.getRelationships().size() == 0);
+        assertEquals("Wrong relationships size.", erModel.getRelationships().size(),
+                0);
         assertTrue(erModel.getLinks().size() == 0);
     }
 
@@ -136,13 +138,13 @@ public class DiagramTest {
         assertTrue(erModel.removeComment(c));
         assertTrue(erModel.getComments().size() == 0);
         assertFalse(erModel.removeComment(c));
-        
+
         Comment c1 = erModel.addNewComment();
         Entity e = erModel.addNewEntity();
         erModel.addNewLink(e, c1);
-        
+
         assertTrue(erModel.removeComment(c1));
-        
+
         assertTrue(erModel.getEntities().size() == 1);
         assertTrue(erModel.getComments().size() == 0);
         assertTrue(erModel.getLinks().size() == 0);
@@ -158,7 +160,7 @@ public class DiagramTest {
         assertTrue(erModel.getRelationships().size() == 0);
         assertTrue(erModel.getEntities().size() == 2);
         assertTrue(erModel.getComments().size() == 0);
-        assertTrue(erModel.getLinks().size() == 0);        
+        assertTrue(erModel.getLinks().size() == 0);
         assertFalse(erModel.removeRelationship(r));
     }
 

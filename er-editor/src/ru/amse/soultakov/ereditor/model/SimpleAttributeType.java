@@ -48,5 +48,7 @@ public enum SimpleAttributeType implements IAttributeType {
     public String makeCorrectLiteral(String value) {
         throw new UnsupportedOperationException("Not supported yet");
     }
+    
+    
 
 }

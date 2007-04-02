@@ -11,14 +11,17 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import ru.amse.soultakov.ereditor.model.Attribute;
+import ru.amse.soultakov.ereditor.model.AbstractAttribute;
 import ru.amse.soultakov.ereditor.model.Entity;
+import ru.amse.soultakov.ereditor.model.Index;
 import ru.amse.soultakov.ereditor.util.GraphicsUtils;
 
 /**
  * @author Soultakov Maxim
  */
 public class EntityView extends Block {
+
+    private static final int ADDITIONAL_COLUMN_WIDTH = 15;
 
     private static final Color BACKGROUND_COLOR = new Color(210, 210, 210);
 
@@ -31,10 +34,10 @@ public class EntityView extends Block {
     protected static final Dimension MIN_SIZE = new Dimension(50, 100);
 
     protected Entity entity;
-    
+
     protected List<AttributeView> attributeViews = newArrayList();
-    
-    protected List<AttributeView> pkAttributesViews = newArrayList(); 
+
+    protected List<AttributeView> pkAttributesViews = newArrayList();
 
     public EntityView(Diagram diagram, Entity entity, int x, int y) {
         super(diagram, x, y);
@@ -43,11 +46,11 @@ public class EntityView extends Block {
         }
         this.entity = entity;
         int counter = 0;
-        for(Attribute a : entity.getPrimaryKey()) {
+        for (AbstractAttribute a : entity.getPrimaryKey()) {
             pkAttributesViews.add(new AttributeView(a, this, counter++));
         }
         counter = 0;
-        for(Attribute a : entity.getAttributesExceptPK()) {
+        for (AbstractAttribute a : entity.getAttributesExceptPK()) {
             attributeViews.add(new AttributeView(a, this, counter++));
         }
     }
@@ -59,6 +62,8 @@ public class EntityView extends Block {
         drawBorder(graphics);
 
         int curY = drawTitle(graphics);
+        graphics.drawRect(getX() + getWidth() - ADDITIONAL_COLUMN_WIDTH, getY(),
+                ADDITIONAL_COLUMN_WIDTH, getHeight());
         curY = drawPK(graphics, curY);
         drawAttributes(graphics, curY);
         drawSelection(graphics);
@@ -66,7 +71,7 @@ public class EntityView extends Block {
 
     private int drawPK(Graphics2D graphics, int curY) {
         int newCurY = curY;
-        for (Attribute a : entity.getPrimaryKey()) {
+        for (AbstractAttribute a : entity.getPrimaryKey()) {
             newCurY = drawString(graphics, a.toString(), newCurY);
         }
         newCurY += MARGIN;
@@ -80,10 +85,23 @@ public class EntityView extends Block {
 
     private int drawAttributes(Graphics2D graphics, int curY) {
         int newCurY = curY;
-        for (Attribute a : entity.getAttributesExceptPK()) {
+        for (AbstractAttribute a : entity.getAttributesExceptPK()) {
             newCurY = drawString(graphics, a.toString(), newCurY);
+            if (isUnique(a)) {
+                graphics.drawString("U", getX() + getWidth()
+                        - ADDITIONAL_COLUMN_WIDTH + MARGIN, newCurY);
+            }
         }
         return newCurY + MARGIN;
+    }
+
+    private boolean isUnique(AbstractAttribute a) {
+        for (Index<AbstractAttribute> index : entity.getUniqueAttributes()) {
+            if (index.contains(a)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void drawBackground(Graphics2D graphics) {
@@ -110,7 +128,7 @@ public class EntityView extends Block {
         List<Rectangle2D> bounds = new ArrayList<Rectangle2D>(entity.getAttributes()
                 .size() + 1);
         bounds.add(GraphicsUtils.getStringBounds(graphics, entity.getName()));
-        for (Attribute a : entity) {
+        for (AbstractAttribute a : entity) {
             bounds.add(GraphicsUtils.getStringBounds(graphics, a.toString()));
         }
         int height = 0;
@@ -122,7 +140,7 @@ public class EntityView extends Block {
                 : height);
         int width = (int) (withMaxWidth.getWidth() < MIN_SIZE.getWidth() ? MIN_SIZE
                 .getWidth() : withMaxWidth.getWidth());
-        return new Dimension(width + MARGIN * 4, height);
+        return new Dimension(width + MARGIN * 4 + ADDITIONAL_COLUMN_WIDTH, height);
     }
 
     public Entity getEntity() {
