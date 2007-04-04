@@ -24,7 +24,7 @@ public class RelationshipView extends Line {
      * 
      */
     private Relationship relationship;
-    
+
     /**
      * @param relationship
      * @param firstEntity
@@ -40,37 +40,78 @@ public class RelationshipView extends Line {
      */
     public void paint(Graphics2D graphics) {
         graphics.setColor(isSelected() ? Color.BLUE : Color.BLACK);
-        Point firstPoint = null;
-        Point secondPoint = null;
-        
-        EntityView firstEntity = getFirstEntityView();
-        EntityView secondEntity = getSecondEntityView();
-        
-        int firstY = firstEntity.getY() + firstEntity.getHeight() / 2;
-        int secondY = secondEntity.getY() + secondEntity.getHeight() / 2;
-        if (firstEntity.getX() > secondEntity.getX()) {
-            int firstX = firstEntity.getX();
-            int secondX = secondEntity.getX() + secondEntity.getWidth();
-            firstPoint = paintRelationshipEnd(graphics, firstX - END_LENGTH, firstY, firstX,
-                    firstY, relationship.getFirstEnd().getMultiplicity(), true);
-            secondPoint = paintRelationshipEnd(graphics, secondX, secondY,
-                    secondX + 15, secondY, relationship.getSecondEnd()
-                            .getMultiplicity(), false);
-            firstPoint = new Point(firstX - END_LENGTH, firstY);
-            secondPoint = new Point(secondX + END_LENGTH, secondY);
+
+        EntityView fe = getFirstEntityView();
+        EntityView se = getSecondEntityView();
+
+        int firstY = fe.getY() + fe.getHeight() / 2;
+        int secondY = se.getY() + se.getHeight() / 2;
+        if ((fe.getX() <= se.getX() + se.getWidth() / 2)
+                && (se.getX() <= fe.getX() + fe.getWidth() / 2)) {
+            draw3(graphics, firstY, secondY);
+        } else if ((se.getX() <= fe.getX() + fe.getWidth() / 2)
+                && (fe.getX() <= se.getX() + se.getWidth() / 2)) {
+            draw4(graphics, firstY, secondY);
+        } else if (fe.getX() > se.getX()) {
+            draw1(graphics, firstY, secondY);
         } else {
-            int firstX = firstEntity.getX() + firstEntity.getWidth();
-            int secondX = secondEntity.getX();
-            firstPoint = paintRelationshipEnd(graphics, firstX, firstY, firstX + RelationshipView.END_LENGTH,
-                    firstY, relationship.getFirstEnd().getMultiplicity(), false);
-            secondPoint = paintRelationshipEnd(graphics, secondX - END_LENGTH, secondY,
-                    secondX, secondY, relationship.getSecondEnd()
-                            .getMultiplicity(), true);
-            firstPoint = new Point(firstX + END_LENGTH, firstY);
-            secondPoint = new Point(secondX - END_LENGTH, secondY);
+            draw2(graphics, firstY, secondY);
         }
-        int xCenter = Math.abs(firstPoint.x + secondPoint.x)/2;
-        int yCenter = Math.abs(firstPoint.y + secondPoint.y)/2;
+    }
+
+    private void draw4(Graphics2D graphics, int firstY, int secondY) {
+        int firstX = getFirstEntityView().getX() + getFirstEntityView().getWidth();
+        int secondX = getSecondEntityView().getX() + getFirstEntityView().getWidth();
+        Point firstPoint = paintRelationshipEnd(graphics, firstX + END_LENGTH,
+                firstY, firstX, firstY,
+                relationship.getFirstEnd().getMultiplicity(), true);
+        Point secondPoint = paintRelationshipEnd(graphics, secondX, secondY, secondX
+                + END_LENGTH, secondY,
+                relationship.getSecondEnd().getMultiplicity(), false);
+        drawMainLine(graphics, firstPoint, secondPoint);
+    }
+
+    private void draw3(Graphics2D graphics, int firstY, int secondY) {
+        int firstX = getFirstEntityView().getX();
+        int secondX = getSecondEntityView().getX();
+        Point firstPoint = paintRelationshipEnd(graphics, firstX - END_LENGTH,
+                firstY, firstX, firstY,
+                relationship.getFirstEnd().getMultiplicity(), true);
+        Point secondPoint = paintRelationshipEnd(graphics, secondX, secondY, secondX
+                - END_LENGTH, secondY,
+                relationship.getSecondEnd().getMultiplicity(), false);
+        drawMainLine(graphics, firstPoint, secondPoint);
+    }
+
+    private void draw2(Graphics2D graphics, int firstY, int secondY) {
+        int firstX = getFirstEntityView().getX() + getFirstEntityView().getWidth();
+        int secondX = getSecondEntityView().getX();
+        Point firstPoint = paintRelationshipEnd(graphics, firstX, firstY, firstX
+                + END_LENGTH, firstY, relationship.getFirstEnd().getMultiplicity(),
+                false);
+        Point secondPoint = paintRelationshipEnd(graphics, secondX - END_LENGTH,
+                secondY, secondX, secondY, relationship.getSecondEnd()
+                        .getMultiplicity(), true);
+        drawMainLine(graphics, firstPoint, secondPoint);
+    }
+
+    private void draw1(Graphics2D graphics, int firstY, int secondY) {
+        int firstX = getFirstEntityView().getX();
+        int secondX = getSecondEntityView().getX()
+                + getSecondEntityView().getWidth();
+        Point firstPoint = paintRelationshipEnd(graphics, firstX - END_LENGTH,
+                firstY, firstX, firstY,
+                relationship.getFirstEnd().getMultiplicity(), true);
+        Point secondPoint = paintRelationshipEnd(graphics, secondX, secondY, secondX
+                + END_LENGTH, secondY,
+                relationship.getSecondEnd().getMultiplicity(), false);
+        drawMainLine(graphics, firstPoint, secondPoint);
+    }
+
+    private void drawMainLine(Graphics2D graphics, Point firstPoint,
+            Point secondPoint) {
+        int xCenter = Math.abs(firstPoint.x + secondPoint.x) / 2;
+        int yCenter = Math.abs(firstPoint.y + secondPoint.y) / 2;
         drawLine(graphics, firstPoint.x, firstPoint.y, xCenter, yCenter,
                 relationship.getSecondEnd().getMultiplicity());
         drawLine(graphics, secondPoint.x, secondPoint.y, xCenter, yCenter,
@@ -85,13 +126,13 @@ public class RelationshipView extends Line {
                 graphics2D.drawLine(x1, y1, x2, y2 - END_WIDTH);
                 graphics2D.drawLine(x1, y1, x2, y2 + END_WIDTH);
             }
-            return new Point(x2, y2);
+            return new Point(x1, y1);
         } else {
             if (mult.isPlural()) {
                 graphics2D.drawLine(x1, y1 - END_WIDTH, x2, y2);
                 graphics2D.drawLine(x1, y1 + END_WIDTH, x2, y2);
             }
-            return new Point(x1, y1);
+            return new Point(x2, y2);
         }
     }
 
@@ -109,9 +150,9 @@ public class RelationshipView extends Line {
     public EntityView getFirstEntityView() {
         return diagram.getEntityView(relationship.getFirstEnd().getEntity());
     }
-    
+
     public EntityView getSecondEntityView() {
-        return diagram.getEntityView(relationship.getSecondEnd().getEntity()); 
+        return diagram.getEntityView(relationship.getSecondEnd().getEntity());
     }
 
     /**
