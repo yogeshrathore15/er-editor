@@ -25,35 +25,38 @@ public class EntityView extends Block {
 
     private static final Color BACKGROUND_COLOR = new Color(210, 210, 210);
 
-    private static final Comparator<Rectangle2D> WIDTH_COMPARATOR = new Comparator<Rectangle2D>() {
-        public int compare(Rectangle2D o1, Rectangle2D o2) {
-            return (int) o1.getWidth() - (int) o2.getWidth();
-        }
-    };
-
     protected static final Dimension MIN_SIZE = new Dimension(50, 100);
 
     protected Entity entity;
 
     protected List<AttributeView> attributeViews = newArrayList();
-
-    protected List<AttributeView> pkAttributesViews = newArrayList();
-
+    
+    protected Compartment pkCompartment;
+    
+    protected Compartment nonPkCompartment;
+    
     public EntityView(Diagram diagram, Entity entity, int x, int y) {
         super(diagram, x, y);
         if (entity == null) {
             throw new IllegalArgumentException("Entity must be non-null");
         }
         this.entity = entity;
-        int counter = 0;
+        initCompartments(entity);
+    }
+
+	private void initCompartments(Entity entity)
+	{
+		pkCompartment = new PrimaryKeyCompartment(0, 18, this);
+		int counter = 0;
         for (AbstractAttribute a : entity.getPrimaryKey()) {
-            pkAttributesViews.add(new AttributeView(a, this, counter++));
+            attributeViews.add(new AttributeView(a, this, pkCompartment, counter++));
         }
+        nonPkCompartment = new NonPkCompartment(0, pkCompartment.getHeight() + MARGIN*2, this);
         counter = 0;
         for (AbstractAttribute a : entity.getAttributesExceptPK()) {
-            attributeViews.add(new AttributeView(a, this, counter++));
+            attributeViews.add(new AttributeView(a, this, nonPkCompartment, counter++));
         }
-    }
+	}
 
     public void paint(Graphics2D graphics) {
         recalculateSize(graphics);
@@ -125,21 +128,20 @@ public class EntityView extends Block {
 
     @Override
     protected Dimension getContentBounds(Graphics2D graphics) {
-        List<Rectangle2D> bounds = new ArrayList<Rectangle2D>(entity.getAttributes()
-                .size() + 1);
+        List<Rectangle2D> bounds = new ArrayList<Rectangle2D>(3);
         bounds.add(GraphicsUtils.getStringBounds(graphics, entity.getName()));
-        for (AbstractAttribute a : entity) {
-            bounds.add(GraphicsUtils.getStringBounds(graphics, a.toString()));
-        }
+        bounds.add(pkCompartment.getContentBounds(graphics));
+        bounds.add(nonPkCompartment.getContentBounds(graphics));
         int height = 0;
-        for (Rectangle2D r : bounds) {
-            height += r.getHeight() + MARGIN * 2;
+        for(Rectangle2D r : bounds) {
+        	height += r.getHeight();
         }
-        Rectangle2D withMaxWidth = Collections.max(bounds, WIDTH_COMPARATOR);
+        Rectangle2D withMaxWidth = Collections.max(bounds, GraphicsUtils.WIDTH_COMPARATOR);
+        
         height = (int) (height < MIN_SIZE.getHeight() ? MIN_SIZE.getHeight()
-                : height);
+        		: height);
         int width = (int) (withMaxWidth.getWidth() < MIN_SIZE.getWidth() ? MIN_SIZE
-                .getWidth() : withMaxWidth.getWidth());
+        		.getWidth() : withMaxWidth.getWidth());
         return new Dimension(width + MARGIN * 4 + ADDITIONAL_COLUMN_WIDTH, height);
     }
 
