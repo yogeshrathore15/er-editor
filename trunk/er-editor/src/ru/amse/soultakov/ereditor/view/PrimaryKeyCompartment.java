@@ -9,7 +9,7 @@ import java.awt.Graphics2D;
  * @author Soultakov Maxim
  *
  */
-public class PrimaryKeyCompartment extends Compartment
+class PrimaryKeyCompartment extends Compartment
 {
 
 	/**

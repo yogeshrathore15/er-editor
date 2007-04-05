@@ -7,9 +7,10 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 import ru.amse.soultakov.ereditor.model.AbstractAttribute;
 import ru.amse.soultakov.ereditor.model.Entity;
@@ -19,146 +20,165 @@ import ru.amse.soultakov.ereditor.util.GraphicsUtils;
 /**
  * @author Soultakov Maxim
  */
-public class EntityView extends Block {
+public class EntityView extends Block
+{
 
-    private static final int ADDITIONAL_COLUMN_WIDTH = 15;
+	private static final int ADDITIONAL_COLUMN_WIDTH = 15;
 
-    private static final Color BACKGROUND_COLOR = new Color(210, 210, 210);
+	private static final Color BACKGROUND_COLOR = new Color(210, 210, 210);
 
-    protected static final Dimension MIN_SIZE = new Dimension(50, 100);
+	protected Entity entity;
 
-    protected Entity entity;
+	protected List<AttributeView> attributeViews = newArrayList();
 
-    protected List<AttributeView> attributeViews = newArrayList();
-    
-    protected Compartment pkCompartment;
-    
-    protected Compartment nonPkCompartment;
-    
-    public EntityView(Diagram diagram, Entity entity, int x, int y) {
-        super(diagram, x, y);
-        if (entity == null) {
-            throw new IllegalArgumentException("Entity must be non-null");
-        }
-        this.entity = entity;
-        initCompartments(entity);
-    }
+	protected Compartment pkCompartment;
 
-	private void initCompartments(Entity entity)
+	protected Compartment nonPkCompartment;
+
+	public EntityView(Diagram diagram, Entity entity, int x, int y)
 	{
-		pkCompartment = new PrimaryKeyCompartment(0, 18, this);
-		int counter = 0;
-        for (AbstractAttribute a : entity.getPrimaryKey()) {
-            attributeViews.add(new AttributeView(a, this, pkCompartment, counter++));
-        }
-        nonPkCompartment = new NonPkCompartment(0, pkCompartment.getHeight() + MARGIN*2, this);
-        counter = 0;
-        for (AbstractAttribute a : entity.getAttributesExceptPK()) {
-            attributeViews.add(new AttributeView(a, this, nonPkCompartment, counter++));
-        }
+		super(diagram, x, y);
+		if (entity == null)
+		{
+			throw new IllegalArgumentException("Entity must be non-null");
+		}
+		this.entity = entity;
+		initCompartments();
 	}
 
-    public void paint(Graphics2D graphics) {
-        recalculateSize(graphics);
+	private void initCompartments()
+	{
+		pkCompartment = new PrimaryKeyCompartment(0, 18, this);
+		initCompartment(pkCompartment, entity.getPrimaryKey());
+		nonPkCompartment = new NonPkCompartment(MARGIN, pkCompartment.getHeight() + MARGIN * 2, this);
+		initCompartment(nonPkCompartment, entity.getAttributesExceptPK());
+	}
 
-        drawBackground(graphics);
-        drawBorder(graphics);
+	private void initCompartment(Compartment compartment, Iterable<AbstractAttribute> attrs)
+	{
+		for (AbstractAttribute a : attrs)
+		{
+			AttributeView attributeView = new AttributeView(a, this, compartment);
+			attributeViews.add(attributeView);
+			compartment.getAttributes().add(attributeView);
+		}
+	}
 
-        int curY = drawTitle(graphics);
-        graphics.drawRect(getX() + getWidth() - ADDITIONAL_COLUMN_WIDTH, getY(),
-                ADDITIONAL_COLUMN_WIDTH, getHeight());
-        curY = drawPK(graphics, curY);
-        drawAttributes(graphics, curY);
-        drawSelection(graphics);
-    }
+	public void paint(Graphics2D graphics)
+	{
+		recalculateSize(graphics);
 
-    private int drawPK(Graphics2D graphics, int curY) {
-        int newCurY = curY;
-        for (AbstractAttribute a : entity.getPrimaryKey()) {
-            newCurY = drawString(graphics, a.toString(), newCurY);
-        }
-        newCurY += MARGIN;
-        drawHorizontalLine(graphics, newCurY);
-        return newCurY;
-    }
+		drawBackground(graphics);
+		drawBorder(graphics);
 
-    private void drawHorizontalLine(Graphics2D graphics, int newCurY) {
-        graphics.drawLine(getX(), newCurY, getX() + getWidth(), newCurY);
-    }
+		int curY = drawTitle(graphics);
+		graphics.drawRect(getX() + getWidth() - ADDITIONAL_COLUMN_WIDTH, getY(),
+				ADDITIONAL_COLUMN_WIDTH, getHeight());
+		curY = drawPK(graphics, curY);
+		drawAttributes(graphics, curY);
+		drawSelection(graphics);
+	}
 
-    private int drawAttributes(Graphics2D graphics, int curY) {
-        int newCurY = curY;
-        for (AbstractAttribute a : entity.getAttributesExceptPK()) {
-            newCurY = drawString(graphics, a.toString(), newCurY);
-            if (isUnique(a)) {
-                graphics.drawString("U", getX() + getWidth()
-                        - ADDITIONAL_COLUMN_WIDTH + MARGIN, newCurY);
-            }
-        }
-        return newCurY + MARGIN;
-    }
+	private int drawPK(Graphics2D graphics, int curY)
+	{
+		int newCurY = curY;
+		for (AbstractAttribute a : entity.getPrimaryKey())
+		{
+			newCurY = drawString(graphics, a.toString(), newCurY);
+		}
+		newCurY += MARGIN;
+		drawHorizontalLine(graphics, newCurY);
+		return newCurY;
+	}
 
-    private boolean isUnique(AbstractAttribute a) {
-        for (Index<AbstractAttribute> index : entity.getUniqueAttributes()) {
-            if (index.contains(a)) {
-                return true;
-            }
-        }
-        return false;
-    }
+	private void drawHorizontalLine(Graphics2D graphics, int newCurY)
+	{
+		graphics.drawLine(getX(), newCurY, getX() + getWidth(), newCurY);
+	}
 
-    private void drawBackground(Graphics2D graphics) {
-        graphics.setColor(BACKGROUND_COLOR);
-        graphics.fillRect(getX(), getY(), getWidth(), getHeight());
-    }
+	private int drawAttributes(Graphics2D graphics, int curY)
+	{
+		int newCurY = curY;
+		for (AbstractAttribute a : entity.getAttributesExceptPK())
+		{
+			newCurY = drawString(graphics, a.toString(), newCurY);
+			if (isUnique(a))
+			{
+				graphics.drawString("U", getX() + getWidth() - ADDITIONAL_COLUMN_WIDTH + MARGIN,
+						newCurY);
+			}
+		}
+		return newCurY + MARGIN;
+	}
 
-    private int drawTitle(Graphics2D graphics) {
-        graphics.setColor(Color.BLACK);
-        int titleY = drawString(graphics, entity.getName(), getY()) + MARGIN;
-        graphics.drawLine(getX(), titleY, getX() + getWidth(), titleY);
-        return titleY;
-    }
+	private boolean isUnique(AbstractAttribute a)
+	{
+		for (Index<AbstractAttribute> index : entity.getUniqueAttributes())
+		{
+			if (index.contains(a))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
 
-    private int drawString(Graphics2D graphics, String string, int curY) {
-        Rectangle2D bounds = GraphicsUtils.getStringBounds(graphics, string);
-        int newCurY = curY + (int) bounds.getHeight();
-        graphics.drawString(string, MARGIN * 2 + getX(), newCurY);
-        return newCurY;
-    }
+	private void drawBackground(Graphics2D graphics)
+	{
+		graphics.setColor(BACKGROUND_COLOR);
+		graphics.fillRect(getX(), getY(), getWidth(), getHeight());
+	}
 
-    @Override
-    protected Dimension getContentBounds(Graphics2D graphics) {
-        List<Rectangle2D> bounds = new ArrayList<Rectangle2D>(3);
-        bounds.add(GraphicsUtils.getStringBounds(graphics, entity.getName()));
-        bounds.add(pkCompartment.getContentBounds(graphics));
-        bounds.add(nonPkCompartment.getContentBounds(graphics));
-        int height = 0;
-        for(Rectangle2D r : bounds) {
-        	height += r.getHeight();
-        }
-        Rectangle2D withMaxWidth = Collections.max(bounds, GraphicsUtils.WIDTH_COMPARATOR);
-        
-        height = (int) (height < MIN_SIZE.getHeight() ? MIN_SIZE.getHeight()
-        		: height);
-        int width = (int) (withMaxWidth.getWidth() < MIN_SIZE.getWidth() ? MIN_SIZE
-        		.getWidth() : withMaxWidth.getWidth());
-        return new Dimension(width + MARGIN * 4 + ADDITIONAL_COLUMN_WIDTH, height);
-    }
+	private int drawTitle(Graphics2D graphics)
+	{
+		graphics.setColor(Color.BLACK);
+		int titleY = drawString(graphics, entity.getName(), getY()) + MARGIN;
+		graphics.drawLine(getX(), titleY, getX() + getWidth(), titleY);
+		return titleY;
+	}
 
-    public Entity getEntity() {
-        return entity;
-    }
+	private int drawString(Graphics2D graphics, String string, int curY)
+	{
+		Rectangle2D bounds = GraphicsUtils.getStringBounds(graphics, string);
+		int newCurY = curY + (int) bounds.getHeight();
+		graphics.drawString(string, MARGIN * 2 + getX(), newCurY);
+		return newCurY;
+	}
 
-    public boolean acceptRelationshipWith(EntityView entityView) {
-        return entity.acceptRelationshipWith(entityView.getEntity());
-    }
+	@Override
+	protected Dimension getContentBounds(Graphics2D graphics)
+	{
+		List<Rectangle2D> bounds = new ArrayList<Rectangle2D>(3);
+		bounds.add(GraphicsUtils.getStringBounds(graphics, entity.getName()));
+		bounds.add(pkCompartment.getContentBounds(graphics));
+		bounds.add(nonPkCompartment.getContentBounds(graphics));
+		int height = 0;
+		for (Rectangle2D r : bounds)
+		{
+			height += r.getHeight();
+		}
+		Rectangle2D withMaxWidth = Collections.max(bounds, GraphicsUtils.WIDTH_COMPARATOR);
+		return new Dimension((int) withMaxWidth.getWidth(), height);
+	}
 
-    public boolean acceptLinkWith(CommentView commentView) {
-        return entity.acceptLinkWith(commentView.getComment());
-    }
+	public Entity getEntity()
+	{
+		return entity;
+	}
 
-    public <R, D> R acceptVisitor(IVisitor<R, D> visitor, D data) {
-        return visitor.visit(this, data);
-    }
+	public boolean acceptRelationshipWith(EntityView entityView)
+	{
+		return entity.acceptRelationshipWith(entityView.getEntity());
+	}
+
+	public boolean acceptLinkWith(CommentView commentView)
+	{
+		return entity.acceptLinkWith(commentView.getComment());
+	}
+
+	public <R, D> R acceptVisitor(IVisitor<R, D> visitor, D data)
+	{
+		return visitor.visit(this, data);
+	}
 
 }
