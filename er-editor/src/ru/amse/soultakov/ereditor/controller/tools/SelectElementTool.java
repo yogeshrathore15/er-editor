@@ -5,6 +5,7 @@ package ru.amse.soultakov.ereditor.controller.tools;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -20,7 +21,17 @@ import ru.amse.soultakov.ereditor.view.IViewable;
 
 public class SelectElementTool extends ToolAdapter {
 
-    protected static final BasicStroke DASHED = new BasicStroke(1.0f,
+    /**
+	 * 
+	 */
+	private static final Cursor DEFAULT_CURSOR = new Cursor(Cursor.DEFAULT_CURSOR);
+
+	/**
+	 * 
+	 */
+	private static final Cursor MOVE_CURSOR = new Cursor(Cursor.MOVE_CURSOR);
+
+	protected static final BasicStroke DASHED = new BasicStroke(1.0f,
             BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 10.0f,
             new float[] { 4.0f }, 0.0f);
 
@@ -59,8 +70,10 @@ public class SelectElementTool extends ToolAdapter {
     @Override
     public void mouseDragged(MouseEvent e) {
         if (!getSelectedItems().isEmpty() && endPoint == null) {
+        	diagramEditor.setCursor(MOVE_CURSOR);
             dragSelection(e);
         } else {
+        	diagramEditor.setCursor(DEFAULT_CURSOR);
             endPoint = e.getPoint();
             tryToSelectAllViews();
         }
@@ -69,6 +82,7 @@ public class SelectElementTool extends ToolAdapter {
 
     @Override
     public void mouseReleased(MouseEvent e) {
+    	diagramEditor.setCursor(DEFAULT_CURSOR);
         if (endPoint != null && startPoint != null) {
             tryToSelectAllViews();
             endPoint = null;
