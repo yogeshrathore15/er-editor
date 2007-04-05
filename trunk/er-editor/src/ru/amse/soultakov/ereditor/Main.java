@@ -4,10 +4,12 @@ package ru.amse.soultakov.ereditor;
 import static ru.amse.soultakov.ereditor.util.CommonUtils.newHashMap;
 
 import java.awt.BorderLayout;
+import java.awt.Insets;
 import java.util.Map;
 
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -48,11 +50,15 @@ public class Main {
         JScrollPane scrollPane = new JScrollPane(diagramEditor);        
 		frame.add(scrollPane);        
         JToolBar toolBar = new JToolBar();
+        toolBar.setRollover(true);
         ButtonGroup buttonsGroup = new ButtonGroup();
-
         final SelectElementTool selectElementTool = new SelectElementTool(diagramEditor);
         final JToggleButton defaultToolButton = new JToggleButton(new DiagramEditorAction(
-                diagramEditor, "Default", selectElementTool));
+                diagramEditor, "Default", new ImageIcon("./src/images/tool_selecting.png"), selectElementTool));
+		defaultToolButton.setPressedIcon(new ImageIcon("./src/images/tool_selecting_pressed.png"));
+		defaultToolButton.setSelectedIcon(new ImageIcon("./src/images/tool_selecting_pressed.png"));
+        defaultToolButton.setText(null);
+        defaultToolButton.setMargin(new Insets(0,0,0,0));
         toolToButton.put(selectElementTool, defaultToolButton);
         IToolListener toolListener = new IToolListener() {
             public void operationFinished() {
