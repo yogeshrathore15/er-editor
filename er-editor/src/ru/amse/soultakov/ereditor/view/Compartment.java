@@ -3,6 +3,7 @@
  */
 package ru.amse.soultakov.ereditor.view;
 
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
@@ -17,6 +18,8 @@ import ru.amse.soultakov.ereditor.util.GraphicsUtils;
  */
 public abstract class Compartment
 {
+
+	protected static final Dimension MIN_SIZE = new Dimension(50, 50);
 
 	public static final int MARGIN = 3;
 
@@ -77,12 +80,16 @@ public abstract class Compartment
 		int height = 0;
 		for (AttributeView a : attributes)
 		{
-			Rectangle2D stringBounds = GraphicsUtils.getStringBounds(graphics, a.getAttributeStringPresentation());
+			Rectangle2D stringBounds = GraphicsUtils.getStringBounds(graphics, a
+					.getAttributeStringPresentation());
 			bounds.add(stringBounds);
 			height += stringBounds.getHeight() + MARGIN * 2;
 		}
 		Rectangle2D withMaxWidth = Collections.max(bounds, GraphicsUtils.WIDTH_COMPARATOR);
-		return new Rectangle2D.Double(0,0,withMaxWidth.getWidth(), height);
+		height = (int) (height < MIN_SIZE.getHeight() ? MIN_SIZE.getHeight() : height);
+		int width = (int) (withMaxWidth.getWidth() < MIN_SIZE.getWidth() ? MIN_SIZE.getWidth()
+				: withMaxWidth.getWidth());
+		return new Rectangle2D.Double(0, 0, width, height);
 	}
 
 }
