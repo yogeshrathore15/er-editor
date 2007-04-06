@@ -138,9 +138,10 @@ public class DiagramEditor extends JComponent {
         recalculateSize(diagram.getCommentViews(), graphics);
         recalculateSize(diagram.getEntityViews(), graphics);
         paintSet(diagram.getLinkViews(), graphics);
+        paintSet(diagram.getRelationshipViews(), graphics);
         paintSet(diagram.getCommentViews(), graphics);
         paintSet(diagram.getEntityViews(), graphics);
-        paintSet(diagram.getRelationshipViews(), graphics);
+
 
         currentTool.paintAfter(graphics);
     }

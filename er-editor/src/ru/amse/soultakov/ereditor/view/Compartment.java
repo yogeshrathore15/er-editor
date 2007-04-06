@@ -3,14 +3,8 @@
  */
 package ru.amse.soultakov.ereditor.view;
 
-import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import ru.amse.soultakov.ereditor.util.GraphicsUtils;
 
 /**
  * @author Soultakov Maxim
@@ -19,38 +13,33 @@ import ru.amse.soultakov.ereditor.util.GraphicsUtils;
 public abstract class Compartment
 {
 
-	protected static final Dimension MIN_SIZE = new Dimension(50, 50);
-
 	public static final int MARGIN = 3;
-
-	protected int x;
 
 	protected int y;
 
-	protected final List<AttributeView> attributes = new ArrayList<AttributeView>();
-
 	protected final EntityView entityView;
 
-	public Compartment(int x, int y, EntityView entityView)
+	public Compartment(int y, EntityView entityView)
 	{
-		this.x = x;
 		this.y = y;
 		this.entityView = entityView;
 	}
 
-	public int getX()
+	public int getAbsoluteY()
 	{
-		return this.x;
+		return this.y + entityView.getY();
 	}
-
-	public void setX(int x)
-	{
-		this.x = x;
-	}
-
+	
+	/**
+	 * @return the y
+	 */
 	public int getY()
 	{
 		return this.y;
+	}
+	
+	public int getX() {
+		return entityView.getX() + MARGIN;
 	}
 
 	public void setY(int y)
@@ -58,38 +47,17 @@ public abstract class Compartment
 		this.y = y;
 	}
 
-	public List<AttributeView> getAttributes()
-	{
-		return this.attributes;
-	}
-
 	public EntityView getEntityView()
 	{
 		return this.entityView;
 	}
-
-	public abstract void paint(Graphics2D g);
-
-	public abstract int getHeight();
-
-	public abstract int getWidth();
-
-	public Rectangle2D getContentBounds(Graphics2D graphics)
-	{
-		List<Rectangle2D> bounds = new ArrayList<Rectangle2D>(attributes.size() + 1);
-		int height = 0;
-		for (AttributeView a : attributes)
-		{
-			Rectangle2D stringBounds = GraphicsUtils.getStringBounds(graphics, a
-					.getAttributeStringPresentation());
-			bounds.add(stringBounds);
-			height += stringBounds.getHeight() + MARGIN * 2;
-		}
-		Rectangle2D withMaxWidth = Collections.max(bounds, GraphicsUtils.WIDTH_COMPARATOR);
-		height = (int) (height < MIN_SIZE.getHeight() ? MIN_SIZE.getHeight() : height);
-		int width = (int) (withMaxWidth.getWidth() < MIN_SIZE.getWidth() ? MIN_SIZE.getWidth()
-				: withMaxWidth.getWidth());
-		return new Rectangle2D.Double(0, 0, width, height);
+	
+	public int getHeight(Graphics2D graphics) {
+		return (int) getContentBounds(graphics).getHeight();
 	}
+
+	public abstract int paint(Graphics2D graphics);
+
+	public abstract Rectangle2D getContentBounds(Graphics2D graphics);
 
 }
