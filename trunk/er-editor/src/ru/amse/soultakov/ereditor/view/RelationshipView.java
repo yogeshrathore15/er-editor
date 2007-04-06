@@ -46,11 +46,11 @@ public class RelationshipView extends Line {
 
         int firstY = fe.getY() + fe.getHeight() / 2;
         int secondY = se.getY() + se.getHeight() / 2;
-        if ((fe.getX() <= se.getX() + se.getWidth() / 2)
-                && (se.getX() <= fe.getX() + fe.getWidth() / 2)) {
+        if ((fe.getX() <= se.getX() + se.getWidth())
+                && (fe.getX() >= se.getX())) {
             draw3(graphics, firstY, secondY);
-        } else if ((se.getX() <= fe.getX() + fe.getWidth() / 2)
-                && (fe.getX() <= se.getX() + se.getWidth() / 2)) {
+        } else if ((se.getX() >= fe.getX())
+                && (se.getX() <= fe.getX() + fe.getWidth())) {
             draw4(graphics, firstY, secondY);
         } else if (fe.getX() > se.getX()) {
             draw1(graphics, firstY, secondY);
@@ -60,6 +60,7 @@ public class RelationshipView extends Line {
     }
 
     private void draw4(Graphics2D graphics, int firstY, int secondY) {
+    	System.out.println("RelationshipView.draw4()");
         int firstX = getFirstEntityView().getX() + getFirstEntityView().getWidth();
         int secondX = getSecondEntityView().getX() + getFirstEntityView().getWidth();
         Point firstPoint = paintRelationshipEnd(graphics, firstX + END_LENGTH,

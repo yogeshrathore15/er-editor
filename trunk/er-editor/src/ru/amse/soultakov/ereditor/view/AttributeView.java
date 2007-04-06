@@ -59,8 +59,8 @@ public class AttributeView
 	{
 		String attrString = getAttributeStringPresentation();
 		Rectangle2D bounds = GraphicsUtils.getStringBounds(graphics, attrString);
-		int newCurY = entityView.getY() + y + (int) bounds.getHeight();
-		graphics.drawString(attrString, Block.MARGIN * 2 + entityView.getX() + compartment.getX(),
+		int newCurY = y + (int) bounds.getHeight();
+		graphics.drawString(attrString, Block.MARGIN + entityView.getX(),
 				newCurY);
 		return newCurY + Block.MARGIN;
 	}
