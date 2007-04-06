@@ -4,9 +4,6 @@
 package ru.amse.soultakov.ereditor.model;
 
 import static ru.amse.soultakov.ereditor.model.SimpleAttributeType.CHAR;
-import static ru.amse.soultakov.ereditor.model.SimpleAttributeType.DOUBLE;
-import static ru.amse.soultakov.ereditor.model.SimpleAttributeType.INTEGER;
-
 import static ru.amse.soultakov.ereditor.util.CommonUtils.hasNull;
 import static ru.amse.soultakov.ereditor.util.CommonUtils.newLinkedHashSet;
 
