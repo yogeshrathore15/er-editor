@@ -34,7 +34,7 @@ import ru.amse.soultakov.ereditor.controller.tools.Tool;
  * @author Soultakov Maxim
  *
  */
-public class Main {
+public class ERMain {
 
     private static DiagramEditor diagramEditor = new DiagramEditor();
 

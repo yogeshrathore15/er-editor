@@ -12,6 +12,7 @@ import java.util.List;
 
 import ru.amse.soultakov.ereditor.model.AbstractAttribute;
 import ru.amse.soultakov.ereditor.model.Entity;
+import ru.amse.soultakov.ereditor.model.Index;
 import ru.amse.soultakov.ereditor.util.GraphicsUtils;
 
 /**
@@ -96,17 +97,17 @@ public class EntityView extends Block
 		graphics.drawLine(getX(), newCurY, getX() + getWidth(), newCurY);
 	}
 
-	// private boolean isUnique(AbstractAttribute a)
-	// {
-	// for (Index<AbstractAttribute> index : entity.getUniqueAttributes())
-	// {
-	// if (index.contains(a))
-	// {
-	// return true;
-	// }
-	// }
-	// return false;
-	// }
+	boolean isUnique(AbstractAttribute a)
+	{
+		for (Index<AbstractAttribute> index : entity.getUniqueAttributes())
+		{
+			if (index.contains(a))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
 
 	private void drawBackground(Graphics2D graphics)
 	{

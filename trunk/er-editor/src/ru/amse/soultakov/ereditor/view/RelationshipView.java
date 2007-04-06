@@ -48,19 +48,18 @@ public class RelationshipView extends Line {
         int secondY = se.getY() + se.getHeight() / 2;
         if ((fe.getX() <= se.getX() + se.getWidth())
                 && (fe.getX() >= se.getX())) {
-            draw3(graphics, firstY, secondY);
+            drawBothLeft(graphics, firstY, secondY);
         } else if ((se.getX() >= fe.getX())
                 && (se.getX() <= fe.getX() + fe.getWidth())) {
-            draw4(graphics, firstY, secondY);
+            drawBothRight(graphics, firstY, secondY);
         } else if (fe.getX() > se.getX()) {
-            draw1(graphics, firstY, secondY);
+            drawFirstLeftSecondRight(graphics, firstY, secondY);
         } else {
-            draw2(graphics, firstY, secondY);
+            drawFirstRightSecondLeft(graphics, firstY, secondY);
         }
     }
 
-    private void draw4(Graphics2D graphics, int firstY, int secondY) {
-    	System.out.println("RelationshipView.draw4()");
+    private void drawBothRight(Graphics2D graphics, int firstY, int secondY) {
         int firstX = getFirstEntityView().getX() + getFirstEntityView().getWidth();
         int secondX = getSecondEntityView().getX() + getFirstEntityView().getWidth();
         Point firstPoint = paintRelationshipEnd(graphics, firstX + END_LENGTH,
@@ -72,7 +71,7 @@ public class RelationshipView extends Line {
         drawMainLine(graphics, firstPoint, secondPoint);
     }
 
-    private void draw3(Graphics2D graphics, int firstY, int secondY) {
+    private void drawBothLeft(Graphics2D graphics, int firstY, int secondY) {
         int firstX = getFirstEntityView().getX();
         int secondX = getSecondEntityView().getX();
         Point firstPoint = paintRelationshipEnd(graphics, firstX - END_LENGTH,
@@ -84,7 +83,7 @@ public class RelationshipView extends Line {
         drawMainLine(graphics, firstPoint, secondPoint);
     }
 
-    private void draw2(Graphics2D graphics, int firstY, int secondY) {
+    private void drawFirstRightSecondLeft(Graphics2D graphics, int firstY, int secondY) {
         int firstX = getFirstEntityView().getX() + getFirstEntityView().getWidth();
         int secondX = getSecondEntityView().getX();
         Point firstPoint = paintRelationshipEnd(graphics, firstX, firstY, firstX
@@ -96,7 +95,7 @@ public class RelationshipView extends Line {
         drawMainLine(graphics, firstPoint, secondPoint);
     }
 
-    private void draw1(Graphics2D graphics, int firstY, int secondY) {
+    private void drawFirstLeftSecondRight(Graphics2D graphics, int firstY, int secondY) {
         int firstX = getFirstEntityView().getX();
         int secondX = getSecondEntityView().getX()
                 + getSecondEntityView().getWidth();
