@@ -50,11 +50,16 @@ public class AttributesCompartment extends Compartment
 			bounds.add(stringBounds);
 			height += stringBounds.getHeight() + MARGIN * 2;
 		}
-		Rectangle2D withMaxWidth = Collections.max(bounds, GraphicsUtils.WIDTH_COMPARATOR);
-		height = (int) (height < MIN_SIZE.getHeight() ? MIN_SIZE.getHeight() : height);
-		int width = (int) (withMaxWidth.getWidth() < MIN_SIZE.getWidth() ? MIN_SIZE.getWidth()
-				: withMaxWidth.getWidth());
-		return new Rectangle2D.Double(0, 0, width, height);
+		Rectangle2D withMaxWidth = null;
+		if (!bounds.isEmpty()) {
+			withMaxWidth = Collections.max(bounds, GraphicsUtils.WIDTH_COMPARATOR);
+			height = (int) (height < MIN_SIZE.getHeight() ? MIN_SIZE.getHeight() : height);
+			int width = (int) (withMaxWidth.getWidth() < MIN_SIZE.getWidth() ? MIN_SIZE.getWidth()
+					: withMaxWidth.getWidth());
+			return new Rectangle2D.Double(0, 0, width, height);
+		} else {
+			return new Rectangle2D.Double(0, 0, MIN_SIZE.width, MIN_SIZE.height);
+		}
 	}
 	
 	/**
@@ -63,6 +68,9 @@ public class AttributesCompartment extends Compartment
 	@Override
 	public int paint(Graphics2D graphics)
 	{
+		if (attributes.isEmpty()) {
+			return getAbsoluteY();
+		}
 		int curY = getAbsoluteY();
 		for (AttributeView av : attributes)
 		{
@@ -70,4 +78,5 @@ public class AttributesCompartment extends Compartment
 		}
 		return curY;
 	}
+	
 }

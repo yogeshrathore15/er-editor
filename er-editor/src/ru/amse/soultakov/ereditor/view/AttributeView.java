@@ -18,6 +18,8 @@ public class AttributeView
 	private EntityView entityView;
 
 	private Compartment compartment;
+	
+	private volatile int lastPaintedY;
 
 	public AttributeView(AbstractAttribute attribute, EntityView entityView,
 			Compartment compartment)
@@ -54,15 +56,24 @@ public class AttributeView
 	{
 		this.entityView = entityView;
 	}
+	
+	/**
+	 * @return the lastPaintedY
+	 */
+	public int getLastPaintedY()
+	{
+		return lastPaintedY;
+	}
 
 	public int paint(Graphics2D graphics, int x, int y)
 	{
 		String attrString = getAttributeStringPresentation();
 		Rectangle2D bounds = GraphicsUtils.getStringBounds(graphics, attrString);
-		int newCurY = y + (int) bounds.getHeight();
+		lastPaintedY = (y + (int) bounds.getHeight());
 		graphics.drawString(attrString, Block.MARGIN + entityView.getX(),
-				newCurY);
-		return newCurY + Block.MARGIN;
+				lastPaintedY);
+		System.out.println(this + " " + lastPaintedY);
+		return lastPaintedY + Block.MARGIN;
 	}
 
 	// TODO: добавить возможность менять представление в зависимости от внешних
@@ -70,6 +81,15 @@ public class AttributeView
 	public String getAttributeStringPresentation()
 	{
 		return this.attribute.getName();
+	}
+	
+	/** 
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString()
+	{
+		return attribute.getName();
 	}
 
 }
