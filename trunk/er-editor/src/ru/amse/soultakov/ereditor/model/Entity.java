@@ -16,22 +16,22 @@ import java.util.Set;
  */
 public class Entity implements Iterable<AbstractAttribute> {
 
-    private static final String PARAM_CANT_BE_NULL = "Param must be non null value"; 
+    private static final String PARAM_CANT_BE_NULL = "Param must be non null value";
 
-    private static final String RELATIONSHIP_CANT_BE_NULL = "Relationship can't be null"; 
+    private static final String RELATIONSHIP_CANT_BE_NULL = "Relationship can't be null";
 
     private final Set<AbstractAttribute> attributes = newLinkedHashSet();;
-    
+
     private final Index<AbstractAttribute> primaryKey = new Index<AbstractAttribute>();
-    
+
     private final Set<Index<FKAttribute>> foreignKey = newLinkedHashSet();
-    
+
     private final Set<Index<AbstractAttribute>> uniqueAttributes = newLinkedHashSet();
 
     private final Set<Relationship> relationships = newLinkedHashSet();
 
     private final Set<Link> links = newLinkedHashSet();
-    
+
     private String name;
 
     /**
@@ -180,39 +180,39 @@ public class Entity implements Iterable<AbstractAttribute> {
         }
         return true;
     }
-    
+
     public void addToPrimaryKey(Attribute attribute) {
         primaryKey.add(attribute);
         attributes.add(attribute);
     }
-    
+
     public Collection<AbstractAttribute> getAttributesExceptPK() {
         Set<AbstractAttribute> set = newLinkedHashSet(attributes);
         set.removeAll(primaryKey.getAttributes());
         return set;
     }
-    
+
     public Index<AbstractAttribute> getPrimaryKey() {
         return primaryKey;
     }
-    
+
     public boolean removeFromPrimaryKey(Attribute attribute) {
-    	return primaryKey.remove(attribute);
+        return primaryKey.remove(attribute);
     }
-    
+
     public Collection<Index<AbstractAttribute>> getUniqueAttributes() {
         return Collections.unmodifiableSet(uniqueAttributes);
     }
-    
+
     public void addToUniqueAttributes(Set<AbstractAttribute> set) {
-    	attributes.addAll(set);
-    	uniqueAttributes.add(new Index<AbstractAttribute>(set));
+        attributes.addAll(set);
+        uniqueAttributes.add(new Index<AbstractAttribute>(set));
     }
-    
+
     public boolean removeFromUniqueAttributes(Set<Attribute> set) {
-    	return uniqueAttributes.remove(set);
+        return uniqueAttributes.remove(set);
     }
-    
+
     public Collection<Index<FKAttribute>> getForeignKey() {
         return Collections.unmodifiableSet(foreignKey);
     }

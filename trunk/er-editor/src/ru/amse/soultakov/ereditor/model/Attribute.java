@@ -1,12 +1,11 @@
 package ru.amse.soultakov.ereditor.model;
 
-
 /**
  * @author sma
  * 
  */
 public class Attribute extends AbstractAttribute {
-    
+
     private IAttributeType type;
 
     private boolean notNull;
@@ -49,7 +48,7 @@ public class Attribute extends AbstractAttribute {
     public boolean isNotNull() {
         return notNull;
     }
-    
+
     @Override
     public String toString() {
         return super.toString();

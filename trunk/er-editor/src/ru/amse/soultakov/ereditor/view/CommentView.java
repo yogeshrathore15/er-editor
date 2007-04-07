@@ -27,7 +27,7 @@ public class CommentView extends Block {
 
     public void paint(Graphics2D graphics) {
         recalculateSize(graphics);
-        
+
         drawBackground(graphics);
         drawBorder(graphics);
         drawTitle(graphics);
@@ -42,10 +42,12 @@ public class CommentView extends Block {
 
     private Rectangle2D drawTitle(Graphics2D graphics) {
         graphics.setColor(Color.BLACK);
-        Rectangle2D bounds = GraphicsUtils.getStringBounds(graphics, comment.getComment());
-        //$ANALYSIS-IGNORE,codereview.java.rules.casting.RuleCastingPrimitives
-        graphics.drawString(comment.getComment(),getX(),getY() + (int)bounds.getHeight());
-        
+        Rectangle2D bounds = GraphicsUtils.getStringBounds(graphics, comment
+                .getComment());
+        // $ANALYSIS-IGNORE,codereview.java.rules.casting.RuleCastingPrimitives
+        graphics.drawString(comment.getComment(), getX(), getY()
+                + (int) bounds.getHeight());
+
         return bounds;
     }
 
@@ -62,8 +64,9 @@ public class CommentView extends Block {
      */
     @Override
     protected Dimension getContentBounds(Graphics2D graphics) {
-        Rectangle2D r = GraphicsUtils.getStringBounds(graphics, comment.getComment());
-        return new Dimension((int)r.getWidth(), 100);//(int)r.getHeight());
+        Rectangle2D r = GraphicsUtils
+                .getStringBounds(graphics, comment.getComment());
+        return new Dimension((int) r.getWidth(), 100);// (int)r.getHeight());
     }
 
     public <R, D> R acceptVisitor(IVisitor<R, D> visitor, D data) {

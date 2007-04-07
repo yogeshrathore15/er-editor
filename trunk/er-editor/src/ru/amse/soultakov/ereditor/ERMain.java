@@ -1,4 +1,3 @@
-
 package ru.amse.soultakov.ereditor;
 
 import static ru.amse.soultakov.ereditor.util.CommonUtils.newHashMap;
@@ -32,33 +31,37 @@ import ru.amse.soultakov.ereditor.controller.tools.Tool;
 
 /**
  * @author Soultakov Maxim
- *
+ * 
  */
 public class ERMain {
 
     private static DiagramEditor diagramEditor = new DiagramEditor();
 
     private static Map<Tool, AbstractButton> toolToButton = newHashMap();
-    
+
     public static void main(String[] args) {
         JFrame frame = new JFrame("Stupid test");
         JMenuBar menu = new JMenuBar();
         frame.setJMenuBar(menu);
         menu.add(new JMenu("File"));
         menu.add(new JMenu("Edit"));
-        
-        JScrollPane scrollPane = new JScrollPane(diagramEditor);        
-		frame.add(scrollPane);        
+
+        JScrollPane scrollPane = new JScrollPane(diagramEditor);
+        frame.add(scrollPane);
         JToolBar toolBar = new JToolBar();
         toolBar.setRollover(true);
         ButtonGroup buttonsGroup = new ButtonGroup();
-        final SelectElementTool selectElementTool = new SelectElementTool(diagramEditor);
-        final JToggleButton defaultToolButton = new JToggleButton(new DiagramEditorAction(
-                diagramEditor, "Default", new ImageIcon("./src/images/tool_selecting.png"), selectElementTool));
-		defaultToolButton.setPressedIcon(new ImageIcon("./src/images/tool_selecting_pressed.png"));
-		defaultToolButton.setSelectedIcon(new ImageIcon("./src/images/tool_selecting_pressed.png"));
+        final SelectElementTool selectElementTool = new SelectElementTool(
+                diagramEditor);
+        final JToggleButton defaultToolButton = new JToggleButton(
+                new DiagramEditorAction(diagramEditor, "Default", new ImageIcon(
+                        "./src/images/tool_selecting.png"), selectElementTool));
+        defaultToolButton.setPressedIcon(new ImageIcon(
+                "./src/images/tool_selecting_pressed.png"));
+        defaultToolButton.setSelectedIcon(new ImageIcon(
+                "./src/images/tool_selecting_pressed.png"));
         defaultToolButton.setText(null);
-        defaultToolButton.setMargin(new Insets(0,0,0,0));
+        defaultToolButton.setMargin(new Insets(0, 0, 0, 0));
         toolToButton.put(selectElementTool, defaultToolButton);
         IToolListener toolListener = new IToolListener() {
             public void operationFinished() {
@@ -72,7 +75,8 @@ public class ERMain {
                 diagramEditor, "Add Entity", addEntityTool));
         toolToButton.put(addEntityTool, addEntityButton);
 
-        AddRelationshipTool addRelationshipTool = new AddRelationshipTool(diagramEditor);
+        AddRelationshipTool addRelationshipTool = new AddRelationshipTool(
+                diagramEditor);
         addRelationshipTool.addListener(toolListener);
         JToggleButton addRelationshipButton = new JToggleButton(
                 new DiagramEditorAction(diagramEditor, "Add relationship",
@@ -90,9 +94,9 @@ public class ERMain {
         JToggleButton addLinkButton = new JToggleButton(new DiagramEditorAction(
                 diagramEditor, "Add link", addLinkTool));
         toolToButton.put(addLinkTool, addLinkButton);
-        
+
         defaultToolButton.setSelected(true);
-        
+
         diagramEditor.addToolChangeListener(new ICurrentToolListener() {
             public void currentToolChanged(Tool oldTool, Tool newTool) {
                 if (toolToButton.containsKey(newTool)) {

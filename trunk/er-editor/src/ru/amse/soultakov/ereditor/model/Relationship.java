@@ -1,6 +1,5 @@
 package ru.amse.soultakov.ereditor.model;
 
-
 /**
  * @author Soultakov Maxim
  */

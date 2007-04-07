@@ -182,9 +182,9 @@ public class Diagram {
         }
         return null;
     }
-        
+
     public Dimension getSize() {
-        Point currentMax = new Point(0,0);
+        Point currentMax = new Point(0, 0);
         CommonUtils.getRightBottomPoint(entityViews, currentMax);
         CommonUtils.getRightBottomPoint(commentViews, currentMax);
         return new Dimension(currentMax.x, currentMax.y);

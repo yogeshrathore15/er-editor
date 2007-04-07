@@ -26,7 +26,7 @@ public abstract class Block implements IViewable {
     private int height;
 
     private int width;
-    
+
     protected Diagram diagram;
 
     public Block(Diagram diagram, int x, int y) {

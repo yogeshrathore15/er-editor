@@ -18,138 +18,121 @@ import ru.amse.soultakov.ereditor.util.GraphicsUtils;
 /**
  * @author Soultakov Maxim
  */
-public class EntityView extends Block
-{
+public class EntityView extends Block {
 
-	private static final Color BACKGROUND_COLOR = new Color(210, 210, 210);
+    private static final Color BACKGROUND_COLOR = new Color(210, 210, 210);
 
-	protected Entity entity;
+    protected Entity entity;
 
-	protected List<AttributeView> attributeViews = newArrayList();
+    protected List<AttributeView> attributeViews = newArrayList();
 
-	protected TitleCompartment titleCompartment;
+    protected TitleCompartment titleCompartment;
 
-	protected AttributesCompartment pkCompartment;
+    protected AttributesCompartment pkCompartment;
 
-	protected AttributesCompartment nonPkCompartment;
+    protected AttributesCompartment nonPkCompartment;
 
-	private boolean initialized = false;
+    private boolean initialized = false;
 
-	public EntityView(Diagram diagram, Entity entity, int x, int y)
-	{
-		super(diagram, x, y);
-		if (entity == null)
-		{
-			throw new IllegalArgumentException("Entity must be non-null");
-		}
-		this.entity = entity;
-	}
+    public EntityView(Diagram diagram, Entity entity, int x, int y) {
+        super(diagram, x, y);
+        if (entity == null) {
+            throw new IllegalArgumentException("Entity must be non-null");
+        }
+        this.entity = entity;
+    }
 
-	private void initCompartments(Graphics2D graphics)
-	{
-		titleCompartment = new TitleCompartment(MARGIN, this, entity.getName());
-		pkCompartment = new PrimaryKeyCompartment(
-				titleCompartment.getHeight(graphics) + MARGIN * 2, this);
-		initCompartment(pkCompartment, entity.getPrimaryKey());
-		nonPkCompartment = new NonPrimaryKeyCompartment(pkCompartment.getHeight(graphics) + MARGIN
-				* 4, this);
-		initCompartment(nonPkCompartment, entity.getAttributesExceptPK());
-	}
+    private void initCompartments(Graphics2D graphics) {
+        titleCompartment = new TitleCompartment(MARGIN, this, entity.getName());
+        pkCompartment = new PrimaryKeyCompartment(titleCompartment
+                .getHeight(graphics)
+                + MARGIN * 2, this);
+        initCompartment(pkCompartment, entity.getPrimaryKey());
+        nonPkCompartment = new NonPrimaryKeyCompartment(pkCompartment
+                .getHeight(graphics)
+                + MARGIN * 4, this);
+        initCompartment(nonPkCompartment, entity.getAttributesExceptPK());
+    }
 
-	private void initCompartment(AttributesCompartment compartment,
-			Iterable<AbstractAttribute> attrs)
-	{
-		for (AbstractAttribute a : attrs)
-		{
-			AttributeView attributeView = new AttributeView(a, this, compartment);
-			attributeViews.add(attributeView);
-			compartment.getAttributes().add(attributeView);
-		}
-	}
+    private void initCompartment(AttributesCompartment compartment,
+            Iterable<AbstractAttribute> attrs) {
+        for (AbstractAttribute a : attrs) {
+            AttributeView attributeView = new AttributeView(a, this, compartment);
+            attributeViews.add(attributeView);
+            compartment.getAttributes().add(attributeView);
+        }
+    }
 
-	public void paint(Graphics2D graphics)
-	{
-		lazyInitCompartments(graphics);
-		recalculateSize(graphics);
+    public void paint(Graphics2D graphics) {
+        lazyInitCompartments(graphics);
+        recalculateSize(graphics);
 
-		drawBackground(graphics);
-		drawBorder(graphics);
+        drawBackground(graphics);
+        drawBorder(graphics);
 
-		int curY = titleCompartment.paint(graphics);
-		drawHorizontalLine(graphics, curY + MARGIN);
-		curY = pkCompartment.paint(graphics);
-		drawHorizontalLine(graphics, curY + MARGIN);
-		curY = nonPkCompartment.paint(graphics);
-		drawSelection(graphics);
-	}
+        int curY = titleCompartment.paint(graphics);
+        drawHorizontalLine(graphics, curY + MARGIN);
+        curY = pkCompartment.paint(graphics);
+        drawHorizontalLine(graphics, curY + MARGIN);
+        curY = nonPkCompartment.paint(graphics);
+        drawSelection(graphics);
+    }
 
-	private void lazyInitCompartments(Graphics2D graphics)
-	{
-		if (!initialized)
-		{
-			initCompartments(graphics);
-			initialized = true;
-		}
-	}
+    private void lazyInitCompartments(Graphics2D graphics) {
+        if (!initialized) {
+            initCompartments(graphics);
+            initialized = true;
+        }
+    }
 
-	private void drawHorizontalLine(Graphics2D graphics, int newCurY)
-	{
-		graphics.drawLine(getX(), newCurY, getX() + getWidth(), newCurY);
-	}
+    private void drawHorizontalLine(Graphics2D graphics, int newCurY) {
+        graphics.drawLine(getX(), newCurY, getX() + getWidth(), newCurY);
+    }
 
-	boolean isUnique(AbstractAttribute a)
-	{
-		for (Index<AbstractAttribute> index : entity.getUniqueAttributes())
-		{
-			if (index.contains(a))
-			{
-				return true;
-			}
-		}
-		return false;
-	}
+    boolean isUnique(AbstractAttribute a) {
+        for (Index<AbstractAttribute> index : entity.getUniqueAttributes()) {
+            if (index.contains(a)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-	private void drawBackground(Graphics2D graphics)
-	{
-		graphics.setColor(BACKGROUND_COLOR);
-		graphics.fillRect(getX(), getY(), getWidth(), getHeight());
-	}
+    private void drawBackground(Graphics2D graphics) {
+        graphics.setColor(BACKGROUND_COLOR);
+        graphics.fillRect(getX(), getY(), getWidth(), getHeight());
+    }
 
-	@Override
-	protected Dimension getContentBounds(Graphics2D graphics)
-	{
-		lazyInitCompartments(graphics);
-		List<Rectangle2D> bounds = new ArrayList<Rectangle2D>(3);
-		bounds.add(GraphicsUtils.getStringBounds(graphics, entity.getName()));
-		bounds.add(pkCompartment.getContentBounds(graphics));
-		bounds.add(nonPkCompartment.getContentBounds(graphics));
-		int height = 0;
-		for (Rectangle2D r : bounds)
-		{
-			height += r.getHeight();
-		}
-		Rectangle2D withMaxWidth = Collections.max(bounds, GraphicsUtils.WIDTH_COMPARATOR);
-		return new Dimension((int) withMaxWidth.getWidth() + MARGIN * 2, height);
-	}
+    @Override
+    protected Dimension getContentBounds(Graphics2D graphics) {
+        lazyInitCompartments(graphics);
+        List<Rectangle2D> bounds = new ArrayList<Rectangle2D>(3);
+        bounds.add(GraphicsUtils.getStringBounds(graphics, entity.getName()));
+        bounds.add(pkCompartment.getContentBounds(graphics));
+        bounds.add(nonPkCompartment.getContentBounds(graphics));
+        int height = 0;
+        for (Rectangle2D r : bounds) {
+            height += r.getHeight();
+        }
+        Rectangle2D withMaxWidth = Collections.max(bounds,
+                GraphicsUtils.WIDTH_COMPARATOR);
+        return new Dimension((int) withMaxWidth.getWidth() + MARGIN * 2, height);
+    }
 
-	public Entity getEntity()
-	{
-		return entity;
-	}
+    public Entity getEntity() {
+        return entity;
+    }
 
-	public boolean acceptRelationshipWith(EntityView entityView)
-	{
-		return entity.acceptRelationshipWith(entityView.getEntity());
-	}
+    public boolean acceptRelationshipWith(EntityView entityView) {
+        return entity.acceptRelationshipWith(entityView.getEntity());
+    }
 
-	public boolean acceptLinkWith(CommentView commentView)
-	{
-		return entity.acceptLinkWith(commentView.getComment());
-	}
+    public boolean acceptLinkWith(CommentView commentView) {
+        return entity.acceptLinkWith(commentView.getComment());
+    }
 
-	public <R, D> R acceptVisitor(IVisitor<R, D> visitor, D data)
-	{
-		return visitor.visit(this, data);
-	}
+    public <R, D> R acceptVisitor(IVisitor<R, D> visitor, D data) {
+        return visitor.visit(this, data);
+    }
 
 }

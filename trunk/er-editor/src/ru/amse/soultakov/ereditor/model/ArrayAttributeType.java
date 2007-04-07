@@ -8,25 +8,26 @@ import static ru.amse.soultakov.ereditor.model.SimpleAttributeType.CHAR;
 public class ArrayAttributeType implements IAttributeType {
 
     private SimpleAttributeType arrayType;
+
     private int size;
-    
+
     public ArrayAttributeType(SimpleAttributeType arrayType, int dimension) {
         this.arrayType = arrayType;
         this.size = dimension;
     }
-    
+
     public SimpleAttributeType getArrayType() {
         return this.arrayType;
     }
-    
+
     public int getSize() {
         return this.size;
     }
-    
+
     public void setSize(int dimension) {
         this.size = dimension;
     }
-    
+
     public void setArrayType(SimpleAttributeType arrayType) {
         this.arrayType = arrayType;
     }
@@ -37,7 +38,7 @@ public class ArrayAttributeType implements IAttributeType {
 
     public boolean isCorrectString(String value) {
         if (arrayType == CHAR) {
-            return true;//?
+            return true;// ?
         }
         return false;
     }
@@ -50,7 +51,8 @@ public class ArrayAttributeType implements IAttributeType {
     public int hashCode() {
         final int PRIME = 31;
         int result = 1;
-        result = PRIME * result + ((this.arrayType == null) ? 0 : this.arrayType.hashCode());
+        result = PRIME * result
+                + ((this.arrayType == null) ? 0 : this.arrayType.hashCode());
         result = PRIME * result + this.size;
         return result;
     }
@@ -73,7 +75,5 @@ public class ArrayAttributeType implements IAttributeType {
             return false;
         return true;
     }
-    
-    
 
 }
