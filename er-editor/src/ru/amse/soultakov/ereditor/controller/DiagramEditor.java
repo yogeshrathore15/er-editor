@@ -142,7 +142,6 @@ public class DiagramEditor extends JComponent {
         paintSet(diagram.getCommentViews(), graphics);
         paintSet(diagram.getEntityViews(), graphics);
 
-
         currentTool.paintAfter(graphics);
     }
 

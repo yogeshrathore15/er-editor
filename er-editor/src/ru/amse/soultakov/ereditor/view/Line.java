@@ -33,7 +33,7 @@ public abstract class Line implements IViewable {
     protected int secondCenterX;
 
     protected int secondCenterY;
-    
+
     protected Diagram diagram;
 
     private final List<IViewableListener> listeners = new ArrayList<IViewableListener>();
@@ -41,7 +41,7 @@ public abstract class Line implements IViewable {
     public Line(Diagram diagram) {
         this.diagram = diagram;
     }
-    
+
     protected static int getXCenter(Block block, int n) {
         return block.getX() + block.getWidth() / n;
     }
@@ -155,11 +155,11 @@ public abstract class Line implements IViewable {
 
     public void setLocation(int x, int y) {
     }
-    
+
     public int getHeight() {
         return Math.abs(firstCenterY - secondCenterY);
     }
-    
+
     public int getWidth() {
         return Math.abs(secondCenterX - firstCenterX);
     }
@@ -184,9 +184,9 @@ public abstract class Line implements IViewable {
     public boolean removeListener(IViewableListener iViewableListener) {
         return listeners.remove(iViewableListener);
     }
-    
+
     public Diagram getDiagram() {
         return this.diagram;
     }
-    
+
 }

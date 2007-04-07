@@ -25,7 +25,7 @@ public abstract class AbstractAttribute {
     public String getDefaultValue() {
         return this.defaultValue;
     }
-    
+
     @Override
     public String toString() {
         return getName() + " : " + getType().getName();

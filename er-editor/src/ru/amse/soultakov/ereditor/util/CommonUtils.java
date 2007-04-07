@@ -26,10 +26,10 @@ public class CommonUtils {
     public static <T> LinkedHashSet<T> newLinkedHashSet() {
         return new LinkedHashSet<T>();
     }
-    
+
     public static <T> LinkedHashSet<T> newLinkedHashSet(Set<T> set) {
         return new LinkedHashSet<T>(set);
-    }    
+    }
 
     public static <T, E> HashMap<T, E> newHashMap() {
         return new HashMap<T, E>();
@@ -46,13 +46,14 @@ public class CommonUtils {
         }
         System.out.println("}");
     }
-    
+
     public static Point getRightBottomPoint(Set<? extends IViewable> set) {
-        return getRightBottomPoint(set, new Point(0,0));
+        return getRightBottomPoint(set, new Point(0, 0));
     }
-    
-    public static Point getRightBottomPoint(Set<? extends IViewable> set, Point currentMax) {
-        for(IViewable v : set) {
+
+    public static Point getRightBottomPoint(Set<? extends IViewable> set,
+            Point currentMax) {
+        for (IViewable v : set) {
             if (v.getX() + v.getWidth() > currentMax.x) {
                 currentMax.x = v.getX() + v.getWidth();
             }

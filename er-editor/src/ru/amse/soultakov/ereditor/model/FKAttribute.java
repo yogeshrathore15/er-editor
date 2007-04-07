@@ -24,7 +24,7 @@ public class FKAttribute extends AbstractAttribute {
     public Entity getEntity() {
         return this.entity;
     }
-    
+
     public Attribute getAttribute() {
         return attribute;
     }

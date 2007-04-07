@@ -11,17 +11,16 @@ public enum RelationshipMultiplicity {
      * 
      */
     ONE_ONLY(true, false),
-    
+
     /**
      * 
      */
     ONE_OR_MORE(true, true),
-    
+
     /**
      * 
      */
     ZERO_OR_ONE(false, false),
-
 
     /**
      * 

@@ -10,54 +10,48 @@ import java.awt.geom.Rectangle2D;
  * @author Soultakov Maxim
  * 
  */
-public abstract class Compartment
-{
+public abstract class Compartment {
 
-	public static final int MARGIN = 3;
+    public static final int MARGIN = 3;
 
-	protected int y;
+    protected int y;
 
-	protected final EntityView entityView;
+    protected final EntityView entityView;
 
-	public Compartment(int y, EntityView entityView)
-	{
-		this.y = y;
-		this.entityView = entityView;
-	}
+    public Compartment(int y, EntityView entityView) {
+        this.y = y;
+        this.entityView = entityView;
+    }
 
-	public int getAbsoluteY()
-	{
-		return this.y + entityView.getY();
-	}
-	
-	/**
-	 * @return the y
-	 */
-	public int getY()
-	{
-		return this.y;
-	}
-	
-	public int getX() {
-		return entityView.getX() + MARGIN;
-	}
+    public int getAbsoluteY() {
+        return this.y + entityView.getY();
+    }
 
-	public void setY(int y)
-	{
-		this.y = y;
-	}
+    /**
+     * @return the y
+     */
+    public int getY() {
+        return this.y;
+    }
 
-	public EntityView getEntityView()
-	{
-		return this.entityView;
-	}
-	
-	public int getHeight(Graphics2D graphics) {
-		return (int) getContentBounds(graphics).getHeight();
-	}
+    public int getX() {
+        return entityView.getX() + MARGIN;
+    }
 
-	public abstract int paint(Graphics2D graphics);
+    public void setY(int y) {
+        this.y = y;
+    }
 
-	public abstract Rectangle2D getContentBounds(Graphics2D graphics);
+    public EntityView getEntityView() {
+        return this.entityView;
+    }
+
+    public int getHeight(Graphics2D graphics) {
+        return (int) getContentBounds(graphics).getHeight();
+    }
+
+    public abstract int paint(Graphics2D graphics);
+
+    public abstract Rectangle2D getContentBounds(Graphics2D graphics);
 
 }

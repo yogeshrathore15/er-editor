@@ -78,7 +78,7 @@ public class SelectedItems implements Iterable<IViewable> {
     public boolean isEmpty() {
         return selectedViews.isEmpty();
     }
-    
+
     public Set<IViewable> getAsSet() {
         return Collections.unmodifiableSet(selectedViews);
     }
