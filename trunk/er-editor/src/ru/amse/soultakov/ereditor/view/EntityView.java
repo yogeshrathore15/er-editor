@@ -12,7 +12,7 @@ import java.util.List;
 
 import ru.amse.soultakov.ereditor.model.AbstractAttribute;
 import ru.amse.soultakov.ereditor.model.Entity;
-import ru.amse.soultakov.ereditor.model.Index;
+import ru.amse.soultakov.ereditor.model.Constraint;
 import ru.amse.soultakov.ereditor.util.GraphicsUtils;
 
 /**
@@ -90,7 +90,7 @@ public class EntityView extends Block {
     }
 
     boolean isUnique(AbstractAttribute a) {
-        for (Index<AbstractAttribute> index : entity.getUniqueAttributes()) {
+        for (Constraint<AbstractAttribute> index : entity.getUniqueAttributes()) {
             if (index.contains(a)) {
                 return true;
             }

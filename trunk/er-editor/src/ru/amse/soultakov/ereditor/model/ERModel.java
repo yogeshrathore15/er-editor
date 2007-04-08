@@ -39,12 +39,14 @@ public class ERModel {
         Entity entity = new Entity(generator.getEntityName());
         entities.add(entity);
 
-        // Attribute pk1 = new Attribute("Attr1", INTEGER, false, null);
-        // entity.addAttribute(pk1);
-        // Attribute pk2 = new Attribute("Attr2", DOUBLE, false, null);
-        // entity.addAttribute(pk2);
-        // entity.addToPrimaryKey(pk2);
-        // entity.addToPrimaryKey(pk1);
+        Attribute pk1 = new Attribute("Attr1", SimpleAttributeType.INTEGER, false,
+                null);
+        entity.addAttribute(pk1);
+        Attribute pk2 = new Attribute("Attr2", SimpleAttributeType.DOUBLE, false,
+                null);
+        entity.addAttribute(pk2);
+        entity.addToPrimaryKey(pk2);
+        entity.addToPrimaryKey(pk1);
         Attribute u1 = new Attribute("Attr3", CHAR, false, null);
         entity.addAttribute(u1);
         Attribute u2 = new Attribute("Attr4", new ArrayAttributeType(CHAR, 5),
@@ -74,10 +76,10 @@ public class ERModel {
             throw new IllegalArgumentException("Entities don't accept relationhsip");
         }
         Random r = new Random();
-        Relationship relationship = new Relationship(new FKRelationshipEnd(first,
-                RelationshipMultiplicity.values()[r.nextInt(2)], "End1"),
-                new FKRelationshipEnd(second, RelationshipMultiplicity.values()[r
-                        .nextInt(2)], "End2"));
+        Relationship relationship = new Relationship(new PKRelationshipEnd(first,
+                RelationshipMultiplicity.values()[r.nextInt(2) + 2], "End1"),
+                new PKRelationshipEnd(second, RelationshipMultiplicity.values()[r
+                        .nextInt(2) + 2], "End2"));
         relationships.add(relationship);
         first.addRelationship(relationship);
         second.addRelationship(relationship);

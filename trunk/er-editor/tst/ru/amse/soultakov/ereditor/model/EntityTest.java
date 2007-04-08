@@ -7,7 +7,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static ru.amse.soultakov.ereditor.model.RelationshipMultiplicity.ONE_ONLY;
+import static ru.amse.soultakov.ereditor.model.RelationshipMultiplicity.ZERO_OR_MORE;
 
 import java.util.Iterator;
 
@@ -86,8 +86,8 @@ public class EntityTest {
 
     private static Relationship createRelationship(Entity entity) {
         final Entity another = new Entity("abc");
-        return new Relationship(new FKRelationshipEnd(entity,
-                        ONE_ONLY, ""), new FKRelationshipEnd(another, ONE_ONLY, ""));
+        return new Relationship(new PKRelationshipEnd(entity,
+                        ZERO_OR_MORE, ""), new PKRelationshipEnd(another, ZERO_OR_MORE, ""));
     }
     
     public static Link createLink(Entity entity) {

@@ -22,11 +22,11 @@ public class Entity implements Iterable<AbstractAttribute> {
 
     private final Set<AbstractAttribute> attributes = newLinkedHashSet();;
 
-    private final Index<AbstractAttribute> primaryKey = new Index<AbstractAttribute>();
+    private final Constraint<AbstractAttribute> primaryKey = new Constraint<AbstractAttribute>();
 
-    private final Set<Index<FKAttribute>> foreignKey = newLinkedHashSet();
+    private final Set<Constraint<FKAttribute>> foreignKey = newLinkedHashSet();
 
-    private final Set<Index<AbstractAttribute>> uniqueAttributes = newLinkedHashSet();
+    private final Set<Constraint<AbstractAttribute>> uniqueAttributes = newLinkedHashSet();
 
     private final Set<Relationship> relationships = newLinkedHashSet();
 
@@ -192,7 +192,7 @@ public class Entity implements Iterable<AbstractAttribute> {
         return set;
     }
 
-    public Index<AbstractAttribute> getPrimaryKey() {
+    public Constraint<AbstractAttribute> getPrimaryKey() {
         return primaryKey;
     }
 
@@ -200,20 +200,20 @@ public class Entity implements Iterable<AbstractAttribute> {
         return primaryKey.remove(attribute);
     }
 
-    public Collection<Index<AbstractAttribute>> getUniqueAttributes() {
+    public Collection<Constraint<AbstractAttribute>> getUniqueAttributes() {
         return Collections.unmodifiableSet(uniqueAttributes);
     }
 
     public void addToUniqueAttributes(Set<AbstractAttribute> set) {
         attributes.addAll(set);
-        uniqueAttributes.add(new Index<AbstractAttribute>(set));
+        uniqueAttributes.add(new Constraint<AbstractAttribute>(set));
     }
 
     public boolean removeFromUniqueAttributes(Set<Attribute> set) {
         return uniqueAttributes.remove(set);
     }
 
-    public Collection<Index<FKAttribute>> getForeignKey() {
+    public Collection<Constraint<FKAttribute>> getForeignKey() {
         return Collections.unmodifiableSet(foreignKey);
     }
 
