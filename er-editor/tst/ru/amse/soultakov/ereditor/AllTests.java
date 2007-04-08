@@ -7,12 +7,14 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import ru.amse.soultakov.ereditor.model.ArrayAttributeTypeTest;
 import ru.amse.soultakov.ereditor.model.AttributeTest;
 import ru.amse.soultakov.ereditor.model.CommentTest;
 import ru.amse.soultakov.ereditor.model.DiagramTest;
 import ru.amse.soultakov.ereditor.model.EntityTest;
 import ru.amse.soultakov.ereditor.model.LinkTest;
 import ru.amse.soultakov.ereditor.model.RelationshipTest;
+import ru.amse.soultakov.ereditor.model.SimpleAttributeTypeTest;
 import ru.amse.soultakov.ereditor.view.DiagramPresentationTest;
 
 @RunWith(Suite.class)
@@ -23,7 +25,9 @@ import ru.amse.soultakov.ereditor.view.DiagramPresentationTest;
          LinkTest.class,
          RelationshipTest.class,
          DiagramTest.class,
-         DiagramPresentationTest.class})
+         DiagramPresentationTest.class,
+         ArrayAttributeTypeTest.class,
+         SimpleAttributeTypeTest.class})
 public class AllTests {
 
 }

@@ -7,6 +7,9 @@ public enum SimpleAttributeType implements IAttributeType {
     INTEGER("Integer") {
         @Override
         public boolean isCorrectString(String value) {
+            if (value == null) {
+                return false;
+            }
             try {
                 Integer.parseInt(value);
                 return true;
@@ -18,12 +21,15 @@ public enum SimpleAttributeType implements IAttributeType {
     CHAR("Char") {
         @Override
         public boolean isCorrectString(String value) {
-            return value.length() == 1;
+            return value == null ? false : value.length() == 1;
         }
     },
     DOUBLE("Double") {
         @Override
         public boolean isCorrectString(String value) {
+            if (value == null) {
+                return false;
+            }
             try {
                 Double.parseDouble(value);
                 return true;

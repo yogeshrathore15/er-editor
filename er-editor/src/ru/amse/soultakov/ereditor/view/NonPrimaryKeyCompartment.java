@@ -43,16 +43,17 @@ class NonPrimaryKeyCompartment extends AttributesCompartment {
      */
     @Override
     public int paint(Graphics2D graphics) {
+        int curY = super.paint(graphics);
         paintAdditionalColumn(graphics);
-        return super.paint(graphics);
+        return curY;
     }
 
     /**
      * @param graphics
      */
     private void paintAdditionalColumn(Graphics2D graphics) {
-        graphics.drawLine(getAdditionalColumnX(), getAbsoluteY(),
-                getAdditionalColumnX(), getAbsoluteY() + getHeight(graphics));
+        graphics.drawLine(getAdditionalColumnX(), getAbsoluteY() - MARGIN,
+                getAdditionalColumnX(), getAbsoluteY() + getHeight(graphics) + MARGIN);
         for (AttributeView av : attributes) {
             if (entityView.isUnique(av.getAttribute())) {
                 int x = getAdditionalColumnX();

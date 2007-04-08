@@ -64,9 +64,6 @@ public class AttributesCompartment extends Compartment {
      */
     @Override
     public int paint(Graphics2D graphics) {
-        if (attributes.isEmpty()) {
-            return getAbsoluteY();
-        }
         int curY = getAbsoluteY();
         for (AttributeView av : attributes) {
             curY = av.paint(graphics, getX(), curY);

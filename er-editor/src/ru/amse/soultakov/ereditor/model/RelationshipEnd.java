@@ -38,6 +38,8 @@ public abstract class RelationshipEnd {
         this.entity = entity;
         this.multiplicity = multiplicity;
     }
+    
+    public abstract Constraint<? extends AbstractAttribute> getConstraint();
 
     /**
      * @return

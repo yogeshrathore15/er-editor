@@ -63,7 +63,6 @@ public class AttributeView {
         lastPaintedY = (y + (int) bounds.getHeight());
         graphics.drawString(attrString, Block.MARGIN + entityView.getX(),
                 lastPaintedY);
-        System.out.println(this + " " + lastPaintedY);
         return lastPaintedY + Block.MARGIN;
     }
 

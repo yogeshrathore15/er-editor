@@ -9,15 +9,15 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.Set;
 
-public class Index<T extends AbstractAttribute> implements Iterable<T> {
+public class Constraint<T extends AbstractAttribute> implements Iterable<T> {
 
     private final Set<T> attributes;
 
-    public Index() {
+    public Constraint() {
         this.attributes = newLinkedHashSet();
     }
 
-    public Index(Set<T> attributes) {
+    public Constraint(Set<T> attributes) {
         this.attributes = newLinkedHashSet(attributes);
     }
 

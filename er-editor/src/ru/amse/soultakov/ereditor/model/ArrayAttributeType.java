@@ -11,9 +11,12 @@ public class ArrayAttributeType implements IAttributeType {
 
     private int size;
 
-    public ArrayAttributeType(SimpleAttributeType arrayType, int dimension) {
+    public ArrayAttributeType(SimpleAttributeType arrayType, int size) {
+        if (size <= 0 || arrayType == null) {
+            throw new IllegalArgumentException("Wrong parameters");
+        }
         this.arrayType = arrayType;
-        this.size = dimension;
+        this.size = size;
     }
 
     public SimpleAttributeType getArrayType() {
@@ -24,8 +27,8 @@ public class ArrayAttributeType implements IAttributeType {
         return this.size;
     }
 
-    public void setSize(int dimension) {
-        this.size = dimension;
+    public void setSize(int size) {
+        this.size = size;
     }
 
     public void setArrayType(SimpleAttributeType arrayType) {
