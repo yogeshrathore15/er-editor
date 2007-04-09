@@ -1,10 +1,12 @@
 package ru.amse.soultakov.ereditor.model.io;
 
-import java.io.File;
+import static ru.amse.soultakov.ereditor.util.CommonUtils.newHashMap;
+import static ru.amse.soultakov.ereditor.util.CommonUtils.newLinkedHashSet;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
+import java.util.Collection;
+import java.util.HashMap;
+
+import org.jdom.Element;
 
 import ru.amse.soultakov.ereditor.model.ERModel;
 
@@ -15,28 +17,28 @@ import ru.amse.soultakov.ereditor.model.ERModel;
 public class ERModelSaver {
 
     private final ERModel erModel;
+    
+    private final HashMap<Object, Integer> identifiers;
 
-    public ERModelSaver(ERModel erModel) {
+    public ERModelSaver(ERModel erModel, HashMap<Object, Integer> identifiers) {
         this.erModel = erModel;
+        this.identifiers = identifiers;
     }
     
-    public void save() {
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = null;
-        try {
-            builder = dbf.newDocumentBuilder();
-        } catch (ParserConfigurationException e) {
-            // will be never thrown
-        }
+    public Element save() {
+        Element element = new Element("model");
+        element.addContent(getEntities());
+        return element;
+    }
+
+    private Collection<Element> getEntities() {
+        Collection<Element> elements = newLinkedHashSet();
         
+        return elements;
     }
 
     public ERModel getERModel() {
         return this.erModel;
     }
 
-    public File getFile() {
-        return this.file;
-    }
-    
 }
