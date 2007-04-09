@@ -24,7 +24,7 @@ public class Entity implements Iterable<AbstractAttribute> {
 
     private final Constraint<AbstractAttribute> primaryKey = new Constraint<AbstractAttribute>();
 
-    private final Set<Constraint<FKAttribute>> foreignKey = newLinkedHashSet();
+    private final Set<Constraint<FKAttribute>> foreignKeys = newLinkedHashSet();
 
     private final Set<Constraint<AbstractAttribute>> uniqueAttributes = newLinkedHashSet();
 
@@ -214,7 +214,7 @@ public class Entity implements Iterable<AbstractAttribute> {
     }
 
     public Collection<Constraint<FKAttribute>> getForeignKey() {
-        return Collections.unmodifiableSet(foreignKey);
+        return Collections.unmodifiableSet(foreignKeys);
     }
 
 }
