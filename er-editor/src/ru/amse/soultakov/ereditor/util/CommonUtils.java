@@ -26,6 +26,10 @@ public class CommonUtils {
     public static <T> LinkedHashSet<T> newLinkedHashSet() {
         return new LinkedHashSet<T>();
     }
+    
+    public static <T> LinkedHashSet<T> newLinkedHashSet(int size) {
+        return new LinkedHashSet<T>(size);
+    }
 
     public static <T> LinkedHashSet<T> newLinkedHashSet(Set<T> set) {
         return new LinkedHashSet<T>(set);
