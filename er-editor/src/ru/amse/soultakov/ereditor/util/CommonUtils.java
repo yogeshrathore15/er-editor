@@ -5,6 +5,7 @@ package ru.amse.soultakov.ereditor.util;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -31,7 +32,7 @@ public class CommonUtils {
         return new LinkedHashSet<T>(size);
     }
 
-    public static <T> LinkedHashSet<T> newLinkedHashSet(Set<T> set) {
+    public static <T> LinkedHashSet<T> newLinkedHashSet(Collection<T> set) {
         return new LinkedHashSet<T>(set);
     }
 

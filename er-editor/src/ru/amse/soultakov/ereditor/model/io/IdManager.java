@@ -24,15 +24,15 @@ public class IdManager
 
 	public Long getId(Object object)
 	{
-		putObject(object);
+        if (!identifiers.containsKey(object))
+        {
+            identifiers.put(object, System.nanoTime());
+        }
 		return identifiers.get(object);
 	}
 
-	public void putObject(Object object)
+	public String getStringId(Object object)
 	{
-		if (!identifiers.containsKey(object))
-		{
-			identifiers.put(object, System.nanoTime());
-		}
+		return String.valueOf(getId(object));
 	}
 }

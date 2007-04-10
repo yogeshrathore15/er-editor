@@ -40,17 +40,17 @@ public class ERModel {
         entities.add(entity);
 
         Attribute pk1 = new Attribute("Attr1", SimpleAttributeType.INTEGER, false,
-                null);
+                "");
         entity.addAttribute(pk1);
         Attribute pk2 = new Attribute("Attr2", SimpleAttributeType.DOUBLE, false,
-                null);
+                "1");
         entity.addAttribute(pk2);
         entity.addToPrimaryKey(pk2);
         entity.addToPrimaryKey(pk1);
-        Attribute u1 = new Attribute("Attr3", CHAR, false, null);
+        Attribute u1 = new Attribute("Attr3", CHAR, false, "abc");
         entity.addAttribute(u1);
         Attribute u2 = new Attribute("Attr4", new ArrayAttributeType(CHAR, 5),
-                false, null);
+                false, "false");
         entity.addAttribute(u2);
         entity.addToUniqueAttributes(new HashSet<AbstractAttribute>(Arrays.asList(
                 u1, u2)));
