@@ -1,10 +1,11 @@
-package ru.amse.soultakov.ereditor.io;
+package ru.amse.soultakov.ereditor.io.save;
 
 import java.util.Collection;
 
 import org.jdom.Content;
 import org.jdom.Element;
 
+import ru.amse.soultakov.ereditor.io.IdManager;
 import ru.amse.soultakov.ereditor.model.Link;
 
 public class LinksSaver {

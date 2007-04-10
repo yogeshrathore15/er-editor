@@ -1,4 +1,4 @@
-package ru.amse.soultakov.ereditor.io;
+package ru.amse.soultakov.ereditor.io.save;
 
 import static ru.amse.soultakov.ereditor.util.CommonUtils.newLinkedHashSet;
 
