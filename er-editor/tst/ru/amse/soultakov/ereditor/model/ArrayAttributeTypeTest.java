@@ -8,23 +8,22 @@ import org.junit.Test;
 public class ArrayAttributeTypeTest {
 
     private ArrayAttributeType aat;
-    
+
     @Before
     public void createArrayAttributeType() {
-        aat = new ArrayAttributeType(SimpleAttributeType.INTEGER,
-                1);
+        aat = new ArrayAttributeType(SimpleAttributeType.INTEGER, 1);
     }
-    
+
     @Test
     public void testArrayAttributeType() {
-        assertSame(aat.getSize(),1);
+        assertSame(aat.getSize(), 1);
         assertSame(aat.getArrayType(), SimpleAttributeType.INTEGER);
     }
 
     @Test
     public void testSetSize() {
         aat.setSize(5);
-        assertSame(aat.getSize(),5);
+        assertSame(aat.getSize(), 5);
     }
 
     @Test
@@ -35,7 +34,7 @@ public class ArrayAttributeTypeTest {
 
     @Test
     public void testGetName() {
-        assertEquals(aat.getName(),"Integer[1]");
+        assertEquals(aat.getName(), "Integer[1]");
     }
 
     @Test
@@ -46,7 +45,7 @@ public class ArrayAttributeTypeTest {
 
     @Test
     public void testMakeCorrectLiteral() {
-        
+
     }
 
 }

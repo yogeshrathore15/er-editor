@@ -11,28 +11,23 @@ import java.util.Map;
  * @author Soultakov Maxim
  * 
  */
-public class IdManager
-{
-	private final Map<Object, Long> identifiers = newHashMap();
+public class IdManager {
+    private final Map<Object, Long> identifiers = newHashMap();
 
-	/**
+    /**
      * 
      */
-	public IdManager()
-	{
-	}
+    public IdManager() {
+    }
 
-	public Long getId(Object object)
-	{
-        if (!identifiers.containsKey(object))
-        {
+    public Long getId(Object object) {
+        if (!identifiers.containsKey(object)) {
             identifiers.put(object, System.nanoTime());
         }
-		return identifiers.get(object);
-	}
+        return identifiers.get(object);
+    }
 
-	public String getStringId(Object object)
-	{
-		return String.valueOf(getId(object));
-	}
+    public String getStringId(Object object) {
+        return String.valueOf(getId(object));
+    }
 }

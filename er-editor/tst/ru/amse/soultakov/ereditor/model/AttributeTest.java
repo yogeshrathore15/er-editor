@@ -11,22 +11,25 @@ public class AttributeTest {
 
     @Test
     public void testAttribute() {
-        Attribute attribute = new Attribute("0", SimpleAttributeType.INTEGER, true, null);
+        Attribute attribute = new Attribute("0", SimpleAttributeType.INTEGER, true,
+                null);
         assertEquals(attribute.getName(), "0");
     }
 
     @Test
     public void testSetName() {
-        Attribute attribute = new Attribute("0", SimpleAttributeType.CHAR, false, "abc");
+        Attribute attribute = new Attribute("0", SimpleAttributeType.CHAR, false,
+                "abc");
         attribute.setName("new name");
         assertEquals(attribute.getName(), "new name");
     }
-    
+
     @Test
     public void testSetType() {
         Attribute attribute = new Attribute("1", SimpleAttributeType.CHAR, false, "");
         assertEquals(attribute.getType(), SimpleAttributeType.CHAR);
-        ArrayAttributeType arrayAttributeType = new ArrayAttributeType(SimpleAttributeType.INTEGER, 10);
+        ArrayAttributeType arrayAttributeType = new ArrayAttributeType(
+                SimpleAttributeType.INTEGER, 10);
         attribute.setType(arrayAttributeType);
         assertEquals(attribute.getType(), arrayAttributeType);
     }

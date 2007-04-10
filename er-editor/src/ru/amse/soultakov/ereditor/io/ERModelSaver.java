@@ -7,7 +7,6 @@ import org.jdom.Element;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
-import ru.amse.soultakov.ereditor.io.save.EntitiesSaver;
 import ru.amse.soultakov.ereditor.model.Attribute;
 import ru.amse.soultakov.ereditor.model.Comment;
 import ru.amse.soultakov.ereditor.model.ERModel;
@@ -56,11 +55,11 @@ public class ERModelSaver {
     public static void main(String[] args) throws IOException {
         ERModel er = new ERModel();
         Entity entity1 = er.addNewEntity();
-        entity1.addAttribute(new Attribute("MyName", SimpleAttributeType.INTEGER, false,
-                "10"));
+        entity1.addAttribute(new Attribute("MyName", SimpleAttributeType.INTEGER,
+                false, "10"));
         Entity entity2 = er.addNewEntity();
-        entity1.addAttribute(new FKAttribute("foreign", false, "Empty", entity2, entity2
-                .getAttributes().iterator().next()));
+        entity1.addAttribute(new FKAttribute("foreign", false, "Empty", entity2,
+                entity2.getAttributes().iterator().next()));
 
         er.addNewRealtionship(entity1, entity2);
         Comment comment = er.addNewComment();

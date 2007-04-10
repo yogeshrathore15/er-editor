@@ -31,14 +31,14 @@ public class CommentsSaver {
     private Element getCommentElement(Comment comment) {
         Element element = new Element("comment");
         element.setAttribute("id", idManager.getStringId(comment));
-        element.setText(comment.getComment());        
+        element.setText(comment.getComment());
         element.addContent(getLinksElement(comment));
         return element;
     }
 
     private Content getLinksElement(Comment comment) {
         Element root = new Element("links");
-        for(Link link : comment) {
+        for (Link link : comment) {
             Element element = new Element("link");
             element.setAttribute("id", idManager.getStringId(link));
             root.addContent(element);

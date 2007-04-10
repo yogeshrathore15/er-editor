@@ -48,9 +48,11 @@ public class RelationshipTest {
         Entity entity1 = new Entity("1");
         Entity entity2 = new Entity("2");
         Relationship relationship1 = new Relationship(new PKRelationshipEnd(entity1,
-                ZERO_OR_MORE, null), new PKRelationshipEnd(entity2, ZERO_OR_MORE, null));
+                ZERO_OR_MORE, null), new PKRelationshipEnd(entity2, ZERO_OR_MORE,
+                null));
         Relationship relationship2 = new Relationship(new PKRelationshipEnd(entity1,
-                ZERO_OR_MORE, null), new PKRelationshipEnd(entity2, ZERO_OR_MORE, null));
+                ZERO_OR_MORE, null), new PKRelationshipEnd(entity2, ZERO_OR_MORE,
+                null));
         assertTrue(relationship1.equals(relationship2));
     }
 
