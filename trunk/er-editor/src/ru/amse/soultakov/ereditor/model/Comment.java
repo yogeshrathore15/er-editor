@@ -11,7 +11,7 @@ import java.util.Set;
  * @author sma
  * 
  */
-public class Comment {
+public class Comment implements Iterable<Link>{
 
     /**
      * 
@@ -50,7 +50,7 @@ public class Comment {
         return links.remove(link);
     }
 
-    public Iterator<Link> linksIterator() {
+    public Iterator<Link> iterator() {
         return links.iterator();
     }
 

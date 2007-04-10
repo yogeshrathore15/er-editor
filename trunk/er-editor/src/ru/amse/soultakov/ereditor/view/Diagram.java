@@ -133,8 +133,8 @@ public class Diagram {
     public boolean removeCommentView(CommentView commentView) {
         if (erModel.removeComment(commentView.getComment())) {
             Comment comment = commentView.getComment();
-            for (Iterator<Link> i = comment.linksIterator(); i.hasNext();) {
-                linkViews.remove(linkToView.remove(i.next()));
+            for (Link link : comment) {
+                linkViews.remove(linkToView.remove(link));
             }
             notifyListeners();
             return commentViews.remove(commentToView.remove(comment));
