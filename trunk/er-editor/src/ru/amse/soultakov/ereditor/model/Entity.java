@@ -70,7 +70,7 @@ public class Entity implements Iterable<AbstractAttribute> {
     /**
      * @param attribute
      */
-    public void addAttribute(Attribute attribute) {
+    public void addAttribute(AbstractAttribute attribute) {
         if (attribute == null) {
             throw new IllegalArgumentException("Attribute can't be null");
         }

@@ -7,10 +7,10 @@ public class FKAttribute extends AbstractAttribute {
 
     private Entity entity;
 
-    private Attribute attribute;
+    private AbstractAttribute attribute;
 
     public FKAttribute(String name, boolean notNull, String defaultValue,
-            Entity entity, Attribute attribute) {
+            Entity entity, AbstractAttribute attribute) {
         super(name, defaultValue);
         this.entity = entity;
         this.attribute = attribute;
@@ -25,7 +25,7 @@ public class FKAttribute extends AbstractAttribute {
         return this.entity;
     }
 
-    public Attribute getAttribute() {
+    public AbstractAttribute getAttribute() {
         return attribute;
     }
 
