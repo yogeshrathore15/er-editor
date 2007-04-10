@@ -125,8 +125,7 @@ public class ERModel {
 
     public boolean removeComment(Comment comment) {
         if (comments.remove(comment)) {
-            for (Iterator<Link> i = comment.linksIterator(); i.hasNext();) {
-                Link link = i.next();
+            for (Link link : comment) {
                 link.getEntity().removeLink(link);
                 links.remove(link);
             }
