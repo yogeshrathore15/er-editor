@@ -1,4 +1,4 @@
-package ru.amse.soultakov.ereditor.io;
+package ru.amse.soultakov.ereditor.io.save;
 
 import static ru.amse.soultakov.ereditor.util.CommonUtils.newLinkedHashSet;
 
@@ -7,6 +7,7 @@ import java.util.Collection;
 import org.jdom.Content;
 import org.jdom.Element;
 
+import ru.amse.soultakov.ereditor.io.IdManager;
 import ru.amse.soultakov.ereditor.model.FKRelationshipEnd;
 import ru.amse.soultakov.ereditor.model.PKRelationshipEnd;
 import ru.amse.soultakov.ereditor.model.Relationship;

@@ -1,4 +1,4 @@
-package ru.amse.soultakov.ereditor.io;
+package ru.amse.soultakov.ereditor.io.save;
 
 import java.io.IOException;
 
@@ -7,6 +7,7 @@ import org.jdom.Element;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
+import ru.amse.soultakov.ereditor.io.IdManager;
 import ru.amse.soultakov.ereditor.model.Attribute;
 import ru.amse.soultakov.ereditor.model.Comment;
 import ru.amse.soultakov.ereditor.model.ERModel;
