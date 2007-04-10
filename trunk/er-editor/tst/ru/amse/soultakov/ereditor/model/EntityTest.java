@@ -61,8 +61,8 @@ public class EntityTest {
                 assertSame(a, attribute);
             }
         }
-        assertTrue("Count != 2",count == 3);
-        assertTrue("AttributeCount != 3",entity.getAttributes().size() == 3);
+        assertTrue("Count != 2", count == 3);
+        assertTrue("AttributeCount != 3", entity.getAttributes().size() == 3);
     }
 
     @Test
@@ -86,10 +86,10 @@ public class EntityTest {
 
     private static Relationship createRelationship(Entity entity) {
         final Entity another = new Entity("abc");
-        return new Relationship(new PKRelationshipEnd(entity,
-                        ZERO_OR_MORE, ""), new PKRelationshipEnd(another, ZERO_OR_MORE, ""));
+        return new Relationship(new PKRelationshipEnd(entity, ZERO_OR_MORE, ""),
+                new PKRelationshipEnd(another, ZERO_OR_MORE, ""));
     }
-    
+
     public static Link createLink(Entity entity) {
         final Comment comment = new Comment("");
         return new Link(entity, comment);
@@ -103,7 +103,7 @@ public class EntityTest {
         }
         return false;
     }
-    
+
     public static boolean hasLink(Entity entity, Link link) {
         for (Iterator<Link> i = entity.linksIterator(); i.hasNext();) {
             if (i.next().equals(link)) {

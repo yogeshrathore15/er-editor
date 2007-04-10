@@ -63,7 +63,7 @@ public class EntitiesSaver {
 
     private Content getLinksElement(Entity entity) {
         Element root = new Element("links");
-        for(Link link : entity.getLinks()) {
+        for (Link link : entity.getLinks()) {
             Element element = new Element("link");
             element.setAttribute("id", idManager.getStringId(link));
             root.addContent(element);
@@ -73,7 +73,7 @@ public class EntitiesSaver {
 
     private Element getRelationshipsElement(Entity entity) {
         Element root = new Element("relationships");
-        for(Relationship r : entity.getRelationships()) {
+        for (Relationship r : entity.getRelationships()) {
             Element element = new Element("relationship");
             element.setAttribute("id", idManager.getStringId(r));
             root.addContent(element);

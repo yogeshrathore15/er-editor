@@ -20,12 +20,12 @@ public class SimpleAttributeTypeTest {
         assertFalse(INTEGER.isCorrectString(""));
         assertFalse(INTEGER.isCorrectString("abc"));
         assertFalse(INTEGER.isCorrectString(null));
-        
+
         assertTrue(CHAR.isCorrectString("a"));
         assertFalse(CHAR.isCorrectString(""));
         assertFalse(CHAR.isCorrectString("abc"));
         assertFalse(CHAR.isCorrectString(null));
-        
+
         assertTrue(DOUBLE.isCorrectString("1"));
         assertTrue(DOUBLE.isCorrectString("1.0"));
         assertFalse(DOUBLE.isCorrectString(""));
@@ -35,7 +35,7 @@ public class SimpleAttributeTypeTest {
 
     @Test
     public void testMakeCorrectLiteral() {
-        
+
     }
 
 }

@@ -12,7 +12,7 @@ public class PKRelationshipEnd extends RelationshipEnd {
         return multiplicity == RelationshipMultiplicity.ZERO_OR_MORE
                 || multiplicity == RelationshipMultiplicity.ZERO_OR_ONE;
     }
-    
+
     @Override
     public Constraint<? extends AbstractAttribute> getConstraint() {
         return getEntity().getPrimaryKey();

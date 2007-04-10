@@ -30,16 +30,16 @@ public class CommentTest {
         Link link = createLink(comment);
         assertTrue(hasLink(comment, link));
     }
-    
+
     public static boolean hasLink(Comment comment, Link link) {
-        for (Iterator<Link> i = comment.linksIterator(); i.hasNext();) {
-            if (i.next().equals(link)) {
+        for (Link l : comment) {
+            if (l.equals(link)) {
                 return true;
             }
         }
         return false;
     }
-    
+
     private static Link createLink(Comment comment) {
         final Entity entity = new Entity("");
         return new Link(entity, comment);

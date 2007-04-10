@@ -11,7 +11,7 @@ import java.util.Set;
  * @author sma
  * 
  */
-public class Comment implements Iterable<Link>{
+public class Comment implements Iterable<Link> {
 
     /**
      * 

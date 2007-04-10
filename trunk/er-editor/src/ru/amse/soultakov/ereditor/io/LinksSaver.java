@@ -19,7 +19,7 @@ public class LinksSaver {
 
     public Content save() {
         Element root = new Element("links");
-        for(Link link : links) {
+        for (Link link : links) {
             root.addContent(getLinkElement(link));
         }
         return root;

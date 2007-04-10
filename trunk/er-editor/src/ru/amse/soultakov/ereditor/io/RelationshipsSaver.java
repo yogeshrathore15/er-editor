@@ -13,7 +13,7 @@ import ru.amse.soultakov.ereditor.model.Relationship;
 import ru.amse.soultakov.ereditor.model.RelationshipEnd;
 
 public class RelationshipsSaver {
-    
+
     private final IdManager idManager;
 
     private final Collection<Relationship> relationships;
@@ -23,7 +23,7 @@ public class RelationshipsSaver {
         this.idManager = idManager;
         this.relationships = relationships;
     }
-    
+
     public Element save() {
         Element root = new Element("relationships");
         root.addContent(getRelationshipElements());
