@@ -12,12 +12,12 @@ import java.awt.Rectangle;
 import java.awt.Stroke;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.util.Set;
+import java.util.Collection;
 
 import ru.amse.soultakov.ereditor.controller.DiagramEditor;
 import ru.amse.soultakov.ereditor.util.CommonUtils;
-import ru.amse.soultakov.ereditor.view.SelectedItems;
 import ru.amse.soultakov.ereditor.view.IViewable;
+import ru.amse.soultakov.ereditor.view.SelectedItems;
 
 public class SelectElementTool extends ToolAdapter {
 
@@ -154,7 +154,7 @@ public class SelectElementTool extends ToolAdapter {
         return diagramEditor.getSelectedItems();
     }
 
-    private void tryToSelectViews(Set<? extends IViewable> views) {
+    private void tryToSelectViews(Collection<? extends IViewable> views) {
         if (startPoint == null) {
             return;
         }
@@ -168,7 +168,7 @@ public class SelectElementTool extends ToolAdapter {
         }
     }
 
-    private boolean selectViews(MouseEvent e, Set<? extends IViewable> views) {
+    private boolean selectViews(MouseEvent e, Collection<? extends IViewable> views) {
         for (IViewable view : views) {
             if (view.containsPoint(e.getX(), e.getY())) {
                 if (e.isControlDown()) {

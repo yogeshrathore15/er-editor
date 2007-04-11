@@ -10,6 +10,7 @@ import static ru.amse.soultakov.ereditor.util.CommonUtils.newLinkedHashSet;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -150,19 +151,19 @@ public class Diagram {
         return false;
     }
 
-    public Set<CommentView> getCommentViews() {
+    public Collection<CommentView> getCommentViews() {
         return Collections.unmodifiableSet(commentViews);
     }
 
-    public Set<EntityView> getEntityViews() {
+    public Collection<EntityView> getEntityViews() {
         return Collections.unmodifiableSet(entityViews);
     }
 
-    public Set<LinkView> getLinkViews() {
+    public Collection<LinkView> getLinkViews() {
         return Collections.unmodifiableSet(linkViews);
     }
 
-    public Set<RelationshipView> getRelationshipViews() {
+    public Collection<RelationshipView> getRelationshipViews() {
         return Collections.unmodifiableSet(relationshipViews);
     }
 
@@ -210,6 +211,10 @@ public class Diagram {
 
     public CommentView getCommentView(Comment comment) {
         return commentToView.get(comment);
+    }
+    
+    public void save(IDiagramSaver saver) throws Exception {
+        saver.save(this, erModel);
     }
 
 }

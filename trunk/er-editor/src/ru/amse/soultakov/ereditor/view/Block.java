@@ -184,6 +184,10 @@ public abstract class Block implements IViewable {
     public boolean removeListener(IViewableListener iViewableListener) {
         return listeners.remove(iViewableListener);
     }
+    
+    public Diagram getDiagram() {
+        return this.diagram;
+    }
 
     protected abstract Dimension getContentBounds(Graphics2D graphics);
 

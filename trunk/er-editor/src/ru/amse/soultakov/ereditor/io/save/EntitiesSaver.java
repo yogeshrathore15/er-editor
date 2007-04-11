@@ -21,7 +21,7 @@ import ru.amse.soultakov.ereditor.model.Relationship;
  * @author Soultakov Maxim
  * 
  */
-public class EntitiesSaver {
+class EntitiesSaver {
     private final IdManager idManager;
 
     private final Collection<Entity> entities;

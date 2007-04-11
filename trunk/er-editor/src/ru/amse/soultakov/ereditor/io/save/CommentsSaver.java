@@ -9,7 +9,7 @@ import ru.amse.soultakov.ereditor.io.IdManager;
 import ru.amse.soultakov.ereditor.model.Comment;
 import ru.amse.soultakov.ereditor.model.Link;
 
-public class CommentsSaver {
+class CommentsSaver {
 
     private final IdManager idManager;
 

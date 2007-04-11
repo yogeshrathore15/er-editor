@@ -14,8 +14,8 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import javax.swing.JComponent;
 
@@ -24,15 +24,15 @@ import ru.amse.soultakov.ereditor.controller.tools.Tool;
 import ru.amse.soultakov.ereditor.view.Block;
 import ru.amse.soultakov.ereditor.view.CommentView;
 import ru.amse.soultakov.ereditor.view.Diagram;
-import ru.amse.soultakov.ereditor.view.IDiagramListener;
 import ru.amse.soultakov.ereditor.view.EntityView;
+import ru.amse.soultakov.ereditor.view.IDiagramListener;
+import ru.amse.soultakov.ereditor.view.IViewable;
+import ru.amse.soultakov.ereditor.view.IViewableListener;
+import ru.amse.soultakov.ereditor.view.IVisitor;
 import ru.amse.soultakov.ereditor.view.Line;
 import ru.amse.soultakov.ereditor.view.LinkView;
 import ru.amse.soultakov.ereditor.view.RelationshipView;
 import ru.amse.soultakov.ereditor.view.SelectedItems;
-import ru.amse.soultakov.ereditor.view.IViewable;
-import ru.amse.soultakov.ereditor.view.IViewableListener;
-import ru.amse.soultakov.ereditor.view.IVisitor;
 
 /**
  * @author sma
@@ -145,13 +145,13 @@ public class DiagramEditor extends JComponent {
         currentTool.paintAfter(graphics);
     }
 
-    private void recalculateSize(Set<? extends Block> set, Graphics2D graphics) {
+    private void recalculateSize(Collection<? extends Block> set, Graphics2D graphics) {
         for (Block b : set) {
             b.recalculateSize(graphics);
         }
     }
 
-    private void paintSet(Set<? extends IViewable> setToPaint, Graphics2D graphics) {
+    private void paintSet(Collection<? extends IViewable> setToPaint, Graphics2D graphics) {
         for (IViewable v : setToPaint) {
             v.paint(graphics);
         }
