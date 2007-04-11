@@ -17,7 +17,7 @@ import java.util.Set;
 import ru.amse.soultakov.ereditor.util.AutoincrementGenerator;
 
 /**
- * @author sma
+ * @author Soultakov Maxim
  * 
  */
 public class ERModel {
@@ -188,15 +188,15 @@ public class ERModel {
         }
 
         public String getEntityName() {
-            return NEW_ENTITY + entityGenerator.getNextInteger();
+            return NEW_ENTITY + entityGenerator.getNextNumber();
         }
 
         public String getCommentName() {
-            return NEW_COMMENT + commentGenerator.getNextInteger();
+            return NEW_COMMENT + commentGenerator.getNextNumber();
         }
 
         public String getRelationshipName() {
-            return NEW_RELATIONSHIP + relationshipGenerator.getNextInteger();
+            return NEW_RELATIONSHIP + relationshipGenerator.getNextNumber();
         }
 
     }

@@ -7,6 +7,8 @@ import static ru.amse.soultakov.ereditor.util.CommonUtils.newHashMap;
 
 import java.util.Map;
 
+import ru.amse.soultakov.ereditor.util.AutoincrementGenerator;
+
 /**
  * @author Soultakov Maxim
  * 
@@ -14,6 +16,7 @@ import java.util.Map;
 public class IdManager {
     private final Map<Object, Long> identifiers = newHashMap();
 
+    private final AutoincrementGenerator generator = new AutoincrementGenerator();
     /**
      * 
      */
@@ -22,7 +25,7 @@ public class IdManager {
 
     public Long getId(Object object) {
         if (!identifiers.containsKey(object)) {
-            identifiers.put(object, System.nanoTime());
+            identifiers.put(object, generator.getNextNumber());
         }
         return identifiers.get(object);
     }

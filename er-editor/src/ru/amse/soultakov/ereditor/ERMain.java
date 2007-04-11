@@ -4,8 +4,10 @@ import static ru.amse.soultakov.ereditor.util.CommonUtils.newHashMap;
 
 import java.awt.BorderLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
 import java.util.Map;
 
+import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -28,6 +30,7 @@ import ru.amse.soultakov.ereditor.controller.tools.AddRelationshipTool;
 import ru.amse.soultakov.ereditor.controller.tools.IToolListener;
 import ru.amse.soultakov.ereditor.controller.tools.SelectElementTool;
 import ru.amse.soultakov.ereditor.controller.tools.Tool;
+import ru.amse.soultakov.ereditor.io.save.XmlDiagramSaver;
 
 /**
  * @author Soultakov Maxim
@@ -43,7 +46,18 @@ public class ERMain {
         JFrame frame = new JFrame("Stupid test");
         JMenuBar menu = new JMenuBar();
         frame.setJMenuBar(menu);
-        menu.add(new JMenu("File"));
+        JMenu fileMenu = new JMenu("File");
+        menu.add(fileMenu);
+        fileMenu.add(new AbstractAction("Save") {
+            public void actionPerformed(ActionEvent e) {
+                XmlDiagramSaver xds = new XmlDiagramSaver(System.out);
+                try {
+                    diagramEditor.getDiagram().save(xds);
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
         menu.add(new JMenu("Edit"));
 
         JScrollPane scrollPane = new JScrollPane(diagramEditor);

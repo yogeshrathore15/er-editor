@@ -13,7 +13,7 @@ import ru.amse.soultakov.ereditor.model.PKRelationshipEnd;
 import ru.amse.soultakov.ereditor.model.Relationship;
 import ru.amse.soultakov.ereditor.model.RelationshipEnd;
 
-public class RelationshipsSaver {
+class RelationshipsSaver {
 
     private final IdManager idManager;
 

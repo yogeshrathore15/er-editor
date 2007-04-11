@@ -5,6 +5,10 @@ package ru.amse.soultakov.ereditor.model;
 
 import static ru.amse.soultakov.ereditor.model.SimpleAttributeType.CHAR;
 
+/**
+ * @author Soultakov Maxim
+ *
+ */
 public class ArrayAttributeType implements IAttributeType {
 
     private SimpleAttributeType arrayType;

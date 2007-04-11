@@ -5,7 +5,7 @@ package ru.amse.soultakov.ereditor.util;
 
 public class AutoincrementGenerator {
 
-    private int currentNumber;
+    private long currentNumber;
 
     private final Object lock = new Object();
 
@@ -17,7 +17,7 @@ public class AutoincrementGenerator {
         this(0);
     }
 
-    public int getNextInteger() {
+    public long getNextNumber() {
         synchronized (lock) {
             return currentNumber++;
         }

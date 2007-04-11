@@ -8,7 +8,7 @@ import org.jdom.Element;
 import ru.amse.soultakov.ereditor.io.IdManager;
 import ru.amse.soultakov.ereditor.model.Link;
 
-public class LinksSaver {
+class LinksSaver {
     private final IdManager idManager;
 
     private final Collection<Link> links;
