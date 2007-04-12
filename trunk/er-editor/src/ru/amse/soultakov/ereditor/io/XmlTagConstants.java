@@ -5,7 +5,7 @@ package ru.amse.soultakov.ereditor.io;
 
 /**
  * @author Soultakov Maxim
- *
+ * 
  */
 public final class XmlTagConstants
 {
@@ -18,7 +18,7 @@ public final class XmlTagConstants
 	public static final String TAG_COMMENT = "comment";
 
 	public static final String TAG_COMMENTS = "comments";
-	
+
 	public static final String TAG_ENTITY_VIEW = "entity_view";
 
 	public static final String ATTR_ENTITY = "entity";
@@ -46,13 +46,13 @@ public final class XmlTagConstants
 	public static final String TAG_COMMENT_VIEWS = "comment_views";
 
 	public static final String TAG_DIAGRAM = "diagram";
-	
+
 	public static final String ATTR_DIAGRAM = "diagram";
 
 	public static final String TAG_MODEL = "model";
-	
+
 	public static final String ATTR_CONSTRAINT = "constraint";
-	
+
 	public static final String ATTR_MULTIPLICITY = "multiplicity";
 
 	public static final String ATTR_NAME = "name";
@@ -66,7 +66,29 @@ public final class XmlTagConstants
 	public static final String TAG_RELATIONSHIPS = "relationships";
 
 	public static final String TAG_ER_DIAGRAM = "er_diagram";
+
+	public static final String TAG_ENTITIES = "entities";
+
+	public static final String TAG_ENTITY = "entity";
+
+	public static final String TAG_FOREIGN_KEY = "foreign_key";
+
+	public static final String TAG_UNIQUE = "unique";
+
+	public static final String TAG_ATTR = "attribute";
+
+	public static final String ATTR_FOREIGN = "foreign";
+
+	public static final String ATTR_FOREIGN_ENTITY = "foreign_entity";
+
+	public static final String ATTR_TYPE = "type";
+
+	public static final String ATTR_NOTNULL = "not_null";
+
+	public static final String ATTR_DEFAULT_VALUE = "default_value";
 	
+	public static final String TAG_PRIMARY_KEY = "primary_key";
+
 	private XmlTagConstants()
 	{
 	}

@@ -2,6 +2,7 @@ package ru.amse.soultakov.ereditor.io.load;
 
 import org.jdom.Element;
 
+import static ru.amse.soultakov.ereditor.io.XmlTagConstants.*;
 import ru.amse.soultakov.ereditor.io.IdManager;
 import ru.amse.soultakov.ereditor.model.ERModel;
 
@@ -20,8 +21,16 @@ public class ERModelLoader {
     
     public ERModel load() {
     	erModel = new ERModel();
-    	erModelElement.getChild("");
+    	loadEntities(erModelElement.getChild(TAG_ENTITIES));    	
     	return erModel;
     }
+
+	/**
+	 * @param entities
+	 */
+	private void loadEntities(Element entities)
+	{
+		
+	}
     
 }
