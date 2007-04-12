@@ -30,8 +30,8 @@ public class DiagramPresentationTest {
 
     @Test
     public void testAddNewEntityView() {
-        EntityView ev1 = diagram.addNewEntityView(0, 0);
-        EntityView ev2 = diagram.addNewEntityView(0, 0);
+        Block ev1 = diagram.addNewEntityView(0, 0);
+        Block ev2 = diagram.addNewEntityView(0, 0);
         assertFalse(ev1.equals(ev2));
         assertNotNull(ev2);
         assertNotNull(ev1);

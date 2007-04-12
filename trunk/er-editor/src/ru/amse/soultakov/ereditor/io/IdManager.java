@@ -14,7 +14,7 @@ import ru.amse.soultakov.ereditor.util.AutoincrementGenerator;
  * 
  */
 public class IdManager {
-    private final Map<Object, Long> identifiers = newHashMap();
+    private final Map<Object, String> identifiers = newHashMap();
 
     private final AutoincrementGenerator generator = new AutoincrementGenerator();
     /**
@@ -23,14 +23,15 @@ public class IdManager {
     public IdManager() {
     }
 
-    public Long getId(Object object) {
+    public String getId(Object object) {
         if (!identifiers.containsKey(object)) {
-            identifiers.put(object, generator.getNextNumber());
+            identifiers.put(object, String.valueOf(generator.getNextNumber()));
         }
         return identifiers.get(object);
     }
 
-    public String getStringId(Object object) {
-        return String.valueOf(getId(object));
+    public String putId(Object object, String id) {
+    	return identifiers.put(object, id);
     }
+
 }

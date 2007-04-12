@@ -1,5 +1,11 @@
 package ru.amse.soultakov.ereditor.io.save;
 
+import static ru.amse.soultakov.ereditor.io.XmlTagConstants.ATTR_ID;
+import static ru.amse.soultakov.ereditor.io.XmlTagConstants.TAG_COMMENT;
+import static ru.amse.soultakov.ereditor.io.XmlTagConstants.TAG_COMMENTS;
+import static ru.amse.soultakov.ereditor.io.XmlTagConstants.TAG_LINK;
+import static ru.amse.soultakov.ereditor.io.XmlTagConstants.TAG_LINKS;
+
 import java.util.Collection;
 
 import org.jdom.Content;
@@ -11,7 +17,7 @@ import ru.amse.soultakov.ereditor.model.Link;
 
 class CommentsSaver {
 
-    private final IdManager idManager;
+	private final IdManager idManager;
 
     private final Collection<Comment> comments;
 
@@ -22,7 +28,7 @@ class CommentsSaver {
     }
 
     public Element save() {
-        Element root = new Element("comments");
+        Element root = new Element(TAG_COMMENTS);
         for (Comment comment : comments) {
             root.addContent(getCommentElement(comment));
         }
@@ -30,18 +36,18 @@ class CommentsSaver {
     }
 
     private Element getCommentElement(Comment comment) {
-        Element element = new Element("comment");
-        element.setAttribute("id", idManager.getStringId(comment));
+        Element element = new Element(TAG_COMMENT);
+        element.setAttribute(ATTR_ID, idManager.getId(comment));
         element.setText(comment.getComment());
         element.addContent(getLinksElement(comment));
         return element;
     }
 
     private Content getLinksElement(Comment comment) {
-        Element root = new Element("links");
+        Element root = new Element(TAG_LINKS);
         for (Link link : comment) {
-            Element element = new Element("link");
-            element.setAttribute("id", idManager.getStringId(link));
+            Element element = new Element(TAG_LINK);
+            element.setAttribute(ATTR_ID, idManager.getId(link));
             root.addContent(element);
         }
         return root;

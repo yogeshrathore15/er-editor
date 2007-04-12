@@ -14,13 +14,13 @@ public class AttributeView {
 
     private AbstractAttribute attribute;
 
-    private EntityView entityView;
+    private Block entityView;
 
     private Compartment compartment;
 
     private volatile int lastPaintedY;
 
-    public AttributeView(AbstractAttribute attribute, EntityView entityView,
+    public AttributeView(AbstractAttribute attribute, Block entityView,
             Compartment compartment) {
         this.attribute = attribute;
         this.entityView = entityView;
@@ -42,11 +42,11 @@ public class AttributeView {
         this.attribute = attribute;
     }
 
-    public EntityView getEntityView() {
+    public Block getEntityView() {
         return this.entityView;
     }
 
-    public void setEntityView(EntityView entityView) {
+    public void setEntityView(Block entityView) {
         this.entityView = entityView;
     }
 

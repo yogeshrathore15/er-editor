@@ -10,6 +10,8 @@ public class ERModelLoader {
     private final IdManager idManager;
     
     private final Element erModelElement;
+    
+    private ERModel erModel;
 
     public ERModelLoader(IdManager idManager, Element erModelElement) {
         this.idManager = idManager;
@@ -17,7 +19,9 @@ public class ERModelLoader {
     }
     
     public ERModel load() {
-        return null;
+    	erModel = new ERModel();
+    	erModelElement.getChild("");
+    	return erModel;
     }
     
 }

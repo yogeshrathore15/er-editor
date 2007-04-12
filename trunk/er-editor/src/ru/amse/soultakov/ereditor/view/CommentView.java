@@ -35,8 +35,9 @@ public class CommentView extends Block {
     }
 
     private void drawBackground(Graphics2D graphics) {
+    	drawShadow(graphics);
         graphics.setColor(CommentView.BACKGROUND_COLOR);
-        graphics.fillRect(getX(), getY(), getWidth(), getHeight());
+        graphics.fillRoundRect(getX(), getY(), getWidth(), getHeight(), 10, 10);
         graphics.setColor(Color.BLACK);
     }
 
@@ -44,7 +45,6 @@ public class CommentView extends Block {
         graphics.setColor(Color.BLACK);
         Rectangle2D bounds = GraphicsUtils.getStringBounds(graphics, comment
                 .getComment());
-        // $ANALYSIS-IGNORE,codereview.java.rules.casting.RuleCastingPrimitives
         graphics.drawString(comment.getComment(), getX(), getY()
                 + (int) bounds.getHeight());
 

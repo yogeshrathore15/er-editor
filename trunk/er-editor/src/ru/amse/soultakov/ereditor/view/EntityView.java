@@ -99,11 +99,12 @@ public class EntityView extends Block {
     }
 
     private void drawBackground(Graphics2D graphics) {
-        graphics.setColor(BACKGROUND_COLOR);
-        graphics.fillRect(getX(), getY(), getWidth(), getHeight());
+    	drawShadow(graphics);
+    	graphics.setColor(BACKGROUND_COLOR);
+        graphics.fillRoundRect(getX(), getY(), getWidth(), getHeight(), 10, 10);
     }
 
-    @Override
+	@Override
     protected Dimension getContentBounds(Graphics2D graphics) {
         lazyInitCompartments(graphics);
         List<Rectangle2D> bounds = new ArrayList<Rectangle2D>(3);

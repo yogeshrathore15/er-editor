@@ -42,7 +42,7 @@ public abstract class Compartment {
         this.y = y;
     }
 
-    public EntityView getEntityView() {
+    public Block getEntityView() {
         return this.entityView;
     }
 
