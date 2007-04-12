@@ -205,7 +205,7 @@ public class Diagram {
         }
     }
 
-    public EntityView getEntityView(Entity entity) {
+    public Block getEntityView(Entity entity) {
         return entityToView.get(entity);
     }
 

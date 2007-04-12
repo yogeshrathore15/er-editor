@@ -27,7 +27,7 @@ public class LinkView extends Line {
     }
 
     protected void recalculateEndPoints() {
-        EntityView entityView = getEntityView();
+        Block entityView = getEntityView();
         CommentView commentView = getCommentView();
         firstCenterX = getXCenter(entityView, 2);
         firstCenterY = getYCenter(entityView, 3);
@@ -43,7 +43,7 @@ public class LinkView extends Line {
         return link;
     }
 
-    public EntityView getEntityView() {
+    public Block getEntityView() {
         return diagram.getEntityView(link.getEntity());
     }
 

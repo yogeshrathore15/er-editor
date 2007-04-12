@@ -1,5 +1,22 @@
 package ru.amse.soultakov.ereditor.io.save;
 
+import static ru.amse.soultakov.ereditor.io.XmlTagConstants.ATTR_COMMENT;
+import static ru.amse.soultakov.ereditor.io.XmlTagConstants.ATTR_DIAGRAM;
+import static ru.amse.soultakov.ereditor.io.XmlTagConstants.ATTR_ENTITY;
+import static ru.amse.soultakov.ereditor.io.XmlTagConstants.ATTR_ID;
+import static ru.amse.soultakov.ereditor.io.XmlTagConstants.ATTR_LINK;
+import static ru.amse.soultakov.ereditor.io.XmlTagConstants.ATTR_RELATIONSHIP;
+import static ru.amse.soultakov.ereditor.io.XmlTagConstants.ATTR_X;
+import static ru.amse.soultakov.ereditor.io.XmlTagConstants.ATTR_Y;
+import static ru.amse.soultakov.ereditor.io.XmlTagConstants.TAG_COMMENT_VIEW;
+import static ru.amse.soultakov.ereditor.io.XmlTagConstants.TAG_COMMENT_VIEWS;
+import static ru.amse.soultakov.ereditor.io.XmlTagConstants.TAG_DIAGRAM;
+import static ru.amse.soultakov.ereditor.io.XmlTagConstants.TAG_ENTITY_VIEW;
+import static ru.amse.soultakov.ereditor.io.XmlTagConstants.TAG_ENTITY_VIEWS;
+import static ru.amse.soultakov.ereditor.io.XmlTagConstants.TAG_LINK_VIEWS;
+import static ru.amse.soultakov.ereditor.io.XmlTagConstants.TAG_RELATIONSHIP_VIEW;
+import static ru.amse.soultakov.ereditor.io.XmlTagConstants.TAG_RELATIONSHIP_VIEWS;
+
 import org.jdom.Content;
 import org.jdom.Element;
 
@@ -16,7 +33,7 @@ import ru.amse.soultakov.ereditor.view.RelationshipView;
  */
 class DiagramViewSaver {
 
-    private final IdManager idManager;
+	private final IdManager idManager;
     
     private final Diagram diagram;
 
@@ -26,7 +43,7 @@ class DiagramViewSaver {
     }
     
     public Element save() {
-        Element root = new Element("diagram");
+        Element root = new Element(TAG_DIAGRAM);
         root.addContent(getEntityViewsElement());
         root.addContent(getCommentViewsElement());
         root.addContent(getLinkViewsElement());
@@ -35,52 +52,52 @@ class DiagramViewSaver {
     }
 
     private Content getCommentViewsElement() {
-        Element root = new Element("comment_views");
+        Element root = new Element(TAG_COMMENT_VIEWS);
         for(CommentView cv : diagram.getCommentViews()) {
-            Element element = new Element("comment_view");
-            element.setAttribute("id", idManager.getStringId(cv));
-            element.setAttribute("diagram", idManager.getStringId(cv.getDiagram()));
-            element.setAttribute("comment", idManager.getStringId(cv.getComment()));
-            element.setAttribute("x",String.valueOf(cv.getX()));
-            element.setAttribute("y",String.valueOf(cv.getY()));
+            Element element = new Element(TAG_COMMENT_VIEW);
+            element.setAttribute(ATTR_ID, idManager.getId(cv));
+            element.setAttribute(ATTR_DIAGRAM, idManager.getId(cv.getDiagram()));
+            element.setAttribute(ATTR_COMMENT, idManager.getId(cv.getComment()));
+            element.setAttribute(ATTR_X,String.valueOf(cv.getX()));
+            element.setAttribute(ATTR_Y,String.valueOf(cv.getY()));
             root.addContent(element);
         }
         return root;
     }
 
     private Content getLinkViewsElement() {
-        Element root = new Element("link_views");
+        Element root = new Element(TAG_LINK_VIEWS);
         for(LinkView lv : diagram.getLinkViews()) {
             Element element = new Element("link_view");
-            element.setAttribute("id", idManager.getStringId(lv));
-            element.setAttribute("diagram", idManager.getStringId(lv.getDiagram()));
-            element.setAttribute("link", idManager.getStringId(lv.getLink()));
+            element.setAttribute(ATTR_ID, idManager.getId(lv));
+            element.setAttribute(ATTR_DIAGRAM, idManager.getId(lv.getDiagram()));
+            element.setAttribute(ATTR_LINK, idManager.getId(lv.getLink()));
             root.addContent(element);
         }
         return root;
     }
 
     private Content getRelationshipViewsElement() {
-        Element root = new Element("relationship_views");
+        Element root = new Element(TAG_RELATIONSHIP_VIEWS);
         for(RelationshipView rv : diagram.getRelationshipViews()) {
-            Element element = new Element("relationship_view");
-            element.setAttribute("id", idManager.getStringId(rv));
-            element.setAttribute("diagram", idManager.getStringId(rv.getDiagram()));
-            element.setAttribute("relationship", idManager.getStringId(rv.getRelationship()));
+            Element element = new Element(TAG_RELATIONSHIP_VIEW);
+            element.setAttribute(ATTR_ID, idManager.getId(rv));
+            element.setAttribute(ATTR_DIAGRAM, idManager.getId(rv.getDiagram()));
+            element.setAttribute(ATTR_RELATIONSHIP, idManager.getId(rv.getRelationship()));
             root.addContent(element);
         }
         return root;
     }
 
     private Content getEntityViewsElement() {
-        Element root = new Element("entity_views");
+        Element root = new Element(TAG_ENTITY_VIEWS);
         for(EntityView ev : diagram.getEntityViews()) {
-            Element element = new Element("entity_view");
-            element.setAttribute("id", idManager.getStringId(ev));
-            element.setAttribute("diagram", idManager.getStringId(ev.getDiagram()));
-            element.setAttribute("entity", idManager.getStringId(ev.getEntity()));
-            element.setAttribute("x",String.valueOf(ev.getX()));
-            element.setAttribute("y",String.valueOf(ev.getY()));
+            Element element = new Element(TAG_ENTITY_VIEW);
+            element.setAttribute("id", idManager.getId(ev));
+            element.setAttribute(ATTR_DIAGRAM, idManager.getId(ev.getDiagram()));
+            element.setAttribute(ATTR_ENTITY, idManager.getId(ev.getEntity()));
+            element.setAttribute(ATTR_X,String.valueOf(ev.getX()));
+            element.setAttribute(ATTR_Y,String.valueOf(ev.getY()));
             root.addContent(element);
         }
         return root;

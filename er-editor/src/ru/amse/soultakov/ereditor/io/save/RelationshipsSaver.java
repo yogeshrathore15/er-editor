@@ -1,5 +1,14 @@
 package ru.amse.soultakov.ereditor.io.save;
 
+import static ru.amse.soultakov.ereditor.io.XmlTagConstants.ATTR_CONSTRAINT;
+import static ru.amse.soultakov.ereditor.io.XmlTagConstants.ATTR_ENTITY;
+import static ru.amse.soultakov.ereditor.io.XmlTagConstants.ATTR_ID;
+import static ru.amse.soultakov.ereditor.io.XmlTagConstants.ATTR_MULTIPLICITY;
+import static ru.amse.soultakov.ereditor.io.XmlTagConstants.ATTR_NAME;
+import static ru.amse.soultakov.ereditor.io.XmlTagConstants.TAG_FK_RELATIONSHIP_END;
+import static ru.amse.soultakov.ereditor.io.XmlTagConstants.TAG_PK_RELATIONSHIP_END;
+import static ru.amse.soultakov.ereditor.io.XmlTagConstants.TAG_RELATIONSHIP;
+import static ru.amse.soultakov.ereditor.io.XmlTagConstants.TAG_RELATIONSHIPS;
 import static ru.amse.soultakov.ereditor.util.CommonUtils.newLinkedHashSet;
 
 import java.util.Collection;
@@ -15,7 +24,7 @@ import ru.amse.soultakov.ereditor.model.RelationshipEnd;
 
 class RelationshipsSaver {
 
-    private final IdManager idManager;
+	private final IdManager idManager;
 
     private final Collection<Relationship> relationships;
 
@@ -26,7 +35,7 @@ class RelationshipsSaver {
     }
 
     public Element save() {
-        Element root = new Element("relationships");
+        Element root = new Element(TAG_RELATIONSHIPS);
         root.addContent(getRelationshipElements());
         return root;
     }
@@ -40,8 +49,8 @@ class RelationshipsSaver {
     }
 
     private Element getRelationshipElement(Relationship r) {
-        Element root = new Element("relationship");
-        root.setAttribute("id", idManager.getStringId(r));
+        Element root = new Element(TAG_RELATIONSHIP);
+        root.setAttribute(ATTR_ID, idManager.getId(r));
         root.addContent(getRelationshipEndElement(r.getFirstEnd()));
         root.addContent(getRelationshipEndElement(r.getSecondEnd()));
         return root;
@@ -50,14 +59,14 @@ class RelationshipsSaver {
     private Content getRelationshipEndElement(RelationshipEnd end) {
         Element root = null;
         if (end instanceof FKRelationshipEnd) {
-            root = new Element("fk_relationship_end");
+            root = new Element(TAG_FK_RELATIONSHIP_END);
         } else if (end instanceof PKRelationshipEnd) {
-            root = new Element("pk_relationship_end");
+            root = new Element(TAG_PK_RELATIONSHIP_END);
         }
-        root.setAttribute("name", end.getName());
-        root.setAttribute("entity", idManager.getStringId(end.getEntity()));
-        root.setAttribute("multiplicity", end.getMultiplicity().name());
-        root.setAttribute("constraint", idManager.getStringId(end.getConstraint()));
+        root.setAttribute(ATTR_NAME, end.getName());
+        root.setAttribute(ATTR_ENTITY, idManager.getId(end.getEntity()));
+        root.setAttribute(ATTR_MULTIPLICITY, end.getMultiplicity().name());
+        root.setAttribute(ATTR_CONSTRAINT, idManager.getId(end.getConstraint()));
         return root;
     }
 

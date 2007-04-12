@@ -69,8 +69,8 @@ public class DiagramEditor extends JComponent {
         });
     }
 
-    public EntityView addEntity(int x, int y) {
-        EntityView entity = diagram.addNewEntityView(x, y);
+    public Block addEntity(int x, int y) {
+        Block entity = diagram.addNewEntityView(x, y);
         entity.addListener(viewableListener);
         return entity;
     }

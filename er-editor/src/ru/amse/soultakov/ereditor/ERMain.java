@@ -42,7 +42,8 @@ public class ERMain {
 
     private static Map<Tool, AbstractButton> toolToButton = newHashMap();
 
-    public static void main(String[] args) {
+    @SuppressWarnings("serial")
+	public static void main(String[] args) {
         final JFrame frame = new JFrame("Stupid test");
         JMenuBar menu = new JMenuBar();
         frame.setJMenuBar(menu);

@@ -1,5 +1,6 @@
 package ru.amse.soultakov.ereditor.view;
 
+@SuppressWarnings("serial")
 public class DiagramSavingException extends Exception {
 
     public DiagramSavingException() {

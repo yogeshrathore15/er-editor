@@ -169,7 +169,8 @@ public class SelectElementTool extends ToolAdapter {
     }
 
     private boolean selectViews(MouseEvent e, Collection<? extends IViewable> views) {
-        for (IViewable view : views) {
+        boolean result = true;
+    	for (IViewable view : views) {
             if (view.containsPoint(e.getX(), e.getY())) {
                 if (e.isControlDown()) {
                     if (view.isSelected()) {
@@ -182,10 +183,10 @@ public class SelectElementTool extends ToolAdapter {
                         getSelectedItems().setSelection(view);
                     }
                 }
-                return false;
+                result = false;
             }
         }
-        return true;
+        return result;
     }
 
     @Override

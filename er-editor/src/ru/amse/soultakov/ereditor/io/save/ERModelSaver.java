@@ -1,5 +1,7 @@
 package ru.amse.soultakov.ereditor.io.save;
 
+import static ru.amse.soultakov.ereditor.io.XmlTagConstants.TAG_MODEL;
+
 import java.io.IOException;
 
 import org.jdom.Document;
@@ -21,7 +23,7 @@ import ru.amse.soultakov.ereditor.model.SimpleAttributeType;
  */
 public class ERModelSaver {
 
-    private final ERModel erModel;
+	private final ERModel erModel;
 
     private final IdManager idManager;
 
@@ -31,7 +33,7 @@ public class ERModelSaver {
     }
 
     public Element save() {
-        Element element = new Element("model");
+        Element element = new Element(TAG_MODEL);
         element.addContent(new EntitiesSaver(idManager, erModel.getEntities())
                 .save());
         element.addContent(new CommentsSaver(idManager, erModel.getComments())
