@@ -4,6 +4,6 @@ import ru.amse.soultakov.ereditor.model.ERModel;
 
 public interface IDiagramSaver {
 
-    public void save(Diagram diagram, ERModel erModel) throws Exception;
+    public void save(Diagram diagram, ERModel erModel) throws DiagramSavingException;
     
 }

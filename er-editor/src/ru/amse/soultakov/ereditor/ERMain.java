@@ -43,19 +43,26 @@ public class ERMain {
     private static Map<Tool, AbstractButton> toolToButton = newHashMap();
 
     public static void main(String[] args) {
-        JFrame frame = new JFrame("Stupid test");
+        final JFrame frame = new JFrame("Stupid test");
         JMenuBar menu = new JMenuBar();
         frame.setJMenuBar(menu);
         JMenu fileMenu = new JMenu("File");
         menu.add(fileMenu);
         fileMenu.add(new AbstractAction("Save") {
-            public void actionPerformed(ActionEvent e) {
-                XmlDiagramSaver xds = new XmlDiagramSaver(System.out);
-                try {
-                    diagramEditor.getDiagram().save(xds);
-                } catch (Exception e1) {
-                    e1.printStackTrace();
+            private final Runnable save = new Runnable() {
+                public void run() {
+                    try {
+                        XmlDiagramSaver xds = new XmlDiagramSaver(
+                                System.out);
+                        diagramEditor.getDiagram().save(xds);
+                    } catch (Exception e1) {
+                        e1.printStackTrace();
+                    }
                 }
+            };
+
+            public void actionPerformed(ActionEvent e) {
+                new Thread(save).start();
             }
         });
         menu.add(new JMenu("Edit"));

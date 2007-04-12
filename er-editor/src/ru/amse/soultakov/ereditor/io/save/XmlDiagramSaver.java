@@ -11,6 +11,7 @@ import org.jdom.output.XMLOutputter;
 import ru.amse.soultakov.ereditor.io.IdManager;
 import ru.amse.soultakov.ereditor.model.ERModel;
 import ru.amse.soultakov.ereditor.view.Diagram;
+import ru.amse.soultakov.ereditor.view.DiagramSavingException;
 import ru.amse.soultakov.ereditor.view.IDiagramSaver;
 
 public class XmlDiagramSaver implements IDiagramSaver {
@@ -21,14 +22,18 @@ public class XmlDiagramSaver implements IDiagramSaver {
         this.outputStream = outputStream;
     }
     
-    public void save(Diagram diagram, ERModel erModel) throws IOException {
+    public void save(Diagram diagram, ERModel erModel) throws DiagramSavingException {
         IdManager idManager = new IdManager();
         Element root = new Element("er_diagram");
         Document doc = new Document(root);
         root.addContent(new ERModelSaver(erModel, idManager).save());
         root.addContent(new DiagramViewSaver(diagram, idManager).save());
         XMLOutputter out = new XMLOutputter(Format.getPrettyFormat());
-        out.output(doc, outputStream);
+        try {
+            out.output(doc, outputStream);
+        } catch (IOException e) {
+            throw new DiagramSavingException(e);
+        }
     }
 
 }
