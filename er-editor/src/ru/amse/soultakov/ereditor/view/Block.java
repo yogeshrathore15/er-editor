@@ -20,13 +20,13 @@ public abstract class Block implements IViewable
 
 	private boolean selected;
 
-	private int x;
+	protected int x;
 
-	private int y;
+	protected int y;
 
-	private int height;
+	protected int height;
 
-	private int width;
+	protected int width;
 
 	protected Diagram diagram;
 

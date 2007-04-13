@@ -42,6 +42,8 @@ public class SelectElementTool extends ToolAdapter {
     private Point endPoint;
 
     private DiagramEditor diagramEditor;
+    
+    private SelectedItems selectedOutlines = new SelectedItems();
 
     public SelectElementTool(DiagramEditor diagramEditor) {
         this.diagramEditor = diagramEditor;
