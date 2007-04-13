@@ -32,9 +32,11 @@ public class ERModelLoader {
 	private void loadEntities(Element entities)
 	{
 		for(Object object : entities.getChildren()) {
-			Element element = (Element) object;
-			if (TAG_ENTITY.equals(element.getName())) {
-				loadEntity(element);
+			if (object instanceof Element) {
+				Element element = (Element) object;
+				if (TAG_ENTITY.equals(element.getName())) {
+					loadEntity(element);
+				}
 			}
 		}
 	}
