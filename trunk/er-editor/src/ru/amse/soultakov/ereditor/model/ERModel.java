@@ -38,7 +38,30 @@ public class ERModel {
     public Entity addNewEntity() {
         Entity entity = new Entity(generator.getEntityName());
         entities.add(entity);
+        
+        tempAttributesInit(entity);
+        
+        return entity;
+    }
+    
+    public Entity addEntity(Entity entity) {
+        if (entities.add(entity)) {
+            for(Relationship r : entity.getRelationships()) {
+                if(relationships.add(r)) {
+                    entities.add(r.getFirstEnd().getEntity());
+                    entities.add(r.getSecondEnd().getEntity());
+                }
+            }
+            for(Link l : entity.getLinks()) {
+                if(links.add(l)) {
+                    comments.add(addNewComment());
+                }
+            }
+        }
+        return entity;
+    }
 
+    private void tempAttributesInit(Entity entity) {
         Attribute pk1 = new Attribute("Attr1", SimpleAttributeType.INTEGER, false,
                 "");
         entity.addAttribute(pk1);
@@ -54,12 +77,18 @@ public class ERModel {
         entity.addAttribute(u2);
         entity.addToUniqueAttributes(new HashSet<AbstractAttribute>(Arrays.asList(
                 u1, u2)));
-        return entity;
     }
 
     public Comment addNewComment() {
         Comment comment = new Comment(generator.getCommentName());
         comments.add(comment);
+        return comment;
+    }
+    
+    public Comment addComment(Comment comment) {
+        if (comments.add(comment)) {
+            
+        }
         return comment;
     }
 
@@ -83,6 +112,16 @@ public class ERModel {
         relationships.add(relationship);
         first.addRelationship(relationship);
         second.addRelationship(relationship);
+        return relationship;
+    }
+    
+    public Relationship addRelationship(Relationship relationship) {
+        if(relationships.add(relationship)) {
+            addEntity(relationship.getFirstEnd().getEntity());
+            addEntity(relationship.getSecondEnd().getEntity());
+        }
+        relationship.getFirstEnd().getEntity().addRelationship(relationship);
+        relationship.getSecondEnd().getEntity().addRelationship(relationship);
         return relationship;
     }
 

@@ -213,7 +213,7 @@ public class Diagram {
         return commentToView.get(comment);
     }
     
-    public void save(IDiagramSaver saver) throws Exception {
+    public void save(IDiagramSaver saver) throws DiagramSavingException {
         saver.save(this, erModel);
     }
 

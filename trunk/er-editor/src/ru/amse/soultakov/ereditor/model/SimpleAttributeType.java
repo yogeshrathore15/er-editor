@@ -37,12 +37,17 @@ public enum SimpleAttributeType implements IAttributeType {
                 return false;
             }
         }
+        
     };
 
     private String name;
 
     private SimpleAttributeType(String name) {
         this.name = name;
+    }
+    
+    public IAttributeType copy() {
+        return this;
     }
 
     public String getName() {

@@ -3,7 +3,7 @@
  */
 package ru.amse.soultakov.ereditor.model;
 
-public abstract class AbstractAttribute {
+public abstract class AbstractAttribute implements Copyable<AbstractAttribute> {
 
     protected String name;
 
@@ -30,5 +30,7 @@ public abstract class AbstractAttribute {
     public String toString() {
         return getName() + " : " + getType().getName();
     }
+
+    public abstract AbstractAttribute copy();
 
 }

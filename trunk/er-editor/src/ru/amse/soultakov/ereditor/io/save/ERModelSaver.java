@@ -2,6 +2,7 @@ package ru.amse.soultakov.ereditor.io.save;
 
 import static ru.amse.soultakov.ereditor.io.XmlTagConstants.TAG_MODEL;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import org.jdom.Document;
@@ -61,17 +62,19 @@ public class ERModelSaver {
         entity1.addAttribute(new Attribute("MyName", SimpleAttributeType.INTEGER,
                 false, "10"));
         Entity entity2 = er.addNewEntity();
-        entity1.addAttribute(new FKAttribute("foreign", false, "Empty", entity2,
-                entity2.getAttributes().iterator().next()));
-
+//        entity1.addAttribute(new FKAttribute("foreign", false, "Empty", entity2,
+//                entity2.getAttributes().iterator().next()));
+//
         er.addNewRealtionship(entity1, entity2);
         Comment comment = er.addNewComment();
-        er.addNewLink(entity1, comment);
+//        er.addNewLink(entity1, comment);
 
         ERModelSaver erSaver = new ERModelSaver(er, new IdManager());
         Document doc = new Document(erSaver.save());
         XMLOutputter out = new XMLOutputter(Format.getPrettyFormat());
-        out.output(doc, System.out);
+        FileOutputStream fos = new FileOutputStream("model.xml");
+        out.output(doc, fos);
+        fos.close();
     }
 
 }
