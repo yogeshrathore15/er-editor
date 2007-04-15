@@ -23,7 +23,7 @@ import ru.amse.soultakov.ereditor.model.Relationship;
  */
 class EntitiesSaver {
 
-	private final IdManager idManager;
+    private final IdManager idManager;
 
     private final Collection<Entity> entities;
 
@@ -88,7 +88,7 @@ class EntitiesSaver {
             Element fkRoot = new Element(TAG_FOREIGN_KEY);
             fkRoot.setAttribute(ATTR_ID, idManager.getId(fkRoot));
             for (AbstractAttribute aa : col) {
-                fkRoot.addContent(new Element(ATTR_ID).setAttribute(ATTR_ID,
+                fkRoot.addContent(new Element(TAG_ATTRIBUTE).setAttribute(ATTR_ID,
                         idManager.getId(aa)));
             }
             elements.add(fkRoot);
@@ -126,16 +126,18 @@ class EntitiesSaver {
      * @return
      */
     private Content getAttributesElement(Entity entity) {
-        Element root = new Element("attributes");
+        Element root = new Element(TAG_ATTRIBUTES);
         for (AbstractAttribute aa : entity) {
             if (aa instanceof FKAttribute) {
                 FKAttribute fka = (FKAttribute) aa;
-                Element element = new Element("fkattribute");
+                Element element = new Element(TAG_FKATTRIBUTE);
                 element.setAttribute(ATTR_ID, idManager.getId(fka));
                 element.setAttribute(ATTR_NAME, fka.getName());
                 element.setAttribute(ATTR_TYPE, fka.getType().getName());
                 element.setAttribute(ATTR_NOTNULL, String.valueOf(fka.isNotNull()));
-                element.setAttribute(ATTR_DEFAULT_VALUE, fka.getDefaultValue());
+                if (fka.getDefaultValue() != null) {
+                    element.setAttribute(ATTR_DEFAULT_VALUE, fka.getDefaultValue());
+                }
                 element.setAttribute(ATTR_FOREIGN, idManager.getId(fka
                         .getAttribute()));
                 element.setAttribute(ATTR_FOREIGN_ENTITY, idManager.getId(fka
@@ -143,7 +145,7 @@ class EntitiesSaver {
                 root.addContent(element);
             } else if (aa instanceof Attribute) {
                 Attribute a = (Attribute) aa;
-                Element element = new Element("attribute");
+                Element element = new Element(TAG_ATTRIBUTE);
                 element.setAttribute(ATTR_ID, idManager.getId(a));
                 element.setAttribute(ATTR_NAME, a.getName());
                 element.setAttribute(ATTR_TYPE, a.getType().getName());

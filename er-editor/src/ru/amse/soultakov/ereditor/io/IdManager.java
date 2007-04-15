@@ -29,6 +29,10 @@ public class IdManager {
         }
         return identifiers.get(object);
     }
+    
+    public Object getObject(String id) {
+        return identifiers.get(id);
+    }
 
     public String putId(Object object, String id) {
     	return identifiers.put(object, id);

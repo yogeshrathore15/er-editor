@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model>
+  <entities>
+    <entity id="0" name="New Entity 0">
+      <attributes>
+        <attribute id="1" name="Attr1" type="Integer" not_null="false" default_value="" />
+        <attribute id="2" name="Attr2" type="Double" not_null="false" default_value="1" />
+        <attribute id="3" name="Attr3" type="Char" not_null="false" default_value="abc" />
+        <attribute id="4" name="Attr4" type="Char[5]" not_null="false" default_value="false" />
+        <attribute id="5" name="MyName" type="Integer" not_null="false" default_value="10" />
+        <primary_key id="6">
+          <id id="2" />
+          <id id="1" />
+        </primary_key>
+        <unique id="7">
+          <id id="4" />
+          <id id="3" />
+        </unique>
+      </attributes>
+      <relationships>
+        <relationship id="8" />
+      </relationships>
+      <links />
+    </entity>
+    <entity id="9" name="New Entity 1">
+      <attributes>
+        <attribute id="10" name="Attr1" type="Integer" not_null="false" default_value="" />
+        <attribute id="11" name="Attr2" type="Double" not_null="false" default_value="1" />
+        <attribute id="12" name="Attr3" type="Char" not_null="false" default_value="abc" />
+        <attribute id="13" name="Attr4" type="Char[5]" not_null="false" default_value="false" />
+        <primary_key id="14">
+          <id id="11" />
+          <id id="10" />
+        </primary_key>
+        <unique id="15">
+          <id id="12" />
+          <id id="13" />
+        </unique>
+      </attributes>
+      <relationships>
+        <relationship id="8" />
+      </relationships>
+      <links />
+    </entity>
+  </entities>
+  <comments>
+    <comment id="16">
+      New Comment 0
+      <links />
+    </comment>
+  </comments>
+  <relationships>
+    <relationship id="8">
+      <pk_relationship_end name="End1" entity="0" multiplicity="ZERO_OR_MORE" constraint="6" />
+      <pk_relationship_end name="End2" entity="9" multiplicity="ZERO_OR_ONE" constraint="14" />
+    </relationship>
+  </relationships>
+  <links />
+</model>
+

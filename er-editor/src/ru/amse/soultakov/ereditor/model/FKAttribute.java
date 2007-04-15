@@ -34,4 +34,9 @@ public class FKAttribute extends AbstractAttribute {
         return true;
     }
 
+    @Override
+    public AbstractAttribute copy() {
+        return new Attribute(name, getType().copy(), isNotNull(), defaultValue);
+    }
+
 }

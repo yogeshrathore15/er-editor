@@ -3,18 +3,20 @@
  */
 package ru.amse.soultakov.ereditor.model;
 
+import static ru.amse.soultakov.ereditor.util.CommonUtils.newHashMap;
 import static ru.amse.soultakov.ereditor.util.CommonUtils.newLinkedHashSet;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 /**
  * @author sma
  * 
  */
-public class Entity implements Iterable<AbstractAttribute> {
+public class Entity implements Iterable<AbstractAttribute>, Copyable<Entity> {
 
     private static final String PARAM_CANT_BE_NULL = "Param must be non null value";
 
@@ -181,7 +183,7 @@ public class Entity implements Iterable<AbstractAttribute> {
         return true;
     }
 
-    public void addToPrimaryKey(Attribute attribute) {
+    public void addToPrimaryKey(AbstractAttribute attribute) {
         primaryKey.add(attribute);
         attributes.add(attribute);
     }
@@ -215,6 +217,26 @@ public class Entity implements Iterable<AbstractAttribute> {
 
     public Collection<Constraint<FKAttribute>> getForeignKey() {
         return Collections.unmodifiableSet(foreignKeys);
+    }
+
+    public Entity copy() {
+        Entity entity = new Entity(this.name);
+        Map<AbstractAttribute, AbstractAttribute> map = newHashMap();
+        for (AbstractAttribute a : this) {
+            AbstractAttribute copy = map.put(a, a.copy());
+            entity.addAttribute(copy);
+        }
+        for (AbstractAttribute a : this.getPrimaryKey()) {
+            entity.addToPrimaryKey(map.get(a));
+        }
+        for (Constraint<AbstractAttribute> c : this.getUniqueAttributes()) {
+            Set<AbstractAttribute> set = newLinkedHashSet();
+            for (AbstractAttribute a : c) {
+                set.add(map.get(a));
+            }
+            entity.addToUniqueAttributes(set);
+        }
+        return entity;
     }
 
 }

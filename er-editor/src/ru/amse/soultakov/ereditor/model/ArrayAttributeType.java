@@ -7,7 +7,7 @@ import static ru.amse.soultakov.ereditor.model.SimpleAttributeType.CHAR;
 
 /**
  * @author Soultakov Maxim
- *
+ * 
  */
 public class ArrayAttributeType implements IAttributeType {
 
@@ -81,6 +81,10 @@ public class ArrayAttributeType implements IAttributeType {
         if (this.size != other.size)
             return false;
         return true;
+    }
+
+    public IAttributeType copy() {
+        return new ArrayAttributeType(arrayType, size);
     }
 
 }

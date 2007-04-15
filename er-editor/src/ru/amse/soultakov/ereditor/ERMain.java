@@ -31,6 +31,7 @@ import ru.amse.soultakov.ereditor.controller.tools.IToolListener;
 import ru.amse.soultakov.ereditor.controller.tools.SelectElementTool;
 import ru.amse.soultakov.ereditor.controller.tools.Tool;
 import ru.amse.soultakov.ereditor.io.save.XmlDiagramSaver;
+import ru.amse.soultakov.ereditor.view.DiagramSavingException;
 
 /**
  * @author Soultakov Maxim
@@ -56,7 +57,7 @@ public class ERMain {
                         XmlDiagramSaver xds = new XmlDiagramSaver(
                                 System.out);
                         diagramEditor.getDiagram().save(xds);
-                    } catch (Exception e1) {
+                    } catch (DiagramSavingException e1) {
                         e1.printStackTrace();
                     }
                 }
