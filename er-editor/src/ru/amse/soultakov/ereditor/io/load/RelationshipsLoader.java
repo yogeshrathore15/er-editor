@@ -1,6 +1,5 @@
 package ru.amse.soultakov.ereditor.io.load;
 
-import static ru.amse.soultakov.ereditor.io.XmlTagConstants.ATTR_CONSTRAINT;
 import static ru.amse.soultakov.ereditor.io.XmlTagConstants.ATTR_ENTITY;
 import static ru.amse.soultakov.ereditor.io.XmlTagConstants.ATTR_MULTIPLICITY;
 import static ru.amse.soultakov.ereditor.io.XmlTagConstants.ATTR_NAME;
@@ -11,8 +10,6 @@ import java.util.List;
 
 import org.jdom.Element;
 
-import ru.amse.soultakov.ereditor.model.AbstractAttribute;
-import ru.amse.soultakov.ereditor.model.Constraint;
 import ru.amse.soultakov.ereditor.model.ERModel;
 import ru.amse.soultakov.ereditor.model.Entity;
 import ru.amse.soultakov.ereditor.model.PKRelationshipEnd;

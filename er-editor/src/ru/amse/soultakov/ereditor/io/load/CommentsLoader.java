@@ -1,11 +1,10 @@
 package ru.amse.soultakov.ereditor.io.load;
 
 import static ru.amse.soultakov.ereditor.io.XmlTagConstants.ATTR_ID;
-import static ru.amse.soultakov.ereditor.io.XmlTagConstants.*;
+import static ru.amse.soultakov.ereditor.io.XmlTagConstants.TAG_COMMENT;
 
 import org.jdom.Element;
 
-import ru.amse.soultakov.ereditor.io.save.SavingIdManager;
 import ru.amse.soultakov.ereditor.model.Comment;
 import ru.amse.soultakov.ereditor.model.ERModel;
 

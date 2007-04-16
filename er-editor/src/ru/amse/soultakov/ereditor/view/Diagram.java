@@ -26,7 +26,7 @@ import ru.amse.soultakov.ereditor.util.CommonUtils;
 
 public class Diagram {
 
-    private final ERModel erModel = new ERModel();
+    private final ERModel erModel;
 
     private final Set<EntityView> entityViews = newLinkedHashSet();
 
@@ -47,24 +47,48 @@ public class Diagram {
     private final List<IDiagramListener> listeners = new ArrayList<IDiagramListener>();
 
     public Diagram() {
+        erModel = new ERModel();
+    }
 
+    public Diagram(ERModel erModel) {
+        this.erModel = erModel;
     }
 
     public EntityView addNewEntityView(int x, int y) {
-        notifyListeners();
         Entity entity = erModel.addNewEntity();
         EntityView entityView = new EntityView(this, entity, x, y);
         entityViews.add(entityView);
         entityToView.put(entity, entityView);
+        notifyListeners();
+        return entityView;
+    }
+
+    public EntityView addEntityView(EntityView entityView) {
+        if (entityView == null || entityView.getDiagram() != this) {
+            throw new IllegalArgumentException();
+        }
+        entityViews.add(entityView);
+        entityToView.put(entityView.getEntity(), entityView);
+        notifyListeners();
         return entityView;
     }
 
     public CommentView addNewCommentView(int x, int y) {
-        notifyListeners();
         Comment comment = erModel.addNewComment();
         CommentView commentView = new CommentView(this, comment, x, y);
         commentViews.add(commentView);
         commentToView.put(comment, commentView);
+        notifyListeners();
+        return commentView;
+    }
+
+    public CommentView addCommentView(CommentView commentView) {
+        if (commentView == null || commentView.getDiagram() != this) {
+            throw new IllegalArgumentException();
+        }
+        commentViews.add(commentView);
+        commentToView.put(commentView.getComment(), commentView);
+        notifyListeners();
         return commentView;
     }
 
@@ -86,7 +110,17 @@ public class Diagram {
         return relationshipView;
     }
 
-    public Line addNewLinkView(EntityView entityView, CommentView commentView) {
+    public RelationshipView addRelationshipView(RelationshipView relationshipView) {
+        if (relationshipView == null || relationshipView.getDiagram() != this) {
+            throw new IllegalArgumentException();
+        }
+        relationshipViews.add(relationshipView);
+        relationshipToView.put(relationshipView.getRelationship(), relationshipView);
+        notifyListeners();
+        return relationshipView;
+    }
+
+    public LinkView addNewLinkView(EntityView entityView, CommentView commentView) {
         if (hasNull(entityView, commentView)) {
             throw new IllegalArgumentException(
                     "EntityView and CommentView must be non-null");
@@ -101,6 +135,15 @@ public class Diagram {
         linkViews.add(linkView);
         linkToView.put(link, linkView);
         notifyListeners();
+        return linkView;
+    }
+
+    public LinkView addLinkView(LinkView linkView) {
+        if (linkView == null || linkView.getDiagram() != this) {
+            throw new IllegalArgumentException();
+        }
+        linkViews.add(linkView);
+        linkToView.put(linkView.getLink(), linkView);
         return linkView;
     }
 
@@ -212,7 +255,7 @@ public class Diagram {
     public CommentView getCommentView(Comment comment) {
         return commentToView.get(comment);
     }
-    
+
     public void save(IDiagramSaver saver) throws DiagramSavingException {
         saver.save(this, erModel);
     }

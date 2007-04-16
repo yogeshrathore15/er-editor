@@ -14,7 +14,8 @@ import static ru.amse.soultakov.ereditor.io.XmlTagConstants.TAG_ENTITY;
 import static ru.amse.soultakov.ereditor.io.XmlTagConstants.TAG_PRIMARY_KEY;
 import static ru.amse.soultakov.ereditor.io.XmlTagConstants.TAG_UNIQUE;
 
-import java.util.HashSet;
+import static ru.amse.soultakov.ereditor.util.CommonUtils.newLinkedHashSet;
+
 import java.util.List;
 import java.util.Set;
 
@@ -74,7 +75,7 @@ public class EntitiesLoader {
 				for (Object unique : children) {
 					if (unique instanceof Element) {
 						Element uniqueElement = (Element) unique;
-						Set<AbstractAttribute> set = new HashSet<AbstractAttribute>();
+						Set<AbstractAttribute> set = newLinkedHashSet();
 						for (Object attr : uniqueElement
 								.getChildren(TAG_ATTRIBUTE)) {
 							Element attrElement = (Element) attr;
@@ -128,11 +129,6 @@ public class EntitiesLoader {
 				entity.addAttribute(loadAttribute((Element) object));
 			}
 		}
-		// for (Object object : attributesRoot.getChildren(TAG_FKATTRIBUTE)) {
-		// if (object instanceof Element) {
-		// entity.addAttribute(loadFKAttribute((Element) object));
-		// }
-		// }
 	}
 
 	private Attribute loadAttribute(Element element) {
