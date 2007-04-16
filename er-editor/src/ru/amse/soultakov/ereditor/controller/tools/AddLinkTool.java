@@ -14,6 +14,7 @@ import java.awt.event.MouseEvent;
 import ru.amse.soultakov.ereditor.controller.DiagramEditor;
 import ru.amse.soultakov.ereditor.view.CommentView;
 import ru.amse.soultakov.ereditor.view.EntityView;
+import ru.amse.soultakov.ereditor.view.IViewable;
 import ru.amse.soultakov.ereditor.view.SelectedItems;
 
 public class AddLinkTool extends ToolAdapter {
@@ -79,7 +80,7 @@ public class AddLinkTool extends ToolAdapter {
     /**
      * @return
      */
-    private SelectedItems getSelectedItems() {
+    private SelectedItems<IViewable> getSelectedItems() {
         return diagramEditor.getSelectedItems();
     }
 
