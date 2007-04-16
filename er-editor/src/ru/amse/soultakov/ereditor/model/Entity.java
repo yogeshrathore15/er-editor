@@ -16,7 +16,7 @@ import java.util.Set;
  * @author sma
  * 
  */
-public class Entity implements Iterable<AbstractAttribute>, Copyable<Entity> {
+public class Entity implements Iterable<AbstractAttribute>, ICopyable<Entity> {
 
     private static final String PARAM_CANT_BE_NULL = "Param must be non null value";
 
@@ -223,7 +223,8 @@ public class Entity implements Iterable<AbstractAttribute>, Copyable<Entity> {
         Entity entity = new Entity(this.name);
         Map<AbstractAttribute, AbstractAttribute> map = newHashMap();
         for (AbstractAttribute a : this) {
-            AbstractAttribute copy = map.put(a, a.copy());
+            AbstractAttribute copy = a.copy();
+            map.put(a, copy);
             entity.addAttribute(copy);
         }
         for (AbstractAttribute a : this.getPrimaryKey()) {

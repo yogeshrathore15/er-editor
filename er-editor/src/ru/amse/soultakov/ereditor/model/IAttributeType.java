@@ -3,7 +3,7 @@
  */
 package ru.amse.soultakov.ereditor.model;
 
-public interface IAttributeType extends Copyable<IAttributeType> {
+public interface IAttributeType extends ICopyable<IAttributeType> {
 
     String getName();
 

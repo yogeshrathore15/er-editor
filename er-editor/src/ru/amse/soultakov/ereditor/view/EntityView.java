@@ -135,5 +135,11 @@ public class EntityView extends Block {
     public <R, D> R acceptVisitor(IVisitor<R, D> visitor, D data) {
         return visitor.visit(this, data);
     }
+    
+    public EntityView copy() {
+        EntityView entityView = new EntityView(diagram, entity.copy(), x, y);
+        diagram.addEntityView(entityView);
+        return entityView;
+    }
 
 }

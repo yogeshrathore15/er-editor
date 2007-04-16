@@ -11,7 +11,7 @@ import java.util.Set;
  * @author sma
  * 
  */
-public class Comment implements Iterable<Link> {
+public class Comment implements Iterable<Link>, ICopyable<Comment> {
 
     /**
      * 
@@ -71,6 +71,10 @@ public class Comment implements Iterable<Link> {
             }
         }
         return true;
+    }
+
+    public Comment copy() {
+        return new Comment(comment);
     }
 
 }

@@ -16,22 +16,23 @@ import java.util.Collection;
 
 import ru.amse.soultakov.ereditor.controller.DiagramEditor;
 import ru.amse.soultakov.ereditor.util.CommonUtils;
+import ru.amse.soultakov.ereditor.view.IOutline;
 import ru.amse.soultakov.ereditor.view.IViewable;
 import ru.amse.soultakov.ereditor.view.SelectedItems;
 
 public class SelectElementTool extends ToolAdapter {
 
     /**
-	 * 
-	 */
-	private static final Cursor DEFAULT_CURSOR = new Cursor(Cursor.DEFAULT_CURSOR);
+     * 
+     */
+    private static final Cursor DEFAULT_CURSOR = new Cursor(Cursor.DEFAULT_CURSOR);
 
-	/**
-	 * 
-	 */
-	private static final Cursor MOVE_CURSOR = new Cursor(Cursor.MOVE_CURSOR);
+    /**
+     * 
+     */
+    private static final Cursor MOVE_CURSOR = new Cursor(Cursor.MOVE_CURSOR);
 
-	protected static final BasicStroke DASHED = new BasicStroke(1.0f,
+    protected static final BasicStroke DASHED = new BasicStroke(1.0f,
             BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 10.0f,
             new float[] { 4.0f }, 0.0f);
 
@@ -42,8 +43,6 @@ public class SelectElementTool extends ToolAdapter {
     private Point endPoint;
 
     private DiagramEditor diagramEditor;
-    
-//    private SelectedItems selectedOutlines = new SelectedItems();
 
     public SelectElementTool(DiagramEditor diagramEditor) {
         this.diagramEditor = diagramEditor;
@@ -62,8 +61,16 @@ public class SelectElementTool extends ToolAdapter {
         nothingSelected = nothingSelected
                 && selectViews(e, diagramEditor.getDiagram().getLinkViews());
 
-        if (nothingSelected) {// && !e.isControlDown()) {
+        if (nothingSelected) {
             getSelectedItems().clear();
+        } else {
+            getSelectedOutlines().clear();
+            for (IViewable v : getSelectedItems()) {
+                IOutline outline = v.getOutline();
+                if (v.getOutline() != null) {
+                    getSelectedOutlines().add(outline);
+                }
+            }
         }
         currentPoint = e.getLocationOnScreen();
         startPoint = e.getPoint();
@@ -71,11 +78,12 @@ public class SelectElementTool extends ToolAdapter {
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        if (!getSelectedItems().isEmpty() && endPoint == null) {
-        	diagramEditor.setCursor(MOVE_CURSOR);
-            dragSelection(e);
+        if (!getSelectedOutlines().isEmpty() && endPoint == null) {
+            diagramEditor.setCursor(MOVE_CURSOR);
+            dragSelection(e);//перетаскиваем выделение
         } else {
-        	diagramEditor.setCursor(DEFAULT_CURSOR);
+            //пытаемся выделить с помощью прямоугольника
+            diagramEditor.setCursor(DEFAULT_CURSOR);
             endPoint = e.getPoint();
             tryToSelectAllViews();
         }
@@ -84,9 +92,24 @@ public class SelectElementTool extends ToolAdapter {
 
     @Override
     public void mouseReleased(MouseEvent e) {
-    	diagramEditor.setCursor(DEFAULT_CURSOR);
+        diagramEditor.setCursor(DEFAULT_CURSOR);
         if (endPoint != null && startPoint != null) {
             tryToSelectAllViews();
+            endPoint = null;
+            startPoint = null;
+        } else if (startPoint != null && endPoint == null) {
+            if (e.isControlDown()) {
+                for(IOutline o : getSelectedOutlines() ) {
+                    IViewable copy = o.getViewable().copy();
+                    copy.setLocation(o.getX(), o.getY());
+                }                
+            } else {
+                for(IOutline o : getSelectedOutlines() ) {
+                    o.getViewable().setLocation(o.getX(), o.getY());
+                }
+            }
+            getSelectedOutlines().clear();
+            diagramEditor.repaint();
             endPoint = null;
             startPoint = null;
         }
@@ -108,21 +131,21 @@ public class SelectElementTool extends ToolAdapter {
      */
     private void dragSelection(MouseEvent e) {
         if (canDragSelection(e)) {
-            for (IViewable v : getSelectedItems()) {
+            for (IViewable v : getSelectedOutlines()) {
                 int xPos = e.getXOnScreen() - currentPoint.x + v.getX();
                 int yPos = e.getYOnScreen() - currentPoint.y + v.getY();
                 v.setLocation(xPos >= 0 ? xPos : 0, yPos >= 0 ? yPos : 0);
             }
             diagramEditor.revalidate();
             Point p = CommonUtils.getRightBottomPoint(diagramEditor
-                    .getSelectedItems().getAsSet());
-            diagramEditor.scrollRectToVisible(new Rectangle(p.x, p.y, 0,
-                    0));
+                    .getSelectedItems().toSet());
+            diagramEditor.scrollRectToVisible(new Rectangle(p.x, p.y, 0, 0));
+            diagramEditor.repaint();
         }
     }
 
     private boolean canDragSelection(MouseEvent e) {
-        for (IViewable v : getSelectedItems()) {
+        for (IViewable v : getSelectedOutlines()) {
             int xPos = e.getXOnScreen() - currentPoint.x + v.getX();
             int yPos = e.getYOnScreen() - currentPoint.y + v.getY();
             if (xPos < 0 || yPos < 0) {
@@ -152,7 +175,7 @@ public class SelectElementTool extends ToolAdapter {
     /**
      * @return
      */
-    private SelectedItems getSelectedItems() {
+    private SelectedItems<IViewable> getSelectedItems() {
         return diagramEditor.getSelectedItems();
     }
 
@@ -172,7 +195,7 @@ public class SelectElementTool extends ToolAdapter {
 
     private boolean selectViews(MouseEvent e, Collection<? extends IViewable> views) {
         boolean result = true;
-    	for (IViewable view : views) {
+        for (IViewable view : views) {
             if (view.containsPoint(e.getX(), e.getY())) {
                 if (e.isControlDown()) {
                     if (view.isSelected()) {
@@ -196,6 +219,13 @@ public class SelectElementTool extends ToolAdapter {
         if (e.getKeyCode() == KeyEvent.VK_DELETE) {
             diagramEditor.removeSelection();
         }
+    }
+
+    /**
+     * @return the selectedOutlines
+     */
+    private SelectedItems<IOutline> getSelectedOutlines() {
+        return diagramEditor.getSelectedOutlines();
     }
 
 }

@@ -1,5 +1,5 @@
 package ru.amse.soultakov.ereditor.model;
 
-public interface Copyable<T> {
+public interface ICopyable<T> {
     T copy();
 }

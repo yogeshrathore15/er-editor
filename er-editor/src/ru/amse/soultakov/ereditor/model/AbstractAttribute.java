@@ -3,7 +3,7 @@
  */
 package ru.amse.soultakov.ereditor.model;
 
-public abstract class AbstractAttribute implements Copyable<AbstractAttribute> {
+public abstract class AbstractAttribute implements ICopyable<AbstractAttribute> {
 
     protected String name;
 
