@@ -16,7 +16,6 @@ import java.util.Collection;
 import org.jdom.Content;
 import org.jdom.Element;
 
-import ru.amse.soultakov.ereditor.io.IdManager;
 import ru.amse.soultakov.ereditor.model.FKRelationshipEnd;
 import ru.amse.soultakov.ereditor.model.PKRelationshipEnd;
 import ru.amse.soultakov.ereditor.model.Relationship;
@@ -24,13 +23,13 @@ import ru.amse.soultakov.ereditor.model.RelationshipEnd;
 
 class RelationshipsSaver {
 
-	private final IdManager idManager;
+	private final SavingIdManager savingIdManager;
 
     private final Collection<Relationship> relationships;
 
-    public RelationshipsSaver(final IdManager idManager,
+    public RelationshipsSaver(final SavingIdManager savingIdManager,
             final Collection<Relationship> relationships) {
-        this.idManager = idManager;
+        this.savingIdManager = savingIdManager;
         this.relationships = relationships;
     }
 
@@ -50,7 +49,7 @@ class RelationshipsSaver {
 
     private Element getRelationshipElement(Relationship r) {
         Element root = new Element(TAG_RELATIONSHIP);
-        root.setAttribute(ATTR_ID, idManager.getId(r));
+        root.setAttribute(ATTR_ID, savingIdManager.getId(r));
         root.addContent(getRelationshipEndElement(r.getFirstEnd()));
         root.addContent(getRelationshipEndElement(r.getSecondEnd()));
         return root;
@@ -64,9 +63,9 @@ class RelationshipsSaver {
             root = new Element(TAG_PK_RELATIONSHIP_END);
         }
         root.setAttribute(ATTR_NAME, end.getName());
-        root.setAttribute(ATTR_ENTITY, idManager.getId(end.getEntity()));
+        root.setAttribute(ATTR_ENTITY, savingIdManager.getId(end.getEntity()));
         root.setAttribute(ATTR_MULTIPLICITY, end.getMultiplicity().name());
-        root.setAttribute(ATTR_CONSTRAINT, idManager.getId(end.getConstraint()));
+        root.setAttribute(ATTR_CONSTRAINT, savingIdManager.getId(end.getConstraint()));
         return root;
     }
 

@@ -11,19 +11,18 @@ import java.util.Collection;
 import org.jdom.Content;
 import org.jdom.Element;
 
-import ru.amse.soultakov.ereditor.io.IdManager;
 import ru.amse.soultakov.ereditor.model.Comment;
 import ru.amse.soultakov.ereditor.model.Link;
 
 class CommentsSaver {
 
-	private final IdManager idManager;
+	private final SavingIdManager savingIdManager;
 
     private final Collection<Comment> comments;
 
-    public CommentsSaver(final IdManager idManager,
+    public CommentsSaver(final SavingIdManager savingIdManager,
             final Collection<Comment> comments) {
-        this.idManager = idManager;
+        this.savingIdManager = savingIdManager;
         this.comments = comments;
     }
 
@@ -37,7 +36,7 @@ class CommentsSaver {
 
     private Element getCommentElement(Comment comment) {
         Element element = new Element(TAG_COMMENT);
-        element.setAttribute(ATTR_ID, idManager.getId(comment));
+        element.setAttribute(ATTR_ID, savingIdManager.getId(comment));
         element.setText(comment.getComment());
         element.addContent(getLinksElement(comment));
         return element;
@@ -47,7 +46,7 @@ class CommentsSaver {
         Element root = new Element(TAG_LINKS);
         for (Link link : comment) {
             Element element = new Element(TAG_LINK);
-            element.setAttribute(ATTR_ID, idManager.getId(link));
+            element.setAttribute(ATTR_ID, savingIdManager.getId(link));
             root.addContent(element);
         }
         return root;

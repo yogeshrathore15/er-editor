@@ -8,7 +8,6 @@ import org.jdom.Element;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
-import ru.amse.soultakov.ereditor.io.IdManager;
 import ru.amse.soultakov.ereditor.io.XmlTagConstants;
 import ru.amse.soultakov.ereditor.model.ERModel;
 import ru.amse.soultakov.ereditor.view.Diagram;
@@ -24,11 +23,11 @@ public class XmlDiagramSaver implements IDiagramSaver {
     }
     
     public void save(Diagram diagram, ERModel erModel) throws DiagramSavingException {
-        IdManager idManager = new IdManager();
+        SavingIdManager savingIdManager = new SavingIdManager();
         Element root = new Element(XmlTagConstants.TAG_ER_DIAGRAM);
         Document doc = new Document(root);
-        root.addContent(new ERModelSaver(erModel, idManager).save());
-        root.addContent(new DiagramViewSaver(diagram, idManager).save());
+        root.addContent(new ERModelSaver(erModel, savingIdManager).save());
+        root.addContent(new DiagramViewSaver(diagram, savingIdManager).save());
         XMLOutputter out = new XMLOutputter(Format.getPrettyFormat());
         try {
             out.output(doc, outputStream);

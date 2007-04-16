@@ -10,7 +10,6 @@ import org.jdom.Element;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
-import ru.amse.soultakov.ereditor.io.IdManager;
 import ru.amse.soultakov.ereditor.model.Attribute;
 import ru.amse.soultakov.ereditor.model.Comment;
 import ru.amse.soultakov.ereditor.model.ERModel;
@@ -26,22 +25,22 @@ public class ERModelSaver {
 
 	private final ERModel erModel;
 
-    private final IdManager idManager;
+    private final SavingIdManager savingIdManager;
 
-    public ERModelSaver(ERModel erModel, IdManager idManager) {
+    public ERModelSaver(ERModel erModel, SavingIdManager savingIdManager) {
         this.erModel = erModel;
-        this.idManager = idManager;
+        this.savingIdManager = savingIdManager;
     }
 
     public Element save() {
         Element element = new Element(TAG_MODEL);
-        element.addContent(new EntitiesSaver(idManager, erModel.getEntities())
+        element.addContent(new EntitiesSaver(savingIdManager, erModel.getEntities())
                 .save());
-        element.addContent(new CommentsSaver(idManager, erModel.getComments())
+        element.addContent(new CommentsSaver(savingIdManager, erModel.getComments())
                 .save());
-        element.addContent(new RelationshipsSaver(idManager, erModel
+        element.addContent(new RelationshipsSaver(savingIdManager, erModel
                 .getRelationships()).save());
-        element.addContent(new LinksSaver(idManager, erModel.getLinks()).save());
+        element.addContent(new LinksSaver(savingIdManager, erModel.getLinks()).save());
         return element;
     }
 
@@ -52,8 +51,8 @@ public class ERModelSaver {
     /**
      * @return the idManager
      */
-    public IdManager getIdManager() {
-        return this.idManager;
+    public SavingIdManager getIdManager() {
+        return this.savingIdManager;
     }
 
     public static void main(String[] args) throws IOException {
@@ -69,7 +68,7 @@ public class ERModelSaver {
         Comment comment = er.addNewComment();
 //        er.addNewLink(entity1, comment);
 
-        ERModelSaver erSaver = new ERModelSaver(er, new IdManager());
+        ERModelSaver erSaver = new ERModelSaver(er, new SavingIdManager());
         Document doc = new Document(erSaver.save());
         XMLOutputter out = new XMLOutputter(Format.getPrettyFormat());
         FileOutputStream fos = new FileOutputStream("model.xml");

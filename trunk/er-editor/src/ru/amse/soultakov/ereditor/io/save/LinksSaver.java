@@ -11,16 +11,15 @@ import java.util.Collection;
 import org.jdom.Content;
 import org.jdom.Element;
 
-import ru.amse.soultakov.ereditor.io.IdManager;
 import ru.amse.soultakov.ereditor.model.Link;
 class LinksSaver {
 
-	private final IdManager idManager;
+	private final SavingIdManager savingIdManager;
 
     private final Collection<Link> links;
 
-    public LinksSaver(IdManager idManager, Collection<Link> links) {
-        this.idManager = idManager;
+    public LinksSaver(SavingIdManager savingIdManager, Collection<Link> links) {
+        this.savingIdManager = savingIdManager;
         this.links = links;
     }
 
@@ -34,9 +33,9 @@ class LinksSaver {
 
     private Content getLinkElement(Link link) {
         Element root = new Element(TAG_LINK);
-        root.setAttribute(ATTR_ID, idManager.getId(link));
-        root.setAttribute(ATTR_ENTITY, idManager.getId(link.getEntity()));
-        root.setAttribute(ATTR_COMMENT, idManager.getId(link.getComment()));
+        root.setAttribute(ATTR_ID, savingIdManager.getId(link));
+        root.setAttribute(ATTR_ENTITY, savingIdManager.getId(link.getEntity()));
+        root.setAttribute(ATTR_COMMENT, savingIdManager.getId(link.getComment()));
         return root;
     }
 
