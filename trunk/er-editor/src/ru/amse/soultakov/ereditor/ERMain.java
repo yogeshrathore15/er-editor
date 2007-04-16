@@ -39,9 +39,9 @@ import ru.amse.soultakov.ereditor.view.DiagramSavingException;
  */
 public class ERMain {
 
-    private static DiagramEditor diagramEditor = new DiagramEditor();
+    static DiagramEditor diagramEditor = new DiagramEditor();
 
-    private static Map<Tool, AbstractButton> toolToButton = newHashMap();
+    static Map<Tool, AbstractButton> toolToButton = newHashMap();
 
     @SuppressWarnings("serial")
 	public static void main(String[] args) {
