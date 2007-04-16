@@ -87,7 +87,9 @@ public class ERModel {
     
     public Comment addComment(Comment comment) {
         if (comments.add(comment)) {
-            
+            for(Link link : comment) {
+            	addLink(link);
+            }
         }
         return comment;
     }
@@ -139,6 +141,17 @@ public class ERModel {
         Link link = new Link(entity, comment);
         links.add(link);
         return link;
+    }
+
+    /**
+     * @param link
+     */
+    public Link addLink(Link link) {
+    	if (links.add(link)) {
+    		addEntity(link.getEntity());
+    		addComment(link.getComment());
+    	}
+    	return link;
     }
 
     public boolean removeEntity(Entity entity) {
@@ -239,5 +252,6 @@ public class ERModel {
         }
 
     }
+
 
 }

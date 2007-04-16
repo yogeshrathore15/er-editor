@@ -14,7 +14,6 @@ import ru.amse.soultakov.ereditor.model.Attribute;
 import ru.amse.soultakov.ereditor.model.Comment;
 import ru.amse.soultakov.ereditor.model.ERModel;
 import ru.amse.soultakov.ereditor.model.Entity;
-import ru.amse.soultakov.ereditor.model.FKAttribute;
 import ru.amse.soultakov.ereditor.model.SimpleAttributeType;
 
 /**
@@ -66,7 +65,7 @@ public class ERModelSaver {
 //
         er.addNewRealtionship(entity1, entity2);
         Comment comment = er.addNewComment();
-//        er.addNewLink(entity1, comment);
+        er.addNewLink(entity1, comment);
 
         ERModelSaver erSaver = new ERModelSaver(er, new SavingIdManager());
         Document doc = new Document(erSaver.save());

@@ -64,25 +64,29 @@ public class EntitiesLoader {
 		Entity entity = (Entity) loadingIdManager.getObject(entityElement
 				.getAttributeValue(ATTR_ID));
 		loadPrimaryKey(entity, entityElement.getChild(TAG_ATTRIBUTES));
-		loadUniques(entity, entityElement.getChildren(TAG_UNIQUE));
+		loadUniques(entity, entityElement.getChild(TAG_ATTRIBUTES));
 	}
 
-	private void loadUniques(Entity entity, List children) {
-		if (children != null) {
-			for (Object unique : children) {
-				if (unique instanceof Element) {
-					Element uniqueElement = (Element) unique;
-					Set<AbstractAttribute> set = new HashSet<AbstractAttribute>();
-					for (Object attr : uniqueElement.getChildren(TAG_ATTRIBUTE)) {
-						Element attrElement = (Element) attr;
-						AbstractAttribute aa = (AbstractAttribute) loadingIdManager
-								.getObject(attrElement
-										.getAttributeValue(ATTR_ID));
-						if (aa != null) {
-							set.add(aa);
+	private void loadUniques(Entity entity, Element child) {
+		if (child != null) {
+			List children = child.getChildren(TAG_UNIQUE);
+			if (children != null) {
+				for (Object unique : children) {
+					if (unique instanceof Element) {
+						Element uniqueElement = (Element) unique;
+						Set<AbstractAttribute> set = new HashSet<AbstractAttribute>();
+						for (Object attr : uniqueElement
+								.getChildren(TAG_ATTRIBUTE)) {
+							Element attrElement = (Element) attr;
+							AbstractAttribute aa = (AbstractAttribute) loadingIdManager
+									.getObject(attrElement
+											.getAttributeValue(ATTR_ID));
+							if (aa != null) {
+								set.add(aa);
+							}
 						}
+						entity.addToUniqueAttributes(set);
 					}
-					entity.addToUniqueAttributes(set);
 				}
 			}
 		}
@@ -95,14 +99,10 @@ public class EntitiesLoader {
 				for (Object attr : pk.getChildren(TAG_ATTRIBUTE)) {
 					if (attr instanceof Element) {
 						Element attrElement = (Element) attr;
-						System.err.println(loadingIdManager.getObject("1"));
 						AbstractAttribute attribute = (AbstractAttribute) loadingIdManager
 								.getObject(attrElement
 										.getAttributeValue(ATTR_ID));
-						System.out.println(attribute);
-						System.out.println(loadingIdManager);
 						if (attribute != null) {
-							System.err.println("added");
 							entity.addToPrimaryKey(attribute);
 						}
 					}

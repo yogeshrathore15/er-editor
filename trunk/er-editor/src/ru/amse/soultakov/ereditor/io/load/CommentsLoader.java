@@ -24,7 +24,7 @@ public class CommentsLoader {
         this.commentsElement = commentsElement;
     }
 
-    public void loadFirst() {
+    public void load() {
         for (Object element : commentsElement.getChildren(TAG_COMMENT)) {
             if (element instanceof Element) {
                 erModel.addComment(loadCommentFirst((Element) element));

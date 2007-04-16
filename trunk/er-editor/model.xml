@@ -13,28 +13,30 @@
           <attribute id="1" />
         </primary_key>
         <unique id="7">
-          <id id="3" />
-          <id id="4" />
+          <attribute id="4" />
+          <attribute id="3" />
         </unique>
       </attributes>
       <relationships>
         <relationship id="8" />
       </relationships>
-      <links />
+      <links>
+        <link id="9" />
+      </links>
     </entity>
-    <entity id="9" name="New Entity 1">
+    <entity id="10" name="New Entity 1">
       <attributes>
-        <attribute id="10" name="Attr1" type="Integer" not_null="false" default_value="" />
-        <attribute id="11" name="Attr2" type="Double" not_null="false" default_value="1" />
-        <attribute id="12" name="Attr3" type="Char" not_null="false" default_value="abc" />
-        <attribute id="13" name="Attr4" type="Char[5]" not_null="false" default_value="false" />
-        <primary_key id="14">
+        <attribute id="11" name="Attr1" type="Integer" not_null="false" default_value="" />
+        <attribute id="12" name="Attr2" type="Double" not_null="false" default_value="1" />
+        <attribute id="13" name="Attr3" type="Char" not_null="false" default_value="abc" />
+        <attribute id="14" name="Attr4" type="Char[5]" not_null="false" default_value="false" />
+        <primary_key id="15">
+          <attribute id="12" />
           <attribute id="11" />
-          <attribute id="10" />
         </primary_key>
-        <unique id="15">
-          <id id="13" />
-          <id id="12" />
+        <unique id="16">
+          <attribute id="13" />
+          <attribute id="14" />
         </unique>
       </attributes>
       <relationships>
@@ -44,17 +46,21 @@
     </entity>
   </entities>
   <comments>
-    <comment id="16">
+    <comment id="17">
       New Comment 0
-      <links />
+      <links>
+        <link id="9" />
+      </links>
     </comment>
   </comments>
   <relationships>
     <relationship id="8">
       <pk_relationship_end name="End1" entity="0" multiplicity="ZERO_OR_ONE" constraint="6" />
-      <pk_relationship_end name="End2" entity="9" multiplicity="ZERO_OR_MORE" constraint="14" />
+      <pk_relationship_end name="End2" entity="10" multiplicity="ZERO_OR_MORE" constraint="15" />
     </relationship>
   </relationships>
-  <links />
+  <links>
+    <link id="9" entity="0" comment="17" />
+  </links>
 </model>
 
