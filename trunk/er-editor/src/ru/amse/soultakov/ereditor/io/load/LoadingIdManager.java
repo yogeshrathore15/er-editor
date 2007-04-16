@@ -7,8 +7,6 @@ import static ru.amse.soultakov.ereditor.util.CommonUtils.newHashMap;
 
 import java.util.Map;
 
-import ru.amse.soultakov.ereditor.util.AutoincrementGenerator;
-
 /**
  * @author Soultakov Maxim
  * 

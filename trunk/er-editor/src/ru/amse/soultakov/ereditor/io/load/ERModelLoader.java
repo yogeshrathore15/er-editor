@@ -26,8 +26,6 @@ public class ERModelLoader {
 
 	private final Element erModelElement;
 
-	private ERModel erModel;
-
 	public ERModelLoader(LoadingIdManager loadingIdManager,
 			Element erModelElement) {
 		this.loadingIdManager = loadingIdManager;
@@ -35,7 +33,7 @@ public class ERModelLoader {
 	}
 
 	public ERModel load() {
-		erModel = new ERModel();
+		ERModel erModel = new ERModel();
 		new EntitiesLoader(loadingIdManager, erModel, erModelElement
 				.getChild(TAG_ENTITIES)).load();
 		new CommentsLoader(loadingIdManager, erModel, erModelElement
