@@ -13,28 +13,28 @@ import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
-import ru.amse.soultakov.ereditor.io.IdManager;
 import ru.amse.soultakov.ereditor.io.save.ERModelSaver;
+import ru.amse.soultakov.ereditor.io.save.SavingIdManager;
 import ru.amse.soultakov.ereditor.model.ERModel;
 
 public class ERModelLoader {
 
-    private final IdManager idManager;
+    private final LoadingIdManager loadingIdManager;
 
     private final Element erModelElement;
 
     private ERModel erModel;
 
-    public ERModelLoader(IdManager idManager, Element erModelElement) {
-        this.idManager = idManager;
+    public ERModelLoader(LoadingIdManager loadingIdManager, Element erModelElement) {
+        this.loadingIdManager = loadingIdManager;
         this.erModelElement = erModelElement;
     }
 
     public ERModel load() {
         erModel = new ERModel();
-        new EntitiesLoader(idManager, erModel, erModelElement.getChild(TAG_ENTITIES))
-                .loadFirst();
-        new CommentsLoader(idManager, erModel, erModelElement.getChild(TAG_COMMENTS))
+        new EntitiesLoader(loadingIdManager, erModel, erModelElement.getChild(TAG_ENTITIES))
+                .load();
+        new CommentsLoader(loadingIdManager, erModel, erModelElement.getChild(TAG_COMMENTS))
                 .loadFirst();
         return erModel;
     }
@@ -43,10 +43,10 @@ public class ERModelLoader {
         ERModelSaver.main(args);
         SAXBuilder builder = new SAXBuilder();
         Document doc = builder.build(new File("model.xml"));
-        ERModelLoader erml = new ERModelLoader(new IdManager(), doc.getRootElement());
+        ERModelLoader erml = new ERModelLoader(new LoadingIdManager(), doc.getRootElement());
         ERModel model = erml.load();
 
-        ERModelSaver erSaver = new ERModelSaver(model, new IdManager());
+        ERModelSaver erSaver = new ERModelSaver(model, new SavingIdManager());
         Document doc2 = new Document(erSaver.save());
         XMLOutputter out = new XMLOutputter(Format.getPrettyFormat());
         out.output(doc2, System.out);

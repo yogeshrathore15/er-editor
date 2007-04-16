@@ -9,12 +9,12 @@
         <attribute id="4" name="Attr4" type="Char[5]" not_null="false" default_value="false" />
         <attribute id="5" name="MyName" type="Integer" not_null="false" default_value="10" />
         <primary_key id="6">
-          <id id="2" />
-          <id id="1" />
+          <attribute id="2" />
+          <attribute id="1" />
         </primary_key>
         <unique id="7">
-          <id id="4" />
           <id id="3" />
+          <id id="4" />
         </unique>
       </attributes>
       <relationships>
@@ -29,12 +29,12 @@
         <attribute id="12" name="Attr3" type="Char" not_null="false" default_value="abc" />
         <attribute id="13" name="Attr4" type="Char[5]" not_null="false" default_value="false" />
         <primary_key id="14">
-          <id id="11" />
-          <id id="10" />
+          <attribute id="11" />
+          <attribute id="10" />
         </primary_key>
         <unique id="15">
-          <id id="12" />
           <id id="13" />
+          <id id="12" />
         </unique>
       </attributes>
       <relationships>
@@ -51,8 +51,8 @@
   </comments>
   <relationships>
     <relationship id="8">
-      <pk_relationship_end name="End1" entity="0" multiplicity="ZERO_OR_MORE" constraint="6" />
-      <pk_relationship_end name="End2" entity="9" multiplicity="ZERO_OR_ONE" constraint="14" />
+      <pk_relationship_end name="End1" entity="0" multiplicity="ZERO_OR_ONE" constraint="6" />
+      <pk_relationship_end name="End2" entity="9" multiplicity="ZERO_OR_MORE" constraint="14" />
     </relationship>
   </relationships>
   <links />

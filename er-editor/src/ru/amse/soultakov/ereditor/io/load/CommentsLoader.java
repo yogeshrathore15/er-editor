@@ -5,21 +5,21 @@ import static ru.amse.soultakov.ereditor.io.XmlTagConstants.*;
 
 import org.jdom.Element;
 
-import ru.amse.soultakov.ereditor.io.IdManager;
+import ru.amse.soultakov.ereditor.io.save.SavingIdManager;
 import ru.amse.soultakov.ereditor.model.Comment;
 import ru.amse.soultakov.ereditor.model.ERModel;
 
 public class CommentsLoader {
 
-    private IdManager idManager;
+    private LoadingIdManager loadingIdManager;
 
     private ERModel erModel;
 
     private Element commentsElement;
 
-    public CommentsLoader(IdManager idManager, ERModel erModel,
+    public CommentsLoader(LoadingIdManager loadingIdManager, ERModel erModel,
             Element commentsElement) {
-        this.idManager = idManager;
+        this.loadingIdManager = loadingIdManager;
         this.erModel = erModel;
         this.commentsElement = commentsElement;
     }
@@ -34,7 +34,7 @@ public class CommentsLoader {
 
     private Comment loadCommentFirst(Element element) {
         Comment comment = new Comment(element.getText());
-        idManager.putId(comment, element.getAttributeValue(ATTR_ID));
+        loadingIdManager.putObject(element.getAttributeValue(ATTR_ID), comment);
         return comment;
     }
 

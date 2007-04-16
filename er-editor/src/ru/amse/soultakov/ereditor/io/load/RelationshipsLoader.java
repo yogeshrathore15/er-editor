@@ -7,20 +7,20 @@ import java.util.List;
 
 import org.jdom.Element;
 
-import ru.amse.soultakov.ereditor.io.IdManager;
+import ru.amse.soultakov.ereditor.io.save.SavingIdManager;
 import ru.amse.soultakov.ereditor.model.ERModel;
 import ru.amse.soultakov.ereditor.model.Relationship;
 
 public class RelationshipsLoader {
 
-    private IdManager idManager;
+    private SavingIdManager savingIdManager;
 
     private ERModel erModel;
 
     private Element relationshipsElement;
 
-    public RelationshipsLoader(IdManager idManager, ERModel erModel, Element entitiesElement) {
-        this.idManager = idManager;
+    public RelationshipsLoader(SavingIdManager savingIdManager, ERModel erModel, Element entitiesElement) {
+        this.savingIdManager = savingIdManager;
         this.erModel = erModel;
         this.relationshipsElement = entitiesElement;
     }
