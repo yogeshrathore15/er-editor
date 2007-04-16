@@ -26,6 +26,7 @@ import ru.amse.soultakov.ereditor.view.CommentView;
 import ru.amse.soultakov.ereditor.view.Diagram;
 import ru.amse.soultakov.ereditor.view.EntityView;
 import ru.amse.soultakov.ereditor.view.IDiagramListener;
+import ru.amse.soultakov.ereditor.view.IOutline;
 import ru.amse.soultakov.ereditor.view.IViewable;
 import ru.amse.soultakov.ereditor.view.IViewableListener;
 import ru.amse.soultakov.ereditor.view.IVisitor;
@@ -46,7 +47,9 @@ public class DiagramEditor extends JComponent {
 
     private final Diagram diagram = new Diagram();
 
-    private final SelectedItems selectedItems = new SelectedItems();
+    private final SelectedItems<IViewable> selectedItems = new SelectedItems<IViewable>();
+    
+    private final SelectedItems<IOutline> selectedOutlines = new SelectedItems<IOutline>();
 
     private Tool currentTool;
 
@@ -108,8 +111,8 @@ public class DiagramEditor extends JComponent {
         getSelectedItems().clear();
         repaint();
         if (tool != null) {
-            notifyListeners(currentTool, tool);
-            currentTool = tool;
+            notifyListeners(getCurrentTool(), tool);
+            setCurrentTool(tool);
         }
     }
 
@@ -132,7 +135,7 @@ public class DiagramEditor extends JComponent {
     @Override
     protected void paintChildren(Graphics g) {
         Graphics2D graphics = (Graphics2D) g;
-        currentTool.paintBefore(graphics);
+        getCurrentTool().paintBefore(graphics);
         // for correct relations painting we should recalculate the size of
         // blocks
         recalculateSize(diagram.getCommentViews(), graphics);
@@ -141,8 +144,9 @@ public class DiagramEditor extends JComponent {
         paintSet(diagram.getRelationshipViews(), graphics);
         paintSet(diagram.getCommentViews(), graphics);
         paintSet(diagram.getEntityViews(), graphics);
+        paintSet(getSelectedOutlines().toSet(), graphics);
 
-        currentTool.paintAfter(graphics);
+        getCurrentTool().paintAfter(graphics);
     }
 
     private void recalculateSize(Collection<? extends Block> set, Graphics2D graphics) {
@@ -171,7 +175,7 @@ public class DiagramEditor extends JComponent {
     /**
      * @return the selectedItems
      */
-    public SelectedItems getSelectedItems() {
+    public SelectedItems<IViewable> getSelectedItems() {
         return selectedItems;
     }
 
@@ -179,49 +183,49 @@ public class DiagramEditor extends JComponent {
      * 
      */
     private void initMouseListener() {
-        currentTool = new SelectElementTool(this);
+        setCurrentTool(new SelectElementTool(this));
         this.addMouseListener(new MouseListener() {
             public void mouseClicked(MouseEvent e) {
                 requestFocusInWindow();
-                currentTool.mouseClicked(e);
+                getCurrentTool().mouseClicked(e);
             }
 
             public void mouseEntered(MouseEvent e) {
-                currentTool.mouseEntered(e);
+                getCurrentTool().mouseEntered(e);
             }
 
             public void mouseExited(MouseEvent e) {
-                currentTool.mouseExited(e);
+                getCurrentTool().mouseExited(e);
             }
 
             public void mousePressed(MouseEvent e) {
-                currentTool.mousePressed(e);
+                getCurrentTool().mousePressed(e);
             }
 
             public void mouseReleased(MouseEvent e) {
-                currentTool.mouseReleased(e);
+                getCurrentTool().mouseReleased(e);
             }
         });
         this.addMouseMotionListener(new MouseMotionListener() {
             public void mouseDragged(MouseEvent e) {
-                currentTool.mouseDragged(e);
+                getCurrentTool().mouseDragged(e);
             }
 
             public void mouseMoved(MouseEvent e) {
-                currentTool.mouseMoved(e);
+                getCurrentTool().mouseMoved(e);
             }
         });
         this.addKeyListener(new KeyListener() {
             public void keyPressed(KeyEvent e) {
-                currentTool.keyPressed(e);
+                getCurrentTool().keyPressed(e);
             }
 
             public void keyReleased(KeyEvent e) {
-                currentTool.keyReleased(e);
+                getCurrentTool().keyReleased(e);
             }
 
             public void keyTyped(KeyEvent e) {
-                currentTool.keyTyped(e);
+                getCurrentTool().keyTyped(e);
             }
 
         });
@@ -263,6 +267,24 @@ public class DiagramEditor extends JComponent {
         for (ICurrentToolListener ctl : listeners) {
             ctl.currentToolChanged(oldTool, newTool);
         }
+    }
+
+    /**
+     * @param currentTool the currentTool to set
+     */
+    private void setCurrentTool(Tool currentTool) {
+        this.currentTool = currentTool;
+    }
+
+    /**
+     * @return the currentTool
+     */
+    Tool getCurrentTool() {
+        return currentTool;
+    }
+    
+    public SelectedItems<IOutline> getSelectedOutlines() {
+        return selectedOutlines;
     }
 
     private class RemoveItemsVisitor implements IVisitor<Boolean, Void> {

@@ -35,7 +35,7 @@ public class CommentView extends Block {
     }
 
     private void drawBackground(Graphics2D graphics) {
-    	drawShadow(graphics);
+        drawShadow(graphics);
         graphics.setColor(CommentView.BACKGROUND_COLOR);
         graphics.fillRoundRect(getX(), getY(), getWidth(), getHeight(), 10, 10);
         graphics.setColor(Color.BLACK);
@@ -71,6 +71,12 @@ public class CommentView extends Block {
 
     public <R, D> R acceptVisitor(IVisitor<R, D> visitor, D data) {
         return visitor.visit(this, data);
+    }
+
+    public CommentView copy() {
+        CommentView commentView = new CommentView(diagram, comment.copy(), x, y);
+        diagram.addCommentView(commentView);
+        return commentView;
     }
 
 }

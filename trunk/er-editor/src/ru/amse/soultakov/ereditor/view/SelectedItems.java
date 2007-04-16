@@ -11,12 +11,12 @@ import java.util.Set;
 /**
  * @author Soultakov Maxim
  */
-public class SelectedItems implements Iterable<IViewable> {
+public class SelectedItems<T extends IViewable> implements Iterable<T> {
 
     /**
      * 
      */
-    private Set<IViewable> selectedViews = new HashSet<IViewable>();
+    private Set<T> selectedViews = new HashSet<T>();
 
     /**
      * 
@@ -28,7 +28,7 @@ public class SelectedItems implements Iterable<IViewable> {
      * @param item
      * @return
      */
-    public boolean add(IViewable item) {
+    public boolean add(T item) {
         item.setSelected(true);
         return selectedViews.add(item);
     }
@@ -37,7 +37,7 @@ public class SelectedItems implements Iterable<IViewable> {
      * @param item
      * @return
      */
-    public boolean remove(IViewable item) {
+    public boolean remove(T item) {
         if (item != null) {
             item.setSelected(false);
             return selectedViews.remove(item);
@@ -49,7 +49,7 @@ public class SelectedItems implements Iterable<IViewable> {
      * @param item
      * @return
      */
-    public boolean contains(IViewable item) {
+    public boolean contains(T item) {
         return selectedViews.contains(item);
     }
 
@@ -63,12 +63,12 @@ public class SelectedItems implements Iterable<IViewable> {
         selectedViews.clear();
     }
 
-    public void setSelection(IViewable viewable) {
+    public void setSelection(T viewable) {
         clear();
         add(viewable);
     }
 
-    public Iterator<IViewable> iterator() {
+    public Iterator<T> iterator() {
         return selectedViews.iterator();
     }
 
@@ -79,7 +79,7 @@ public class SelectedItems implements Iterable<IViewable> {
         return selectedViews.isEmpty();
     }
 
-    public Set<IViewable> getAsSet() {
+    public Set<T> toSet() {
         return Collections.unmodifiableSet(selectedViews);
     }
 

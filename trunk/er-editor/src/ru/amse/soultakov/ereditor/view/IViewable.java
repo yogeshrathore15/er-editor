@@ -5,10 +5,12 @@ package ru.amse.soultakov.ereditor.view;
 
 import java.awt.Graphics2D;
 
+import ru.amse.soultakov.ereditor.model.ICopyable;
+
 /**
  * @author Soultakov Maxim
  */
-public interface IViewable {
+public interface IViewable extends ICopyable<IViewable>{
 
     void setSelected(boolean selected);
 
@@ -35,4 +37,6 @@ public interface IViewable {
     void addListener(IViewableListener iViewableListener);
 
     boolean removeListener(IViewableListener iViewableListener);
+    
+    IOutline getOutline();
 }

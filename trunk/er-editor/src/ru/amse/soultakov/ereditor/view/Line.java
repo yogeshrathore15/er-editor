@@ -188,5 +188,13 @@ public abstract class Line implements IViewable {
     public Diagram getDiagram() {
         return this.diagram;
     }
+    
+    public IOutline getOutline() {
+        return null;
+    }
+    
+    public IViewable copy() {
+        return null;
+    }
 
 }
