@@ -69,9 +69,9 @@ public class ERMain {
                 new DiagramEditorAction(diagramEditor, "Default", new ImageIcon(
                         "./src/images/tool_selecting.png"), selectElementTool));
         defaultToolButton.setPressedIcon(new ImageIcon(
-                "./src/images/tool_selecting_pressed.png"));
+                "./images/tool_selecting_pressed.png"));
         defaultToolButton.setSelectedIcon(new ImageIcon(
-                "./src/images/tool_selecting_pressed.png"));
+                "./images/tool_selecting_pressed.png"));
         defaultToolButton.setText(null);
         defaultToolButton.setMargin(new Insets(0, 0, 0, 0));
         toolToButton.put(selectElementTool, defaultToolButton);
@@ -136,7 +136,8 @@ public class ERMain {
         frame.setVisible(true);
     }
 
-    private static void setupMenu(final JFrame frame) {
+    @SuppressWarnings("serial")
+	private static void setupMenu(final JFrame frame) {
         JMenuBar menu = new JMenuBar();
         frame.setJMenuBar(menu);
         JMenu fileMenu = new JMenu("File");
