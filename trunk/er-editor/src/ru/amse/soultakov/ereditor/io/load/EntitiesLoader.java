@@ -33,7 +33,7 @@ import ru.amse.soultakov.ereditor.model.SimpleAttributeType;
  * @author Soultakov Maxim
  * 
  */
-public class EntitiesLoader {
+class EntitiesLoader {
 	private LoadingIdManager loadingIdManager;
 
 	private ERModel erModel;
