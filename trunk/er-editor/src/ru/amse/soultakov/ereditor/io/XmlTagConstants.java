@@ -99,6 +99,7 @@ public final class XmlTagConstants
 
 	private XmlTagConstants()
 	{
+		//
 	}
 
 }

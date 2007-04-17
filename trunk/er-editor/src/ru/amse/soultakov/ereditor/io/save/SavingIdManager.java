@@ -21,6 +21,7 @@ public class SavingIdManager {
      * 
      */
     public SavingIdManager() {
+    	//
     }
 
     public String getId(Object object) {

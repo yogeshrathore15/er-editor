@@ -22,6 +22,7 @@ public class SelectedItems<T extends IViewable> implements Iterable<T> {
      * 
      */
     public SelectedItems() {
+    	//
     }
 
     /**

@@ -154,6 +154,7 @@ public abstract class Line implements IViewable {
     }
 
     public void setLocation(int x, int y) {
+    	//
     }
 
     public int getHeight() {
