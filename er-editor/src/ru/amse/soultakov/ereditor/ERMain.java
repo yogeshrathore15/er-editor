@@ -5,6 +5,7 @@ import static ru.amse.soultakov.ereditor.util.CommonUtils.newHashMap;
 import java.awt.BorderLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -67,7 +68,7 @@ public class ERMain {
                 diagramEditor);
         final JToggleButton defaultToolButton = new JToggleButton(
                 new DiagramEditorAction(diagramEditor, "Default", new ImageIcon(
-                        "./src/images/tool_selecting.png"), selectElementTool));
+                        "./images/tool_selecting.png"), selectElementTool));
         defaultToolButton.setPressedIcon(new ImageIcon(
                 "./images/tool_selecting_pressed.png"));
         defaultToolButton.setSelectedIcon(new ImageIcon(
@@ -165,7 +166,8 @@ public class ERMain {
                 fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
                 if (fc.showSaveDialog(frame) == JFileChooser.APPROVE_OPTION) {
                     try {
-                        xds = new XmlDiagramSaver(new FileOutputStream(fc.getSelectedFile()));
+                        File selectedFileName = fc.getSelectedFile();
+						xds = new XmlDiagramSaver(new FileOutputStream(selectedFileName));
                         new Thread(save).start();
                     } catch (FileNotFoundException e1) {
 //                         не может произойти
