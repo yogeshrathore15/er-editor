@@ -15,6 +15,7 @@ public class LoadingIdManager {
     private final Map<String, Object> identifiers = newHashMap();
 
     public LoadingIdManager() {
+    	//
     }
    
     public Object getObject(String id) {

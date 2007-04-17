@@ -33,39 +33,51 @@ public abstract class ToolAdapter implements Tool {
     }
 
     public void keyPressed(KeyEvent e) {
+    	//empty
     }
 
     public void keyReleased(KeyEvent e) {
+    	//empty
     }
 
     public void keyTyped(KeyEvent e) {
+    	//empty
     }
 
     public void mouseClicked(MouseEvent e) {
+    	//empty
     }
 
     public void mouseDragged(MouseEvent e) {
+    	//empty
     }
 
     public void mouseEntered(MouseEvent e) {
+    	//empty
     }
 
     public void mouseExited(MouseEvent e) {
+    	//empty
     }
 
     public void mouseMoved(MouseEvent e) {
+    	//empty
     }
 
     public void mousePressed(MouseEvent e) {
+    	//empty
     }
 
     public void mouseReleased(MouseEvent e) {
+    	//empty
     }
 
     public void paintAfter(Graphics2D graphics) {
+    	//empty
     }
 
     public void paintBefore(Graphics2D graphics) {
+    	//empty
     }
 
 }

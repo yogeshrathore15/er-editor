@@ -32,7 +32,7 @@ public class ERModel {
 
     private final NamesGenerator generator = new NamesGenerator();
 
-    public ERModel() {
+    public ERModel() {//
     }
 
     public Entity addNewEntity() {
@@ -237,6 +237,7 @@ public class ERModel {
         private AutoincrementGenerator relationshipGenerator = new AutoincrementGenerator();
 
         public NamesGenerator() {
+        	//
         }
 
         public String getEntityName() {

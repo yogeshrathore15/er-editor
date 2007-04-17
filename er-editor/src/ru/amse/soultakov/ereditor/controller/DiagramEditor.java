@@ -290,6 +290,7 @@ public class DiagramEditor extends JComponent {
     private class RemoveItemsVisitor implements IVisitor<Boolean, Void> {
 
         public RemoveItemsVisitor() {
+        	//
         }
 
         public Boolean visit(CommentView commentView, Void data) {
