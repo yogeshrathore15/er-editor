@@ -5,6 +5,10 @@ import static ru.amse.soultakov.ereditor.util.CommonUtils.newHashMap;
 import java.awt.BorderLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Map;
 
 import javax.swing.AbstractAction;
@@ -12,12 +16,17 @@ import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
+import org.jdom.JDOMException;
 
 import ru.amse.soultakov.ereditor.controller.DiagramEditor;
 import ru.amse.soultakov.ereditor.controller.ICurrentToolListener;
@@ -30,6 +39,7 @@ import ru.amse.soultakov.ereditor.controller.tools.AddRelationshipTool;
 import ru.amse.soultakov.ereditor.controller.tools.IToolListener;
 import ru.amse.soultakov.ereditor.controller.tools.SelectElementTool;
 import ru.amse.soultakov.ereditor.controller.tools.Tool;
+import ru.amse.soultakov.ereditor.io.load.XmlDiagramLoader;
 import ru.amse.soultakov.ereditor.io.save.XmlDiagramSaver;
 import ru.amse.soultakov.ereditor.view.DiagramSavingException;
 
@@ -44,30 +54,9 @@ public class ERMain {
     static Map<Tool, AbstractButton> toolToButton = newHashMap();
 
     @SuppressWarnings("serial")
-	public static void main(String[] args) {
+    public static void main(String[] args) {
         final JFrame frame = new JFrame("Stupid test");
-        JMenuBar menu = new JMenuBar();
-        frame.setJMenuBar(menu);
-        JMenu fileMenu = new JMenu("File");
-        menu.add(fileMenu);
-        fileMenu.add(new AbstractAction("Save") {
-            private final Runnable save = new Runnable() {
-                public void run() {
-                    try {
-                        XmlDiagramSaver xds = new XmlDiagramSaver(
-                                System.out);
-                        diagramEditor.getDiagram().save(xds);
-                    } catch (DiagramSavingException e1) {
-                        e1.printStackTrace();
-                    }
-                }
-            };
-
-            public void actionPerformed(ActionEvent e) {
-                new Thread(save).start();
-            }
-        });
-        menu.add(new JMenu("Edit"));
+        setupMenu(frame);
 
         JScrollPane scrollPane = new JScrollPane(diagramEditor);
         frame.add(scrollPane);
@@ -145,6 +134,79 @@ public class ERMain {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+    }
+
+    private static void setupMenu(final JFrame frame) {
+        JMenuBar menu = new JMenuBar();
+        frame.setJMenuBar(menu);
+        JMenu fileMenu = new JMenu("File");
+        menu.add(fileMenu);
+        fileMenu.add(new AbstractAction("Save") {
+
+            XmlDiagramSaver xds;
+
+            private final Runnable save = new Runnable() {
+                public void run() {
+                    try {
+                        diagramEditor.getDiagram().save(xds);
+                    } catch (DiagramSavingException e1) {
+                        JOptionPane.showMessageDialog(frame,
+                                "Ошибка при сохранении диаграммы");
+                    }
+                }
+            };
+
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fc = new JFileChooser();
+                FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                        "Diagrams", "xml");
+                fc.setFileFilter(filter);
+                fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+                if (fc.showSaveDialog(frame) == JFileChooser.APPROVE_OPTION) {
+                    try {
+                        xds = new XmlDiagramSaver(new FileOutputStream(fc.getSelectedFile()));
+                        new Thread(save).start();
+                    } catch (FileNotFoundException e1) {
+//                         не может произойти
+                    }
+                }
+            }
+        });
+        fileMenu.add(new AbstractAction("Open") {
+            XmlDiagramLoader xdl;
+
+            private final Runnable load = new Runnable() {
+                public void run() {
+                    try {
+                        diagramEditor.setDiagram(xdl.load());
+                    } catch (JDOMException e) {
+                        JOptionPane.showMessageDialog(frame,
+                                "Ошибка в формате файла");
+                    } catch (IOException e) {
+                        JOptionPane.showMessageDialog(frame,
+                                "Ошибка при чтении из файла");
+                    }
+                }
+            };
+
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fc = new JFileChooser();
+                FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                        "Diagrams", "xml");
+                fc.setFileFilter(filter);
+                fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+                if (fc.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION) {
+                    try {
+                        xdl = new XmlDiagramLoader(new FileInputStream(fc
+                                .getSelectedFile()));
+                        new Thread(load).start();
+                    } catch (FileNotFoundException e1) {
+                        // не может произойти
+                    }
+                }
+            }
+        });
+        menu.add(new JMenu("Edit"));
     }
 
 }

@@ -92,6 +92,10 @@ public final class XmlTagConstants
     public static final String TAG_FKATTRIBUTE = "fkattribute";
 
     public static final String TAG_ATTRIBUTES = "attributes";
+    
+    public static final String ATTR_FIRST_ENTITY = "firstEntity";
+    
+    public static final String ATTR_SECOND_ENTITY = "secondEntity";
 
 	private XmlTagConstants()
 	{

@@ -16,7 +16,7 @@ import ru.amse.soultakov.ereditor.model.Link;
  * @author Soultakov Maxim
  *
  */
-public class LinksLoader {
+class LinksLoader {
 
 	private LoadingIdManager idManager;
 	

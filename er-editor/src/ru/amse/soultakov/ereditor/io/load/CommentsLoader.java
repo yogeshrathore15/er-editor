@@ -8,7 +8,7 @@ import org.jdom.Element;
 import ru.amse.soultakov.ereditor.model.Comment;
 import ru.amse.soultakov.ereditor.model.ERModel;
 
-public class CommentsLoader {
+class CommentsLoader {
 
     private LoadingIdManager loadingIdManager;
 

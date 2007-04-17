@@ -45,7 +45,7 @@ public class DiagramEditor extends JComponent {
 
     private static final long serialVersionUID = 1L;
 
-    private final Diagram diagram = new Diagram();
+    private Diagram diagram = new Diagram();
 
     private final SelectedItems<IViewable> selectedItems = new SelectedItems<IViewable>();
     
@@ -308,6 +308,11 @@ public class DiagramEditor extends JComponent {
             return removeRelationship(relationshipView);
         }
 
+    }
+
+    public void setDiagram(Diagram diagram) {
+        this.diagram = diagram;
+        repaint();
     }
 
 }
