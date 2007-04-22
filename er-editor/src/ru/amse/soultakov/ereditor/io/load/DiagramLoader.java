@@ -15,7 +15,6 @@ import static ru.amse.soultakov.ereditor.io.XmlTagConstants.TAG_RELATIONSHIP_VIE
 import org.jdom.Element;
 
 import ru.amse.soultakov.ereditor.model.Comment;
-import ru.amse.soultakov.ereditor.model.ERModel;
 import ru.amse.soultakov.ereditor.model.Entity;
 import ru.amse.soultakov.ereditor.model.Link;
 import ru.amse.soultakov.ereditor.model.Relationship;
@@ -35,17 +34,13 @@ class DiagramLoader {
 
     private final Element diagramElement;
 
-    private final ERModel erModel;
-
-    public DiagramLoader(LoadingIdManager loadingIdManager, Element erModelElement,
-            ERModel erModel) {
+    public DiagramLoader(LoadingIdManager loadingIdManager, Element erModelElement) {
         this.loadingIdManager = loadingIdManager;
         this.diagramElement = erModelElement;
-        this.erModel = erModel;
     }
-
+        
     public Diagram load() {
-        Diagram diagram = new Diagram(erModel);
+        Diagram diagram = new Diagram();
         processEntities(diagram, diagramElement.getChild(TAG_ENTITY_VIEWS));
         processComments(diagram, diagramElement.getChild(TAG_COMMENT_VIEWS));
         processLinks(diagram, diagramElement.getChild(TAG_LINK_VIEWS));
