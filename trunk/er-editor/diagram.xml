@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<er_diagram>
+  <model>
+    <entities>
+      <entity id="0" name="New Entity 0">
+        <attributes>
+          <attribute id="1" name="Attr1" type="Integer" not_null="false" default_value="" />
+          <attribute id="2" name="Attr2" type="Double" not_null="false" default_value="1" />
+          <attribute id="3" name="Attr3" type="Char" not_null="false" default_value="abc" />
+          <attribute id="4" name="Attr4" type="Char[5]" not_null="false" default_value="false" />
+          <primary_key id="5">
+            <attribute id="2" />
+            <attribute id="1" />
+          </primary_key>
+          <unique id="6">
+            <attribute id="4" />
+            <attribute id="3" />
+          </unique>
+        </attributes>
+        <relationships>
+          <relationship id="7" />
+        </relationships>
+        <links />
+      </entity>
+      <entity id="8" name="New Entity 1">
+        <attributes>
+          <attribute id="9" name="Attr1" type="Integer" not_null="false" default_value="" />
+          <attribute id="10" name="Attr2" type="Double" not_null="false" default_value="1" />
+          <attribute id="11" name="Attr3" type="Char" not_null="false" default_value="abc" />
+          <attribute id="12" name="Attr4" type="Char[5]" not_null="false" default_value="false" />
+          <primary_key id="13">
+            <attribute id="10" />
+            <attribute id="9" />
+          </primary_key>
+          <unique id="14">
+            <attribute id="12" />
+            <attribute id="11" />
+          </unique>
+        </attributes>
+        <relationships>
+          <relationship id="7" />
+        </relationships>
+        <links />
+      </entity>
+    </entities>
+    <comments />
+    <relationships>
+      <relationship id="7">
+        <pk_relationship_end name="End1" entity="0" multiplicity="ZERO_OR_ONE" constraint="5" />
+        <pk_relationship_end name="End2" entity="8" multiplicity="ZERO_OR_ONE" constraint="13" />
+      </relationship>
+    </relationships>
+    <links />
+  </model>
+  <diagram>
+    <entity_views>
+      <entity_view id="15" diagram="16" entity="0" x="119" y="100" />
+      <entity_view id="17" diagram="16" entity="8" x="298" y="159" />
+    </entity_views>
+    <comment_views />
+    <link_views />
+    <relationship_views>
+      <relationship_view id="18" diagram="16" relationship="7" />
+    </relationship_views>
+  </diagram>
+</er_diagram>
+

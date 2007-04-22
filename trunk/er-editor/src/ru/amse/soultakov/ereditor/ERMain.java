@@ -5,11 +5,9 @@ import static ru.amse.soultakov.ereditor.util.CommonUtils.newHashMap;
 import java.awt.BorderLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.Map;
 
 import javax.swing.AbstractAction;
@@ -27,8 +25,6 @@ import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import org.jdom.JDOMException;
-
 import ru.amse.soultakov.ereditor.controller.DiagramEditor;
 import ru.amse.soultakov.ereditor.controller.ICurrentToolListener;
 import ru.amse.soultakov.ereditor.controller.actions.DiagramEditorAction;
@@ -42,6 +38,7 @@ import ru.amse.soultakov.ereditor.controller.tools.SelectElementTool;
 import ru.amse.soultakov.ereditor.controller.tools.Tool;
 import ru.amse.soultakov.ereditor.io.load.XmlDiagramLoader;
 import ru.amse.soultakov.ereditor.io.save.XmlDiagramSaver;
+import ru.amse.soultakov.ereditor.view.DiagramLoadingException;
 import ru.amse.soultakov.ereditor.view.DiagramSavingException;
 
 /**
@@ -161,12 +158,15 @@ public class ERMain {
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fc = new JFileChooser();
                 FileNameExtensionFilter filter = new FileNameExtensionFilter(
-                        "Diagrams", "xml");
+                        "Diagrams (*.erd)", "erd");
                 fc.setFileFilter(filter);
                 fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
                 if (fc.showSaveDialog(frame) == JFileChooser.APPROVE_OPTION) {
                     try {
-                        File selectedFileName = fc.getSelectedFile();
+                        String selectedFileName = fc.getSelectedFile().getAbsolutePath();
+                        if (!selectedFileName.endsWith(".erd")) {
+                            selectedFileName += ".erd";
+                        }
 						xds = new XmlDiagramSaver(new FileOutputStream(selectedFileName));
                         new Thread(save).start();
                     } catch (FileNotFoundException e1) {
@@ -181,13 +181,9 @@ public class ERMain {
             private final Runnable load = new Runnable() {
                 public void run() {
                     try {
-                        diagramEditor.setDiagram(xdl.load());
-                    } catch (JDOMException e) {
-                        JOptionPane.showMessageDialog(frame,
-                                "Ошибка в формате файла");
-                    } catch (IOException e) {
-                        JOptionPane.showMessageDialog(frame,
-                                "Ошибка при чтении из файла");
+                        diagramEditor.setDiagram(xdl.loadDiagram());
+                    } catch (DiagramLoadingException e) {
+                        e.printStackTrace();
                     }
                 }
             };
@@ -195,7 +191,7 @@ public class ERMain {
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fc = new JFileChooser();
                 FileNameExtensionFilter filter = new FileNameExtensionFilter(
-                        "Diagrams", "xml");
+                        "Diagrams (*.erd)", "erd");
                 fc.setFileFilter(filter);
                 fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
                 if (fc.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION) {

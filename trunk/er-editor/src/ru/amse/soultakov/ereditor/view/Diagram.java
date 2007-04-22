@@ -26,7 +26,7 @@ import ru.amse.soultakov.ereditor.util.CommonUtils;
 
 public class Diagram {
 
-    private final ERModel erModel;
+    private ERModel erModel;
 
     private final Set<EntityView> entityViews = newLinkedHashSet();
 
@@ -49,9 +49,12 @@ public class Diagram {
     public Diagram() {
         erModel = new ERModel();
     }
-
-    public Diagram(ERModel erModel) {
-        this.erModel = erModel;
+       
+    public static Diagram load(IDiagramLoader loader) throws DiagramLoadingException {
+        ERModel model = loader.loadModel();
+        Diagram diagram = loader.loadDiagram();
+        diagram.erModel = model;
+        return diagram;
     }
 
     public EntityView addNewEntityView(int x, int y) {
