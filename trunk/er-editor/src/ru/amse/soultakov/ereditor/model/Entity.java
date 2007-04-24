@@ -220,7 +220,7 @@ public class Entity implements Iterable<AbstractAttribute>, ICopyable<Entity> {
     }
 
     public Entity copy() {
-        Entity entity = new Entity(this.name);
+        Entity entity = new Entity("Copy of " + this.name);
         Map<AbstractAttribute, AbstractAttribute> map = newHashMap();
         for (AbstractAttribute a : this) {
             AbstractAttribute copy = a.copy();

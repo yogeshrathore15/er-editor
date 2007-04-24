@@ -14,6 +14,7 @@ import static ru.amse.soultakov.ereditor.io.XmlTagConstants.TAG_RELATIONSHIP_VIE
 
 import org.jdom.Element;
 
+import ru.amse.soultakov.ereditor.controller.IProgressMonitor;
 import ru.amse.soultakov.ereditor.model.Comment;
 import ru.amse.soultakov.ereditor.model.Entity;
 import ru.amse.soultakov.ereditor.model.Link;
@@ -38,14 +39,18 @@ class DiagramLoader {
         this.loadingIdManager = loadingIdManager;
         this.diagramElement = erModelElement;
     }
-        
-    public Diagram load() {
+
+    public Diagram load(IProgressMonitor monitor) {
         Diagram diagram = new Diagram();
         processEntities(diagram, diagramElement.getChild(TAG_ENTITY_VIEWS));
+        monitor.setProgress(70);
         processComments(diagram, diagramElement.getChild(TAG_COMMENT_VIEWS));
+        monitor.setProgress(80);
         processLinks(diagram, diagramElement.getChild(TAG_LINK_VIEWS));
+        monitor.setProgress(90);
         processRelationships(diagram, diagramElement
                 .getChild(TAG_RELATIONSHIP_VIEWS));
+        monitor.setProgress(100);
         return diagram;
     }
 
@@ -53,8 +58,10 @@ class DiagramLoader {
         for (Object object : element.getChildren()) {
             if (object instanceof Element) {
                 Element entityElement = (Element) object;
-                Entity entity = (Entity) loadingIdManager.getObject(entityElement
-                        .getAttributeValue(ATTR_ENTITY));
+                String attributeValue = entityElement
+                                        .getAttributeValue(ATTR_ENTITY);
+                System.out.println(attributeValue);
+                Entity entity = (Entity) loadingIdManager.getObject(attributeValue);
                 int x = Integer.parseInt(entityElement.getAttributeValue(ATTR_X));
                 int y = Integer.parseInt(entityElement.getAttributeValue(ATTR_Y));
                 EntityView entityView = new EntityView(diagram, entity, x, y);
@@ -85,8 +92,8 @@ class DiagramLoader {
         for (Object object : element.getChildren()) {
             if (object instanceof Element) {
                 Element linkElement = (Element) object;
-                Link link = (Link) loadingIdManager
-                        .getObject(linkElement.getAttributeValue(ATTR_LINK));
+                Link link = (Link) loadingIdManager.getObject(linkElement
+                        .getAttributeValue(ATTR_LINK));
                 LinkView linkView = new LinkView(diagram, link);
                 loadingIdManager.putObject(linkElement.getAttributeValue(ATTR_ID),
                         linkView);
@@ -100,7 +107,7 @@ class DiagramLoader {
             if (object instanceof Element) {
                 Element relationshipElement = (Element) object;
                 String attributeValue = relationshipElement
-                                                .getAttributeValue(ATTR_RELATIONSHIP);
+                        .getAttributeValue(ATTR_RELATIONSHIP);
                 Relationship relationship = (Relationship) loadingIdManager
                         .getObject(attributeValue);
                 RelationshipView relationshipView = new RelationshipView(diagram,
