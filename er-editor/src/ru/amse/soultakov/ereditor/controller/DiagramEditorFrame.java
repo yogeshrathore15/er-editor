@@ -1,4 +1,4 @@
-package ru.amse.soultakov.ereditor;
+package ru.amse.soultakov.ereditor.controller;
 
 import static ru.amse.soultakov.ereditor.util.CommonUtils.newHashMap;
 
@@ -14,11 +14,10 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JScrollPane;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 
-import ru.amse.soultakov.ereditor.controller.DiagramEditor;
-import ru.amse.soultakov.ereditor.controller.ICurrentToolListener;
 import ru.amse.soultakov.ereditor.controller.actions.DiagramEditorAction;
 import ru.amse.soultakov.ereditor.controller.actions.DiagramLoadingAction;
 import ru.amse.soultakov.ereditor.controller.actions.DiagramSavingAction;
@@ -60,6 +59,11 @@ public class DiagramEditorFrame extends JFrame {
         super("ER-diagram editor");
         this.setJMenuBar(createMenu());
         this.add(createToolbar(), BorderLayout.NORTH);
+        this.add(createDiagramEditorPanel(), BorderLayout.CENTER);
+    }
+
+    private Component createDiagramEditorPanel() {
+        return new JScrollPane(diagramEditor);
     }
 
     private Component createToolbar() {

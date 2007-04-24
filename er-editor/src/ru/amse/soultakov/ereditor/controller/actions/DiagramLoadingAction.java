@@ -11,25 +11,15 @@ import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import ru.amse.soultakov.ereditor.DiagramEditorFrame;
+import ru.amse.soultakov.ereditor.controller.DiagramEditorFrame;
+import ru.amse.soultakov.ereditor.controller.IProgressMonitor;
+import ru.amse.soultakov.ereditor.controller.ProgressMonitorAdapter;
 import ru.amse.soultakov.ereditor.io.load.XmlDiagramLoader;
+import ru.amse.soultakov.ereditor.view.Diagram;
 import ru.amse.soultakov.ereditor.view.DiagramLoadingException;
 
 public final class DiagramLoadingAction extends AbstractAction {
-    private XmlDiagramLoader xdl;
-
     private DiagramEditorFrame diagramEditorFrame;
-
-    private final Runnable load = new Runnable() {
-        @SuppressWarnings("synthetic-access")
-        public void run() {
-            try {
-                diagramEditorFrame.getDiagramEditor().setDiagram(xdl.loadDiagram());
-            } catch (DiagramLoadingException e) {
-                e.printStackTrace();
-            }
-        }
-    };
 
     private JFileChooser fc = new JFileChooser();
 
@@ -44,13 +34,23 @@ public final class DiagramLoadingAction extends AbstractAction {
 
     public void actionPerformed(ActionEvent e) {
         if (fc.showOpenDialog(diagramEditorFrame) == JFileChooser.APPROVE_OPTION) {
-            try {
-                xdl = new XmlDiagramLoader(new FileInputStream(fc
-                        .getSelectedFile()));
-                new Thread(load).start();
-            } catch (FileNotFoundException e1) {
-                // не может произойти
-            }
+            final IProgressMonitor monitor = new ProgressMonitorAdapter(
+                    diagramEditorFrame);
+            new Thread(new Runnable() {
+                @SuppressWarnings("synthetic-access")
+                public void run() {
+                    try {
+                        XmlDiagramLoader xdl = new XmlDiagramLoader(
+                                new FileInputStream(fc.getSelectedFile()));
+                        diagramEditorFrame.getDiagramEditor().setDiagram(
+                                Diagram.load(xdl, monitor));
+                    } catch (DiagramLoadingException e) {
+                        e.printStackTrace();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
         }
     }
 }

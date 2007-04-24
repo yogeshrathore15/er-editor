@@ -12,26 +12,12 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import ru.amse.soultakov.ereditor.DiagramEditorFrame;
+import ru.amse.soultakov.ereditor.controller.DiagramEditorFrame;
 import ru.amse.soultakov.ereditor.io.save.XmlDiagramSaver;
 import ru.amse.soultakov.ereditor.view.DiagramSavingException;
 
 public final class DiagramSavingAction extends AbstractAction {
-    private XmlDiagramSaver xds;
-
     private DiagramEditorFrame diagramEditorFrame;
-
-    private final Runnable save = new Runnable() {
-        @SuppressWarnings("synthetic-access")
-        public void run() {
-            try {
-                diagramEditorFrame.getDiagramEditor().getDiagram().save(xds);
-            } catch (DiagramSavingException e1) {
-                JOptionPane.showMessageDialog(diagramEditorFrame,
-                        "Ошибка при сохранении диаграммы");
-            }
-        }
-    };
 
     private final JFileChooser fileChooser = new JFileChooser();
 
@@ -46,17 +32,26 @@ public final class DiagramSavingAction extends AbstractAction {
 
     public void actionPerformed(ActionEvent e) {
         if (fileChooser.showSaveDialog(diagramEditorFrame) == JFileChooser.APPROVE_OPTION) {
-            try {
-                String selectedFileName = fileChooser.getSelectedFile()
-                        .getAbsolutePath();
-                if (!selectedFileName.endsWith(DiagramEditorFrame.ERD_EXTENSION)) {
-                    selectedFileName += DiagramEditorFrame.ERD_EXTENSION;
+            new Thread(new Runnable() {
+                public void run() {
+                    try {
+                        String fileName = fileChooser.getSelectedFile()
+                                .getAbsolutePath();
+                        if (!fileName.endsWith(DiagramEditorFrame.ERD_EXTENSION)) {
+                            fileName += DiagramEditorFrame.ERD_EXTENSION;
+                        }
+                        XmlDiagramSaver xds = new XmlDiagramSaver(
+                                new FileOutputStream(fileName));
+                        diagramEditorFrame.getDiagramEditor().getDiagram().save(xds);
+                    } catch (DiagramSavingException e1) {
+                        JOptionPane.showMessageDialog(diagramEditorFrame,
+                                "Ошибка при сохранении диаграммы");
+                    } catch (FileNotFoundException e) {
+                        JOptionPane.showMessageDialog(diagramEditorFrame,
+                                "Невозможна запись в указанный файл");
+                    }
                 }
-                xds = new XmlDiagramSaver(new FileOutputStream(selectedFileName));
-                new Thread(save).start();
-            } catch (FileNotFoundException e1) {
-                // не может произойти
-            }
+            }).start();
         }
     }
 }

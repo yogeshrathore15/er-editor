@@ -27,6 +27,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import ru.amse.soultakov.ereditor.controller.DiagramEditor;
 import ru.amse.soultakov.ereditor.controller.ICurrentToolListener;
+import ru.amse.soultakov.ereditor.controller.ProgressMonitorAdapter;
 import ru.amse.soultakov.ereditor.controller.actions.DiagramEditorAction;
 import ru.amse.soultakov.ereditor.controller.actions.RemoveSelectionAction;
 import ru.amse.soultakov.ereditor.controller.tools.AddCommentTool;
@@ -181,7 +182,7 @@ public class ERMain {
             private final Runnable load = new Runnable() {
                 public void run() {
                     try {
-                        diagramEditor.setDiagram(xdl.loadDiagram());
+                        diagramEditor.setDiagram(xdl.loadDiagram(new ProgressMonitorAdapter(frame)));
                     } catch (DiagramLoadingException e) {
                         e.printStackTrace();
                     }

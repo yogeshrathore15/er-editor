@@ -10,6 +10,7 @@ import org.jdom.Document;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
+import ru.amse.soultakov.ereditor.controller.IProgressMonitor;
 import ru.amse.soultakov.ereditor.model.ERModel;
 import ru.amse.soultakov.ereditor.view.Diagram;
 import ru.amse.soultakov.ereditor.view.DiagramLoadingException;
@@ -17,37 +18,29 @@ import ru.amse.soultakov.ereditor.view.IDiagramLoader;
 
 public class XmlDiagramLoader implements IDiagramLoader {
 
-    private final InputStream inputStream;
+    private final LoadingIdManager loadingIdManager = new LoadingIdManager();
+    
+    private final Document document;
 
-    private final LoadingIdManager loadingIdManager = new LoadingIdManager();;
-
-    public XmlDiagramLoader(InputStream inputStream) {
-        this.inputStream = inputStream;
-    }
-
-    public Diagram loadDiagram() throws DiagramLoadingException {
-        Document doc = getDocument(new SAXBuilder());
-        DiagramLoader dl = new DiagramLoader(loadingIdManager, doc.getRootElement()
-                .getChild(TAG_DIAGRAM));
-        return dl.load();
-    }
-
-    private Document getDocument(SAXBuilder builder) throws DiagramLoadingException {
-        Document doc = null;
+    public XmlDiagramLoader(InputStream inputStream) throws DiagramLoadingException {
         try {
-            doc = builder.build(inputStream);
+            document = new SAXBuilder().build(inputStream);
         } catch (JDOMException e) {
             throw new DiagramLoadingException(e);
         } catch (IOException e) {
             throw new DiagramLoadingException(e);
         }
-        return doc;
     }
 
-    public ERModel loadModel() throws DiagramLoadingException {
-        ERModelLoader erml = new ERModelLoader(loadingIdManager, getDocument(
-                new SAXBuilder()).getRootElement().getChild(TAG_MODEL));
-        ERModel model = erml.load();
+    public Diagram loadDiagram(IProgressMonitor monitor) throws DiagramLoadingException {
+        DiagramLoader dl = new DiagramLoader(loadingIdManager, document.getRootElement()
+                .getChild(TAG_DIAGRAM));
+        return dl.load(monitor);
+    }
+
+    public ERModel loadModel(IProgressMonitor monitor) throws DiagramLoadingException {
+        ERModelLoader erml = new ERModelLoader(loadingIdManager, document.getRootElement().getChild(TAG_MODEL));
+        ERModel model = erml.load(monitor);
         return model;
     }
 }

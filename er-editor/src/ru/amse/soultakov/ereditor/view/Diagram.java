@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import ru.amse.soultakov.ereditor.controller.IProgressMonitor;
 import ru.amse.soultakov.ereditor.model.Comment;
 import ru.amse.soultakov.ereditor.model.ERModel;
 import ru.amse.soultakov.ereditor.model.Entity;
@@ -49,10 +50,11 @@ public class Diagram {
     public Diagram() {
         erModel = new ERModel();
     }
-       
-    public static Diagram load(IDiagramLoader loader) throws DiagramLoadingException {
-        ERModel model = loader.loadModel();
-        Diagram diagram = loader.loadDiagram();
+
+    public static Diagram load(IDiagramLoader loader, IProgressMonitor monitor)
+            throws DiagramLoadingException {
+        ERModel model = loader.loadModel(monitor);
+        Diagram diagram = loader.loadDiagram(monitor);
         diagram.erModel = model;
         return diagram;
     }
@@ -70,6 +72,7 @@ public class Diagram {
         if (entityView == null || entityView.getDiagram() != this) {
             throw new IllegalArgumentException();
         }
+        erModel.addEntity(entityView.getEntity());
         entityViews.add(entityView);
         entityToView.put(entityView.getEntity(), entityView);
         notifyListeners();
@@ -89,6 +92,7 @@ public class Diagram {
         if (commentView == null || commentView.getDiagram() != this) {
             throw new IllegalArgumentException();
         }
+        erModel.addComment(commentView.getComment());
         commentViews.add(commentView);
         commentToView.put(commentView.getComment(), commentView);
         notifyListeners();
@@ -117,6 +121,7 @@ public class Diagram {
         if (relationshipView == null || relationshipView.getDiagram() != this) {
             throw new IllegalArgumentException();
         }
+        erModel.addRelationship(relationshipView.getRelationship());
         relationshipViews.add(relationshipView);
         relationshipToView.put(relationshipView.getRelationship(), relationshipView);
         notifyListeners();
@@ -145,6 +150,7 @@ public class Diagram {
         if (linkView == null || linkView.getDiagram() != this) {
             throw new IllegalArgumentException();
         }
+        erModel.addLink(linkView.getLink());
         linkViews.add(linkView);
         linkToView.put(linkView.getLink(), linkView);
         return linkView;
