@@ -8,59 +8,60 @@
         <attribute id="3" name="Attr3" type="Char" not_null="false" default_value="abc" />
         <attribute id="4" name="Attr4" type="Char[5]" not_null="false" default_value="false" />
         <attribute id="5" name="MyName" type="Integer" not_null="false" default_value="10" />
-        <primary_key id="6">
+        <fkattribute id="6" name="foreign" not_null="true" default_value="Empty" foreign="7" foreign_entity="8" />
+        <primary_key id="9">
           <attribute id="2" />
           <attribute id="1" />
         </primary_key>
-        <unique id="7">
+        <unique id="10">
           <attribute id="3" />
           <attribute id="4" />
         </unique>
       </attributes>
       <relationships>
-        <relationship id="8" />
+        <relationship id="11" />
       </relationships>
       <links>
-        <link id="9" />
+        <link id="12" />
       </links>
     </entity>
-    <entity id="10" name="New Entity 1">
+    <entity id="8" name="New Entity 1">
       <attributes>
-        <attribute id="11" name="Attr1" type="Integer" not_null="false" default_value="" />
-        <attribute id="12" name="Attr2" type="Double" not_null="false" default_value="1" />
-        <attribute id="13" name="Attr3" type="Char" not_null="false" default_value="abc" />
-        <attribute id="14" name="Attr4" type="Char[5]" not_null="false" default_value="false" />
-        <primary_key id="15">
-          <attribute id="12" />
-          <attribute id="11" />
-        </primary_key>
-        <unique id="16">
-          <attribute id="14" />
+        <attribute id="7" name="Attr1" type="Integer" not_null="false" default_value="" />
+        <attribute id="13" name="Attr2" type="Double" not_null="false" default_value="1" />
+        <attribute id="14" name="Attr3" type="Char" not_null="false" default_value="abc" />
+        <attribute id="15" name="Attr4" type="Char[5]" not_null="false" default_value="false" />
+        <primary_key id="16">
           <attribute id="13" />
+          <attribute id="7" />
+        </primary_key>
+        <unique id="17">
+          <attribute id="14" />
+          <attribute id="15" />
         </unique>
       </attributes>
       <relationships>
-        <relationship id="8" />
+        <relationship id="11" />
       </relationships>
       <links />
     </entity>
   </entities>
   <comments>
-    <comment id="17">
+    <comment id="18">
       New Comment 0
       <links>
-        <link id="9" />
+        <link id="12" />
       </links>
     </comment>
   </comments>
   <relationships>
-    <relationship id="8">
-      <pk_relationship_end name="End1" entity="0" multiplicity="ZERO_OR_ONE" constraint="6" />
-      <pk_relationship_end name="End2" entity="10" multiplicity="ZERO_OR_ONE" constraint="15" />
+    <relationship id="11">
+      <pk_relationship_end name="End1" entity="0" multiplicity="ZERO_OR_ONE" constraint="9" />
+      <pk_relationship_end name="End2" entity="8" multiplicity="ZERO_OR_ONE" constraint="16" />
     </relationship>
   </relationships>
   <links>
-    <link id="9" entity="0" comment="17" />
+    <link id="12" entity="0" comment="18" />
   </links>
 </model>
 
