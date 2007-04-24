@@ -9,6 +9,7 @@ import java.io.FileNotFoundException;
 
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import ru.amse.soultakov.ereditor.controller.DiagramEditorFrame;
@@ -45,9 +46,11 @@ public final class DiagramLoadingAction extends AbstractAction {
                         diagramEditorFrame.getDiagramEditor().setDiagram(
                                 Diagram.load(xdl, monitor));
                     } catch (DiagramLoadingException e) {
-                        e.printStackTrace();
+                        JOptionPane.showMessageDialog(diagramEditorFrame,
+                                "Ошибка при загрузке диаграммы");
                     } catch (FileNotFoundException e) {
-                        e.printStackTrace();
+                        JOptionPane.showMessageDialog(diagramEditorFrame,
+                            "Невозможно чтение из указанного файла");
                     }
                 }
             }).start();
