@@ -35,6 +35,8 @@ public class EntityView extends Block {
 
     private boolean initialized = false;
 
+	private AttributeView selectedAttribute;
+
     public EntityView(Diagram diagram, Entity entity, int x, int y) {
         super(diagram, x, y);
         if (entity == null) {
@@ -145,15 +147,26 @@ public class EntityView extends Block {
     
     @Override
     public void processClick(MouseEvent mouseEvent) {
-        System.out.println("Click processed");
         for(AttributeView av : attributeViews) {
-            if (av.getLastPaintedY() >= mouseEvent.getY() && av.getLastPaintedY() <= mouseEvent.getY() + 10) {
-                System.out.println("true condition");
+            if (av.getLastPaintedY() >= mouseEvent.getY() && av.getLastPaintedY() <= mouseEvent.getY() + 15) {
                 av.setSelected(true);
+                selectedAttribute = av;
             } else {
                 av.setSelected(false);
             }
         }
+    }
+    
+    /** 
+     * {@inheritDoc}
+     */
+    @Override
+    public void setSelected(boolean selected)
+    {
+    	if (selectedAttribute != null && !selected) {
+    		selectedAttribute.setSelected(false);
+    	}
+    	super.setSelected(selected);
     }
 
 }
