@@ -132,7 +132,6 @@ class EntitiesSaver {
                 Element element = new Element(TAG_FKATTRIBUTE);
                 element.setAttribute(ATTR_ID, savingIdManager.getId(fka));
                 element.setAttribute(ATTR_NAME, fka.getName());
-                element.setAttribute(ATTR_TYPE, fka.getType().getName());
                 element.setAttribute(ATTR_NOTNULL, String.valueOf(fka.isNotNull()));
                 if (fka.getDefaultValue() != null) {
                     element.setAttribute(ATTR_DEFAULT_VALUE, fka.getDefaultValue());

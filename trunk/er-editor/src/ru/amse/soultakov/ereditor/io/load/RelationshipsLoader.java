@@ -1,5 +1,6 @@
 package ru.amse.soultakov.ereditor.io.load;
 
+import static ru.amse.soultakov.ereditor.io.XmlTagConstants.ATTR_CONSTRAINT;
 import static ru.amse.soultakov.ereditor.io.XmlTagConstants.ATTR_ENTITY;
 import static ru.amse.soultakov.ereditor.io.XmlTagConstants.ATTR_ID;
 import static ru.amse.soultakov.ereditor.io.XmlTagConstants.ATTR_MULTIPLICITY;
@@ -11,8 +12,11 @@ import java.util.List;
 
 import org.jdom.Element;
 
+import ru.amse.soultakov.ereditor.model.Constraint;
 import ru.amse.soultakov.ereditor.model.ERModel;
 import ru.amse.soultakov.ereditor.model.Entity;
+import ru.amse.soultakov.ereditor.model.FKAttribute;
+import ru.amse.soultakov.ereditor.model.FKRelationshipEnd;
 import ru.amse.soultakov.ereditor.model.PKRelationshipEnd;
 import ru.amse.soultakov.ereditor.model.Relationship;
 import ru.amse.soultakov.ereditor.model.RelationshipEnd;
@@ -42,7 +46,7 @@ class RelationshipsLoader {
     }
 
     private Relationship loadRelationshipFirst(Element element) {
-        List list = element.getChildren(TAG_PK_RELATIONSHIP_END);
+        List list = element.getChildren();
         Relationship r = new Relationship(
                 loadRelationshipEnd((Element) list.get(0)),
                 loadRelationshipEnd((Element) list.get(1)));
@@ -57,7 +61,15 @@ class RelationshipsLoader {
                 .getAttributeValue(ATTR_ENTITY));
         RelationshipMultiplicity rm = RelationshipMultiplicity.valueOf(element
                 .getAttributeValue(ATTR_MULTIPLICITY));
-        PKRelationshipEnd end = new PKRelationshipEnd(entity, rm, name);
-        return end;
+        if (element.getName().equals(TAG_PK_RELATIONSHIP_END)) {
+            PKRelationshipEnd end = new PKRelationshipEnd(entity, rm, name);
+            return end;
+        } else {
+            Constraint<FKAttribute> constraint = (Constraint<FKAttribute>) loadingIdManager
+                    .getObject(element.getAttributeValue(ATTR_CONSTRAINT));
+            FKRelationshipEnd end = new FKRelationshipEnd(entity, rm, name,
+                    constraint);
+            return end;
+        }
     }
 }
