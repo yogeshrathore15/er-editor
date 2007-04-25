@@ -3,10 +3,20 @@
  */
 package ru.amse.soultakov.ereditor.model;
 
+/**
+ * @author Soultakov Maxim
+ *
+ */
 public class FKAttribute extends AbstractAttribute {
 
+    /**
+     * 
+     */
     private Entity entity;
 
+    /**
+     * 
+     */
     private AbstractAttribute attribute;
 
     public FKAttribute(String name, boolean notNull, String defaultValue,
@@ -32,6 +42,14 @@ public class FKAttribute extends AbstractAttribute {
     @Override
     public boolean isNotNull() {
         return true;
+    }
+
+    public void setEntity(Entity entity) {
+        this.entity = entity;
+    }
+
+    public void setAttribute(AbstractAttribute attribute) {
+        this.attribute = attribute;
     }
 
     @Override
