@@ -7,7 +7,7 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
-public interface Tool {
+public interface ITool {
 
     /**
      * Invoked when the mouse button has been clicked (pressed and released) on
@@ -75,5 +75,5 @@ public interface Tool {
     public void addListener(IToolListener listener);
 
     public boolean removeListener(IToolListener listener);
-
+    
 }

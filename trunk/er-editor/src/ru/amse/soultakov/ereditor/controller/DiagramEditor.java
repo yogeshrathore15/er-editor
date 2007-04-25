@@ -17,10 +17,10 @@ import java.awt.event.MouseMotionListener;
 import java.util.Collection;
 import java.util.List;
 
-import javax.swing.JComponent;
+import javax.swing.JPanel;
 
 import ru.amse.soultakov.ereditor.controller.tools.SelectElementTool;
-import ru.amse.soultakov.ereditor.controller.tools.Tool;
+import ru.amse.soultakov.ereditor.controller.tools.ITool;
 import ru.amse.soultakov.ereditor.view.Block;
 import ru.amse.soultakov.ereditor.view.CommentView;
 import ru.amse.soultakov.ereditor.view.Diagram;
@@ -39,7 +39,7 @@ import ru.amse.soultakov.ereditor.view.SelectedItems;
  * @author sma
  * 
  */
-public class DiagramEditor extends JComponent {
+public class DiagramEditor extends JPanel {
 
     private static final Dimension MIN_SIZE = new Dimension(400, 400);
 
@@ -48,10 +48,10 @@ public class DiagramEditor extends JComponent {
     private Diagram diagram = new Diagram();
 
     private final SelectedItems<IViewable> selectedItems = new SelectedItems<IViewable>();
-    
+
     private final SelectedItems<IOutline> selectedOutlines = new SelectedItems<IOutline>();
 
-    private Tool currentTool;
+    private ITool currentTool;
 
     private final RemoveItemsVisitor itemsRemover = new RemoveItemsVisitor();
 
@@ -63,7 +63,10 @@ public class DiagramEditor extends JComponent {
 
     private final List<ICurrentToolListener> listeners = newArrayList();
 
+    private boolean currentToolEnabled = true;
+
     public DiagramEditor() {
+        this.setLayout(null);
         initMouseListener();
         diagram.addDiagramListener(new IDiagramListener() {
             public void diagramModified(Diagram modifiedDiagram) {
@@ -107,7 +110,7 @@ public class DiagramEditor extends JComponent {
         repaint();
     }
 
-    public void setTool(Tool tool) {
+    public void setTool(ITool tool) {
         getSelectedItems().clear();
         repaint();
         if (tool != null) {
@@ -132,6 +135,10 @@ public class DiagramEditor extends JComponent {
         return newDim;
     }
 
+    public void setCurrentToolEnabled(boolean enabled) {
+        this.currentToolEnabled = enabled;
+    }
+
     @Override
     protected void paintChildren(Graphics g) {
         Graphics2D graphics = (Graphics2D) g;
@@ -147,6 +154,7 @@ public class DiagramEditor extends JComponent {
         paintSet(getSelectedOutlines().toSet(), graphics);
 
         getCurrentTool().paintAfter(graphics);
+        super.paintChildren(graphics);
     }
 
     private void recalculateSize(Collection<? extends Block> set, Graphics2D graphics) {
@@ -155,7 +163,8 @@ public class DiagramEditor extends JComponent {
         }
     }
 
-    private void paintSet(Collection<? extends IViewable> setToPaint, Graphics2D graphics) {
+    private void paintSet(Collection<? extends IViewable> setToPaint,
+            Graphics2D graphics) {
         for (IViewable v : setToPaint) {
             v.paint(graphics);
         }
@@ -186,46 +195,66 @@ public class DiagramEditor extends JComponent {
         setCurrentTool(new SelectElementTool(this));
         this.addMouseListener(new MouseListener() {
             public void mouseClicked(MouseEvent e) {
-                requestFocusInWindow();
-                getCurrentTool().mouseClicked(e);
+                if (currentToolEnabled) {
+                    getCurrentTool().mouseClicked(e);
+                }
             }
 
             public void mouseEntered(MouseEvent e) {
-                getCurrentTool().mouseEntered(e);
+                if (currentToolEnabled) {
+                    requestFocusInWindow();
+                    getCurrentTool().mouseEntered(e);
+                }
             }
 
             public void mouseExited(MouseEvent e) {
-                getCurrentTool().mouseExited(e);
+                if (currentToolEnabled) {
+                    getCurrentTool().mouseExited(e);
+                }
             }
 
             public void mousePressed(MouseEvent e) {
-                getCurrentTool().mousePressed(e);
+                if (currentToolEnabled) {
+                    getCurrentTool().mousePressed(e);
+                }
             }
 
             public void mouseReleased(MouseEvent e) {
-                getCurrentTool().mouseReleased(e);
+                if (currentToolEnabled) {
+                    getCurrentTool().mouseReleased(e);
+                }
             }
         });
         this.addMouseMotionListener(new MouseMotionListener() {
             public void mouseDragged(MouseEvent e) {
-                getCurrentTool().mouseDragged(e);
+                if (currentToolEnabled) {
+                    getCurrentTool().mouseDragged(e);
+                }
             }
 
             public void mouseMoved(MouseEvent e) {
-                getCurrentTool().mouseMoved(e);
+                if (currentToolEnabled) {
+                    getCurrentTool().mouseMoved(e);
+                }
             }
         });
         this.addKeyListener(new KeyListener() {
             public void keyPressed(KeyEvent e) {
-                getCurrentTool().keyPressed(e);
+                if (currentToolEnabled) {
+                    getCurrentTool().keyPressed(e);
+                }
             }
 
             public void keyReleased(KeyEvent e) {
-                getCurrentTool().keyReleased(e);
+                if (currentToolEnabled) {
+                    getCurrentTool().keyReleased(e);
+                }
             }
 
             public void keyTyped(KeyEvent e) {
-                getCurrentTool().keyTyped(e);
+                if (currentToolEnabled) {
+                    getCurrentTool().keyTyped(e);
+                }
             }
 
         });
@@ -263,26 +292,27 @@ public class DiagramEditor extends JComponent {
         return listeners.remove(ctl);
     }
 
-    protected void notifyListeners(Tool oldTool, Tool newTool) {
+    protected void notifyListeners(ITool oldTool, ITool newTool) {
         for (ICurrentToolListener ctl : listeners) {
             ctl.currentToolChanged(oldTool, newTool);
         }
     }
 
     /**
-     * @param currentTool the currentTool to set
+     * @param currentTool
+     *            the currentTool to set
      */
-    private void setCurrentTool(Tool currentTool) {
+    private void setCurrentTool(ITool currentTool) {
         this.currentTool = currentTool;
     }
 
     /**
      * @return the currentTool
      */
-    Tool getCurrentTool() {
+    ITool getCurrentTool() {
         return currentTool;
     }
-    
+
     public SelectedItems<IOutline> getSelectedOutlines() {
         return selectedOutlines;
     }
@@ -290,7 +320,7 @@ public class DiagramEditor extends JComponent {
     private class RemoveItemsVisitor implements IVisitor<Boolean, Void> {
 
         public RemoveItemsVisitor() {
-        	//
+            //
         }
 
         public Boolean visit(CommentView commentView, Void data) {

@@ -57,4 +57,8 @@ public class FKAttribute extends AbstractAttribute {
         return new Attribute(name, getType().copy(), isNotNull(), defaultValue);
     }
 
+    @Override
+    public void setType(IAttributeType attributeType) {
+    }
+
 }

@@ -5,15 +5,21 @@ import static ru.amse.soultakov.ereditor.util.CommonUtils.newArrayList;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+
+import ru.amse.soultakov.ereditor.controller.DiagramEditor;
 import ru.amse.soultakov.ereditor.model.AbstractAttribute;
-import ru.amse.soultakov.ereditor.model.Entity;
 import ru.amse.soultakov.ereditor.model.Constraint;
+import ru.amse.soultakov.ereditor.model.Entity;
 import ru.amse.soultakov.ereditor.util.GraphicsUtils;
 
 /**
@@ -35,7 +41,7 @@ public class EntityView extends Block {
 
     private boolean initialized = false;
 
-	private AttributeView selectedAttribute;
+    private int selectedAttributeIndex = -1;
 
     public EntityView(Diagram diagram, Entity entity, int x, int y) {
         super(diagram, x, y);
@@ -144,35 +150,120 @@ public class EntityView extends Block {
         diagram.addEntityView(entityView);
         return entityView;
     }
-    
+
     @Override
-    public void processClick(MouseEvent mouseEvent) {
-    	if(mouseEvent.getButton() == MouseEvent.BUTTON1) {
-    		if (mouseEvent.getClickCount() == 1) {
-    			for(AttributeView av : attributeViews) {
-    				if (av.getLastPaintedY() >= mouseEvent.getY() && av.getLastPaintedY() <= mouseEvent.getY() + 15) {
-    					av.setSelected(true);
-    					selectedAttribute = av;
-    				} else {
-    					av.setSelected(false);
-    				}
-    			}
-    		} else {
-    			
-    		}
-    	}
+    public void processClick(MouseEvent mouseEvent, final DiagramEditor editor) {
+        if (mouseEvent.getButton() == MouseEvent.BUTTON1) {
+            if (mouseEvent.getClickCount() == 1) {
+                selectAttribute(mouseEvent.getY());
+            } else if (mouseEvent.getClickCount() == 2) {
+                selectAttribute(mouseEvent.getY());
+                if (selectedAttributeIndex != -1) {
+                    editAttribute(editor);
+                } else {
+                    editTitle(editor);
+                }
+            }
+        }
     }
-    
-    /** 
+
+    private void editTitle(final DiagramEditor editor) {
+        final JTextField tf = new JTextField(entity.getName());
+        tf.setBounds(getX() + Block.MARGIN, getY() + titleCompartment.getY(), tf
+                .getPreferredSize().width, tf.getPreferredSize().height);
+        tf.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                    stopEditing();
+                } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    if (!tf.getText().isEmpty()) {
+                        entity.setName(tf.getText());
+                        stopEditing();
+                        System.out.println(entity.getName());
+                    } else {
+                        JOptionPane.showMessageDialog(null,
+                                "Синтаксическая ошибка!", "Ошибка!",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            }
+
+            private void stopEditing() {
+                editor.remove(tf);
+                editor.setCurrentToolEnabled(true);
+                editor.repaint();
+                selectedAttributeIndex = -1;
+            }
+        });
+        editor.add(tf);
+        tf.requestFocus();
+        editor.setCurrentToolEnabled(false);
+    }
+
+    private void editAttribute(final DiagramEditor editor) {
+        final JTextField tf = new JTextField(attributeViews.get(
+                selectedAttributeIndex).getStringPresentation());
+        tf.setBounds(getX() + Block.MARGIN, attributeViews.get(
+                selectedAttributeIndex).getLastPaintedY() - 15, tf
+                .getPreferredSize().width, tf.getPreferredSize().height);
+        tf.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                    stopEditing();
+                } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    if (attributeViews.get(selectedAttributeIndex)
+                            .tryToSetAttribute(tf.getText())) {
+                        stopEditing();
+                    } else {
+                        JOptionPane.showMessageDialog(null,
+                                "Синтаксическая ошибка!", "Ошибка!",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            }
+
+            private void stopEditing() {
+                editor.remove(tf);
+                editor.setCurrentToolEnabled(true);
+                editor.repaint();
+                selectedAttributeIndex = -1;
+            }
+        });
+        editor.add(tf);
+        tf.requestFocus();
+        editor.setCurrentToolEnabled(false);
+    }
+
+    private void selectAttribute(int y) {
+        for (int i = 0; i < attributeViews.size(); i++) {
+            if (attributeViews.get(i).getLastPaintedY() >= y
+                    && attributeViews.get(i).getLastPaintedY() <= y + 15) {
+                attributeViews.get(i).setSelected(true);
+                selectedAttributeIndex = i;
+            } else {
+                attributeViews.get(i).setSelected(false);
+            }
+        }
+    }
+
+    @Override
+    public void exitProcessing() {
+        attributeViews.get(selectedAttributeIndex).setSelected(false);
+        selectedAttributeIndex = -1;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
-    public void setSelected(boolean selected)
-    {
-    	if (selectedAttribute != null && !selected) {
-    		selectedAttribute.setSelected(false);
-    	}
-    	super.setSelected(selected);
+    public void setSelected(boolean selected) {
+        if (selectedAttributeIndex != -1 && !selected) {
+            attributeViews.get(selectedAttributeIndex).setSelected(false);
+            selectedAttributeIndex = -1;
+        }
+        super.setSelected(selected);
     }
 
 }

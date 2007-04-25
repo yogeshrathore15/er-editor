@@ -10,6 +10,8 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.amse.soultakov.ereditor.controller.DiagramEditor;
+
 public abstract class Block implements IViewable {
 
     private static final int SELECTION_SQUARE_SIZE = 7;
@@ -216,7 +218,10 @@ public abstract class Block implements IViewable {
         return new BlockOutline(diagram, this);
     }
     
-    public void processClick(MouseEvent mouseEvent) {
+    public void processClick(MouseEvent mouseEvent, DiagramEditor editor) {
+    }
+    
+    public void exitProcessing() {
     }
 
 }

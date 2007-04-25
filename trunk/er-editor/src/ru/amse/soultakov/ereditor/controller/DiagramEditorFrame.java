@@ -28,7 +28,7 @@ import ru.amse.soultakov.ereditor.controller.tools.AddLinkTool;
 import ru.amse.soultakov.ereditor.controller.tools.AddRelationshipTool;
 import ru.amse.soultakov.ereditor.controller.tools.IToolListener;
 import ru.amse.soultakov.ereditor.controller.tools.SelectElementTool;
-import ru.amse.soultakov.ereditor.controller.tools.Tool;
+import ru.amse.soultakov.ereditor.controller.tools.ITool;
 
 @SuppressWarnings("serial")
 public class DiagramEditorFrame extends JFrame {
@@ -45,7 +45,7 @@ public class DiagramEditorFrame extends JFrame {
 
     private final DiagramEditor diagramEditor = new DiagramEditor();
 
-    private final Map<Tool, AbstractButton> toolToButton = newHashMap();
+    private final Map<ITool, AbstractButton> toolToButton = newHashMap();
 
     final SelectElementTool selectElementTool = new SelectElementTool(diagramEditor);
 
@@ -135,7 +135,7 @@ public class DiagramEditorFrame extends JFrame {
         buttonsGroup.add(defaultToolButton);
         diagramEditor.addToolChangeListener(new ICurrentToolListener() {
             @SuppressWarnings("synthetic-access")
-            public void currentToolChanged(Tool oldTool, Tool newTool) {
+            public void currentToolChanged(ITool oldTool, ITool newTool) {
                 if (toolToButton.containsKey(newTool)) {
                     toolToButton.get(newTool).setSelected(true);
                 }

@@ -6,6 +6,7 @@ package ru.amse.soultakov.ereditor.view;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 
+import ru.amse.soultakov.ereditor.controller.DiagramEditor;
 import ru.amse.soultakov.ereditor.model.ICopyable;
 
 /**
@@ -41,6 +42,8 @@ public interface IViewable extends ICopyable<IViewable>{
     
     IOutline getOutline();
     
-    void processClick(MouseEvent mouseEvent);
+    public void processClick(MouseEvent mouseEvent, DiagramEditor component);
+    
+    void exitProcessing();
     
 }

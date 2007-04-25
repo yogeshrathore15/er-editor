@@ -23,10 +23,12 @@ public class Attribute extends AbstractAttribute {
     /**
      * @param name
      */
+    @Override
     public void setName(String name) {
         this.name = name;
     }
 
+    @Override
     public void setType(IAttributeType type) {
         this.type = type;
     }
