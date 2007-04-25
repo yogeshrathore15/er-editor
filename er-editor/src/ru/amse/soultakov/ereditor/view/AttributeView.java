@@ -1,5 +1,6 @@
 package ru.amse.soultakov.ereditor.view;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
@@ -17,6 +18,8 @@ public class AttributeView {
     private Block entityView;
 
     private Compartment compartment;
+
+    private boolean selected;
 
     private volatile int lastPaintedY;
 
@@ -38,6 +41,14 @@ public class AttributeView {
         return this.compartment;
     }
 
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
+
+    public boolean isSelected() {
+        return this.selected;
+    }
+
     public void setAttribute(AbstractAttribute attribute) {
         this.attribute = attribute;
     }
@@ -54,15 +65,24 @@ public class AttributeView {
      * @return the lastPaintedY
      */
     public int getLastPaintedY() {
-        return lastPaintedY;
+        return this.lastPaintedY;
     }
 
     public int paint(Graphics2D graphics, int x, int y) {
         String attrString = getAttributeStringPresentation();
         Rectangle2D bounds = GraphicsUtils.getStringBounds(graphics, attrString);
-        lastPaintedY = (y + (int) bounds.getHeight());
-        graphics.drawString(attrString, Block.MARGIN + entityView.getX(),
-                lastPaintedY);
+        this.lastPaintedY = (y + (int) bounds.getHeight());
+        if (selected) {
+            System.out.println("drawing");
+            Color prev = graphics.getColor();
+            graphics.setColor(Color.WHITE);
+            graphics.fillRect(Block.MARGIN + this.entityView.getX(), lastPaintedY
+                    - (int) bounds.getHeight(), (int) bounds.getWidth(),
+                    (int) bounds.getHeight());
+            graphics.setColor(prev);
+        }
+        graphics.drawString(attrString, Block.MARGIN + this.entityView.getX(),
+                this.lastPaintedY);
         return lastPaintedY + Block.MARGIN;
     }
 
@@ -77,7 +97,7 @@ public class AttributeView {
      */
     @Override
     public String toString() {
-        return attribute.getName();
+        return this.attribute.getName();
     }
 
 }

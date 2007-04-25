@@ -6,6 +6,7 @@ package ru.amse.soultakov.ereditor.view;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -213,6 +214,9 @@ public abstract class Block implements IViewable {
 
     public IOutline getOutline() {
         return new BlockOutline(diagram, this);
+    }
+    
+    public void processClick(MouseEvent mouseEvent) {
     }
 
 }
