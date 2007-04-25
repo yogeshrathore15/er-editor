@@ -18,6 +18,7 @@ import ru.amse.soultakov.ereditor.controller.ProgressMonitorAdapter;
 import ru.amse.soultakov.ereditor.io.save.XmlDiagramSaver;
 import ru.amse.soultakov.ereditor.view.DiagramSavingException;
 
+@SuppressWarnings("serial")
 public final class DiagramSavingAction extends AbstractAction {
     private DiagramEditorFrame diagramEditorFrame;
 
@@ -46,10 +47,10 @@ public final class DiagramSavingAction extends AbstractAction {
                         XmlDiagramSaver xds = new XmlDiagramSaver(
                                 new FileOutputStream(fileName));
                         diagramEditorFrame.getDiagramEditor().getDiagram().save(xds, monitor);
-                    } catch (DiagramSavingException e1) {
+                    } catch (DiagramSavingException ex) {
                         JOptionPane.showMessageDialog(diagramEditorFrame,
                                 "Ошибка при сохранении диаграммы");
-                    } catch (FileNotFoundException e) {
+                    } catch (FileNotFoundException ex) {
                         JOptionPane.showMessageDialog(diagramEditorFrame,
                                 "Невозможна запись в указанный файл");
                     }

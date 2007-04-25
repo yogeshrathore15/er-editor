@@ -66,7 +66,7 @@ public class DiagramEditor extends JComponent {
     public DiagramEditor() {
         initMouseListener();
         diagram.addDiagramListener(new IDiagramListener() {
-            public void diagramModified(Diagram diagram) {
+            public void diagramModified(Diagram modifiedDiagram) {
                 repaint();
             }
         });
