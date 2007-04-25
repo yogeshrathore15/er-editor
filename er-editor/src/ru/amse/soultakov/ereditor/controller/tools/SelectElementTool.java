@@ -206,6 +206,8 @@ public class SelectElementTool extends ToolAdapter {
                 } else {
                     if (!view.isSelected()) {
                         getSelectedItems().setSelection(view);
+                    } else {
+                        view.processClick(e);
                     }
                 }
                 result = false;
