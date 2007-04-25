@@ -9,6 +9,7 @@ import static ru.amse.soultakov.ereditor.io.XmlTagConstants.TAG_FK_RELATIONSHIP_
 import static ru.amse.soultakov.ereditor.io.XmlTagConstants.TAG_PK_RELATIONSHIP_END;
 import static ru.amse.soultakov.ereditor.io.XmlTagConstants.TAG_RELATIONSHIP;
 import static ru.amse.soultakov.ereditor.io.XmlTagConstants.TAG_RELATIONSHIPS;
+
 import static ru.amse.soultakov.ereditor.util.CommonUtils.newLinkedHashSet;
 
 import java.util.Collection;
@@ -23,7 +24,7 @@ import ru.amse.soultakov.ereditor.model.RelationshipEnd;
 
 class RelationshipsSaver {
 
-	private final SavingIdManager savingIdManager;
+    private final SavingIdManager savingIdManager;
 
     private final Collection<Relationship> relationships;
 
@@ -65,7 +66,8 @@ class RelationshipsSaver {
         root.setAttribute(ATTR_NAME, end.getName());
         root.setAttribute(ATTR_ENTITY, savingIdManager.getId(end.getEntity()));
         root.setAttribute(ATTR_MULTIPLICITY, end.getMultiplicity().name());
-        root.setAttribute(ATTR_CONSTRAINT, savingIdManager.getId(end.getConstraint()));
+        root.setAttribute(ATTR_CONSTRAINT, savingIdManager
+                .getId(end.getConstraint()));
         return root;
     }
 
