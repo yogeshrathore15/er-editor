@@ -3,10 +3,10 @@
  */
 package ru.amse.soultakov.ereditor.controller;
 
-import ru.amse.soultakov.ereditor.controller.tools.Tool;
+import ru.amse.soultakov.ereditor.controller.tools.ITool;
 
 public interface ICurrentToolListener {
 
-    void currentToolChanged(Tool oldTool, Tool newTool);
+    void currentToolChanged(ITool oldTool, ITool newTool);
 
 }

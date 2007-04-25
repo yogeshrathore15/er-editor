@@ -41,7 +41,7 @@ public class AttributesCompartment extends Compartment {
         int height = 0;
         for (AttributeView a : attributes) {
             Rectangle2D stringBounds = GraphicsUtils.getStringBounds(graphics, a
-                    .getAttributeStringPresentation());
+                    .getStringPresentation());
             bounds.add(stringBounds);
             height += stringBounds.getHeight() + MARGIN * 2;
         }

@@ -14,8 +14,6 @@ import ru.amse.soultakov.ereditor.util.GraphicsUtils;
  */
 public class TitleCompartment extends Compartment {
 
-    private String title;
-
     /**
      * @param x
      * @param y
@@ -23,7 +21,6 @@ public class TitleCompartment extends Compartment {
      */
     public TitleCompartment(int y, EntityView entityView, String title) {
         super(y, entityView);
-        this.title = title;
     }
 
     /**
@@ -33,7 +30,8 @@ public class TitleCompartment extends Compartment {
     public int paint(Graphics2D graphics) {
         int height = (int) getContentBounds(graphics).getHeight();
         int newCurY = entityView.getY() + y + height;
-        graphics.drawString(title, entityView.getX() + Block.MARGIN, newCurY);
+        graphics.drawString(entityView.getEntity().getName(), entityView.getX()
+                + Block.MARGIN, newCurY);
         return newCurY;
     }
 
@@ -42,7 +40,8 @@ public class TitleCompartment extends Compartment {
      */
     @Override
     public Rectangle2D getContentBounds(Graphics2D graphics) {
-        return GraphicsUtils.getStringBounds(graphics, title);
+        return GraphicsUtils.getStringBounds(graphics, entityView.getEntity()
+                .getName());
     }
 
 }

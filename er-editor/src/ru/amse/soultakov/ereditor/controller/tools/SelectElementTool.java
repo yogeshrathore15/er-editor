@@ -207,7 +207,7 @@ public class SelectElementTool extends ToolAdapter {
                     if (!view.isSelected()) {
                         getSelectedItems().setSelection(view);
                     } else {
-                        view.processClick(e);
+                        view.processClick(e, diagramEditor);
                     }
                 }
                 result = false;

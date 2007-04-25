@@ -9,7 +9,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Icon;
 
 import ru.amse.soultakov.ereditor.controller.DiagramEditor;
-import ru.amse.soultakov.ereditor.controller.tools.Tool;
+import ru.amse.soultakov.ereditor.controller.tools.ITool;
 
 public class DiagramEditorAction extends AbstractAction {
 
@@ -17,15 +17,15 @@ public class DiagramEditorAction extends AbstractAction {
 
     private final DiagramEditor diagramEditor;
 
-    private final Tool tool;
+    private final ITool tool;
 
-    public DiagramEditorAction(DiagramEditor diagramEditor, String name, Icon icon, Tool tool) {
+    public DiagramEditorAction(DiagramEditor diagramEditor, String name, Icon icon, ITool tool) {
         super(name, icon);
         this.diagramEditor = diagramEditor;
         this.tool = tool;
     }
     
-    public DiagramEditorAction(DiagramEditor diagramEditor, String name, Tool tool) {
+    public DiagramEditorAction(DiagramEditor diagramEditor, String name, ITool tool) {
         super(name);
         this.diagramEditor = diagramEditor;
         this.tool = tool;

@@ -8,6 +8,8 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.amse.soultakov.ereditor.controller.DiagramEditor;
+
 public abstract class Line implements IViewable {
 
     protected static final BasicStroke SIMPLE_STROKE = new BasicStroke(1.0f);
@@ -199,7 +201,10 @@ public abstract class Line implements IViewable {
         return null;
     }
     
-    public void processClick(MouseEvent mouseEvent) {
+    public void processClick(MouseEvent mouseEvent, DiagramEditor editor) {
+    }
+    
+    public void exitProcessing() {
     }
 
 }

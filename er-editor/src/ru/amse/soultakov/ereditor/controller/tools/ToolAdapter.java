@@ -10,11 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * An abstract <code>Tool</code> class. All its methods are empty.
+ * An abstract <code>ITool</code> class. All its methods are empty.
  * 
  * @author Soultakov Maxim
  */
-public abstract class ToolAdapter implements Tool {
+public abstract class ToolAdapter implements ITool {
 
     private final List<IToolListener> iToolListeners = new ArrayList<IToolListener>();
 
