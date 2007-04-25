@@ -147,14 +147,20 @@ public class EntityView extends Block {
     
     @Override
     public void processClick(MouseEvent mouseEvent) {
-        for(AttributeView av : attributeViews) {
-            if (av.getLastPaintedY() >= mouseEvent.getY() && av.getLastPaintedY() <= mouseEvent.getY() + 15) {
-                av.setSelected(true);
-                selectedAttribute = av;
-            } else {
-                av.setSelected(false);
-            }
-        }
+    	if(mouseEvent.getButton() == MouseEvent.BUTTON1) {
+    		if (mouseEvent.getClickCount() == 1) {
+    			for(AttributeView av : attributeViews) {
+    				if (av.getLastPaintedY() >= mouseEvent.getY() && av.getLastPaintedY() <= mouseEvent.getY() + 15) {
+    					av.setSelected(true);
+    					selectedAttribute = av;
+    				} else {
+    					av.setSelected(false);
+    				}
+    			}
+    		} else {
+    			
+    		}
+    	}
     }
     
     /** 

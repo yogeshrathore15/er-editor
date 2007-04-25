@@ -45,7 +45,7 @@ public class ArrayAttributeType implements IAttributeType {
 
     public boolean isCorrectString(String value) {
         if (arrayType == CHAR) {
-            return true;// ?
+            return true;
         }
         return false;
     }
