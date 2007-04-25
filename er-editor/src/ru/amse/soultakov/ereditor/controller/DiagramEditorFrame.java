@@ -30,6 +30,7 @@ import ru.amse.soultakov.ereditor.controller.tools.IToolListener;
 import ru.amse.soultakov.ereditor.controller.tools.SelectElementTool;
 import ru.amse.soultakov.ereditor.controller.tools.Tool;
 
+@SuppressWarnings("serial")
 public class DiagramEditorFrame extends JFrame {
 
     public static final String ERD = "erd";

@@ -19,6 +19,7 @@ import ru.amse.soultakov.ereditor.io.load.XmlDiagramLoader;
 import ru.amse.soultakov.ereditor.view.Diagram;
 import ru.amse.soultakov.ereditor.view.DiagramLoadingException;
 
+@SuppressWarnings("serial")
 public final class DiagramLoadingAction extends AbstractAction {
     private DiagramEditorFrame diagramEditorFrame;
 
@@ -45,10 +46,10 @@ public final class DiagramLoadingAction extends AbstractAction {
                                 new FileInputStream(fc.getSelectedFile()));
                         diagramEditorFrame.getDiagramEditor().setDiagram(
                                 Diagram.load(xdl, monitor));
-                    } catch (DiagramLoadingException e) {
+                    } catch (DiagramLoadingException ex) {
                         JOptionPane.showMessageDialog(diagramEditorFrame,
                                 "Ошибка при загрузке диаграммы");
-                    } catch (FileNotFoundException e) {
+                    } catch (FileNotFoundException ex) {
                         JOptionPane.showMessageDialog(diagramEditorFrame,
                             "Невозможно чтение из указанного файла");
                     }
