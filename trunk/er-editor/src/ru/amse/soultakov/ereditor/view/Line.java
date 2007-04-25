@@ -4,6 +4,7 @@
 package ru.amse.soultakov.ereditor.view;
 
 import java.awt.BasicStroke;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -196,6 +197,9 @@ public abstract class Line implements IViewable {
     
     public IViewable copy() {
         return null;
+    }
+    
+    public void processClick(MouseEvent mouseEvent) {
     }
 
 }

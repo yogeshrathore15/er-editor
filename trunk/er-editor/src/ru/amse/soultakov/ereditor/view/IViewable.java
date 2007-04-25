@@ -4,6 +4,7 @@
 package ru.amse.soultakov.ereditor.view;
 
 import java.awt.Graphics2D;
+import java.awt.event.MouseEvent;
 
 import ru.amse.soultakov.ereditor.model.ICopyable;
 
@@ -34,9 +35,12 @@ public interface IViewable extends ICopyable<IViewable>{
 
     <R, D> R acceptVisitor(IVisitor<R, D> visitor, D data);
 
-    void addListener(IViewableListener iViewableListener);
+    void addListener(IViewableListener viewableListener);
 
-    boolean removeListener(IViewableListener iViewableListener);
+    boolean removeListener(IViewableListener viewableListener);
     
     IOutline getOutline();
+    
+    void processClick(MouseEvent mouseEvent);
+    
 }

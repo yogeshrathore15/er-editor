@@ -5,6 +5,7 @@ import static ru.amse.soultakov.ereditor.util.CommonUtils.newArrayList;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -99,12 +100,12 @@ public class EntityView extends Block {
     }
 
     private void drawBackground(Graphics2D graphics) {
-    	drawShadow(graphics);
-    	graphics.setColor(BACKGROUND_COLOR);
+        drawShadow(graphics);
+        graphics.setColor(BACKGROUND_COLOR);
         graphics.fillRoundRect(getX(), getY(), getWidth(), getHeight(), 10, 10);
     }
 
-	@Override
+    @Override
     protected Dimension getContentBounds(Graphics2D graphics) {
         lazyInitCompartments(graphics);
         List<Rectangle2D> bounds = new ArrayList<Rectangle2D>(3);
@@ -135,11 +136,24 @@ public class EntityView extends Block {
     public <R, D> R acceptVisitor(IVisitor<R, D> visitor, D data) {
         return visitor.visit(this, data);
     }
-    
+
     public EntityView copy() {
         EntityView entityView = new EntityView(diagram, entity.copy(), x, y);
         diagram.addEntityView(entityView);
         return entityView;
+    }
+    
+    @Override
+    public void processClick(MouseEvent mouseEvent) {
+        System.out.println("Click processed");
+        for(AttributeView av : attributeViews) {
+            if (av.getLastPaintedY() >= mouseEvent.getY() && av.getLastPaintedY() <= mouseEvent.getY() + 10) {
+                System.out.println("true condition");
+                av.setSelected(true);
+            } else {
+                av.setSelected(false);
+            }
+        }
     }
 
 }

@@ -265,8 +265,8 @@ public class Diagram {
         return commentToView.get(comment);
     }
 
-    public void save(IDiagramSaver saver) throws DiagramSavingException {
-        saver.save(this, erModel);
+    public void save(IDiagramSaver saver, IProgressMonitor monitor) throws DiagramSavingException {
+        saver.save(this, erModel, monitor);
     }
 
 }
