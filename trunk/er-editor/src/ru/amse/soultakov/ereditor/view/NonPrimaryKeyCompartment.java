@@ -17,7 +17,9 @@ class NonPrimaryKeyCompartment extends AttributesCompartment {
      */
     private static final String UNIQUE = "U";
 
-    private static final int ADDITIONAL_COLUMN_WIDTH = 15;
+    private static final int ADDITIONAL_COLUMN_WIDTH = 20;
+
+    private static final String FK = "FK";
 
     /**
      * @param x
@@ -60,6 +62,13 @@ class NonPrimaryKeyCompartment extends AttributesCompartment {
                 int x = getAdditionalColumnX();
                 int y = av.getLastPaintedY();
                 graphics.drawString(UNIQUE, x + MARGIN, y);
+            }
+        }
+        for (AttributeView av : attributes) {
+            if (entityView.isForeignKey(av.getAttribute())) {
+                int x = getAdditionalColumnX();
+                int y = av.getLastPaintedY();
+                graphics.drawString(FK, x + MARGIN, y);
             }
         }
     }

@@ -20,6 +20,7 @@ import ru.amse.soultakov.ereditor.controller.DiagramEditor;
 import ru.amse.soultakov.ereditor.model.AbstractAttribute;
 import ru.amse.soultakov.ereditor.model.Constraint;
 import ru.amse.soultakov.ereditor.model.Entity;
+import ru.amse.soultakov.ereditor.model.FKAttribute;
 import ru.amse.soultakov.ereditor.util.GraphicsUtils;
 
 /**
@@ -100,6 +101,15 @@ public class EntityView extends Block {
 
     boolean isUnique(AbstractAttribute a) {
         for (Constraint<AbstractAttribute> index : entity.getUniqueAttributes()) {
+            if (index.contains(a)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    boolean isForeignKey(AbstractAttribute a) {
+        for (Constraint<FKAttribute> index : entity.getForeignKeys()) {
             if (index.contains(a)) {
                 return true;
             }
