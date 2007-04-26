@@ -9,8 +9,7 @@ public class PKRelationshipEnd extends RelationshipEnd {
 
     @Override
     public boolean acceptMultiplicity(RelationshipMultiplicity multiplicity) {
-        return multiplicity == RelationshipMultiplicity.ZERO_OR_MORE
-                || multiplicity == RelationshipMultiplicity.ZERO_OR_ONE;
+        return true;
     }
 
     @Override

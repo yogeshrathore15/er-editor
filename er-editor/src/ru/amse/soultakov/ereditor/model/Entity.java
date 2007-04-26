@@ -215,7 +215,7 @@ public class Entity implements Iterable<AbstractAttribute>, ICopyable<Entity> {
         return uniqueAttributes.remove(set);
     }
 
-    public Collection<Constraint<FKAttribute>> getForeignKey() {
+    public Collection<Constraint<FKAttribute>> getForeignKeys() {
         return Collections.unmodifiableSet(foreignKeys);
     }
 
