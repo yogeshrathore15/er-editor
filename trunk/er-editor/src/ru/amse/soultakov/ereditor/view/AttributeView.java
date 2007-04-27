@@ -102,14 +102,14 @@ public class AttributeView {
     }
 
     public boolean tryToSetAttribute(String attrString) {
-        boolean matches = attrString.matches("\\w+\\s*:\\s*\\w+");
+        boolean matches = attrString.matches("\\w+\\s*:\\s*\\w+[\\s*");
         if (matches) {
             int colonIndex = attrString.lastIndexOf(':');
             String typeString = attrString.substring(colonIndex + 1).trim();
-            System.out.println(typeString);
             IAttributeType type = getTypeFromString(typeString);
             if (type == null) {
-                return false;
+                
+            	return false;
             }
             attribute.setType(type);
             attribute.setName(attrString.substring(0,colonIndex - 1).trim());
