@@ -8,7 +8,6 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 
 import ru.amse.soultakov.ereditor.controller.DiagramEditor;
-import ru.amse.soultakov.ereditor.view.IViewable;
 import ru.amse.soultakov.ereditor.view.SelectedItems;
 import ru.amse.soultakov.ereditor.view.SelectedItemsListener;
 
