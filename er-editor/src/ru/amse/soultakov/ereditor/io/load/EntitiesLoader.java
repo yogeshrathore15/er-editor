@@ -205,7 +205,5 @@ class EntitiesLoader {
             return SimpleAttributeType.valueOf(attributeValue.toUpperCase());
         }
     }
-    
-    
 
 }

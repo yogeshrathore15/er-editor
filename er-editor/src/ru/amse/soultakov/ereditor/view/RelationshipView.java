@@ -4,6 +4,7 @@
 package ru.amse.soultakov.ereditor.view;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Stroke;
@@ -13,9 +14,14 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
+import javax.swing.JList;
 
 import ru.amse.soultakov.ereditor.controller.DiagramEditor;
+import ru.amse.soultakov.ereditor.controller.tools.ITool;
+import ru.amse.soultakov.ereditor.controller.tools.ToolAdapter;
 import ru.amse.soultakov.ereditor.model.Relationship;
 import ru.amse.soultakov.ereditor.model.RelationshipEnd;
 import ru.amse.soultakov.ereditor.model.RelationshipMultiplicity;
@@ -27,6 +33,12 @@ public class RelationshipView extends Line {
 
     private static final Object[] COMBOBOX_VALUES = new Object[] { "ONE_ONLY",
             "ONE_OR_MORE", "ZERO_OR_ONE", "ZERO_OR_MORE" };
+
+    private static final ImageIcon[] COMBOBOX_IMAGES = new ImageIcon[] {
+            new ImageIcon("./images/relation_one_only.png"),
+            new ImageIcon("./images/relation_one_or_more.png"),
+            new ImageIcon("./images/relation_zero_or_one.png"),
+            new ImageIcon("./images/relation_zero_or_more.png"), };
 
     private static final int END_WIDTH = 10;
 
@@ -220,7 +232,6 @@ public class RelationshipView extends Line {
     public void processClick(MouseEvent mouseEvent, final DiagramEditor editor) {
         if (mouseEvent.getClickCount() == 2) {
             final JComboBox cb = new JComboBox(COMBOBOX_VALUES);
-            // cb.setLightWeightPopupEnabled(false);
             if (distance(mouseEvent.getX(), mouseEvent.getY(), firstCenterX,
                     firstCenterY) < distance(mouseEvent.getX(), mouseEvent.getY(),
                     secondCenterX, secondCenterY)) {
@@ -236,30 +247,40 @@ public class RelationshipView extends Line {
     private void showComboBox(final DiagramEditor editor, final JComboBox combo,
             int x, int y, final RelationshipEnd end) {
         combo.setSelectedItem(end.getMultiplicity().name());
+        combo.setRenderer(new MyListCellRenderer());
         combo.setBounds(x, y, combo.getPreferredSize().width, combo
                 .getPreferredSize().height);
+        editor.add(combo);
+        editor.revalidate();
+        editor.repaint();
+        final ITool oldTool = editor.getTool();
+        combo.requestFocus();
         combo.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent e) {
                 end.setMultiplicity(RelationshipMultiplicity.valueOf((String) combo
                         .getSelectedItem()));
-                editor.remove(combo);
-                editor.setCurrentToolEnabled(true);
-                editor.repaint();
+                stopEditing(editor, combo, oldTool);
             }
         });
         combo.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                editor.remove(combo);
-                editor.setCurrentToolEnabled(true);
-                editor.repaint();
+                if (e.getKeyCode() == KeyEvent.VK_ESCAPE
+                        || e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                        end.setMultiplicity(RelationshipMultiplicity
+                                .valueOf((String) combo.getSelectedItem()));
+                    }
+                    stopEditing(editor, combo, oldTool);
+                }
             }
         });
-        editor.add(combo);
-        editor.revalidate();
-        editor.repaint();
-        editor.setCurrentToolEnabled(false);
-        combo.requestFocus();
+        editor.setTool(new ToolAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                stopEditing(editor, combo, oldTool);
+            }
+        });
     }
 
     @Override
@@ -273,6 +294,35 @@ public class RelationshipView extends Line {
                 && (y >= secondCenterY - END_WIDTH) && (y <= secondCenterY
                 + END_WIDTH));
         return contains;
+    }
+
+    private void stopEditing(final DiagramEditor editor, final JComboBox combo, ITool oldTool) {
+        editor.remove(combo);
+        editor.setTool(oldTool);
+        editor.repaint();
+    }
+
+    @SuppressWarnings("serial")
+	private class MyListCellRenderer extends DefaultListCellRenderer {
+
+        @Override
+        public Component getListCellRendererComponent(JList list, Object value,
+                int index, boolean isSelected, boolean cellHasFocus) {
+            if (isSelected) {
+                setBackground(list.getSelectionBackground());
+                setForeground(list.getSelectionForeground());
+            } else {
+                setBackground(list.getBackground());
+                setForeground(list.getForeground());
+            }
+            setText(null);
+            if (index >= 0) {
+                setIcon(COMBOBOX_IMAGES[index]);
+            } else {
+                setIcon(COMBOBOX_IMAGES[list.getSelectedIndex()]);
+            }
+            return this;
+        }
     }
 
 }

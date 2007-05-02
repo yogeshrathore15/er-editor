@@ -3,9 +3,12 @@
  */
 package ru.amse.soultakov.ereditor.view;
 
+import static ru.amse.soultakov.ereditor.util.CommonUtils.newArrayList;
+import static ru.amse.soultakov.ereditor.util.CommonUtils.newLinkedHashSet;
+
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -16,8 +19,10 @@ public class SelectedItems<T extends IViewable> implements Iterable<T> {
     /**
      * 
      */
-    private Set<T> selectedViews = new HashSet<T>();
+    private Set<T> selectedViews = newLinkedHashSet();
 
+    private List<SelectedItemsListener> listeners = newArrayList(); 
+    
     /**
      * 
      */
@@ -30,8 +35,13 @@ public class SelectedItems<T extends IViewable> implements Iterable<T> {
      * @return
      */
     public boolean add(T item) {
-        item.setSelected(true);
-        return selectedViews.add(item);
+        if (item != null) {
+            item.setSelected(true);
+            boolean result = selectedViews.add(item);
+            notifyListeners();
+            return result;
+        }
+        return false;
     }
 
     /**
@@ -41,7 +51,9 @@ public class SelectedItems<T extends IViewable> implements Iterable<T> {
     public boolean remove(T item) {
         if (item != null) {
             item.setSelected(false);
-            return selectedViews.remove(item);
+            boolean result = selectedViews.remove(item);
+            notifyListeners();
+            return result;
         }
         return false;
     }
@@ -62,11 +74,13 @@ public class SelectedItems<T extends IViewable> implements Iterable<T> {
             item.setSelected(false);
         }
         selectedViews.clear();
+        notifyListeners();
     }
 
     public void setSelection(T viewable) {
         clear();
         add(viewable);
+        notifyListeners();
     }
 
     public Iterator<T> iterator() {
@@ -92,6 +106,20 @@ public class SelectedItems<T extends IViewable> implements Iterable<T> {
     @Override
     public String toString() {
         return selectedViews.toString();
+    }
+    
+    public boolean addListener(SelectedItemsListener listener) {
+        return listeners.add(listener);
+    }
+    
+    public boolean removeListener(SelectedItemsListener listener) {
+        return listeners.remove(listener);
+    }
+    
+    private void notifyListeners() {
+        for (SelectedItemsListener sil : listeners) {
+            sil.selectionChanged(this);
+        }
     }
 
 }

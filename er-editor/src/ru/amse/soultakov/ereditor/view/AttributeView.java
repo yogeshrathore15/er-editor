@@ -4,7 +4,10 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
+import javax.swing.JOptionPane;
+
 import ru.amse.soultakov.ereditor.model.AbstractAttribute;
+import ru.amse.soultakov.ereditor.model.ArrayAttributeType;
 import ru.amse.soultakov.ereditor.model.IAttributeType;
 import ru.amse.soultakov.ereditor.model.SimpleAttributeType;
 import ru.amse.soultakov.ereditor.util.GraphicsUtils;
@@ -102,23 +105,43 @@ public class AttributeView {
     }
 
     public boolean tryToSetAttribute(String attrString) {
-        boolean matches = attrString.matches("\\w+\\s*:\\s*\\w+[\\s*");
+        boolean matches = attrString.matches("\\w+\\s*:\\s*\\w+(\\[(\\d){1,5}\\])?");
         if (matches) {
             int colonIndex = attrString.lastIndexOf(':');
             String typeString = attrString.substring(colonIndex + 1).trim();
             IAttributeType type = getTypeFromString(typeString);
             if (type == null) {
-                
-            	return false;
+                JOptionPane.showMessageDialog(null, "Некорректное имя типа!",
+                        "Ошибка!", JOptionPane.ERROR_MESSAGE);
+                return false;
             }
             attribute.setType(type);
-            attribute.setName(attrString.substring(0,colonIndex - 1).trim());
+            attribute.setName(attrString.substring(0, colonIndex - 1).trim());
+        } else {
+            JOptionPane.showMessageDialog(null, "Синтаксическая ошибка!", "Ошибка!",
+                    JOptionPane.ERROR_MESSAGE);
         }
         return matches;
     }
 
     private IAttributeType getTypeFromString(String attributeValue) {
-        for(SimpleAttributeType sat : SimpleAttributeType.values()) {
+        int bracketIndex = attributeValue.indexOf('[');
+        if (bracketIndex != -1) {
+            SimpleAttributeType sat = getSimpleTypeFromString(attributeValue
+                    .substring(0, bracketIndex).toUpperCase());
+            if (sat != null) {
+                int size = Integer.parseInt(attributeValue.substring(bracketIndex + 1,
+                        attributeValue.length() - 1));
+                return new ArrayAttributeType(sat, size);                
+            }
+        } else {
+            return getSimpleTypeFromString(attributeValue);
+        }
+        return null;
+    }
+
+    private SimpleAttributeType getSimpleTypeFromString(String attributeValue) {
+        for (SimpleAttributeType sat : SimpleAttributeType.values()) {
             if (sat.name().equalsIgnoreCase(attributeValue)) {
                 return SimpleAttributeType.valueOf(attributeValue.toUpperCase());
             }
