@@ -54,7 +54,7 @@ class NonPrimaryKeyCompartment extends AttributesCompartment {
      * @param graphics
      */
     private void paintAdditionalColumn(Graphics2D graphics) {
-        graphics.drawLine(getAdditionalColumnX(), getAbsoluteY() - MARGIN,
+        graphics.drawLine(getAdditionalColumnX(), getAbsoluteY() - 1,
                 getAdditionalColumnX(), getAbsoluteY() + getHeight(graphics)
                         + MARGIN);
         for (AttributeView av : attributes) {

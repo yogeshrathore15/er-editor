@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -19,8 +20,10 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
-import ru.amse.soultakov.ereditor.controller.tools.SelectElementTool;
 import ru.amse.soultakov.ereditor.controller.tools.ITool;
+import ru.amse.soultakov.ereditor.controller.tools.SelectElementTool;
+import ru.amse.soultakov.ereditor.controller.undo.CommandManager;
+import ru.amse.soultakov.ereditor.util.CommonUtils;
 import ru.amse.soultakov.ereditor.view.Block;
 import ru.amse.soultakov.ereditor.view.CommentView;
 import ru.amse.soultakov.ereditor.view.Diagram;
@@ -54,6 +57,8 @@ public class DiagramEditor extends JPanel {
     private ITool currentTool;
 
     private final RemoveItemsVisitor itemsRemover = new RemoveItemsVisitor();
+    
+    private final CommandManager commandManager = new CommandManager();
 
     private final IViewableListener viewableListener = new IViewableListener() {
         public void notify(IViewable viewable) {
@@ -111,7 +116,7 @@ public class DiagramEditor extends JPanel {
     }
 
     public void setTool(ITool tool) {
-        getSelectedItems().clear();
+//        getSelectedItems().clear();
         repaint();
         if (tool != null) {
             notifyListeners(getCurrentTool(), tool);
@@ -127,6 +132,9 @@ public class DiagramEditor extends JPanel {
     @Override
     public Dimension getPreferredSize() {
         Dimension newDim = diagram.getSize();
+        Point p = CommonUtils.getRightBottomPoint(selectedOutlines.toSet());
+        newDim.height = newDim.height > p.y ? newDim.height : p.y;
+        newDim.width = newDim.width > p.x ? newDim.width : p.x;
         double height = newDim.getHeight() < MIN_SIZE.getHeight() ? MIN_SIZE
                 .getHeight() : newDim.getHeight();
         double width = newDim.getWidth() < MIN_SIZE.getWidth() ? MIN_SIZE.getWidth()
@@ -202,7 +210,6 @@ public class DiagramEditor extends JPanel {
 
             public void mouseEntered(MouseEvent e) {
                 if (currentToolEnabled) {
-                    requestFocusInWindow();
                     getCurrentTool().mouseEntered(e);
                 }
             }
@@ -344,6 +351,14 @@ public class DiagramEditor extends JPanel {
     public void setDiagram(Diagram diagram) {
         this.diagram = diagram;
         repaint();
+    }
+
+    public ITool getTool() {
+        return currentTool;
+    }
+    
+    public CommandManager getCommandManager() {
+        return this.commandManager;
     }
 
 }
