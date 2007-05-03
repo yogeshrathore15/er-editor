@@ -12,7 +12,7 @@ import ru.amse.soultakov.ereditor.model.ICopyable;
 /**
  * @author Soultakov Maxim
  */
-public interface IViewable extends ICopyable<IViewable>{
+public interface IViewable extends ICopyable<IViewable> {
 
     void setSelected(boolean selected);
 
@@ -39,11 +39,13 @@ public interface IViewable extends ICopyable<IViewable>{
     void addListener(IViewableListener viewableListener);
 
     boolean removeListener(IViewableListener viewableListener);
-    
+
     IOutline getOutline();
-    
-    public void processClick(MouseEvent mouseEvent, DiagramEditor component);
-    
-    void exitProcessing();
-    
+
+    public void processClick(MouseEvent mouseEvent, DiagramEditor editor);
+
+    public void processDrag(MouseEvent mouseEvent, DiagramEditor editor);
+
+    public void processRelease(MouseEvent mouseEvent, DiagramEditor editor);
+
 }

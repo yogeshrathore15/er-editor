@@ -5,6 +5,7 @@ import ru.amse.soultakov.ereditor.model.ERModel;
 
 public interface IDiagramSaver {
 
-    public void save(Diagram diagram, ERModel erModel, IProgressMonitor monitor) throws DiagramSavingException;
-    
+    public void save(Diagram diagram, ERModel erModel, IProgressMonitor monitor)
+            throws DiagramSavingException;
+
 }

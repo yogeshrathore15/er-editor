@@ -17,11 +17,12 @@ public class SavingIdManager {
     private final Map<Object, String> identifiers = newHashMap();
 
     private final AutoincrementGenerator generator = new AutoincrementGenerator();
+
     /**
      * 
      */
     public SavingIdManager() {
-    	//
+        //
     }
 
     public String getId(Object object) {
@@ -30,21 +31,21 @@ public class SavingIdManager {
         }
         return identifiers.get(object);
     }
-    
+
     public Object getObject(String id) {
         return identifiers.get(id);
     }
 
     public String putId(Object object, String id) {
-    	return identifiers.put(object, id);
+        return identifiers.put(object, id);
     }
-    
-    /** 
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public String toString() {
-    	return identifiers.toString();
+        return identifiers.toString();
     }
 
 }

@@ -6,6 +6,8 @@ import java.awt.geom.Rectangle2D;
 
 import javax.swing.JOptionPane;
 
+import ru.amse.soultakov.ereditor.controller.DiagramEditor;
+import ru.amse.soultakov.ereditor.controller.undo.commands.EditAttributeCommand;
 import ru.amse.soultakov.ereditor.model.AbstractAttribute;
 import ru.amse.soultakov.ereditor.model.ArrayAttributeType;
 import ru.amse.soultakov.ereditor.model.IAttributeType;
@@ -22,28 +24,17 @@ public class AttributeView {
 
     private Block entityView;
 
-    private Compartment compartment;
-
     private boolean selected;
 
     private volatile int lastPaintedY;
 
-    public AttributeView(AbstractAttribute attribute, Block entityView,
-            Compartment compartment) {
+    public AttributeView(AbstractAttribute attribute, Block entityView) {
         this.attribute = attribute;
         this.entityView = entityView;
-        this.compartment = compartment;
     }
 
     public AbstractAttribute getAttribute() {
         return this.attribute;
-    }
-
-    /**
-     * @return the compartment
-     */
-    public Compartment getCompartment() {
-        return this.compartment;
     }
 
     public void setSelected(boolean selected) {
@@ -104,7 +95,7 @@ public class AttributeView {
         return this.attribute.getName();
     }
 
-    public boolean tryToSetAttribute(String attrString) {
+    public boolean tryToSetAttribute(String attrString, DiagramEditor diagramEditor) {
         boolean matches = attrString.matches("\\w+\\s*:\\s*\\w+(\\[(\\d){1,5}\\])?");
         if (matches) {
             int colonIndex = attrString.lastIndexOf(':');
@@ -115,8 +106,9 @@ public class AttributeView {
                         "Ошибка!", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
-            attribute.setType(type);
-            attribute.setName(attrString.substring(0, colonIndex - 1).trim());
+            String newName = attrString.substring(0, colonIndex - 1).trim();
+            diagramEditor.getCommandManager().executeCommand(
+                    new EditAttributeCommand(diagramEditor, this, newName, type));
         } else {
             JOptionPane.showMessageDialog(null, "Синтаксическая ошибка!", "Ошибка!",
                     JOptionPane.ERROR_MESSAGE);
@@ -130,9 +122,9 @@ public class AttributeView {
             SimpleAttributeType sat = getSimpleTypeFromString(attributeValue
                     .substring(0, bracketIndex).toUpperCase());
             if (sat != null) {
-                int size = Integer.parseInt(attributeValue.substring(bracketIndex + 1,
-                        attributeValue.length() - 1));
-                return new ArrayAttributeType(sat, size);                
+                int size = Integer.parseInt(attributeValue.substring(
+                        bracketIndex + 1, attributeValue.length() - 1));
+                return new ArrayAttributeType(sat, size);
             }
         } else {
             return getSimpleTypeFromString(attributeValue);

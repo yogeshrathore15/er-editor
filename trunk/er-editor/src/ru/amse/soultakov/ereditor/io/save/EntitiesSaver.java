@@ -101,8 +101,8 @@ class EntitiesSaver {
             Element uniqueRoot = new Element(TAG_UNIQUE);
             uniqueRoot.setAttribute(ATTR_ID, savingIdManager.getId(uniqueRoot));
             for (AbstractAttribute aa : col) {
-                uniqueRoot.addContent(new Element(TAG_ATTRIBUTE).setAttribute(ATTR_ID,
-                        savingIdManager.getId(aa)));
+                uniqueRoot.addContent(new Element(TAG_ATTRIBUTE).setAttribute(
+                        ATTR_ID, savingIdManager.getId(aa)));
             }
             elements.add(uniqueRoot);
         }

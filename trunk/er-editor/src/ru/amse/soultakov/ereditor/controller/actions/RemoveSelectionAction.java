@@ -29,11 +29,12 @@ public class RemoveSelectionAction extends AbstractAction {
         super(name);
         this.diagramEditor = diagramEditor;
         setEnabled(false);
-        this.diagramEditor.getSelectedItems().addListener(new SelectedItemsListener() {
-            public void selectionChanged(SelectedItems selection) {
-                setEnabled(!selection.isEmpty());
-            }
-        });
+        this.diagramEditor.getSelectedItems().addListener(
+                new SelectedItemsListener() {
+                    public void selectionChanged(SelectedItems selection) {
+                        setEnabled(!selection.isEmpty());
+                    }
+                });
     }
 
     public void actionPerformed(ActionEvent e) {

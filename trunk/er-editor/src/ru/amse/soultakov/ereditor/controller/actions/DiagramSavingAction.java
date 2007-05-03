@@ -35,7 +35,7 @@ public final class DiagramSavingAction extends AbstractAction {
 
     public void actionPerformed(ActionEvent e) {
         if (fileChooser.showSaveDialog(diagramEditorFrame) == JFileChooser.APPROVE_OPTION) {
-            final IProgressMonitor monitor = new ProgressMonitorAdapter(null); 
+            final IProgressMonitor monitor = new ProgressMonitorAdapter(null);
             new Thread(new Runnable() {
                 public void run() {
                     try {
@@ -46,7 +46,8 @@ public final class DiagramSavingAction extends AbstractAction {
                         }
                         XmlDiagramSaver xds = new XmlDiagramSaver(
                                 new FileOutputStream(fileName));
-                        diagramEditorFrame.getDiagramEditor().getDiagram().save(xds, monitor);
+                        diagramEditorFrame.getDiagramEditor().getDiagram().save(xds,
+                                monitor);
                     } catch (DiagramSavingException ex) {
                         JOptionPane.showMessageDialog(diagramEditorFrame,
                                 "Ошибка при сохранении диаграммы");

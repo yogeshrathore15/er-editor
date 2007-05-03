@@ -8,6 +8,7 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 
 import ru.amse.soultakov.ereditor.controller.DiagramEditor;
+import ru.amse.soultakov.ereditor.controller.undo.commands.AddEntityCommand;
 
 public class AddEntityTool extends ToolAdapter {
 
@@ -19,10 +20,11 @@ public class AddEntityTool extends ToolAdapter {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        diagramEditor.addEntity(e.getX(), e.getY());
+        diagramEditor.getCommandManager().executeCommand(
+                new AddEntityCommand(diagramEditor, e.getX(), e.getY()));
         diagramEditor.revalidate();
         Dimension ps = diagramEditor.getPreferredSize();
-        diagramEditor.scrollRectToVisible(new Rectangle(ps.width ,ps.height,0,0));
+        diagramEditor.scrollRectToVisible(new Rectangle(ps.width, ps.height, 0, 0));
         operationFinished();
     }
 

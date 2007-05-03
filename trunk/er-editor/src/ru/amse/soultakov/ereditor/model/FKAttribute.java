@@ -5,7 +5,7 @@ package ru.amse.soultakov.ereditor.model;
 
 /**
  * @author Soultakov Maxim
- *
+ * 
  */
 public class FKAttribute extends AbstractAttribute {
 

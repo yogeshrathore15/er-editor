@@ -51,7 +51,7 @@ public final class DiagramLoadingAction extends AbstractAction {
                                 "Ошибка при загрузке диаграммы");
                     } catch (FileNotFoundException ex) {
                         JOptionPane.showMessageDialog(diagramEditorFrame,
-                            "Невозможно чтение из указанного файла");
+                                "Невозможно чтение из указанного файла");
                     }
                 }
             }).start();

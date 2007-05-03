@@ -33,51 +33,51 @@ public abstract class ToolAdapter implements ITool {
     }
 
     public void keyPressed(KeyEvent e) {
-    	//empty
+        // empty
     }
 
     public void keyReleased(KeyEvent e) {
-    	//empty
+        // empty
     }
 
     public void keyTyped(KeyEvent e) {
-    	//empty
+        // empty
     }
 
     public void mouseClicked(MouseEvent e) {
-    	//empty
+        // empty
     }
 
     public void mouseDragged(MouseEvent e) {
-    	//empty
+        // empty
     }
 
     public void mouseEntered(MouseEvent e) {
-    	//empty
+        // empty
     }
 
     public void mouseExited(MouseEvent e) {
-    	//empty
+        // empty
     }
 
     public void mouseMoved(MouseEvent e) {
-    	//empty
+        // empty
     }
 
     public void mousePressed(MouseEvent e) {
-    	//empty
+        // empty
     }
 
     public void mouseReleased(MouseEvent e) {
-    	//empty
+        // empty
     }
 
     public void paintAfter(Graphics2D graphics) {
-    	//empty
+        // empty
     }
 
     public void paintBefore(Graphics2D graphics) {
-    	//empty
+        // empty
     }
 
 }

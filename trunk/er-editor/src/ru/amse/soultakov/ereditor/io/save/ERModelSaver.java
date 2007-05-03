@@ -58,22 +58,22 @@ public class ERModelSaver {
 
     public static void main(String[] args) throws IOException {
         ERModel er = new ERModel();
-        
+
         Entity entity1 = er.addNewEntity();
         entity1.addAttribute(new Attribute("MyName", SimpleAttributeType.INTEGER,
                 false, "10"));
-        
+
         Entity entity2 = er.addNewEntity();
         entity1.addAttribute(new FKAttribute("foreign", false, "Empty", entity2,
                 entity2.getAttributes().iterator().next()));
-        
-        er.addNewRealtionship(entity1, entity2);
+
+        er.addNewRelationship(entity1, entity2);
         Comment comment = er.addNewComment();
         er.addNewLink(entity1, comment);
 
         ERModelSaver erSaver = new ERModelSaver(er, new SavingIdManager());
         Document doc = new Document(erSaver.save());
-        
+
         XMLOutputter out = new XMLOutputter(Format.getPrettyFormat());
         FileOutputStream fos = new FileOutputStream("model.xml");
         out.output(doc, fos);

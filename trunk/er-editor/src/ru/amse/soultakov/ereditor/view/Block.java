@@ -217,11 +217,17 @@ public abstract class Block implements IViewable {
     public IOutline getOutline() {
         return new BlockOutline(diagram, this);
     }
-    
+
     public void processClick(MouseEvent mouseEvent, DiagramEditor editor) {
     }
-    
+
     public void exitProcessing() {
+    }
+
+    public void processDrag(MouseEvent mouseEvent, DiagramEditor editor) {
+    }
+
+    public void processRelease(MouseEvent mouseEvent, DiagramEditor editor) {
     }
 
 }

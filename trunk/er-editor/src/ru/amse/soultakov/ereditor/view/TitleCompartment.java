@@ -32,7 +32,7 @@ public class TitleCompartment extends Compartment {
         int newCurY = entityView.getY() + y + height;
         graphics.drawString(entityView.getEntity().getName(), entityView.getX()
                 + Block.MARGIN, newCurY);
-        return newCurY;
+        return getY() + entityView.getY() + getHeight(graphics);
     }
 
     /**

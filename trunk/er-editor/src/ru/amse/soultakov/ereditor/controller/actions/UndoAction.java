@@ -12,22 +12,28 @@ import ru.amse.soultakov.ereditor.controller.undo.CommandManagerListener;
 public class UndoAction extends AbstractAction {
 
     private final DiagramEditor diagramEditor;
-    
+
     public UndoAction(DiagramEditor editor, String name, Icon icon) {
         super(name);
         this.diagramEditor = editor;
         setEnabled(false);
-        this.diagramEditor.getCommandManager().addListener(new CommandManagerListener() {
-            public void commandInvoked() {
-                UndoAction.this.setEnabled(diagramEditor.getCommandManager().canUndoCommand());
-            }
-            public void commandRedone() {
-                UndoAction.this.setEnabled(diagramEditor.getCommandManager().canUndoCommand());
-            }
-            public void commandUndone() {
-                UndoAction.this.setEnabled(diagramEditor.getCommandManager().canUndoCommand());
-            }
-        });
+        this.diagramEditor.getCommandManager().addListener(
+                new CommandManagerListener() {
+                    public void commandInvoked() {
+                        UndoAction.this.setEnabled(diagramEditor.getCommandManager()
+                                .canUndoCommand());
+                    }
+
+                    public void commandRedone() {
+                        UndoAction.this.setEnabled(diagramEditor.getCommandManager()
+                                .canUndoCommand());
+                    }
+
+                    public void commandUndone() {
+                        UndoAction.this.setEnabled(diagramEditor.getCommandManager()
+                                .canUndoCommand());
+                    }
+                });
     }
 
     public void actionPerformed(ActionEvent e) {

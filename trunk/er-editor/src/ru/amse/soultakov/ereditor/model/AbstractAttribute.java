@@ -17,7 +17,7 @@ public abstract class AbstractAttribute implements ICopyable<AbstractAttribute> 
     public String getName() {
         return name;
     }
-    
+
     public void setName(String name) {
         this.name = name;
     }
@@ -36,7 +36,7 @@ public abstract class AbstractAttribute implements ICopyable<AbstractAttribute> 
     }
 
     public abstract AbstractAttribute copy();
-    
+
     public abstract void setType(IAttributeType attributeType);
 
 }

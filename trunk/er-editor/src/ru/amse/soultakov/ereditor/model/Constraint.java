@@ -29,7 +29,7 @@ public class Constraint<T extends AbstractAttribute> implements Iterable<T> {
         return attributes.add(attribute);
     }
 
-    public boolean remove(T attribute) {
+    public boolean remove(AbstractAttribute attribute) {
         return attributes.remove(attribute);
     }
 
@@ -39,6 +39,10 @@ public class Constraint<T extends AbstractAttribute> implements Iterable<T> {
 
     public boolean contains(AbstractAttribute o) {
         return this.attributes.contains(o);
+    }
+
+    public int size() {
+        return attributes.size();
     }
 
 }

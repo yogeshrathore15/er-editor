@@ -12,9 +12,10 @@ import org.jdom.Content;
 import org.jdom.Element;
 
 import ru.amse.soultakov.ereditor.model.Link;
+
 class LinksSaver {
 
-	private final SavingIdManager savingIdManager;
+    private final SavingIdManager savingIdManager;
 
     private final Collection<Link> links;
 

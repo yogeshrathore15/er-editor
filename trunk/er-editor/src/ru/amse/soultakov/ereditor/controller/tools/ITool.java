@@ -75,5 +75,5 @@ public interface ITool {
     public void addListener(IToolListener listener);
 
     public boolean removeListener(IToolListener listener);
-    
+
 }

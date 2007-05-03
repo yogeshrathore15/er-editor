@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -19,6 +20,7 @@ import javax.swing.JTextField;
 import ru.amse.soultakov.ereditor.controller.DiagramEditor;
 import ru.amse.soultakov.ereditor.controller.tools.ITool;
 import ru.amse.soultakov.ereditor.controller.tools.ToolAdapter;
+import ru.amse.soultakov.ereditor.controller.undo.commands.EditEntityNameCommand;
 import ru.amse.soultakov.ereditor.model.AbstractAttribute;
 import ru.amse.soultakov.ereditor.model.Constraint;
 import ru.amse.soultakov.ereditor.model.Entity;
@@ -29,6 +31,10 @@ import ru.amse.soultakov.ereditor.util.GraphicsUtils;
  * @author Soultakov Maxim
  */
 public class EntityView extends Block {
+
+    private static final int LAST = -3;
+
+    private static final int FIRST = -2;
 
     private static final Color BACKGROUND_COLOR = new Color(210, 210, 210);
 
@@ -52,6 +58,7 @@ public class EntityView extends Block {
             throw new IllegalArgumentException("Entity must be non-null");
         }
         this.entity = entity;
+        initAttributes();
     }
 
     private void initCompartments(Graphics2D graphics) {
@@ -59,19 +66,27 @@ public class EntityView extends Block {
         pkCompartment = new PrimaryKeyCompartment(titleCompartment
                 .getHeight(graphics)
                 + MARGIN * 2, this);
-        initCompartment(pkCompartment, entity.getPrimaryKey());
+        Constraint<AbstractAttribute> primaryKey = entity.getPrimaryKey();
+        pkCompartment.setStartIndex(0);
+        pkCompartment.setEndIndex(primaryKey.size());
         nonPkCompartment = new NonPrimaryKeyCompartment(pkCompartment
                 .getHeight(graphics)
-                + MARGIN * 4, this);
-        initCompartment(nonPkCompartment, entity.getAttributesExceptPK());
+                + titleCompartment.getHeight(graphics) + MARGIN * 4, this);
+        Collection<AbstractAttribute> attributesExceptPK = entity
+                .getAttributesExceptPK();
+        nonPkCompartment.setStartIndex(primaryKey.size());
+        nonPkCompartment.setEndIndex(primaryKey.size() + attributesExceptPK.size());
     }
 
-    private void initCompartment(AttributesCompartment compartment,
-            Iterable<AbstractAttribute> attrs) {
-        for (AbstractAttribute a : attrs) {
-            AttributeView attributeView = new AttributeView(a, this, compartment);
+    private void initAttributes() {
+        attributeViews = new ArrayList<AttributeView>(entity.getAttributes().size());
+        for (AbstractAttribute a : entity.getPrimaryKey()) {
+            AttributeView attributeView = new AttributeView(a, this);
             attributeViews.add(attributeView);
-            compartment.getAttributes().add(attributeView);
+        }
+        for (AbstractAttribute a : entity.getAttributesExceptPK()) {
+            AttributeView attributeView = new AttributeView(a, this);
+            attributeViews.add(attributeView);
         }
     }
 
@@ -109,7 +124,7 @@ public class EntityView extends Block {
         }
         return false;
     }
-    
+
     boolean isForeignKey(AbstractAttribute a) {
         for (Constraint<FKAttribute> index : entity.getForeignKeys()) {
             if (index.contains(a)) {
@@ -129,7 +144,7 @@ public class EntityView extends Block {
     protected Dimension getContentBounds(Graphics2D graphics) {
         lazyInitCompartments(graphics);
         List<Rectangle2D> bounds = new ArrayList<Rectangle2D>(3);
-        bounds.add(GraphicsUtils.getStringBounds(graphics, entity.getName()));
+        bounds.add(titleCompartment.getContentBounds(graphics));
         bounds.add(pkCompartment.getContentBounds(graphics));
         bounds.add(nonPkCompartment.getContentBounds(graphics));
         int height = 0;
@@ -138,7 +153,8 @@ public class EntityView extends Block {
         }
         Rectangle2D withMaxWidth = Collections.max(bounds,
                 GraphicsUtils.WIDTH_COMPARATOR);
-        return new Dimension((int) withMaxWidth.getWidth() + MARGIN * 2, height);
+        return new Dimension((int) withMaxWidth.getWidth() + MARGIN * 2, height
+                + MARGIN * 5);
     }
 
     public Entity getEntity() {
@@ -165,7 +181,8 @@ public class EntityView extends Block {
 
     @Override
     public void processClick(MouseEvent mouseEvent, final DiagramEditor editor) {
-        if (mouseEvent.getButton() == MouseEvent.BUTTON1) {
+        if (mouseEvent.getButton() == MouseEvent.BUTTON1
+                && !mouseEvent.isShiftDown()) {
             if (mouseEvent.getClickCount() == 1) {
                 selectAttribute(mouseEvent.getY());
             } else if (mouseEvent.getClickCount() == 2) {
@@ -191,9 +208,10 @@ public class EntityView extends Block {
                     stopEditing(editor, tf, oldTool);
                 } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     if (!tf.getText().isEmpty()) {
-                        entity.setName(tf.getText());
+                        editor.getCommandManager().executeCommand(
+                                new EditEntityNameCommand(editor, EntityView.this,
+                                        tf.getText()));
                         stopEditing(editor, tf, oldTool);
-                        System.out.println(entity.getName());
                     } else {
                         JOptionPane.showMessageDialog(null,
                                 "Синтаксическая ошибка!", "Ошибка!",
@@ -203,7 +221,7 @@ public class EntityView extends Block {
             }
         });
         editor.add(tf);
-        tf.requestFocus();        
+        tf.requestFocus();
         editor.setTool(new ToolAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -226,7 +244,7 @@ public class EntityView extends Block {
                     stopEditing(editor, tf, oldTool);
                 } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     if (attributeViews.get(selectedAttributeIndex)
-                            .tryToSetAttribute(tf.getText())) {
+                            .tryToSetAttribute(tf.getText(), editor)) {
                         stopEditing(editor, tf, oldTool);
                     }
                 }
@@ -254,11 +272,23 @@ public class EntityView extends Block {
         }
     }
 
-//    @Override
-//    public void exitProcessing() {
-//        attributeViews.get(selectedAttributeIndex).setSelected(false);
-//        selectedAttributeIndex = -1;
-//    }
+    private int getAttributeIndex(int y) {
+        if (attributeViews.size() > 0) {
+            if (y < attributeViews.get(0).getLastPaintedY() - 15) {
+                return EntityView.FIRST;
+            } else if (y > attributeViews.get(attributeViews.size() - 1)
+                    .getLastPaintedY()) {
+                return EntityView.LAST;
+            }
+            for (int i = 0; i < attributeViews.size(); i++) {
+                if (attributeViews.get(i).getLastPaintedY() >= y
+                        && attributeViews.get(i).getLastPaintedY() <= y + 15) {
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
 
     /**
      * {@inheritDoc}
@@ -266,17 +296,105 @@ public class EntityView extends Block {
     @Override
     public void setSelected(boolean selected) {
         if (selectedAttributeIndex != -1 && !selected) {
-            attributeViews.get(selectedAttributeIndex).setSelected(false);
+            if (selectedAttributeIndex < attributeViews.size()) {
+                attributeViews.get(selectedAttributeIndex).setSelected(false);
+            }
             selectedAttributeIndex = -1;
         }
         super.setSelected(selected);
     }
 
-    private void stopEditing(final DiagramEditor editor, final JTextField tf, ITool oldTool) {
+    private void stopEditing(final DiagramEditor editor, final JTextField tf,
+            ITool oldTool) {
         editor.remove(tf);
         editor.setTool(oldTool);
         editor.repaint();
         selectedAttributeIndex = -1;
+    }
+
+    public void addAttribute(AbstractAttribute attribute) {
+        entity.addAttribute(attribute);
+        attributeViews.add(new AttributeView(attribute, this));
+        nonPkCompartment.setEndIndex(attributeViews.size());
+        initialized = false;
+        notifyListeners();
+    }
+
+    public void editAttribute(int index, DiagramEditor editor) {
+        if (index < 0 || index >= attributeViews.size()) {
+            throw new IndexOutOfBoundsException(
+                    "The index is out of bounds. Index = " + index + " size = "
+                            + attributeViews.size());
+        }
+        selectedAttributeIndex = index;
+        editAttribute(editor);
+    }
+
+    public boolean isAttributeSelected() {
+        return selectedAttributeIndex != -1
+                && selectedAttributeIndex < attributeViews.size();
+    }
+
+    public void removeSelectedAttribute() {
+        if (isAttributeSelected()) {
+            entity.removeAttribute(attributeViews.get(selectedAttributeIndex)
+                    .getAttribute());
+            attributeViews.remove(selectedAttributeIndex);
+            initialized = false;
+            notifyListeners();
+        }
+    }
+
+    private boolean dragStarted;
+
+    @Override
+    public void processDrag(MouseEvent mouseEvent, DiagramEditor editor) {
+        if (!dragStarted) {
+            selectAttribute(mouseEvent.getY());
+            notifyListeners();
+            dragStarted = true;
+        } else {
+
+        }
+    }
+
+    @Override
+    public void processRelease(MouseEvent mouseEvent, DiagramEditor editor) {
+        if (dragStarted) {
+            int index = getAttributeIndex(mouseEvent.getY());
+            if (index != -1 && selectedAttributeIndex != -1) {
+                AttributeView tmp = attributeViews.remove(selectedAttributeIndex);
+                boolean pkContains = pkCompartment.contains(selectedAttributeIndex);
+                boolean nonPkContains = nonPkCompartment
+                        .contains(selectedAttributeIndex);
+                if (index == FIRST) {
+                    pkCompartment.setEndIndex(1);
+                    index = 0;
+                } else if (index == LAST) {
+                    nonPkCompartment
+                            .setStartIndex(nonPkCompartment.getStartIndex() - 1);
+                    pkCompartment.setEndIndex(pkCompartment.getEndIndex() - 1);
+                    index = attributeViews.size();
+                }
+                attributeViews.add(index, tmp);
+                if (pkCompartment.contains(index)) {
+                    if (nonPkContains) {
+                        entity.addToPrimaryKey(tmp.getAttribute());
+                    }
+                } else {
+                    if (pkContains) {
+                        entity.removeFromPrimaryKey(tmp.getAttribute());
+                    }
+                }
+                initialized = false;
+                notifyListeners();
+            }
+        }
+        dragStarted = false;
+    }
+
+    public List<AttributeView> getAttributes() {
+        return attributeViews;
     }
 
 }
