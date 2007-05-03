@@ -15,4 +15,5 @@ public class ERMain {
         def.setExtendedState(Frame.MAXIMIZED_BOTH);
         def.setVisible(true);
     }
+    
 }
