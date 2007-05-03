@@ -22,6 +22,7 @@ import javax.swing.JList;
 import ru.amse.soultakov.ereditor.controller.DiagramEditor;
 import ru.amse.soultakov.ereditor.controller.tools.ITool;
 import ru.amse.soultakov.ereditor.controller.tools.ToolAdapter;
+import ru.amse.soultakov.ereditor.controller.undo.commands.EditMultiplicityCommand;
 import ru.amse.soultakov.ereditor.model.Relationship;
 import ru.amse.soultakov.ereditor.model.RelationshipEnd;
 import ru.amse.soultakov.ereditor.model.RelationshipMultiplicity;
@@ -35,10 +36,14 @@ public class RelationshipView extends Line {
             "ONE_OR_MORE", "ZERO_OR_ONE", "ZERO_OR_MORE" };
 
     private static final ImageIcon[] COMBOBOX_IMAGES = new ImageIcon[] {
-            new ImageIcon("./images/relation_one_only.png"),
-            new ImageIcon("./images/relation_one_or_more.png"),
-            new ImageIcon("./images/relation_zero_or_one.png"),
-            new ImageIcon("./images/relation_zero_or_more.png"), };
+            new ImageIcon(RelationshipView.class.getClassLoader().getResource(
+                    "./images/relation_one_only.png")),
+            new ImageIcon(RelationshipView.class.getClassLoader().getResource(
+                    "./images/relation_one_or_more.png")),
+            new ImageIcon(RelationshipView.class.getClassLoader().getResource(
+                    "./images/relation_zero_or_one.png")),
+            new ImageIcon(RelationshipView.class.getClassLoader().getResource(
+                    "./images/relation_zero_or_more.png")), };
 
     private static final int END_WIDTH = 10;
 
@@ -257,9 +262,7 @@ public class RelationshipView extends Line {
         combo.requestFocus();
         combo.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent e) {
-                end.setMultiplicity(RelationshipMultiplicity.valueOf((String) combo
-                        .getSelectedItem()));
-                stopEditing(editor, combo, oldTool);
+                executeChangeMultiplicityCommand(editor, combo, end, oldTool);
             }
         });
         combo.addKeyListener(new KeyAdapter() {
@@ -268,10 +271,8 @@ public class RelationshipView extends Line {
                 if (e.getKeyCode() == KeyEvent.VK_ESCAPE
                         || e.getKeyCode() == KeyEvent.VK_ENTER) {
                     if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                        end.setMultiplicity(RelationshipMultiplicity
-                                .valueOf((String) combo.getSelectedItem()));
+                        executeChangeMultiplicityCommand(editor, combo, end, oldTool);
                     }
-                    stopEditing(editor, combo, oldTool);
                 }
             }
         });
@@ -296,14 +297,26 @@ public class RelationshipView extends Line {
         return contains;
     }
 
-    private void stopEditing(final DiagramEditor editor, final JComboBox combo, ITool oldTool) {
+    private void stopEditing(final DiagramEditor editor, final JComboBox combo,
+            ITool oldTool) {
         editor.remove(combo);
         editor.setTool(oldTool);
         editor.repaint();
     }
 
+    private void executeChangeMultiplicityCommand(final DiagramEditor editor,
+            final JComboBox combo, final RelationshipEnd end, final ITool oldTool) {
+        RelationshipMultiplicity mult = RelationshipMultiplicity
+                .valueOf((String) combo.getSelectedItem());
+        if (!mult.equals(end.getMultiplicity())) {
+            editor.getCommandManager().executeCommand(
+                    new EditMultiplicityCommand(editor, end, mult));
+        }
+        stopEditing(editor, combo, oldTool);
+    }
+
     @SuppressWarnings("serial")
-	private class MyListCellRenderer extends DefaultListCellRenderer {
+    private class MyListCellRenderer extends DefaultListCellRenderer {
 
         @Override
         public Component getListCellRendererComponent(JList list, Object value,

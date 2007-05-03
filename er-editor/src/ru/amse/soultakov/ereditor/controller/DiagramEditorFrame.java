@@ -19,10 +19,12 @@ import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 
 import ru.amse.soultakov.ereditor.ERMain;
+import ru.amse.soultakov.ereditor.controller.actions.AddAttributeAction;
 import ru.amse.soultakov.ereditor.controller.actions.DiagramEditorAction;
 import ru.amse.soultakov.ereditor.controller.actions.DiagramLoadingAction;
 import ru.amse.soultakov.ereditor.controller.actions.DiagramSavingAction;
 import ru.amse.soultakov.ereditor.controller.actions.RedoAction;
+import ru.amse.soultakov.ereditor.controller.actions.RemoveAttributeAction;
 import ru.amse.soultakov.ereditor.controller.actions.RemoveSelectionAction;
 import ru.amse.soultakov.ereditor.controller.actions.UndoAction;
 import ru.amse.soultakov.ereditor.controller.tools.AddCommentTool;
@@ -87,6 +89,8 @@ public class DiagramEditorFrame extends JFrame
 		toolBar.add(new JButton(new RemoveSelectionAction(diagramEditor, "Remove")));
 		toolBar.add(new JButton(new UndoAction(diagramEditor, "Undo", null)));
 		toolBar.add(new JButton(new RedoAction(diagramEditor, "Redo", null)));
+        toolBar.add(new JButton(new AddAttributeAction(diagramEditor, "Add attribute", null)));
+        toolBar.add(new JButton(new RemoveAttributeAction(diagramEditor, "Remove attribute", null)));
 		return toolBar;
 	}
 

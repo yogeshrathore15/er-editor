@@ -54,17 +54,17 @@ class NonPrimaryKeyCompartment extends AttributesCompartment {
      * @param graphics
      */
     private void paintAdditionalColumn(Graphics2D graphics) {
-        graphics.drawLine(getAdditionalColumnX(), getAbsoluteY() - 1,
+        graphics.drawLine(getAdditionalColumnX(), getAbsoluteY() - 2,
                 getAdditionalColumnX(), getAbsoluteY() + getHeight(graphics)
                         + MARGIN);
-        for (AttributeView av : attributes) {
+        for (AttributeView av : getAttributes()) {
             if (entityView.isUnique(av.getAttribute())) {
                 int x = getAdditionalColumnX();
                 int y = av.getLastPaintedY();
                 graphics.drawString(UNIQUE, x + MARGIN, y);
             }
         }
-        for (AttributeView av : attributes) {
+        for (AttributeView av : getAttributes()) {
             if (entityView.isForeignKey(av.getAttribute())) {
                 int x = getAdditionalColumnX();
                 int y = av.getLastPaintedY();

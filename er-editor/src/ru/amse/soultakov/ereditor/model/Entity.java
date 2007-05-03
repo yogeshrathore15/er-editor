@@ -83,7 +83,14 @@ public class Entity implements Iterable<AbstractAttribute>, ICopyable<Entity> {
      * @param attribute
      * @return
      */
-    public boolean removeAttribute(Attribute attribute) {
+    public boolean removeAttribute(AbstractAttribute attribute) {
+        primaryKey.remove(attribute);
+        for (Constraint<FKAttribute> c : foreignKeys) {
+            c.remove(attribute);
+        }
+        for (Constraint<AbstractAttribute> c : uniqueAttributes) {
+            c.remove(attribute);
+        }
         return attributes.remove(attribute);
     }
 
@@ -117,35 +124,35 @@ public class Entity implements Iterable<AbstractAttribute>, ICopyable<Entity> {
         return links.iterator();
     }
 
-//    @Override
-//    public int hashCode() {
-//        final int PRIME = 31;
-//        int result = 1;
-//        result = PRIME * result + ((name == null) ? 0 : name.hashCode());
-//        return result;
-//    }
+    // @Override
+    // public int hashCode() {
+    // final int PRIME = 31;
+    // int result = 1;
+    // result = PRIME * result + ((name == null) ? 0 : name.hashCode());
+    // return result;
+    // }
 
-//    @Override
-//    public boolean equals(Object obj) {
-//        if (this == obj) {
-//            return true;
-//        }
-//        if (obj == null) {
-//            return false;
-//        }
-//        if (getClass() != obj.getClass()) {
-//            return false;
-//        }
-//        final Entity other = (Entity) obj;
-//        if (name == null) {
-//            if (other.name != null) {
-//                return false;
-//            }
-//        } else if (!name.equals(other.name)) {
-//            return false;
-//        }
-//        return true;
-//    }
+    // @Override
+    // public boolean equals(Object obj) {
+    // if (this == obj) {
+    // return true;
+    // }
+    // if (obj == null) {
+    // return false;
+    // }
+    // if (getClass() != obj.getClass()) {
+    // return false;
+    // }
+    // final Entity other = (Entity) obj;
+    // if (name == null) {
+    // if (other.name != null) {
+    // return false;
+    // }
+    // } else if (!name.equals(other.name)) {
+    // return false;
+    // }
+    // return true;
+    // }
 
     @Override
     public String toString() {
@@ -198,7 +205,7 @@ public class Entity implements Iterable<AbstractAttribute>, ICopyable<Entity> {
         return primaryKey;
     }
 
-    public boolean removeFromPrimaryKey(Attribute attribute) {
+    public boolean removeFromPrimaryKey(AbstractAttribute attribute) {
         return primaryKey.remove(attribute);
     }
 

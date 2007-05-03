@@ -157,7 +157,7 @@ public abstract class Line implements IViewable {
     }
 
     public void setLocation(int x, int y) {
-    	//
+        //
     }
 
     public int getHeight() {
@@ -192,19 +192,24 @@ public abstract class Line implements IViewable {
     public Diagram getDiagram() {
         return this.diagram;
     }
-    
+
     public IOutline getOutline() {
         return null;
     }
-    
+
     public IViewable copy() {
         return null;
     }
-    
+
     public void processClick(MouseEvent mouseEvent, DiagramEditor editor) {
     }
-    
+
     public void exitProcessing() {
     }
 
+    public void processDrag(MouseEvent mouseEvent, DiagramEditor editor) {
+    }
+
+    public void processRelease(MouseEvent mouseEvent, DiagramEditor editor) {
+    }
 }

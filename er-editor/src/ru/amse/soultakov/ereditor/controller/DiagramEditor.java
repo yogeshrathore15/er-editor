@@ -23,6 +23,7 @@ import javax.swing.JPanel;
 import ru.amse.soultakov.ereditor.controller.tools.ITool;
 import ru.amse.soultakov.ereditor.controller.tools.SelectElementTool;
 import ru.amse.soultakov.ereditor.controller.undo.CommandManager;
+import ru.amse.soultakov.ereditor.controller.undo.commands.RemoveViewableCommand;
 import ru.amse.soultakov.ereditor.util.CommonUtils;
 import ru.amse.soultakov.ereditor.view.Block;
 import ru.amse.soultakov.ereditor.view.CommentView;
@@ -57,7 +58,9 @@ public class DiagramEditor extends JPanel {
     private ITool currentTool;
 
     private final RemoveItemsVisitor itemsRemover = new RemoveItemsVisitor();
-    
+
+    private final AddItemsVisitor itemsAdder = new AddItemsVisitor();
+
     private final CommandManager commandManager = new CommandManager();
 
     private final IViewableListener viewableListener = new IViewableListener() {
@@ -80,8 +83,8 @@ public class DiagramEditor extends JPanel {
         });
     }
 
-    public Block addEntity(int x, int y) {
-        Block entity = diagram.addNewEntityView(x, y);
+    public EntityView addEntity(int x, int y) {
+        EntityView entity = diagram.addNewEntityView(x, y);
         entity.addListener(viewableListener);
         return entity;
     }
@@ -109,14 +112,12 @@ public class DiagramEditor extends JPanel {
      * 
      */
     public void removeSelection() {
-        for (IViewable s : getSelectedItems()) {
-            removeSelectable(s);
-        }
+        getCommandManager().executeCommand(
+                new RemoveViewableCommand(this, selectedItems.asSet()));
         repaint();
     }
 
     public void setTool(ITool tool) {
-//        getSelectedItems().clear();
         repaint();
         if (tool != null) {
             notifyListeners(getCurrentTool(), tool);
@@ -124,15 +125,10 @@ public class DiagramEditor extends JPanel {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.JComponent#getPreferredSize()
-     */
     @Override
     public Dimension getPreferredSize() {
         Dimension newDim = diagram.getSize();
-        Point p = CommonUtils.getRightBottomPoint(selectedOutlines.toSet());
+        Point p = CommonUtils.getRightBottomPoint(selectedOutlines.asSet());
         newDim.height = newDim.height > p.y ? newDim.height : p.y;
         newDim.width = newDim.width > p.x ? newDim.width : p.x;
         double height = newDim.getHeight() < MIN_SIZE.getHeight() ? MIN_SIZE
@@ -159,7 +155,7 @@ public class DiagramEditor extends JPanel {
         paintSet(diagram.getRelationshipViews(), graphics);
         paintSet(diagram.getCommentViews(), graphics);
         paintSet(diagram.getEntityViews(), graphics);
-        paintSet(getSelectedOutlines().toSet(), graphics);
+        paintSet(getSelectedOutlines().asSet(), graphics);
 
         getCurrentTool().paintAfter(graphics);
         super.paintChildren(graphics);
@@ -287,8 +283,12 @@ public class DiagramEditor extends JPanel {
         return diagram.removeLinkView(view);
     }
 
-    private boolean removeSelectable(IViewable s) {
+    public boolean removeViewable(IViewable s) {
         return s.acceptVisitor(itemsRemover, null);
+    }
+
+    public void addViewable(IViewable v) {
+        v.acceptVisitor(itemsAdder, null);
     }
 
     public void addToolChangeListener(ICurrentToolListener ctl) {
@@ -348,6 +348,30 @@ public class DiagramEditor extends JPanel {
 
     }
 
+    private class AddItemsVisitor implements IVisitor<Void, Void> {
+
+        public Void visit(CommentView commentView, Void data) {
+            getDiagram().addCommentView(commentView);
+            return null;
+        }
+
+        public Void visit(EntityView entityView, Void data) {
+            getDiagram().addEntityView(entityView);
+            return null;
+        }
+
+        public Void visit(LinkView linkView, Void data) {
+            getDiagram().addLinkView(linkView);
+            return null;
+        }
+
+        public Void visit(RelationshipView relationshipView, Void data) {
+            getDiagram().addRelationshipView(relationshipView);
+            return null;
+        }
+
+    }
+
     public void setDiagram(Diagram diagram) {
         this.diagram = diagram;
         repaint();
@@ -356,7 +380,7 @@ public class DiagramEditor extends JPanel {
     public ITool getTool() {
         return currentTool;
     }
-    
+
     public CommandManager getCommandManager() {
         return this.commandManager;
     }

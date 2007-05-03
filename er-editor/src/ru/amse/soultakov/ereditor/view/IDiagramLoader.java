@@ -6,7 +6,7 @@ import ru.amse.soultakov.ereditor.model.ERModel;
 public interface IDiagramLoader {
 
     public Diagram loadDiagram(IProgressMonitor ipm) throws DiagramLoadingException;
-    
+
     ERModel loadModel(IProgressMonitor ipm) throws DiagramLoadingException;
 
 }

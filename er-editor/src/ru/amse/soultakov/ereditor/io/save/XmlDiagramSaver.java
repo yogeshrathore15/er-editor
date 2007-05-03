@@ -17,13 +17,14 @@ import ru.amse.soultakov.ereditor.view.IDiagramSaver;
 
 public class XmlDiagramSaver implements IDiagramSaver {
 
-	private OutputStream outputStream;
-    
+    private OutputStream outputStream;
+
     public XmlDiagramSaver(OutputStream outputStream) {
         this.outputStream = outputStream;
     }
-    
-    public void save(Diagram diagram, ERModel erModel, IProgressMonitor monitor) throws DiagramSavingException {
+
+    public void save(Diagram diagram, ERModel erModel, IProgressMonitor monitor)
+            throws DiagramSavingException {
         SavingIdManager savingIdManager = new SavingIdManager();
         Element root = new Element(XmlTagConstants.TAG_ER_DIAGRAM);
         Document doc = new Document(root);

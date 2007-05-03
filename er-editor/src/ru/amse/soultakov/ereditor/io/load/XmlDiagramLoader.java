@@ -19,7 +19,7 @@ import ru.amse.soultakov.ereditor.view.IDiagramLoader;
 public class XmlDiagramLoader implements IDiagramLoader {
 
     private final LoadingIdManager loadingIdManager = new LoadingIdManager();
-    
+
     private final Document document;
 
     public XmlDiagramLoader(InputStream inputStream) throws DiagramLoadingException {
@@ -32,14 +32,17 @@ public class XmlDiagramLoader implements IDiagramLoader {
         }
     }
 
-    public Diagram loadDiagram(IProgressMonitor monitor) throws DiagramLoadingException {
-        DiagramLoader dl = new DiagramLoader(loadingIdManager, document.getRootElement()
-                .getChild(TAG_DIAGRAM));
+    public Diagram loadDiagram(IProgressMonitor monitor)
+            throws DiagramLoadingException {
+        DiagramLoader dl = new DiagramLoader(loadingIdManager, document
+                .getRootElement().getChild(TAG_DIAGRAM));
         return dl.load(monitor);
     }
 
-    public ERModel loadModel(IProgressMonitor monitor) throws DiagramLoadingException {
-        ERModelLoader erml = new ERModelLoader(loadingIdManager, document.getRootElement().getChild(TAG_MODEL));
+    public ERModel loadModel(IProgressMonitor monitor)
+            throws DiagramLoadingException {
+        ERModelLoader erml = new ERModelLoader(loadingIdManager, document
+                .getRootElement().getChild(TAG_MODEL));
         ERModel model = erml.load(monitor);
         return model;
     }

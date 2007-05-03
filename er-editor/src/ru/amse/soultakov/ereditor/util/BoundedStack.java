@@ -3,13 +3,15 @@
  */
 package ru.amse.soultakov.ereditor.util;
 
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
  * @author Soultakov Maxim
  * 
  */
-public class BoundedStack<T> {
+public class BoundedStack<T> implements Iterable<T> {
 
     private static final int DEFAULT_MAX_SIZE = 100;
 
@@ -63,6 +65,10 @@ public class BoundedStack<T> {
 
     public void clear() {
         list.clear();
+    }
+
+    public Iterator<T> iterator() {
+        return Collections.unmodifiableList(list).iterator();
     }
 
 }

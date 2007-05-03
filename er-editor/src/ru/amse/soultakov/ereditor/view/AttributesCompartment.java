@@ -18,9 +18,11 @@ import ru.amse.soultakov.ereditor.util.GraphicsUtils;
  */
 public class AttributesCompartment extends Compartment {
 
-    protected static final Dimension MIN_SIZE = new Dimension(70, 50);
+    protected static final Dimension MIN_SIZE = new Dimension(70, 30);
 
-    protected final List<AttributeView> attributes = new ArrayList<AttributeView>();
+    private int startIndex;
+
+    private int endIndex;
 
     /**
      * @param x
@@ -32,14 +34,15 @@ public class AttributesCompartment extends Compartment {
     }
 
     public List<AttributeView> getAttributes() {
-        return this.attributes;
+        return entityView.getAttributes().subList(startIndex, endIndex);
     }
 
     @Override
     public Rectangle2D getContentBounds(Graphics2D graphics) {
-        List<Rectangle2D> bounds = new ArrayList<Rectangle2D>(attributes.size() + 1);
+        List<Rectangle2D> bounds = new ArrayList<Rectangle2D>(endIndex - startIndex);
         int height = 0;
-        for (AttributeView a : attributes) {
+        for (AttributeView a : entityView.getAttributes().subList(startIndex,
+                endIndex)) {
             Rectangle2D stringBounds = GraphicsUtils.getStringBounds(graphics, a
                     .getStringPresentation());
             bounds.add(stringBounds);
@@ -65,10 +68,30 @@ public class AttributesCompartment extends Compartment {
     @Override
     public int paint(Graphics2D graphics) {
         int curY = getAbsoluteY();
-        for (AttributeView av : attributes) {
+        for (AttributeView av : getAttributes()) {
             curY = av.paint(graphics, getX(), curY);
         }
-        return curY;
+        return getAbsoluteY() + getHeight(graphics);
+    }
+
+    public int getEndIndex() {
+        return this.endIndex;
+    }
+
+    public int getStartIndex() {
+        return this.startIndex;
+    }
+
+    public void setEndIndex(int endIndex) {
+        this.endIndex = endIndex;
+    }
+
+    public void setStartIndex(int startIndex) {
+        this.startIndex = startIndex;
+    }
+
+    public boolean contains(int index) {
+        return (index >= startIndex) && (index < endIndex);
     }
 
 }

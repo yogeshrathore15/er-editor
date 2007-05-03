@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 import ru.amse.soultakov.ereditor.controller.DiagramEditor;
+import ru.amse.soultakov.ereditor.controller.undo.commands.AddRelationshipCommand;
 import ru.amse.soultakov.ereditor.view.EntityView;
 import ru.amse.soultakov.ereditor.view.IViewable;
 import ru.amse.soultakov.ereditor.view.SelectedItems;
@@ -44,7 +45,8 @@ public class AddRelationshipTool extends ToolAdapter {
     @Override
     public void mouseReleased(MouseEvent e) {
         if (second != null && first != null && first.acceptRelationshipWith(second)) {
-            diagramEditor.addRelationship(first, second);
+            diagramEditor.getCommandManager().executeCommand(
+                    new AddRelationshipCommand(diagramEditor, first, second));
             operationFinished();
         }
         reset();

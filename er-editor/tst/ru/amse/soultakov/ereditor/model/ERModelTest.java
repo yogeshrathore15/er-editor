@@ -55,7 +55,7 @@ public class ERModelTest {
     public void testAddNewRealtionship() {
         Entity e1 = erModel.addNewEntity();
         Entity e2 = erModel.addNewEntity();
-        Relationship r = erModel.addNewRealtionship(e1, e2);
+        Relationship r = erModel.addNewRelationship(e1, e2);
         assertFalse(e1.acceptRelationshipWith(e2));
         assertFalse(e2.acceptRelationshipWith(e1));
         assertTrue(erModel.getRelationships().contains(r));
@@ -64,7 +64,7 @@ public class ERModelTest {
         assertTrue(erModel.getEntities().size() == 2);
         assertTrue(erModel.getLinks().size() == 0);
         try {
-            erModel.addNewRealtionship(e1, e2);
+            erModel.addNewRelationship(e1, e2);
             fail();
         } catch (IllegalArgumentException e) {
         }
@@ -73,20 +73,20 @@ public class ERModelTest {
     @Test
     public void testAddNewRelationshipWithIllegalArgument() {
         try {
-            erModel.addNewRealtionship(null, null);
+            erModel.addNewRelationship(null, null);
             fail();
         } catch (IllegalArgumentException e) {
         }
         Entity e1 = new Entity("");
         Entity e2 = new Entity(" ");
         try {
-            erModel.addNewRealtionship(e1, e2);
+            erModel.addNewRelationship(e1, e2);
             fail();
         } catch (IllegalArgumentException e) {
         }
         Entity e3 = erModel.addNewEntity();
         try {
-            erModel.addNewRealtionship(e3, e3);
+            erModel.addNewRelationship(e3, e3);
             fail();
         } catch (IllegalArgumentException e) {
         }
@@ -121,7 +121,7 @@ public class ERModelTest {
         Entity e1 = erModel.addNewEntity();
         Entity e2 = erModel.addNewEntity();
         Comment c = erModel.addNewComment();
-        erModel.addNewRealtionship(e2, e1);
+        erModel.addNewRelationship(e2, e1);
         erModel.addNewLink(e1, c);
 
         assertTrue(erModel.removeEntity(e1));
@@ -155,7 +155,7 @@ public class ERModelTest {
     public void testRemoveRelationship() {
         Entity e1 = erModel.addNewEntity();
         Entity e2 = erModel.addNewEntity();
-        Relationship r = erModel.addNewRealtionship(e2, e1);
+        Relationship r = erModel.addNewRelationship(e2, e1);
         assertTrue(erModel.removeRelationship(r));
         assertTrue(erModel.getRelationships().size() == 0);
         assertTrue(erModel.getEntities().size() == 2);

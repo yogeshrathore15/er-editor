@@ -15,7 +15,7 @@ import java.awt.event.MouseEvent;
 import java.util.Collection;
 
 import ru.amse.soultakov.ereditor.controller.DiagramEditor;
-import ru.amse.soultakov.ereditor.controller.undo.MoveCommand;
+import ru.amse.soultakov.ereditor.controller.undo.commands.MoveCommand;
 import ru.amse.soultakov.ereditor.util.CommonUtils;
 import ru.amse.soultakov.ereditor.view.IOutline;
 import ru.amse.soultakov.ereditor.view.IViewable;
@@ -93,8 +93,10 @@ public class SelectElementTool extends ToolAdapter {
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        diagramEditor.setCursor(DEFAULT_CURSOR);
-        if (endPoint != null && startPoint != null) {
+        if (e.isShiftDown() && getSelectedItems().size() == 1
+                && getSelectedItems().getFirst().containsPoint(e.getX(), e.getY())) {
+            getSelectedItems().getFirst().processRelease(e, diagramEditor);
+        } else if (endPoint != null && startPoint != null) {
             tryToSelectAllViews();
             endPoint = null;
             startPoint = null;
@@ -106,18 +108,24 @@ public class SelectElementTool extends ToolAdapter {
                 }
             } else {
                 for (IOutline o : getSelectedOutlines()) {
-                    diagramEditor.getCommandManager().invokeCommand(
-                            new MoveCommand(o.getViewable(), o.getX(), o.getY()));
+                    if (o.getViewable().getX() != o.getX()
+                            || o.getViewable().getY() != o.getY()) {
+                        diagramEditor.getCommandManager()
+                                .executeCommand(
+                                        new MoveCommand(o.getViewable(), o.getX(), o
+                                                .getY()));
+                    }
                 }
             }
             diagramEditor.revalidate();
-            Point p = CommonUtils.getRightBottomPoint(getSelectedItems().toSet());
+            Point p = CommonUtils.getRightBottomPoint(getSelectedItems().asSet());
             diagramEditor.scrollRectToVisible(new Rectangle(p.x, p.y, 0, 0));
             getSelectedOutlines().clear();
             diagramEditor.repaint();
             endPoint = null;
             startPoint = null;
         }
+        diagramEditor.setCursor(DEFAULT_CURSOR);
     }
 
     /**
@@ -135,14 +143,17 @@ public class SelectElementTool extends ToolAdapter {
      * @param e
      */
     private void dragSelection(MouseEvent e) {
-        if (canDragSelection(e)) {
+        if (e.isShiftDown() && getSelectedItems().size() == 1
+                && getSelectedItems().getFirst().containsPoint(e.getX(), e.getY())) {
+            getSelectedItems().getFirst().processDrag(e, diagramEditor);
+        } else if (canDragSelection(e)) {
             for (IViewable v : getSelectedOutlines()) {
                 int xPos = e.getXOnScreen() - currentPoint.x + v.getX();
                 int yPos = e.getYOnScreen() - currentPoint.y + v.getY();
                 v.setLocation(xPos >= 0 ? xPos : 0, yPos >= 0 ? yPos : 0);
             }
             diagramEditor.revalidate();
-            Point p = CommonUtils.getRightBottomPoint(getSelectedOutlines().toSet());
+            Point p = CommonUtils.getRightBottomPoint(getSelectedOutlines().asSet());
             diagramEditor.scrollRectToVisible(new Rectangle(p.x, p.y, 0, 0));
             diagramEditor.repaint();
         }

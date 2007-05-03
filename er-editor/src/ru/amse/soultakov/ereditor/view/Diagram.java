@@ -108,7 +108,7 @@ public class Diagram {
             throw new IllegalArgumentException(
                     "Both EntityViews must present in diagram and be unequal");
         }
-        Relationship relationship = erModel.addNewRealtionship(first.getEntity(),
+        Relationship relationship = erModel.addNewRelationship(first.getEntity(),
                 second.getEntity());
         RelationshipView relationshipView = new RelationshipView(this, relationship);
         relationshipViews.add(relationshipView);
@@ -265,7 +265,8 @@ public class Diagram {
         return commentToView.get(comment);
     }
 
-    public void save(IDiagramSaver saver, IProgressMonitor monitor) throws DiagramSavingException {
+    public void save(IDiagramSaver saver, IProgressMonitor monitor)
+            throws DiagramSavingException {
         saver.save(this, erModel, monitor);
     }
 

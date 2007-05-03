@@ -16,7 +16,7 @@ import ru.amse.soultakov.ereditor.model.Link;
 
 class CommentsSaver {
 
-	private final SavingIdManager savingIdManager;
+    private final SavingIdManager savingIdManager;
 
     private final Collection<Comment> comments;
 

@@ -19,12 +19,13 @@ public class DiagramEditorAction extends AbstractAction {
 
     private final ITool tool;
 
-    public DiagramEditorAction(DiagramEditor diagramEditor, String name, Icon icon, ITool tool) {
+    public DiagramEditorAction(DiagramEditor diagramEditor, String name, Icon icon,
+            ITool tool) {
         super(name, icon);
         this.diagramEditor = diagramEditor;
         this.tool = tool;
     }
-    
+
     public DiagramEditorAction(DiagramEditor diagramEditor, String name, ITool tool) {
         super(name);
         this.diagramEditor = diagramEditor;

@@ -58,7 +58,7 @@ public class Attribute extends AbstractAttribute {
 
     @Override
     public Attribute copy() {
-        Attribute a = new Attribute(name, type.copy(), notNull, defaultValue);        
+        Attribute a = new Attribute(name, type.copy(), notNull, defaultValue);
         return a;
     }
 

@@ -16,18 +16,12 @@ import java.util.Set;
  */
 public class SelectedItems<T extends IViewable> implements Iterable<T> {
 
-    /**
-     * 
-     */
     private Set<T> selectedViews = newLinkedHashSet();
 
-    private List<SelectedItemsListener> listeners = newArrayList(); 
-    
-    /**
-     * 
-     */
+    private List<SelectedItemsListener> listeners = newArrayList();
+
     public SelectedItems() {
-    	//
+        //
     }
 
     /**
@@ -94,7 +88,11 @@ public class SelectedItems<T extends IViewable> implements Iterable<T> {
         return selectedViews.isEmpty();
     }
 
-    public Set<T> toSet() {
+    public int size() {
+        return selectedViews.size();
+    }
+
+    public Set<T> asSet() {
         return Collections.unmodifiableSet(selectedViews);
     }
 
@@ -107,19 +105,23 @@ public class SelectedItems<T extends IViewable> implements Iterable<T> {
     public String toString() {
         return selectedViews.toString();
     }
-    
+
     public boolean addListener(SelectedItemsListener listener) {
         return listeners.add(listener);
     }
-    
+
     public boolean removeListener(SelectedItemsListener listener) {
         return listeners.remove(listener);
     }
-    
+
     private void notifyListeners() {
         for (SelectedItemsListener sil : listeners) {
             sil.selectionChanged(this);
         }
+    }
+
+    public T getFirst() {
+        return selectedViews.iterator().next();
     }
 
 }

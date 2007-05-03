@@ -58,8 +58,7 @@ class DiagramLoader {
         for (Object object : element.getChildren()) {
             if (object instanceof Element) {
                 Element entityElement = (Element) object;
-                String attributeValue = entityElement
-                                        .getAttributeValue(ATTR_ENTITY);
+                String attributeValue = entityElement.getAttributeValue(ATTR_ENTITY);
                 System.out.println(attributeValue);
                 Entity entity = (Entity) loadingIdManager.getObject(attributeValue);
                 int x = Integer.parseInt(entityElement.getAttributeValue(ATTR_X));

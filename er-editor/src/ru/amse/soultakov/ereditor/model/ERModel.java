@@ -3,15 +3,11 @@
  */
 package ru.amse.soultakov.ereditor.model;
 
-import static ru.amse.soultakov.ereditor.model.SimpleAttributeType.CHAR;
 import static ru.amse.soultakov.ereditor.util.CommonUtils.hasNull;
 import static ru.amse.soultakov.ereditor.util.CommonUtils.newLinkedHashSet;
 
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Random;
 import java.util.Set;
 
 import ru.amse.soultakov.ereditor.util.AutoincrementGenerator;
@@ -38,22 +34,20 @@ public class ERModel {
     public Entity addNewEntity() {
         Entity entity = new Entity(generator.getEntityName());
         entities.add(entity);
-        
-        tempAttributesInit(entity);
-        
+        // tempAttributesInit(entity);
         return entity;
     }
-    
+
     public Entity addEntity(Entity entity) {
         if (entities.add(entity)) {
-            for(Relationship r : entity.getRelationships()) {
-                if(relationships.add(r)) {
+            for (Relationship r : entity.getRelationships()) {
+                if (relationships.add(r)) {
                     entities.add(r.getFirstEnd().getEntity());
                     entities.add(r.getSecondEnd().getEntity());
                 }
             }
-            for(Link l : entity.getLinks()) {
-                if(links.add(l)) {
+            for (Link l : entity.getLinks()) {
+                if (links.add(l)) {
                     comments.add(addNewComment());
                 }
             }
@@ -61,40 +55,22 @@ public class ERModel {
         return entity;
     }
 
-    private void tempAttributesInit(Entity entity) {
-        Attribute pk1 = new Attribute("Attr1", SimpleAttributeType.INTEGER, false,
-                "");
-        entity.addAttribute(pk1);
-        Attribute pk2 = new Attribute("Attr2", SimpleAttributeType.DOUBLE, false,
-                "1");
-        entity.addAttribute(pk2);
-        entity.addToPrimaryKey(pk2);
-        entity.addToPrimaryKey(pk1);
-        Attribute u1 = new Attribute("Attr3", CHAR, false, "abc");
-        entity.addAttribute(u1);
-        Attribute u2 = new Attribute("Attr4", new ArrayAttributeType(CHAR, 5),
-                false, "false");
-        entity.addAttribute(u2);
-        entity.addToUniqueAttributes(new HashSet<AbstractAttribute>(Arrays.asList(
-                u1, u2)));
-    }
-
     public Comment addNewComment() {
         Comment comment = new Comment(generator.getCommentName());
         comments.add(comment);
         return comment;
     }
-    
+
     public Comment addComment(Comment comment) {
         if (comments.add(comment)) {
-            for(Link link : comment) {
-            	addLink(link);
+            for (Link link : comment) {
+                addLink(link);
             }
         }
         return comment;
     }
 
-    public Relationship addNewRealtionship(Entity first, Entity second) {
+    public Relationship addNewRelationship(Entity first, Entity second) {
         if (hasNull(first, second)) {
             throw new IllegalArgumentException(
                     "Name and both entities must be non-null");
@@ -106,19 +82,17 @@ public class ERModel {
                 || !second.acceptRelationshipWith(first)) {
             throw new IllegalArgumentException("Entities don't accept relationhsip");
         }
-        Random r = new Random();
         Relationship relationship = new Relationship(new PKRelationshipEnd(first,
-                RelationshipMultiplicity.values()[r.nextInt(2) + 2], "End1"),
-                new PKRelationshipEnd(second, RelationshipMultiplicity.values()[r
-                        .nextInt(2) + 2], "End2"));
+                RelationshipMultiplicity.ONE_ONLY, "End1"), new PKRelationshipEnd(
+                second, RelationshipMultiplicity.ONE_ONLY, "End2"));
         relationships.add(relationship);
         first.addRelationship(relationship);
         second.addRelationship(relationship);
         return relationship;
     }
-    
+
     public Relationship addRelationship(Relationship relationship) {
-        if(relationships.add(relationship)) {
+        if (relationships.add(relationship)) {
             addEntity(relationship.getFirstEnd().getEntity());
             addEntity(relationship.getSecondEnd().getEntity());
         }
@@ -147,11 +121,11 @@ public class ERModel {
      * @param link
      */
     public Link addLink(Link link) {
-    	if (links.add(link)) {
-    		addEntity(link.getEntity());
-    		addComment(link.getComment());
-    	}
-    	return link;
+        if (links.add(link)) {
+            addEntity(link.getEntity());
+            addComment(link.getComment());
+        }
+        return link;
     }
 
     public boolean removeEntity(Entity entity) {
@@ -237,7 +211,7 @@ public class ERModel {
         private AutoincrementGenerator relationshipGenerator = new AutoincrementGenerator();
 
         public NamesGenerator() {
-        	//
+            //
         }
 
         public String getEntityName() {
@@ -253,6 +227,5 @@ public class ERModel {
         }
 
     }
-
 
 }
