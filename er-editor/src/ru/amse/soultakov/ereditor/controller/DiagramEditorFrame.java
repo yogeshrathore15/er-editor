@@ -55,6 +55,22 @@ public class DiagramEditorFrame extends JFrame
 	private static final ImageIcon TOOL_ADDING_ENTITY_PRESSED_ICON = new ImageIcon(
 			DiagramEditorFrame.class.getClassLoader().getResource(
 					"./images/tool_adding_entity_pressed.png"));
+	
+	private static final ImageIcon TOOL_ADDING_RELATIONSHIP_ICON = new ImageIcon(DiagramEditorFrame.class
+			.getClassLoader().getResource("./images/tool_adding_relationship.png"));
+
+	private static final ImageIcon TOOL_ADDING_RELATIONHIP_PRESSED_ICON = new ImageIcon(
+			DiagramEditorFrame.class.getClassLoader().getResource(
+					"./images/tool_adding_relationship_pressed.png"));
+	
+	private static final ImageIcon REMOVE_ICON = new ImageIcon(DiagramEditorFrame.class
+			.getClassLoader().getResource("./images/remove.png"));
+
+	private static final ImageIcon REMOVE_PRESSED_ICON = new ImageIcon(
+			DiagramEditorFrame.class.getClassLoader().getResource(
+					"./images/remove_pressed.png"));
+	
+	
 
 	private final DiagramEditor diagramEditor = new DiagramEditor();
 
@@ -91,15 +107,25 @@ public class DiagramEditorFrame extends JFrame
 		toolBar.add(createDefaultButton(buttonsGroup));
 		toolBar.add(createAddEntityButton(buttonsGroup));
 		toolBar.add(createAddRelationshipButton(buttonsGroup));
-		toolBar.add(createAddCommentButton(buttonsGroup));
-		toolBar.add(createAddLinkButton(buttonsGroup));
-		toolBar.add(new JButton(new RemoveSelectionAction(diagramEditor, "Remove")));
+//		toolBar.add(createAddCommentButton(buttonsGroup));
+//		toolBar.add(createAddLinkButton(buttonsGroup));
+		toolBar.add(createRemoveButton());
 		toolBar.add(new JButton(new UndoAction(diagramEditor, "Undo", null)));
 		toolBar.add(new JButton(new RedoAction(diagramEditor, "Redo", null)));
 		toolBar.add(new JButton(new AddAttributeAction(diagramEditor, "Add attribute", null)));
 		toolBar
 				.add(new JButton(new RemoveAttributeAction(diagramEditor, "Remove attribute", null)));
 		return toolBar;
+	}
+
+	private JButton createRemoveButton()
+	{
+		JButton button = new JButton(new RemoveSelectionAction(diagramEditor, "Remove", REMOVE_ICON));
+		button.setSelectedIcon(REMOVE_PRESSED_ICON);
+		button.setPressedIcon(REMOVE_PRESSED_ICON);
+		button.setText(null);
+		button.setMargin(new Insets(0, 0, 0, 0));
+		return button;
 	}
 
 	private JToggleButton createAddLinkButton(ButtonGroup buttonsGroup)
@@ -129,7 +155,11 @@ public class DiagramEditorFrame extends JFrame
 		AddRelationshipTool addRelationshipTool = new AddRelationshipTool(diagramEditor);
 		addRelationshipTool.addListener(toolListener);
 		JToggleButton addRelationshipButton = new JToggleButton(new DiagramEditorAction(
-				diagramEditor, "Add relationship", addRelationshipTool));
+				diagramEditor, "Add relationship", TOOL_ADDING_RELATIONSHIP_ICON, addRelationshipTool));
+		addRelationshipButton.setSelectedIcon(TOOL_ADDING_RELATIONHIP_PRESSED_ICON);
+		addRelationshipButton.setPressedIcon(TOOL_ADDING_RELATIONHIP_PRESSED_ICON);
+		addRelationshipButton.setText(null);
+		addRelationshipButton.setMargin(new Insets(0, 0, 0, 0));
 		toolToButton.put(addRelationshipTool, addRelationshipButton);
 		buttonsGroup.add(addRelationshipButton);
 		return addRelationshipButton;
@@ -143,6 +173,8 @@ public class DiagramEditorFrame extends JFrame
 				"Add Entity", TOOL_ADDING_ENTITY_ICON, addEntityTool));
 		addEntityButton.setSelectedIcon(TOOL_ADDING_ENTITY_PRESSED_ICON);
 		addEntityButton.setPressedIcon(TOOL_ADDING_ENTITY_PRESSED_ICON);
+		addEntityButton.setText(null);
+		addEntityButton.setMargin(new Insets(0, 0, 0, 0));
 		toolToButton.put(addEntityTool, addEntityButton);
 		buttonsGroup.add(addEntityButton);
 		return addEntityButton;
