@@ -49,6 +49,13 @@ public class DiagramEditorFrame extends JFrame
 	private static final ImageIcon TOOL_SELECTING_ICON = new ImageIcon(DiagramEditorFrame.class
 			.getClassLoader().getResource("./images/tool_selecting.png"));
 
+	private static final ImageIcon TOOL_ADDING_ENTITY_ICON = new ImageIcon(DiagramEditorFrame.class
+			.getClassLoader().getResource("./images/tool_adding_entity.png"));
+
+	private static final ImageIcon TOOL_ADDING_ENTITY_PRESSED_ICON = new ImageIcon(
+			DiagramEditorFrame.class.getClassLoader().getResource(
+					"./images/tool_adding_entity_pressed.png"));
+
 	private final DiagramEditor diagramEditor = new DiagramEditor();
 
 	private final Map<ITool, AbstractButton> toolToButton = newHashMap();
@@ -89,8 +96,9 @@ public class DiagramEditorFrame extends JFrame
 		toolBar.add(new JButton(new RemoveSelectionAction(diagramEditor, "Remove")));
 		toolBar.add(new JButton(new UndoAction(diagramEditor, "Undo", null)));
 		toolBar.add(new JButton(new RedoAction(diagramEditor, "Redo", null)));
-        toolBar.add(new JButton(new AddAttributeAction(diagramEditor, "Add attribute", null)));
-        toolBar.add(new JButton(new RemoveAttributeAction(diagramEditor, "Remove attribute", null)));
+		toolBar.add(new JButton(new AddAttributeAction(diagramEditor, "Add attribute", null)));
+		toolBar
+				.add(new JButton(new RemoveAttributeAction(diagramEditor, "Remove attribute", null)));
 		return toolBar;
 	}
 
@@ -132,7 +140,9 @@ public class DiagramEditorFrame extends JFrame
 		AddEntityTool addEntityTool = new AddEntityTool(diagramEditor);
 		addEntityTool.addListener(toolListener);
 		JToggleButton addEntityButton = new JToggleButton(new DiagramEditorAction(diagramEditor,
-				"Add Entity", addEntityTool));
+				"Add Entity", TOOL_ADDING_ENTITY_ICON, addEntityTool));
+		addEntityButton.setSelectedIcon(TOOL_ADDING_ENTITY_PRESSED_ICON);
+		addEntityButton.setPressedIcon(TOOL_ADDING_ENTITY_PRESSED_ICON);
 		toolToButton.put(addEntityTool, addEntityButton);
 		buttonsGroup.add(addEntityButton);
 		return addEntityButton;
