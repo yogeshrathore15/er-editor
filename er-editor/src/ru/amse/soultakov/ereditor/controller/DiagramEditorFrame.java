@@ -128,6 +128,7 @@ public class DiagramEditorFrame extends JFrame
 		return button;
 	}
 
+	@SuppressWarnings("unused")
 	private JToggleButton createAddLinkButton(ButtonGroup buttonsGroup)
 	{
 		AddLinkTool addLinkTool = new AddLinkTool(diagramEditor);
@@ -139,6 +140,7 @@ public class DiagramEditorFrame extends JFrame
 		return addLinkButton;
 	}
 
+	@SuppressWarnings("unused")
 	private JToggleButton createAddCommentButton(ButtonGroup buttonsGroup)
 	{
 		AddCommentTool addCommentTool = new AddCommentTool(diagramEditor);
