@@ -5,9 +5,11 @@ import static ru.amse.soultakov.ereditor.util.CommonUtils.newHashMap;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Insets;
+import java.awt.event.KeyEvent;
 import java.util.Map;
 
 import javax.swing.AbstractButton;
+import javax.swing.Action;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -38,6 +40,7 @@ import ru.amse.soultakov.ereditor.controller.tools.SelectElementTool;
 @SuppressWarnings("serial")
 public class DiagramEditorFrame extends JFrame
 {
+	private static final Insets NO_INSETS = new Insets(0, 0, 0, 0);
 
 	public static final String ERD = "erd";
 
@@ -55,22 +58,32 @@ public class DiagramEditorFrame extends JFrame
 	private static final ImageIcon TOOL_ADDING_ENTITY_PRESSED_ICON = new ImageIcon(
 			DiagramEditorFrame.class.getClassLoader().getResource(
 					"./images/tool_adding_entity_pressed.png"));
-	
-	private static final ImageIcon TOOL_ADDING_RELATIONSHIP_ICON = new ImageIcon(DiagramEditorFrame.class
-			.getClassLoader().getResource("./images/tool_adding_relationship.png"));
+
+	private static final ImageIcon TOOL_ADDING_RELATIONSHIP_ICON = new ImageIcon(
+			DiagramEditorFrame.class.getClassLoader().getResource(
+					"./images/tool_adding_relationship.png"));
 
 	private static final ImageIcon TOOL_ADDING_RELATIONHIP_PRESSED_ICON = new ImageIcon(
 			DiagramEditorFrame.class.getClassLoader().getResource(
 					"./images/tool_adding_relationship_pressed.png"));
-	
+
 	private static final ImageIcon REMOVE_ICON = new ImageIcon(DiagramEditorFrame.class
 			.getClassLoader().getResource("./images/remove.png"));
 
-	private static final ImageIcon REMOVE_PRESSED_ICON = new ImageIcon(
-			DiagramEditorFrame.class.getClassLoader().getResource(
-					"./images/remove_pressed.png"));
-	
-	
+	private static final ImageIcon REMOVE_PRESSED_ICON = new ImageIcon(DiagramEditorFrame.class
+			.getClassLoader().getResource("./images/remove_pressed.png"));
+
+	private static final ImageIcon UNDO_ICON = new ImageIcon(DiagramEditorFrame.class
+			.getClassLoader().getResource("./images/undo.png"));
+
+	private static final ImageIcon UNDO_PRESSED_ICON = new ImageIcon(DiagramEditorFrame.class
+			.getClassLoader().getResource("./images/undo_pressed.png"));
+
+	private static final ImageIcon REDO_ICON = new ImageIcon(DiagramEditorFrame.class
+			.getClassLoader().getResource("./images/redo.png"));
+
+	private static final ImageIcon REDO_PRESSED_ICON = new ImageIcon(DiagramEditorFrame.class
+			.getClassLoader().getResource("./images/redo_pressed.png"));
 
 	private final DiagramEditor diagramEditor = new DiagramEditor();
 
@@ -86,12 +99,23 @@ public class DiagramEditorFrame extends JFrame
 		}
 	};
 
+	private Action diagramSavingAction;
+
+	private Action diagramLoadingAction;
+
 	public DiagramEditorFrame()
 	{
 		super("ER-diagram editor");
+		initActions();
 		this.setJMenuBar(createMenu());
 		this.add(createToolbar(), BorderLayout.NORTH);
 		this.add(createDiagramEditorPanel(), BorderLayout.CENTER);
+	}
+
+	private final void initActions()
+	{
+		diagramSavingAction = new DiagramSavingAction("Save", this);
+		diagramLoadingAction = new DiagramLoadingAction("Open", this);
 	}
 
 	private Component createDiagramEditorPanel()
@@ -107,24 +131,66 @@ public class DiagramEditorFrame extends JFrame
 		toolBar.add(createDefaultButton(buttonsGroup));
 		toolBar.add(createAddEntityButton(buttonsGroup));
 		toolBar.add(createAddRelationshipButton(buttonsGroup));
-//		toolBar.add(createAddCommentButton(buttonsGroup));
-//		toolBar.add(createAddLinkButton(buttonsGroup));
+		// toolBar.add(createAddCommentButton(buttonsGroup));
+		// toolBar.add(createAddLinkButton(buttonsGroup));
 		toolBar.add(createRemoveButton());
-		toolBar.add(new JButton(new UndoAction(diagramEditor, "Undo", null)));
-		toolBar.add(new JButton(new RedoAction(diagramEditor, "Redo", null)));
-		toolBar.add(new JButton(new AddAttributeAction(diagramEditor, "Add attribute", null)));
-		toolBar
-				.add(new JButton(new RemoveAttributeAction(diagramEditor, "Remove attribute", null)));
+		toolBar.add(createUndoButton());
+		toolBar.add(createRedoButton());
+		toolBar.add(createAddAttributeButton());
+		toolBar.add(createRemoveAttributeButton());
 		return toolBar;
+	}
+
+	private JButton createRemoveAttributeButton()
+	{
+		JButton button = new JButton(new RemoveAttributeAction(diagramEditor, "Remove attribute",
+				null));
+		button.setMargin(NO_INSETS);
+		// button.setText(null);
+		button.setToolTipText("Remove attribute");
+		return button;
+	}
+
+	private JButton createAddAttributeButton()
+	{
+		JButton button = new JButton(new AddAttributeAction(diagramEditor, "Add attribute", null));
+		button.setMargin(NO_INSETS);
+		// button.setText(null);
+		button.setToolTipText("Add attribute");
+		return button;
+	}
+
+	private JButton createRedoButton()
+	{
+		JButton button = new JButton(new RedoAction(diagramEditor, "Redo", REDO_ICON));
+		button.setSelectedIcon(REDO_PRESSED_ICON);
+		button.setPressedIcon(REDO_PRESSED_ICON);
+		button.setMargin(NO_INSETS);
+		button.setText(null);
+		button.setToolTipText("Redo");
+		return button;
+	}
+
+	private JButton createUndoButton()
+	{
+		JButton button = new JButton(new UndoAction(diagramEditor, "Undo", UNDO_ICON));
+		button.setSelectedIcon(UNDO_PRESSED_ICON);
+		button.setPressedIcon(UNDO_PRESSED_ICON);
+		button.setMargin(NO_INSETS);
+		button.setText(null);
+		button.setToolTipText("Undo");
+		return button;
 	}
 
 	private JButton createRemoveButton()
 	{
-		JButton button = new JButton(new RemoveSelectionAction(diagramEditor, "Remove", REMOVE_ICON));
+		JButton button = new JButton(
+				new RemoveSelectionAction(diagramEditor, "Remove", REMOVE_ICON));
 		button.setSelectedIcon(REMOVE_PRESSED_ICON);
 		button.setPressedIcon(REMOVE_PRESSED_ICON);
 		button.setText(null);
-		button.setMargin(new Insets(0, 0, 0, 0));
+		button.setMargin(NO_INSETS);
+		button.setToolTipText("Remove");
 		return button;
 	}
 
@@ -157,11 +223,13 @@ public class DiagramEditorFrame extends JFrame
 		AddRelationshipTool addRelationshipTool = new AddRelationshipTool(diagramEditor);
 		addRelationshipTool.addListener(toolListener);
 		JToggleButton addRelationshipButton = new JToggleButton(new DiagramEditorAction(
-				diagramEditor, "Add relationship", TOOL_ADDING_RELATIONSHIP_ICON, addRelationshipTool));
+				diagramEditor, "Add relationship", TOOL_ADDING_RELATIONSHIP_ICON,
+				addRelationshipTool));
 		addRelationshipButton.setSelectedIcon(TOOL_ADDING_RELATIONHIP_PRESSED_ICON);
 		addRelationshipButton.setPressedIcon(TOOL_ADDING_RELATIONHIP_PRESSED_ICON);
 		addRelationshipButton.setText(null);
-		addRelationshipButton.setMargin(new Insets(0, 0, 0, 0));
+		addRelationshipButton.setMargin(NO_INSETS);
+		addRelationshipButton.setToolTipText("Add relationship");
 		toolToButton.put(addRelationshipTool, addRelationshipButton);
 		buttonsGroup.add(addRelationshipButton);
 		return addRelationshipButton;
@@ -176,7 +244,8 @@ public class DiagramEditorFrame extends JFrame
 		addEntityButton.setSelectedIcon(TOOL_ADDING_ENTITY_PRESSED_ICON);
 		addEntityButton.setPressedIcon(TOOL_ADDING_ENTITY_PRESSED_ICON);
 		addEntityButton.setText(null);
-		addEntityButton.setMargin(new Insets(0, 0, 0, 0));
+		addEntityButton.setMargin(NO_INSETS);
+		addEntityButton.setToolTipText("Add entity");
 		toolToButton.put(addEntityTool, addEntityButton);
 		buttonsGroup.add(addEntityButton);
 		return addEntityButton;
@@ -189,7 +258,8 @@ public class DiagramEditorFrame extends JFrame
 		defaultToolButton.setPressedIcon(TOOL_SELECTING_PRESSED_ICON);
 		defaultToolButton.setSelectedIcon(TOOL_SELECTING_PRESSED_ICON);
 		defaultToolButton.setText(null);
-		defaultToolButton.setMargin(new Insets(0, 0, 0, 0));
+		defaultToolButton.setMargin(NO_INSETS);
+		defaultToolButton.setToolTipText("Select");
 		toolToButton.put(selectElementTool, defaultToolButton);
 		buttonsGroup.add(defaultToolButton);
 		diagramEditor.addToolChangeListener(new ICurrentToolListener() {
@@ -212,8 +282,9 @@ public class DiagramEditorFrame extends JFrame
 		JMenuBar menu = new JMenuBar();
 		JMenu fileMenu = new JMenu("File");
 		menu.add(fileMenu);
-		fileMenu.add(new DiagramSavingAction("Save", this));
-		fileMenu.add(new DiagramLoadingAction("Open", this));
+		fileMenu.setMnemonic(KeyEvent.VK_F);
+		fileMenu.add(diagramSavingAction);
+		fileMenu.add(diagramLoadingAction);
 		menu.add(new JMenu("Edit"));
 		return menu;
 	}
