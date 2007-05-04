@@ -14,7 +14,7 @@ public class RedoAction extends AbstractAction {
     private final DiagramEditor diagramEditor;
 
     public RedoAction(DiagramEditor editor, String name, Icon icon) {
-        super(name);
+        super(name, icon);
         this.diagramEditor = editor;
         setEnabled(false);
         this.diagramEditor.getCommandManager().addListener(

@@ -4,12 +4,14 @@
 package ru.amse.soultakov.ereditor.controller.actions;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import ru.amse.soultakov.ereditor.controller.DiagramEditorFrame;
@@ -32,6 +34,8 @@ public final class DiagramLoadingAction extends AbstractAction {
                 DiagramEditorFrame.ERD);
         fc.setFileFilter(filter);
         fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		this.putValue(MNEMONIC_KEY, KeyEvent.VK_O);;
+		this.putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("control O"));
     }
 
     public void actionPerformed(ActionEvent e) {

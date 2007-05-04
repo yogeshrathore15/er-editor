@@ -16,31 +16,33 @@ import ru.amse.soultakov.ereditor.view.SelectedItemsListener;
  * @author sma
  * 
  */
-public class RemoveSelectionAction extends AbstractAction {
+@SuppressWarnings("serial")
+public class RemoveSelectionAction extends AbstractAction
+{
 
-    static final long serialVersionUID = 1L;
+	private DiagramEditor diagramEditor;
 
-    private DiagramEditor diagramEditor;
-
-    /**
+	/**
      * @param diagramEditor
      * @param name
-     * @param removeIcon 
+     * @param removeIcon
      */
-    public RemoveSelectionAction(DiagramEditor diagramEditor, String name, ImageIcon removeIcon) {
-        super(name, removeIcon);
-        this.diagramEditor = diagramEditor;
-        setEnabled(false);
-        this.diagramEditor.getSelectedItems().addListener(
-                new SelectedItemsListener() {
-                    public void selectionChanged(SelectedItems selection) {
-                        setEnabled(!selection.isEmpty());
-                    }
-                });
-    }
+	public RemoveSelectionAction(DiagramEditor diagramEditor, String name, ImageIcon removeIcon)
+	{
+		super(name, removeIcon);
+		this.diagramEditor = diagramEditor;
+		setEnabled(false);
+		this.diagramEditor.getSelectedItems().addListener(new SelectedItemsListener() {
+			public void selectionChanged(SelectedItems selection)
+			{
+				setEnabled(!selection.isEmpty());
+			}
+		});
+	}
 
-    public void actionPerformed(ActionEvent e) {
-        diagramEditor.removeSelection();
-    }
+	public void actionPerformed(ActionEvent e)
+	{
+		diagramEditor.removeSelection();
+	}
 
 }
