@@ -23,6 +23,7 @@ import javax.swing.JPanel;
 import ru.amse.soultakov.ereditor.controller.tools.ITool;
 import ru.amse.soultakov.ereditor.controller.tools.SelectElementTool;
 import ru.amse.soultakov.ereditor.controller.undo.CommandManager;
+import ru.amse.soultakov.ereditor.controller.undo.CommandManagerListener;
 import ru.amse.soultakov.ereditor.util.CommonUtils;
 import ru.amse.soultakov.ereditor.view.Block;
 import ru.amse.soultakov.ereditor.view.CommentView;
@@ -71,6 +72,8 @@ public class DiagramEditor extends JPanel {
     private final List<ICurrentToolListener> listeners = newArrayList();
 
     private boolean currentToolEnabled = true;
+    
+    private boolean diagramChanged;
 
     public DiagramEditor() {
         this.setLayout(null);
@@ -80,6 +83,27 @@ public class DiagramEditor extends JPanel {
                 repaint();
             }
         });
+        commandManager.addListener(new CommandManagerListener() {
+
+            public void commandInvoked() {
+                diagramChanged = true;
+            }
+
+            public void commandRedone() {
+            }
+
+            public void commandUndone() {
+            }
+            
+        });
+    }
+    
+    public void setDiagramChanged(boolean diagramChanged) {
+        this.diagramChanged = diagramChanged;
+    }
+    
+    public boolean isDiagramChanged() {
+        return this.diagramChanged;
     }
 
     public EntityView addEntity(int x, int y) {
