@@ -51,6 +51,7 @@ public final class LoadDiagramAction extends AbstractAction {
                                 new FileInputStream(fc.getSelectedFile()));
                         diagramEditorFrame.getDiagramEditor().setDiagram(
                                 Diagram.load(xdl, monitor));
+                        diagramEditorFrame.getDiagramEditor().setDiagramChanged(false);
                     } catch (DiagramLoadingException ex) {
                         JOptionPane.showMessageDialog(diagramEditorFrame,
                                 "Ошибка при загрузке диаграммы");

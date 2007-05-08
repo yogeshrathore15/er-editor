@@ -34,7 +34,6 @@ public final class SaveDiagramAction extends AbstractAction {
         fileChooser.setFileFilter(filter);
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         this.putValue(MNEMONIC_KEY, KeyEvent.VK_S);
-        ;
         this.putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("control S"));
     }
 
@@ -53,6 +52,7 @@ public final class SaveDiagramAction extends AbstractAction {
                                 new FileOutputStream(fileName));
                         diagramEditorFrame.getDiagramEditor().getDiagram().save(xds,
                                 monitor);
+                        diagramEditorFrame.getDiagramEditor().setDiagramChanged(false);
                     } catch (DiagramSavingException ex) {
                         JOptionPane.showMessageDialog(diagramEditorFrame,
                                 "Ошибка при сохранении диаграммы");

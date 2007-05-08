@@ -78,15 +78,4 @@ public class CommandManager {
         }
     }
 
-    // @Override
-    // public String toString() {
-    // for(ICommand command : undoList) {
-    // System.out.println(command);
-    // }
-    // for(ICommand command : redoList) {
-    // System.out.println(command);
-    // }
-    // return "";
-    // }
-
 }

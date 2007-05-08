@@ -6,6 +6,8 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Insets;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Map;
 
 import javax.swing.AbstractButton;
@@ -15,6 +17,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
@@ -43,70 +46,58 @@ public class DiagramEditorFrame extends JFrame {
     public static final String ERD = "erd";
 
     public static final String ERD_EXTENSION = "." + ERD;
-    
+
     private static final ImageIcon TOOL_SELECTING_PRESSED_ICON = new ImageIcon(
-            DiagramEditorFrame.class.getResource(
-                    "/images/tool_select_pressed.png"));
+            DiagramEditorFrame.class.getResource("/images/tool_select_pressed.png"));
 
     private static final ImageIcon TOOL_SELECTING_ICON = new ImageIcon(
-            DiagramEditorFrame.class.getResource(
-                    "/images/tool_select.png"));
+            DiagramEditorFrame.class.getResource("/images/tool_select.png"));
 
     private static final ImageIcon TOOL_ADDING_ENTITY_ICON = new ImageIcon(
-            DiagramEditorFrame.class.getResource(
-                    "/images/tool_add_entity.png"));
+            DiagramEditorFrame.class.getResource("/images/tool_add_entity.png"));
 
     private static final ImageIcon TOOL_ADDING_ENTITY_PRESSED_ICON = new ImageIcon(
-            DiagramEditorFrame.class.getResource(
-                    "/images/tool_add_entity_pressed.png"));
+            DiagramEditorFrame.class
+                    .getResource("/images/tool_add_entity_pressed.png"));
 
     private static final ImageIcon TOOL_ADDING_RELATIONSHIP_ICON = new ImageIcon(
-            DiagramEditorFrame.class.getResource(
-                    "/images/tool_add_relation.png"));
+            DiagramEditorFrame.class.getResource("/images/tool_add_relation.png"));
 
     private static final ImageIcon TOOL_ADDING_RELATIONHIP_PRESSED_ICON = new ImageIcon(
-            DiagramEditorFrame.class.getResource(
-                    "/images/tool_add_relation_pressed.png"));
+            DiagramEditorFrame.class
+                    .getResource("/images/tool_add_relation_pressed.png"));
 
     private static final ImageIcon REMOVE_ICON = new ImageIcon(
-            DiagramEditorFrame.class.getResource(
-                    "/images/remove.png"));
+            DiagramEditorFrame.class.getResource("/images/remove.png"));
 
     private static final ImageIcon REMOVE_PRESSED_ICON = new ImageIcon(
-            DiagramEditorFrame.class.getResource(
-                    "/images/remove_pressed.png"));
+            DiagramEditorFrame.class.getResource("/images/remove_pressed.png"));
 
     private static final ImageIcon UNDO_ICON = new ImageIcon(
-            DiagramEditorFrame.class.getResource(
-                    "/images/undo.png"));
+            DiagramEditorFrame.class.getResource("/images/undo.png"));
 
     private static final ImageIcon UNDO_PRESSED_ICON = new ImageIcon(
-            DiagramEditorFrame.class.getResource(
-                    "/images/undo_pressed.png"));
+            DiagramEditorFrame.class.getResource("/images/undo_pressed.png"));
 
     private static final ImageIcon REDO_ICON = new ImageIcon(
-            DiagramEditorFrame.class.getResource(
-                    "/images/redo.png"));
+            DiagramEditorFrame.class.getResource("/images/redo.png"));
 
     private static final ImageIcon REDO_PRESSED_ICON = new ImageIcon(
-            DiagramEditorFrame.class.getResource(
-                    "/images/redo_pressed.png"));
+            DiagramEditorFrame.class.getResource("/images/redo_pressed.png"));
 
     private static final ImageIcon ATTRIBUTE_REMOVE_ICON = new ImageIcon(
-            DiagramEditorFrame.class.getResource(
-                    "/images/attribute_remove.png"));
+            DiagramEditorFrame.class.getResource("/images/attribute_remove.png"));
 
     private static final ImageIcon ATTRIBUTE_REMOVE_PRESSED_ICON = new ImageIcon(
-            DiagramEditorFrame.class.getResource(
-                    "/images/attribute_remove_pressed.png"));
+            DiagramEditorFrame.class
+                    .getResource("/images/attribute_remove_pressed.png"));
 
     private static final ImageIcon ATTRIBUTE_ADD_ICON = new ImageIcon(
-            DiagramEditorFrame.class.getResource(
-                    "/images/attribute_add.png"));
+            DiagramEditorFrame.class.getResource("/images/attribute_add.png"));
 
     private static final ImageIcon ATTRIBUTE_ADD_PRESSED_ICON = new ImageIcon(
-            DiagramEditorFrame.class.getResource(
-                    "/images/attribute_add_pressed.png"));
+            DiagramEditorFrame.class
+                    .getResource("/images/attribute_add_pressed.png"));
 
     private final DiagramEditor diagramEditor = new DiagramEditor();
 
@@ -121,12 +112,32 @@ public class DiagramEditorFrame extends JFrame {
         }
     };
 
+    private SaveDiagramAction saveDiagramAction = new SaveDiagramAction("Save", this);
+
     public DiagramEditorFrame() {
         super("ER-diagram editor");
         this.setJMenuBar(createMenu());
         this.add(createToolbar(), BorderLayout.NORTH);
         this.add(createDiagramEditorPanel(), BorderLayout.CENTER);
         this.setIconImage(ATTRIBUTE_ADD_ICON.getImage());
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                if (diagramEditor.isDiagramChanged()) {
+                    int res = JOptionPane.showConfirmDialog(DiagramEditorFrame.this,
+                            "Diagram has been modified. Save changes?", "Save Resource", JOptionPane.YES_NO_CANCEL_OPTION);
+                    if (res == JOptionPane.YES_OPTION) {
+                        saveDiagramAction.actionPerformed(null);
+                    } else if (res == JOptionPane.CANCEL_OPTION) {
+                        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+                    } else {
+                        setDefaultCloseOperation(EXIT_ON_CLOSE);
+                    }
+                } else {
+                    setDefaultCloseOperation(EXIT_ON_CLOSE);
+                }
+            }
+        });
     }
 
     private Component createDiagramEditorPanel() {
@@ -289,7 +300,7 @@ public class DiagramEditorFrame extends JFrame {
         menu.add(fileMenu);
         fileMenu.setMnemonic(KeyEvent.VK_F);
         fileMenu.add(new NewDiagramAction("New", this));
-        fileMenu.add(new SaveDiagramAction("Save", this));
+        fileMenu.add(saveDiagramAction);
         fileMenu.add(new LoadDiagramAction("Open", this));
         menu.add(new JMenu("Edit"));
         return menu;
