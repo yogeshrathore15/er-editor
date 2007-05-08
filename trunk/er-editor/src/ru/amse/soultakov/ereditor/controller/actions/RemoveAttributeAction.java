@@ -20,7 +20,7 @@ public class RemoveAttributeAction extends AbstractAction {
 
     public RemoveAttributeAction(final DiagramEditor diagramEditor, String name,
             Icon icon) {
-        super(name);
+        super(name, icon);
         this.diagramEditor = diagramEditor;
         setEnabled(false);
         this.diagramEditor.getSelectedItems().addListener(

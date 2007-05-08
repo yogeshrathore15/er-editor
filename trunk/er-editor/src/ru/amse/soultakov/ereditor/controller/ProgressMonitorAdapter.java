@@ -7,11 +7,11 @@ import javax.swing.ProgressMonitor;
 public class ProgressMonitorAdapter implements IProgressMonitor {
 
     private final ProgressMonitor progressMonitor;
-    
+
     public ProgressMonitorAdapter(Component component) {
-        progressMonitor = new ProgressMonitor(component, "", "", 0,100);
+        progressMonitor = new ProgressMonitor(component, "", "", 0, 100);
     }
-    
+
     public void done() {
     }
 
