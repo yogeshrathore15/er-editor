@@ -22,20 +22,21 @@ import ru.amse.soultakov.ereditor.view.Diagram;
 import ru.amse.soultakov.ereditor.view.DiagramLoadingException;
 
 @SuppressWarnings("serial")
-public final class DiagramLoadingAction extends AbstractAction {
+public final class LoadDiagramAction extends AbstractAction {
     private DiagramEditorFrame diagramEditorFrame;
 
     private JFileChooser fc = new JFileChooser();
 
-    public DiagramLoadingAction(String name, DiagramEditorFrame diagramEditorFrame) {
+    public LoadDiagramAction(String name, DiagramEditorFrame diagramEditorFrame) {
         super(name);
         this.diagramEditorFrame = diagramEditorFrame;
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Diagrams",
                 DiagramEditorFrame.ERD);
         fc.setFileFilter(filter);
         fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-		this.putValue(MNEMONIC_KEY, KeyEvent.VK_O);;
-		this.putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("control O"));
+        this.putValue(MNEMONIC_KEY, KeyEvent.VK_O);
+        ;
+        this.putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("control O"));
     }
 
     public void actionPerformed(ActionEvent e) {

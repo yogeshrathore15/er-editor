@@ -23,7 +23,6 @@ import javax.swing.JPanel;
 import ru.amse.soultakov.ereditor.controller.tools.ITool;
 import ru.amse.soultakov.ereditor.controller.tools.SelectElementTool;
 import ru.amse.soultakov.ereditor.controller.undo.CommandManager;
-import ru.amse.soultakov.ereditor.controller.undo.commands.RemoveViewableCommand;
 import ru.amse.soultakov.ereditor.util.CommonUtils;
 import ru.amse.soultakov.ereditor.view.Block;
 import ru.amse.soultakov.ereditor.view.CommentView;
@@ -106,15 +105,6 @@ public class DiagramEditor extends JPanel {
                 .addNewRelationshipView(first, second);
         relationship.addListener(viewableListener);
         return relationship;
-    }
-
-    /**
-     * 
-     */
-    public void removeSelection() {
-        getCommandManager().executeCommand(
-                new RemoveViewableCommand(this, selectedItems.asSet()));
-        repaint();
     }
 
     public void setTool(ITool tool) {

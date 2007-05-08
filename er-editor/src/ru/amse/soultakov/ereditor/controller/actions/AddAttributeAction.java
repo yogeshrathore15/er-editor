@@ -24,7 +24,7 @@ public class AddAttributeAction extends AbstractAction {
 
     public AddAttributeAction(final DiagramEditor diagramEditor, String name,
             Icon icon) {
-        super(name);
+        super(name, icon);
         this.diagramEditor = diagramEditor;
         setEnabled(false);
         diagramEditor.getSelectedItems().addListener(new SelectedItemsListener() {
@@ -38,9 +38,9 @@ public class AddAttributeAction extends AbstractAction {
             }
         });
     }
-    
+
     private boolean hasAttributeName(String full) {
-        for(AbstractAttribute aa : entityView.getEntity()) {
+        for (AbstractAttribute aa : entityView.getEntity()) {
             if (aa.getName().equals(full)) {
                 return true;
             }
@@ -53,11 +53,11 @@ public class AddAttributeAction extends AbstractAction {
             String base = "NewAttr";
             String full = base;
             int i = 0;
-            while(hasAttributeName(full)) {
+            while (hasAttributeName(full)) {
                 full = base + i++;
             }
-            entityView.addAttribute(new Attribute(full,
-                    SimpleAttributeType.INTEGER, false, ""));
+            entityView.addAttribute(new Attribute(full, SimpleAttributeType.INTEGER,
+                    false, ""));
             SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
                     entityView.editAttribute(entityView.getEntity().getAttributes()
