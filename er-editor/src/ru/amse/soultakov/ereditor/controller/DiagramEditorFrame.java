@@ -43,40 +43,30 @@ public class DiagramEditorFrame extends JFrame {
     public static final String ERD = "erd";
 
     public static final String ERD_EXTENSION = "." + ERD;
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     private static final ImageIcon TOOL_SELECTING_PRESSED_ICON = new ImageIcon(
             DiagramEditorFrame.class.getResource(
-                    "/images/tool_selecting_pressed.png"));
+                    "/images/tool_select_pressed.png"));
 
     private static final ImageIcon TOOL_SELECTING_ICON = new ImageIcon(
             DiagramEditorFrame.class.getResource(
-                    "/images/tool_selecting.png"));
+                    "/images/tool_select.png"));
 
     private static final ImageIcon TOOL_ADDING_ENTITY_ICON = new ImageIcon(
             DiagramEditorFrame.class.getResource(
-                    "/images/tool_adding_entity.png"));
+                    "/images/tool_add_entity.png"));
 
     private static final ImageIcon TOOL_ADDING_ENTITY_PRESSED_ICON = new ImageIcon(
             DiagramEditorFrame.class.getResource(
-                    "/images/tool_adding_entity_pressed.png"));
+                    "/images/tool_add_entity_pressed.png"));
 
     private static final ImageIcon TOOL_ADDING_RELATIONSHIP_ICON = new ImageIcon(
             DiagramEditorFrame.class.getResource(
-                    "/images/tool_adding_relationship.png"));
+                    "/images/tool_add_relation.png"));
 
     private static final ImageIcon TOOL_ADDING_RELATIONHIP_PRESSED_ICON = new ImageIcon(
             DiagramEditorFrame.class.getResource(
-                    "/images/tool_adding_relationship_pressed.png"));
+                    "/images/tool_add_relation_pressed.png"));
 
     private static final ImageIcon REMOVE_ICON = new ImageIcon(
             DiagramEditorFrame.class.getResource(

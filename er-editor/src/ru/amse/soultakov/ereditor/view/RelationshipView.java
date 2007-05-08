@@ -36,14 +36,14 @@ public class RelationshipView extends Line {
             "ONE_OR_MORE", "ZERO_OR_ONE", "ZERO_OR_MORE" };
 
     private static final ImageIcon[] COMBOBOX_IMAGES = new ImageIcon[] {
-            new ImageIcon(RelationshipView.class.getClassLoader().getResource(
-                    "./images/relation_one_only.png")),
-            new ImageIcon(RelationshipView.class.getClassLoader().getResource(
-                    "./images/relation_one_or_more.png")),
-            new ImageIcon(RelationshipView.class.getClassLoader().getResource(
-                    "./images/relation_zero_or_one.png")),
-            new ImageIcon(RelationshipView.class.getClassLoader().getResource(
-                    "./images/relation_zero_or_more.png")), };
+            new ImageIcon(RelationshipView.class.getResource(
+                    "/images/relation_one_only.png")),
+            new ImageIcon(RelationshipView.class.getResource(
+                    "/images/relation_one_or_more.png")),
+            new ImageIcon(RelationshipView.class.getResource(
+                    "/images/relation_zero_or_one.png")),
+            new ImageIcon(RelationshipView.class.getResource(
+                    "/images/relation_zero_or_more.png")), };
 
     private static final int END_WIDTH = 10;
 
