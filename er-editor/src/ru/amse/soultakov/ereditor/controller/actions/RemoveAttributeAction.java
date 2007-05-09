@@ -1,9 +1,11 @@
 package ru.amse.soultakov.ereditor.controller.actions;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
+import javax.swing.KeyStroke;
 
 import ru.amse.soultakov.ereditor.controller.DiagramEditor;
 import ru.amse.soultakov.ereditor.view.EntityView;
@@ -35,6 +37,8 @@ public class RemoveAttributeAction extends AbstractAction {
                         }
                     }
                 });
+        putValue(MNEMONIC_KEY,KeyEvent.VK_M);
+        putValue(ACCELERATOR_KEY,KeyStroke.getKeyStroke("shift alt R"));
     }
 
     public void actionPerformed(ActionEvent e) {

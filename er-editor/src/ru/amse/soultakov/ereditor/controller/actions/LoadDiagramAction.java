@@ -35,7 +35,6 @@ public final class LoadDiagramAction extends AbstractAction {
         fc.setFileFilter(filter);
         fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
         this.putValue(MNEMONIC_KEY, KeyEvent.VK_O);
-        ;
         this.putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("control O"));
     }
 

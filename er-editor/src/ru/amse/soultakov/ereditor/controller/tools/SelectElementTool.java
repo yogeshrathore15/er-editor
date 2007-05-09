@@ -16,7 +16,6 @@ import java.util.Collection;
 
 import ru.amse.soultakov.ereditor.controller.DiagramEditor;
 import ru.amse.soultakov.ereditor.controller.undo.commands.MoveCommand;
-import ru.amse.soultakov.ereditor.controller.undo.commands.RemoveViewableCommand;
 import ru.amse.soultakov.ereditor.util.CommonUtils;
 import ru.amse.soultakov.ereditor.view.IOutline;
 import ru.amse.soultakov.ereditor.view.IViewable;
@@ -290,28 +289,28 @@ public class SelectElementTool extends ToolAdapter
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
-		if (e.getKeyCode() == KeyEvent.VK_DELETE)
-		{
-            diagramEditor.getCommandManager().executeCommand(
-                    new RemoveViewableCommand(diagramEditor, diagramEditor
-                            .getSelectedItems().asSet()));
-            diagramEditor.getSelectedItems().clear();
-            diagramEditor.repaint();
-		}
-		else if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_Z)
-		{
-			if (diagramEditor.getCommandManager().canUndoCommand())
-			{
-				diagramEditor.getCommandManager().undoCommand();
-			}
-		}
-		else if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_Y)
-		{
-			if (diagramEditor.getCommandManager().canRedoCommand())
-			{
-				diagramEditor.getCommandManager().redoCommand();
-			}
-		}
+//		if (e.getKeyCode() == KeyEvent.VK_DELETE)
+//		{
+//            diagramEditor.getCommandManager().executeCommand(
+//                    new RemoveViewableCommand(diagramEditor, diagramEditor
+//                            .getSelectedItems().asSet()));
+//            diagramEditor.getSelectedItems().clear();
+//            diagramEditor.repaint();
+//		}
+//		else if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_Z)
+//		{
+//			if (diagramEditor.getCommandManager().canUndoCommand())
+//			{
+//				diagramEditor.getCommandManager().undoCommand();
+//			}
+//		}
+//		else if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_Y)
+//		{
+//			if (diagramEditor.getCommandManager().canRedoCommand())
+//			{
+//				diagramEditor.getCommandManager().redoCommand();
+//			}
+//		}
 	}
 
 	/**
