@@ -18,9 +18,14 @@ import java.util.Map;
 import java.util.Set;
 
 import ru.amse.soultakov.ereditor.controller.IProgressMonitor;
+import ru.amse.soultakov.ereditor.controller.undo.CommandManager;
+import ru.amse.soultakov.ereditor.controller.undo.ICommand;
+import ru.amse.soultakov.ereditor.model.AbstractAttribute;
 import ru.amse.soultakov.ereditor.model.Comment;
+import ru.amse.soultakov.ereditor.model.Constraint;
 import ru.amse.soultakov.ereditor.model.ERModel;
 import ru.amse.soultakov.ereditor.model.Entity;
+import ru.amse.soultakov.ereditor.model.FKRelationshipEnd;
 import ru.amse.soultakov.ereditor.model.Link;
 import ru.amse.soultakov.ereditor.model.Relationship;
 import ru.amse.soultakov.ereditor.util.CommonUtils;
@@ -46,7 +51,9 @@ public class Diagram {
     private final Map<Link, LinkView> linkToView = newHashMap();
 
     private final List<IDiagramListener> listeners = new ArrayList<IDiagramListener>();
-
+    
+    private CommandManager commandManager;
+    
     public Diagram() {
         erModel = new ERModel();
     }
@@ -127,12 +134,12 @@ public class Diagram {
         notifyListeners();
         return relationshipView;
     }
-    
+
     public void removeFKRelationshipView(RelationshipView rv) {
-        
+
     }
-    
-    public RelationshipView addFKRelationship(EntityView first, EntityView second) {
+
+    public RelationshipView addNewFKRelationship(EntityView first, final EntityView second) {
         if (hasNull(first, second)) {
             throw new IllegalArgumentException("Both EntityViews must be non-null");
         } else if (!entityViews.contains(first) || !entityViews.contains(second)
@@ -142,7 +149,24 @@ public class Diagram {
         }
         Relationship relationship = erModel.addNewFKRelationship(first.getEntity(),
                 second.getEntity());
-        second.initAttributes();
+        Constraint<? extends AbstractAttribute> constr = ((FKRelationshipEnd) relationship
+                .getSecondEnd()).getConstraint();
+        // second.initAttributes();
+        for (final AbstractAttribute aa : constr) {
+            commandManager.executeCommand(new ICommand() {
+
+                private AttributeView attributeView;
+                
+                public void doIt() {
+                    attributeView = second.addAttribute(aa);
+                }
+
+                public void undoIt() {
+                    second.removeAttribute(attributeView);
+                }
+                
+            });
+        }
         RelationshipView relationshipView = new RelationshipView(this, relationship);
         relationshipViews.add(relationshipView);
         relationshipToView.put(relationship, relationshipView);
@@ -290,5 +314,19 @@ public class Diagram {
     public void save(IDiagramSaver saver, IProgressMonitor monitor)
             throws DiagramSavingException {
         saver.save(this, erModel, monitor);
+    }
+
+    /**
+     * @param commandManager the commandManager to set
+     */
+    public void setCommandManager(CommandManager commandManager) {
+        this.commandManager = commandManager;
+    }
+
+    /**
+     * @return the commandManager
+     */
+    public CommandManager getCommandManager() {
+        return commandManager;
     }
 }
