@@ -91,7 +91,7 @@ public class ERModel {
         second.addForeignKey(fk);
         Relationship relationship = new Relationship(new PKRelationshipEnd(first,
                 RelationshipMultiplicity.ONE_ONLY, "End1"), new FKRelationshipEnd(
-                second, RelationshipMultiplicity.ONE_ONLY, "End2", null));
+                second, RelationshipMultiplicity.ONE_ONLY, "End2", fk));
         relationships.add(relationship);
         first.addRelationship(relationship);
         second.addRelationship(relationship);

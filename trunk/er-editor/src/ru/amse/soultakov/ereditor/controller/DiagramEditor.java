@@ -83,6 +83,7 @@ public class DiagramEditor extends JPanel {
                 repaint();
             }
         });
+        diagram.setCommandManager(getCommandManager());
         commandManager.addListener(new CommandManagerListener() {
 
             public void commandInvoked() {
@@ -388,10 +389,16 @@ public class DiagramEditor extends JPanel {
 
     public void setDiagram(Diagram diagram) {
         this.diagram = diagram;
+        diagram.addDiagramListener(new IDiagramListener() {
+            public void diagramModified(Diagram modifiedDiagram) {
+                repaint();
+            }
+        });
         addListenerTo(diagram.getEntityViews());
         addListenerTo(diagram.getCommentViews());
         addListenerTo(diagram.getRelationshipViews());
         addListenerTo(diagram.getLinkViews());
+        diagram.setCommandManager(getCommandManager());
         repaint();
     }
 
@@ -410,7 +417,7 @@ public class DiagramEditor extends JPanel {
     }
 
     public RelationshipView addFKRelationship(EntityView entityView1, EntityView entityView2) {
-        return diagram.addFKRelationship(entityView1, entityView2);
+        return diagram.addNewFKRelationship(entityView1, entityView2);
     }
     
     public void removeFKRelationship(RelationshipView rv) {

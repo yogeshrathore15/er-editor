@@ -33,6 +33,77 @@ import ru.amse.soultakov.ereditor.util.GraphicsUtils;
  */
 public class EntityView extends Block {
 
+    private final class MoveAttributeCommand implements ICommand {
+
+        private final DiagramEditor editor;
+
+        private final boolean pkContains;
+
+        private final boolean nonPkContains;
+
+        private final boolean isFirst;
+
+        private final boolean isLast;
+
+        private final int newIndex;
+
+        private final int oldIndex;
+
+        private final boolean inPkCompartment;
+
+        private MoveAttributeCommand(int index, DiagramEditor editor) {
+            this.editor = editor;
+            oldIndex = selectedAttributeIndex;
+            pkContains = pkCompartment.contains(oldIndex);
+            nonPkContains = nonPkCompartment.contains(oldIndex);
+            isFirst = index == FIRST;
+            isLast = index == LAST;
+            if (isFirst) {
+                newIndex = 0;
+            } else if (isLast) {
+                newIndex = attributeViews.size();
+            } else {
+                this.newIndex = index;
+            }
+            inPkCompartment = pkCompartment.contains(newIndex) || isFirst;
+        }
+
+        public void doIt() {
+            AttributeView temp = attributeViews.remove(oldIndex);
+            attributeViews.add(newIndex == 0 ? newIndex : newIndex - 1, temp);
+            if (inPkCompartment) {
+                if (nonPkContains) {
+                    entity.addToPrimaryKey(temp.getAttribute());
+                }
+            } else {
+                if (pkContains) {
+                    entity.removeFromPrimaryKey(temp.getAttribute());
+                }
+            }
+            initialized = false;
+            this.editor.getSelectedOutlines().clear();
+            notifyListeners();
+        }
+
+        public void undoIt() {
+            AttributeView temp = attributeViews.remove(newIndex == attributeViews
+                    .size() ? newIndex - 1 : newIndex);
+            attributeViews.add(oldIndex, temp);
+            if (inPkCompartment) {
+                if (nonPkContains) {
+                    entity.removeFromPrimaryKey(temp.getAttribute());
+                }
+            } else {
+                if (pkContains) {
+                    entity.addToPrimaryKey(temp.getAttribute());
+                }
+            }
+            initialized = false;
+            this.editor.getSelectedOutlines().clear();
+            notifyListeners();
+        }
+    }
+
     private static final int LAST = -3;
 
     private static final int FIRST = -2;
@@ -324,7 +395,7 @@ public class EntityView extends Block {
         notifyListeners();
         return attributeView;
     }
-    
+
     public void addAttributeView(int index, AttributeView attributeView) {
         entity.addAttribute(attributeView.getAttribute());
         attributeViews.add(index, attributeView);
@@ -379,85 +450,8 @@ public class EntityView extends Block {
         if (dragStarted) {
             final int index = getAttributeIndex(mouseEvent.getY());
             if (index != -1 && selectedAttributeIndex != -1) {
-                editor.getCommandManager().executeCommand(new ICommand() {
-
-                    private boolean pkContains;
-
-                    private boolean nonPkContains;
-
-                    private boolean isFirst;
-
-                    private boolean isLast;
-
-                    private int newIndex;
-
-                    private int oldIndex;
-
-                    private boolean inPkCompartment;
-
-                    public void doIt() {
-                        oldIndex = selectedAttributeIndex;
-                        AttributeView temp = attributeViews
-                                .remove(selectedAttributeIndex);
-                        pkContains = pkCompartment.contains(selectedAttributeIndex);
-                        nonPkContains = nonPkCompartment
-                                .contains(selectedAttributeIndex);
-                        newIndex = index;
-                        isFirst = newIndex == FIRST;
-                        isLast = newIndex == LAST;
-                        if (isFirst) {
-                            pkCompartment.setEndIndex(1);
-                            newIndex = 0;
-                        } else if (isLast) {
-                            nonPkCompartment.setStartIndex(nonPkCompartment
-                                    .getStartIndex() - 1);
-                            pkCompartment
-                                    .setEndIndex(pkCompartment.getEndIndex() - 1);
-                            newIndex = attributeViews.size();
-                        }
-                        attributeViews.add(newIndex, temp);
-                        inPkCompartment = pkCompartment.contains(newIndex);
-                        if (inPkCompartment) {
-                            if (nonPkContains) {
-                                entity.addToPrimaryKey(temp.getAttribute());
-                            }
-                        } else {
-                            if (pkContains) {
-                                entity.removeFromPrimaryKey(temp.getAttribute());
-                            }
-                        }
-                        initialized = false;
-                        editor.getSelectedOutlines().clear();
-                        notifyListeners();
-                    }
-
-                    public void undoIt() {
-                        if (isFirst) {
-                            pkCompartment.setEndIndex(0);
-                        } else if (isLast) {
-                            nonPkCompartment.setStartIndex(nonPkCompartment
-                                    .getStartIndex() + 1);
-                            pkCompartment
-                                    .setEndIndex(pkCompartment.getEndIndex() + 1);
-                        }
-                        AttributeView temp = attributeViews.remove(newIndex);
-                        attributeViews.add(oldIndex, temp);
-                        if (inPkCompartment) {
-                            if (nonPkContains) {
-                                entity.removeFromPrimaryKey(temp.getAttribute());
-                            }
-                        } else {
-                            if (pkContains) {
-                                entity.addToPrimaryKey(temp.getAttribute());
-                            }
-                        }
-                        initialized = false;
-                        editor.getSelectedOutlines().clear();
-                        notifyListeners();
-                    }
-
-                });
-
+                editor.getCommandManager().executeCommand(
+                        new MoveAttributeCommand(index, editor));
             }
         }
         dragStarted = false;
