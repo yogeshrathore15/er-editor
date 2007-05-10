@@ -110,7 +110,8 @@ public class SelectElementTool extends ToolAdapter {
                 endPoint = null;
                 startPoint = null;
             } else if (startPoint != null && endPoint == null) {
-                if (e.isControlDown()) {
+                //if (e.isControlDown()) {
+                if (false) {
                     for (IOutline o : getSelectedOutlines()) {
                         IViewable copy = o.getViewable().copy();
                         copy.setLocation(o.getX(), o.getY());
@@ -158,7 +159,7 @@ public class SelectElementTool extends ToolAdapter {
             getSelectedItems().getFirst().processDrag(e, diagramEditor);
             synchronizeOutlinesWithSelection();
             diagramEditor.repaint();
-        } else if (canDragSelection(e)) {
+        } else if (!e.isShiftDown() && canDragSelection(e)) {
             for (IViewable v : getSelectedOutlines()) {
                 int xPos = e.getXOnScreen() - currentPoint.x + v.getX();
                 int yPos = e.getYOnScreen() - currentPoint.y + v.getY();

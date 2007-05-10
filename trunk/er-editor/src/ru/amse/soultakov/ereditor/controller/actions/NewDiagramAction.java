@@ -34,6 +34,7 @@ public final class NewDiagramAction extends AbstractAction {
                     JOptionPane.YES_NO_CANCEL_OPTION);
             if (res == JOptionPane.YES_OPTION) {
                 diagramEditorFrame.getSaveDiagramAction().actionPerformed(null);
+                diagramEditorFrame.getDiagramEditor().setDiagram(new Diagram());
             } else if (res == JOptionPane.NO_OPTION) {
                 diagramEditorFrame.getDiagramEditor().setDiagram(new Diagram());
             }
