@@ -43,7 +43,7 @@ public class RemoveAttributeAction extends AbstractAction {
 
     public void actionPerformed(ActionEvent e) {
         if (isEnabled()) {
-            entityView.removeSelectedAttribute();
+            diagramEditor.getCommandManager().executeCommand(new RemoveAttributeCommand(entityView));
         }
     }
 

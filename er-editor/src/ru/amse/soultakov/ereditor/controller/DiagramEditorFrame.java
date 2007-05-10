@@ -74,6 +74,13 @@ public class DiagramEditorFrame extends JFrame {
     private static final ImageIcon TOOL_ADDING_RELATIONHIP_PRESSED_ICON = new ImageIcon(
             DiagramEditorFrame.class
                     .getResource("/images/tool_add_relation_pressed.png"));
+    
+    private static final ImageIcon TOOL_ADDING_FK_RELATIONSHIP_ICON = new ImageIcon(
+            DiagramEditorFrame.class.getResource("/images/tool_add_fk_relation.png"));
+
+    private static final ImageIcon TOOL_ADDING_FK_RELATIONHIP_PRESSED_ICON = new ImageIcon(
+            DiagramEditorFrame.class
+                    .getResource("/images/tool_add_fk_relation_pressed.png"));
 
     private static final ImageIcon REMOVE_ICON = new ImageIcon(
             DiagramEditorFrame.class.getResource("/images/remove.png"));
@@ -203,7 +210,7 @@ public class DiagramEditorFrame extends JFrame {
     };
 
     private final Action enableAddingFkRelationshipAction = new DiagramEditorAction(
-            diagramEditor, "Add FK relationship", TOOL_ADDING_RELATIONSHIP_ICON,
+            diagramEditor, "Add FK relationship", TOOL_ADDING_FK_RELATIONSHIP_ICON,
             addFkRelationshipTool) {
         {
             putValue(MNEMONIC_KEY, KeyEvent.VK_F);
@@ -276,9 +283,9 @@ public class DiagramEditorFrame extends JFrame {
         addFkRelationshipTool.addListener(toolListener);
         JToggleButton addFkRelationshipButton = new JToggleButton(
                 enableAddingFkRelationshipAction);
-        addFkRelationshipButton.setSelectedIcon(TOOL_ADDING_RELATIONHIP_PRESSED_ICON);
-        addFkRelationshipButton.setPressedIcon(TOOL_ADDING_RELATIONHIP_PRESSED_ICON);
-        addFkRelationshipButton.setText("FK");
+        addFkRelationshipButton.setSelectedIcon(TOOL_ADDING_FK_RELATIONHIP_PRESSED_ICON);
+        addFkRelationshipButton.setPressedIcon(TOOL_ADDING_FK_RELATIONHIP_PRESSED_ICON);
+        addFkRelationshipButton.setText(null);
         addFkRelationshipButton.setMargin(NO_INSETS);
         addFkRelationshipButton.setToolTipText("Add FK relationship");
         toolToButton.put(addFkRelationshipTool, addFkRelationshipButton);

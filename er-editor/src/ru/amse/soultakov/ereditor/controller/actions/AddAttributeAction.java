@@ -9,6 +9,7 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
 import ru.amse.soultakov.ereditor.controller.DiagramEditor;
+import ru.amse.soultakov.ereditor.controller.undo.commands.AddAttributeCommand;
 import ru.amse.soultakov.ereditor.model.AbstractAttribute;
 import ru.amse.soultakov.ereditor.model.Attribute;
 import ru.amse.soultakov.ereditor.model.SimpleAttributeType;
@@ -39,8 +40,8 @@ public class AddAttributeAction extends AbstractAction {
                 }
             }
         });
-        putValue(MNEMONIC_KEY,KeyEvent.VK_A);
-        putValue(ACCELERATOR_KEY,KeyStroke.getKeyStroke("shift alt A"));
+        putValue(MNEMONIC_KEY, KeyEvent.VK_A);
+        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("shift alt A"));
     }
 
     private boolean hasAttributeName(String full) {
@@ -60,8 +61,10 @@ public class AddAttributeAction extends AbstractAction {
             while (hasAttributeName(full)) {
                 full = base + i++;
             }
-            entityView.addAttribute(new Attribute(full, SimpleAttributeType.INTEGER,
-                    false, ""));
+            Attribute attribute = new Attribute(full, SimpleAttributeType.INTEGER,
+                    false, "");
+            diagramEditor.getCommandManager().executeCommand(
+                    new AddAttributeCommand(entityView, attribute));
             SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
                     entityView.editAttribute(entityView.getEntity().getAttributes()

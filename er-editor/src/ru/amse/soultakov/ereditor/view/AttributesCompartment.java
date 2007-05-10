@@ -83,10 +83,16 @@ public class AttributesCompartment extends Compartment {
     }
 
     public void setEndIndex(int endIndex) {
+        if (endIndex < 0) {
+            throw new IllegalArgumentException();
+        }
         this.endIndex = endIndex;
     }
 
     public void setStartIndex(int startIndex) {
+        if (startIndex < 0) {
+            throw new IllegalArgumentException("StartIndex = " + startIndex);
+        }
         this.startIndex = startIndex;
     }
 

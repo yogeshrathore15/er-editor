@@ -388,14 +388,14 @@ public class DiagramEditor extends JPanel {
 
     public void setDiagram(Diagram diagram) {
         this.diagram = diagram;
-        addListenersTo(diagram.getEntityViews());
-        addListenersTo(diagram.getCommentViews());
-        addListenersTo(diagram.getRelationshipViews());
-        addListenersTo(diagram.getLinkViews());
+        addListenerTo(diagram.getEntityViews());
+        addListenerTo(diagram.getCommentViews());
+        addListenerTo(diagram.getRelationshipViews());
+        addListenerTo(diagram.getLinkViews());
         repaint();
     }
 
-    private void addListenersTo(Collection<? extends IViewable> viewables) {
+    private void addListenerTo(Collection<? extends IViewable> viewables) {
         for(IViewable v : viewables) {
             v.addListener(viewableListener);
         }

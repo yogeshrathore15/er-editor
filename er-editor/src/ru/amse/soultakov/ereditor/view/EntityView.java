@@ -20,6 +20,7 @@ import javax.swing.JTextField;
 import ru.amse.soultakov.ereditor.controller.DiagramEditor;
 import ru.amse.soultakov.ereditor.controller.tools.ITool;
 import ru.amse.soultakov.ereditor.controller.tools.ToolAdapter;
+import ru.amse.soultakov.ereditor.controller.undo.ICommand;
 import ru.amse.soultakov.ereditor.controller.undo.commands.EditEntityNameCommand;
 import ru.amse.soultakov.ereditor.model.AbstractAttribute;
 import ru.amse.soultakov.ereditor.model.Constraint;
@@ -314,9 +315,19 @@ public class EntityView extends Block {
         selectedAttributeIndex = -1;
     }
 
-    public void addAttribute(AbstractAttribute attribute) {
+    public AttributeView addAttribute(AbstractAttribute attribute) {
         entity.addAttribute(attribute);
-        attributeViews.add(new AttributeView(attribute, this));
+        AttributeView attributeView = new AttributeView(attribute, this);
+        attributeViews.add(attributeView);
+        nonPkCompartment.setEndIndex(attributeViews.size());
+        initialized = false;
+        notifyListeners();
+        return attributeView;
+    }
+    
+    public void addAttributeView(int index, AttributeView attributeView) {
+        entity.addAttribute(attributeView.getAttribute());
+        attributeViews.add(index, attributeView);
         nonPkCompartment.setEndIndex(attributeViews.size());
         initialized = false;
         notifyListeners();
@@ -339,12 +350,15 @@ public class EntityView extends Block {
 
     public void removeSelectedAttribute() {
         if (isAttributeSelected()) {
-            entity.removeAttribute(attributeViews.get(selectedAttributeIndex)
-                    .getAttribute());
-            attributeViews.remove(selectedAttributeIndex);
-            initialized = false;
-            notifyListeners();
+            removeAttribute(attributeViews.get(selectedAttributeIndex));
         }
+    }
+
+    public void removeAttribute(AttributeView attributeView) {
+        entity.removeAttribute(attributeView.getAttribute());
+        attributeViews.remove(attributeView);
+        initialized = false;
+        notifyListeners();
     }
 
     private boolean dragStarted;
@@ -361,38 +375,89 @@ public class EntityView extends Block {
     }
 
     @Override
-    public void processRelease(MouseEvent mouseEvent, DiagramEditor editor) {
+    public void processRelease(MouseEvent mouseEvent, final DiagramEditor editor) {
         if (dragStarted) {
-            int index = getAttributeIndex(mouseEvent.getY());
+            final int index = getAttributeIndex(mouseEvent.getY());
             if (index != -1 && selectedAttributeIndex != -1) {
-                AttributeView tmp = attributeViews.remove(selectedAttributeIndex);
-                boolean pkContains = pkCompartment.contains(selectedAttributeIndex);
-                boolean nonPkContains = nonPkCompartment
-                        .contains(selectedAttributeIndex);
-                if (index == FIRST) {
-                    pkCompartment.setEndIndex(1);
-                    index = 0;
-                } else if (index == LAST) {
-                    nonPkCompartment
-                            .setStartIndex(nonPkCompartment.getStartIndex() - 1);
-                    pkCompartment.setEndIndex(pkCompartment.getEndIndex() - 1);
-                    index = attributeViews.size();
-                }
-                attributeViews.add(index, tmp);
-                if (pkCompartment.contains(index)) {
-                    if (nonPkContains) {
-                        entity.addToPrimaryKey(tmp.getAttribute());
-                        System.out.println("adding to pk");
+                editor.getCommandManager().executeCommand(new ICommand() {
+
+                    private boolean pkContains;
+
+                    private boolean nonPkContains;
+
+                    private boolean isFirst;
+
+                    private boolean isLast;
+
+                    private int newIndex;
+
+                    private int oldIndex;
+
+                    private boolean inPkCompartment;
+
+                    public void doIt() {
+                        oldIndex = selectedAttributeIndex;
+                        AttributeView temp = attributeViews
+                                .remove(selectedAttributeIndex);
+                        pkContains = pkCompartment.contains(selectedAttributeIndex);
+                        nonPkContains = nonPkCompartment
+                                .contains(selectedAttributeIndex);
+                        newIndex = index;
+                        isFirst = newIndex == FIRST;
+                        isLast = newIndex == LAST;
+                        if (isFirst) {
+                            pkCompartment.setEndIndex(1);
+                            newIndex = 0;
+                        } else if (isLast) {
+                            nonPkCompartment.setStartIndex(nonPkCompartment
+                                    .getStartIndex() - 1);
+                            pkCompartment
+                                    .setEndIndex(pkCompartment.getEndIndex() - 1);
+                            newIndex = attributeViews.size();
+                        }
+                        attributeViews.add(newIndex, temp);
+                        inPkCompartment = pkCompartment.contains(newIndex);
+                        if (inPkCompartment) {
+                            if (nonPkContains) {
+                                entity.addToPrimaryKey(temp.getAttribute());
+                            }
+                        } else {
+                            if (pkContains) {
+                                entity.removeFromPrimaryKey(temp.getAttribute());
+                            }
+                        }
+                        initialized = false;
+                        editor.getSelectedOutlines().clear();
+                        notifyListeners();
                     }
-                } else {
-                    if (pkContains) {
-                        entity.removeFromPrimaryKey(tmp.getAttribute());
-                        System.out.println("removing from pk");
+
+                    public void undoIt() {
+                        if (isFirst) {
+                            pkCompartment.setEndIndex(0);
+                        } else if (isLast) {
+                            nonPkCompartment.setStartIndex(nonPkCompartment
+                                    .getStartIndex() + 1);
+                            pkCompartment
+                                    .setEndIndex(pkCompartment.getEndIndex() + 1);
+                        }
+                        AttributeView temp = attributeViews.remove(newIndex);
+                        attributeViews.add(oldIndex, temp);
+                        if (inPkCompartment) {
+                            if (nonPkContains) {
+                                entity.removeFromPrimaryKey(temp.getAttribute());
+                            }
+                        } else {
+                            if (pkContains) {
+                                entity.addToPrimaryKey(temp.getAttribute());
+                            }
+                        }
+                        initialized = false;
+                        editor.getSelectedOutlines().clear();
+                        notifyListeners();
                     }
-                }
-                initialized = false;
-                editor.getSelectedOutlines().clear();
-                notifyListeners();
+
+                });
+
             }
         }
         dragStarted = false;
@@ -400,6 +465,10 @@ public class EntityView extends Block {
 
     public List<AttributeView> getAttributes() {
         return attributeViews;
+    }
+
+    public int getSelectedAttributeIndex() {
+        return selectedAttributeIndex;
     }
 
 }
