@@ -127,6 +127,28 @@ public class Diagram {
         notifyListeners();
         return relationshipView;
     }
+    
+    public void removeFKRelationshipView(RelationshipView rv) {
+        
+    }
+    
+    public RelationshipView addFKRelationship(EntityView first, EntityView second) {
+        if (hasNull(first, second)) {
+            throw new IllegalArgumentException("Both EntityViews must be non-null");
+        } else if (!entityViews.contains(first) || !entityViews.contains(second)
+                || first.equals(second)) {
+            throw new IllegalArgumentException(
+                    "Both EntityViews must present in diagram and be unequal");
+        }
+        Relationship relationship = erModel.addNewFKRelationship(first.getEntity(),
+                second.getEntity());
+        second.initAttributes();
+        RelationshipView relationshipView = new RelationshipView(this, relationship);
+        relationshipViews.add(relationshipView);
+        relationshipToView.put(relationship, relationshipView);
+        notifyListeners();
+        return relationshipView;
+    }
 
     public LinkView addNewLinkView(EntityView entityView, CommentView commentView) {
         if (hasNull(entityView, commentView)) {
@@ -269,5 +291,4 @@ public class Diagram {
             throws DiagramSavingException {
         saver.save(this, erModel, monitor);
     }
-
 }

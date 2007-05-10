@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 import ru.amse.soultakov.ereditor.controller.DiagramEditor;
+import ru.amse.soultakov.ereditor.controller.undo.commands.AddFKRelationshipCommand;
 import ru.amse.soultakov.ereditor.controller.undo.commands.AddRelationshipCommand;
 import ru.amse.soultakov.ereditor.view.EntityView;
 import ru.amse.soultakov.ereditor.view.IViewable;
@@ -17,16 +18,19 @@ import ru.amse.soultakov.ereditor.view.SelectedItems;
 
 public class AddRelationshipTool extends ToolAdapter {
 
-    private DiagramEditor diagramEditor;
+    private final DiagramEditor diagramEditor;
 
     private EntityView first;
 
     private EntityView second;
 
     private Point current;
+    
+    private final boolean foreignKeyMode;
 
-    public AddRelationshipTool(DiagramEditor diagramEditor) {
+    public AddRelationshipTool(DiagramEditor diagramEditor, boolean fkMode) {
         this.diagramEditor = diagramEditor;
+        foreignKeyMode = fkMode;
     }
 
     @Override
@@ -45,8 +49,13 @@ public class AddRelationshipTool extends ToolAdapter {
     @Override
     public void mouseReleased(MouseEvent e) {
         if (second != null && first != null && first.acceptRelationshipWith(second)) {
-            diagramEditor.getCommandManager().executeCommand(
-                    new AddRelationshipCommand(diagramEditor, first, second));
+            if (foreignKeyMode) {
+                diagramEditor.getCommandManager().executeCommand(
+                        new AddFKRelationshipCommand(diagramEditor, first, second));
+            } else {
+                diagramEditor.getCommandManager().executeCommand(
+                        new AddRelationshipCommand(diagramEditor, first, second));
+            }
             operationFinished();
         }
         reset();

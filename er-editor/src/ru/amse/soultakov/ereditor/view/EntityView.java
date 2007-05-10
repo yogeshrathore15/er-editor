@@ -78,7 +78,7 @@ public class EntityView extends Block {
         nonPkCompartment.setEndIndex(primaryKey.size() + attributesExceptPK.size());
     }
 
-    private void initAttributes() {
+    final void initAttributes() {
         attributeViews = new ArrayList<AttributeView>(entity.getAttributes().size());
         for (AbstractAttribute a : entity.getPrimaryKey()) {
             AttributeView attributeView = new AttributeView(a, this);
@@ -88,6 +88,7 @@ public class EntityView extends Block {
             AttributeView attributeView = new AttributeView(a, this);
             attributeViews.add(attributeView);
         }
+        initialized = false;
     }
 
     public void paint(Graphics2D graphics) {
@@ -308,6 +309,7 @@ public class EntityView extends Block {
             ITool oldTool) {
         editor.remove(tf);
         editor.setTool(oldTool);
+        editor.getSelectedOutlines().clear();
         editor.repaint();
         selectedAttributeIndex = -1;
     }
@@ -380,13 +382,16 @@ public class EntityView extends Block {
                 if (pkCompartment.contains(index)) {
                     if (nonPkContains) {
                         entity.addToPrimaryKey(tmp.getAttribute());
+                        System.out.println("adding to pk");
                     }
                 } else {
                     if (pkContains) {
                         entity.removeFromPrimaryKey(tmp.getAttribute());
+                        System.out.println("removing from pk");
                     }
                 }
                 initialized = false;
+                editor.getSelectedOutlines().clear();
                 notifyListeners();
             }
         }

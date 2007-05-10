@@ -388,7 +388,17 @@ public class DiagramEditor extends JPanel {
 
     public void setDiagram(Diagram diagram) {
         this.diagram = diagram;
+        addListenersTo(diagram.getEntityViews());
+        addListenersTo(diagram.getCommentViews());
+        addListenersTo(diagram.getRelationshipViews());
+        addListenersTo(diagram.getLinkViews());
         repaint();
+    }
+
+    private void addListenersTo(Collection<? extends IViewable> viewables) {
+        for(IViewable v : viewables) {
+            v.addListener(viewableListener);
+        }
     }
 
     public ITool getTool() {
@@ -397,6 +407,14 @@ public class DiagramEditor extends JPanel {
 
     public CommandManager getCommandManager() {
         return this.commandManager;
+    }
+
+    public RelationshipView addFKRelationship(EntityView entityView1, EntityView entityView2) {
+        return diagram.addFKRelationship(entityView1, entityView2);
+    }
+    
+    public void removeFKRelationship(RelationshipView rv) {
+        diagram.removeFKRelationshipView(rv);
     }
 
 }

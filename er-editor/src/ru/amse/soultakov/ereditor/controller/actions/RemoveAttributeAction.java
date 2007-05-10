@@ -37,8 +37,8 @@ public class RemoveAttributeAction extends AbstractAction {
                         }
                     }
                 });
-        putValue(MNEMONIC_KEY,KeyEvent.VK_M);
-        putValue(ACCELERATOR_KEY,KeyStroke.getKeyStroke("shift alt R"));
+        putValue(MNEMONIC_KEY, KeyEvent.VK_M);
+        putValue(ACCELERATOR_KEY,KeyStroke.getKeyStroke("shift alt M"));
     }
 
     public void actionPerformed(ActionEvent e) {
