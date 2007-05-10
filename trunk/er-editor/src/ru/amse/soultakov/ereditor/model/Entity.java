@@ -217,6 +217,15 @@ public class Entity implements Iterable<AbstractAttribute>, ICopyable<Entity> {
         attributes.addAll(set);
         uniqueAttributes.add(new Constraint<AbstractAttribute>(set));
     }
+    
+    public void addForeignKey(Constraint<FKAttribute> fk) {
+        for(FKAttribute fka : fk) {
+            if (!attributes.contains(fka)) {
+                throw new IllegalArgumentException("Attributes from new FK must present in entity");
+            }
+        }
+        foreignKeys.add(fk);
+    }
 
     public boolean removeFromUniqueAttributes(Set<Attribute> set) {
         return uniqueAttributes.remove(set);

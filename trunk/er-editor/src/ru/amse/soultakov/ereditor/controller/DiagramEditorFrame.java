@@ -22,6 +22,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
@@ -109,6 +110,24 @@ public class DiagramEditorFrame extends JFrame {
     private static final ImageIcon APPLICATION_ICON = new ImageIcon(
             DiagramEditorFrame.class.getResource("/images/application.png"));
 
+    private static final ImageIcon SAVE_ICON = new ImageIcon(
+            DiagramEditorFrame.class.getResource("/images/save.png"));
+
+    private static final ImageIcon SAVE_PRESSED_ICON = new ImageIcon(
+            DiagramEditorFrame.class.getResource("/images/save_pressed.png"));
+
+    private static final ImageIcon OPEN_ICON = new ImageIcon(
+            DiagramEditorFrame.class.getResource("/images/open.png"));
+
+    private static final ImageIcon OPEN_PRESSED_ICON = new ImageIcon(
+            DiagramEditorFrame.class.getResource("/images/open_pressed.png"));
+
+    private static final ImageIcon NEW_ICON = new ImageIcon(DiagramEditorFrame.class
+            .getResource("/images/new.png"));
+
+    private static final ImageIcon NEW_PRESSED_ICON = new ImageIcon(
+            DiagramEditorFrame.class.getResource("/images/new_pressed.png"));
+
     private final DiagramEditor diagramEditor = new DiagramEditor();
 
     private final Map<ITool, AbstractButton> toolToButton = newHashMap();
@@ -122,15 +141,22 @@ public class DiagramEditorFrame extends JFrame {
 
     private final ITool selectElementTool = new SelectElementTool(diagramEditor);
 
-    private final ITool addRelationshipTool = new AddRelationshipTool(diagramEditor);
+    private final ITool addRelationshipTool = new AddRelationshipTool(diagramEditor,
+            false);
+
+    private final ITool addFkRelationshipTool = new AddRelationshipTool(
+            diagramEditor, true);
 
     private final ITool addEntityTool = new AddEntityTool(diagramEditor);
 
-    private final Action newDiagramAction = new NewDiagramAction("New", this);
+    private final Action newDiagramAction = new NewDiagramAction("New", this,
+            NEW_ICON);
 
-    private final Action saveDiagramAction = new SaveDiagramAction("Save", this);
+    private final Action saveDiagramAction = new SaveDiagramAction("Save", this,
+            SAVE_ICON);
 
-    private final Action loadDiagramAction = new LoadDiagramAction("Open...", this);
+    private final Action loadDiagramAction = new LoadDiagramAction("Open...", this,
+            OPEN_ICON);
 
     private final Action exitAction = new AbstractAction("Exit") {
         {
@@ -173,6 +199,15 @@ public class DiagramEditorFrame extends JFrame {
         {
             putValue(MNEMONIC_KEY, KeyEvent.VK_R);
             putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("shift alt R"));
+        }
+    };
+
+    private final Action enableAddingFkRelationshipAction = new DiagramEditorAction(
+            diagramEditor, "Add FK relationship", TOOL_ADDING_RELATIONSHIP_ICON,
+            addFkRelationshipTool) {
+        {
+            putValue(MNEMONIC_KEY, KeyEvent.VK_F);
+            putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("shift alt F"));
         }
     };
 
@@ -219,9 +254,14 @@ public class DiagramEditorFrame extends JFrame {
         JToolBar toolBar = new JToolBar();
         ButtonGroup buttonsGroup = new ButtonGroup();
         toolBar.setRollover(true);
+        toolBar.add(createNewButton());
+        toolBar.add(createOpenButton());
+        toolBar.add(createSaveButton());
+        toolBar.addSeparator();
         toolBar.add(createDefaultButton(buttonsGroup));
         toolBar.add(createAddEntityButton(buttonsGroup));
         toolBar.add(createAddRelationshipButton(buttonsGroup));
+        toolBar.add(createAddFkRelationshipButton(buttonsGroup));
         // toolBar.add(createAddCommentButton(buttonsGroup));
         // toolBar.add(createAddLinkButton(buttonsGroup));
         toolBar.add(createRemoveButton());
@@ -230,6 +270,50 @@ public class DiagramEditorFrame extends JFrame {
         toolBar.add(createAddAttributeButton());
         toolBar.add(createRemoveAttributeButton());
         return toolBar;
+    }
+
+    private Component createAddFkRelationshipButton(ButtonGroup buttonsGroup) {
+        addFkRelationshipTool.addListener(toolListener);
+        JToggleButton addFkRelationshipButton = new JToggleButton(
+                enableAddingFkRelationshipAction);
+        addFkRelationshipButton.setSelectedIcon(TOOL_ADDING_RELATIONHIP_PRESSED_ICON);
+        addFkRelationshipButton.setPressedIcon(TOOL_ADDING_RELATIONHIP_PRESSED_ICON);
+        addFkRelationshipButton.setText("FK");
+        addFkRelationshipButton.setMargin(NO_INSETS);
+        addFkRelationshipButton.setToolTipText("Add FK relationship");
+        toolToButton.put(addFkRelationshipTool, addFkRelationshipButton);
+        buttonsGroup.add(addFkRelationshipButton);
+        return addFkRelationshipButton;
+    }
+
+    private Component createNewButton() {
+        JButton button = new JButton(newDiagramAction);
+        button.setSelectedIcon(NEW_PRESSED_ICON);
+        button.setPressedIcon(NEW_PRESSED_ICON);
+        button.setMargin(NO_INSETS);
+        button.setText(null);
+        button.setToolTipText("Create diagram");
+        return button;
+    }
+
+    private JButton createOpenButton() {
+        JButton button = new JButton(loadDiagramAction);
+        button.setSelectedIcon(OPEN_PRESSED_ICON);
+        button.setPressedIcon(OPEN_PRESSED_ICON);
+        button.setMargin(NO_INSETS);
+        button.setText(null);
+        button.setToolTipText("Open diagram");
+        return button;
+    }
+
+    private JButton createSaveButton() {
+        JButton button = new JButton(saveDiagramAction);
+        button.setSelectedIcon(SAVE_PRESSED_ICON);
+        button.setPressedIcon(SAVE_PRESSED_ICON);
+        button.setMargin(NO_INSETS);
+        button.setText(null);
+        button.setToolTipText("Save diagram");
+        return button;
     }
 
     private JButton createRemoveAttributeButton() {
@@ -375,9 +459,14 @@ public class DiagramEditorFrame extends JFrame {
         JMenu toolMenu = new JMenu("Tool");
         menuBar.add(toolMenu);
         toolMenu.setMnemonic(KeyEvent.VK_T);
-        toolMenu.add(disableIcon(enableSelectingAction));
-        toolMenu.add(disableIcon(enableAddingEntityAction));
-        toolMenu.add(disableIcon(enableAddingRelationshipAction));
+        ButtonGroup bg = new ButtonGroup();
+        JRadioButtonMenuItem enableSelectingButton = disableIcon(
+                enableSelectingAction, bg);
+        enableSelectingButton.setSelected(true);
+        toolMenu.add(enableSelectingButton);
+        toolMenu.add(disableIcon(enableAddingEntityAction, bg));
+        toolMenu.add(disableIcon(enableAddingRelationshipAction, bg));
+        toolMenu.add(disableIcon(enableAddingFkRelationshipAction, bg));
         toolMenu.addSeparator();
         toolMenu.add(disableIcon(addAttributeAction));
         toolMenu.add(disableIcon(removeAttributeAction));
@@ -394,8 +483,19 @@ public class DiagramEditorFrame extends JFrame {
         return item;
     }
 
+    private static JRadioButtonMenuItem disableIcon(Action action, ButtonGroup bg) {
+        JRadioButtonMenuItem item = new JRadioButtonMenuItem(action);
+        item.setIcon(null);
+        bg.add(item);
+        return item;
+    }
+
     public DiagramEditor getDiagramEditor() {
         return diagramEditor;
+    }
+
+    public Action getSaveDiagramAction() {
+        return saveDiagramAction;
     }
 
 }

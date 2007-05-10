@@ -9,6 +9,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
 import javax.swing.AbstractAction;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
@@ -26,8 +27,8 @@ public final class SaveDiagramAction extends AbstractAction {
 
     private final JFileChooser fileChooser = new JFileChooser();
 
-    public SaveDiagramAction(String name, DiagramEditorFrame diagramEditorFrame) {
-        super(name);
+    public SaveDiagramAction(String name, DiagramEditorFrame diagramEditorFrame, ImageIcon icon) {
+        super(name, icon);
         this.diagramEditorFrame = diagramEditorFrame;
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Diagrams",
                 DiagramEditorFrame.ERD);

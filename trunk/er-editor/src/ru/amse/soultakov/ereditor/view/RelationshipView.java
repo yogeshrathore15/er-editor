@@ -23,6 +23,7 @@ import ru.amse.soultakov.ereditor.controller.DiagramEditor;
 import ru.amse.soultakov.ereditor.controller.tools.ITool;
 import ru.amse.soultakov.ereditor.controller.tools.ToolAdapter;
 import ru.amse.soultakov.ereditor.controller.undo.commands.EditMultiplicityCommand;
+import ru.amse.soultakov.ereditor.model.FKRelationshipEnd;
 import ru.amse.soultakov.ereditor.model.Relationship;
 import ru.amse.soultakov.ereditor.model.RelationshipEnd;
 import ru.amse.soultakov.ereditor.model.RelationshipMultiplicity;
@@ -34,16 +35,19 @@ public class RelationshipView extends Line {
 
     private static final Object[] COMBOBOX_VALUES = new Object[] { "ONE_ONLY",
             "ONE_OR_MORE", "ZERO_OR_ONE", "ZERO_OR_MORE" };
+    
+    private static final Object[] ONE_BASED_COMBOBOX_VALUES = new Object[] { "ONE_ONLY",
+        "ONE_OR_MORE",  };
 
     private static final ImageIcon[] COMBOBOX_IMAGES = new ImageIcon[] {
-            new ImageIcon(RelationshipView.class.getResource(
-                    "/images/relation_one_only.png")),
-            new ImageIcon(RelationshipView.class.getResource(
-                    "/images/relation_one_or_more.png")),
-            new ImageIcon(RelationshipView.class.getResource(
-                    "/images/relation_zero_or_one.png")),
-            new ImageIcon(RelationshipView.class.getResource(
-                    "/images/relation_zero_or_more.png")), };
+            new ImageIcon(RelationshipView.class
+                    .getResource("/images/relation_one_only.png")),
+            new ImageIcon(RelationshipView.class
+                    .getResource("/images/relation_one_or_more.png")),
+            new ImageIcon(RelationshipView.class
+                    .getResource("/images/relation_zero_or_one.png")),
+            new ImageIcon(RelationshipView.class
+                    .getResource("/images/relation_zero_or_more.png")), };
 
     private static final int END_WIDTH = 10;
 
@@ -236,16 +240,26 @@ public class RelationshipView extends Line {
     @Override
     public void processClick(MouseEvent mouseEvent, final DiagramEditor editor) {
         if (mouseEvent.getClickCount() == 2) {
-            final JComboBox cb = new JComboBox(COMBOBOX_VALUES);
+            boolean firstEndIsFK = !(relationship.getFirstEnd() instanceof FKRelationshipEnd);
+            boolean secondEndIsFK = !(relationship.getSecondEnd() instanceof FKRelationshipEnd);
+            final JComboBox cb;
+            if (firstEndIsFK || secondEndIsFK) {
+                cb = new JComboBox(ONE_BASED_COMBOBOX_VALUES);                
+            } else {
+                cb = new JComboBox(COMBOBOX_VALUES);
+            }
             if (distance(mouseEvent.getX(), mouseEvent.getY(), firstCenterX,
                     firstCenterY) < distance(mouseEvent.getX(), mouseEvent.getY(),
                     secondCenterX, secondCenterY)) {
-                showComboBox(editor, cb, firstCenterX, firstCenterY, relationship
-                        .getFirstEnd());
-            } else {
+                if (secondEndIsFK) {
+                    showComboBox(editor, cb, firstCenterX, firstCenterY,
+                            relationship.getFirstEnd());
+                }
+            } else if (firstEndIsFK) {
                 showComboBox(editor, cb, secondCenterX, secondCenterY, relationship
                         .getSecondEnd());
             }
+
         }
     }
 

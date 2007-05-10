@@ -37,7 +37,7 @@ public class ERModel {
         // tempAttributesInit(entity);
         return entity;
     }
-
+    
     public Entity addEntity(Entity entity) {
         if (entities.add(entity)) {
             for (Relationship r : entity.getRelationships()) {
@@ -70,6 +70,34 @@ public class ERModel {
         return comment;
     }
 
+    public Relationship addNewFKRelationship(Entity first, Entity second) {
+        if (hasNull(first, second)) {
+            throw new IllegalArgumentException(
+                    "Name and both entities must be non-null");
+        } else if (first.equals(second) || !entities.contains(first)
+                || !entities.contains(second)) {
+            throw new IllegalArgumentException(
+                    "Both entities must present in diagram and be unequal to each other");
+        } else if (!first.acceptRelationshipWith(second)
+                || !second.acceptRelationshipWith(first)) {
+            throw new IllegalArgumentException("Entities don't accept relationhsip");
+        }
+        Constraint<FKAttribute> fk = new Constraint<FKAttribute>();
+        for(AbstractAttribute aa : first.getPrimaryKey()) {
+            FKAttribute fka = new FKAttribute(aa.getName(), true, null, first, aa);
+            fk.add(fka);
+            second.addAttribute(fka);
+        }
+        second.addForeignKey(fk);
+        Relationship relationship = new Relationship(new PKRelationshipEnd(first,
+                RelationshipMultiplicity.ONE_ONLY, "End1"), new FKRelationshipEnd(
+                second, RelationshipMultiplicity.ONE_ONLY, "End2", null));
+        relationships.add(relationship);
+        first.addRelationship(relationship);
+        second.addRelationship(relationship);
+        return relationship;
+    }
+    
     public Relationship addNewRelationship(Entity first, Entity second) {
         if (hasNull(first, second)) {
             throw new IllegalArgumentException(
