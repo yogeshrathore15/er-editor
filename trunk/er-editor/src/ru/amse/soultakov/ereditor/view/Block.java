@@ -229,5 +229,8 @@ public abstract class Block implements IViewable {
 
     public void processRelease(MouseEvent mouseEvent, DiagramEditor editor) {
     }
+    
+    public void stopProcessing(DiagramEditor diagramEditor) {
+    }
 
 }

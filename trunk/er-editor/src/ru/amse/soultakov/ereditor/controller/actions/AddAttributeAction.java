@@ -63,6 +63,7 @@ public class AddAttributeAction extends AbstractAction {
             }
             Attribute attribute = new Attribute(full, SimpleAttributeType.INTEGER,
                     false, "");
+            diagramEditor.getSelectedItems().getFirst().stopProcessing(diagramEditor);
             diagramEditor.getCommandManager().executeCommand(
                     new AddAttributeCommand(entityView, attribute));
             SwingUtilities.invokeLater(new Runnable() {
