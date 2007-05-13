@@ -5,6 +5,7 @@ package ru.amse.soultakov.ereditor.controller.actions;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
@@ -22,12 +23,12 @@ import ru.amse.soultakov.ereditor.io.save.XmlDiagramSaver;
 import ru.amse.soultakov.ereditor.view.DiagramSavingException;
 
 @SuppressWarnings("serial")
-public final class SaveDiagramAction extends AbstractAction {
+public final class SaveAsDiagramAction extends AbstractAction {
     private DiagramEditorFrame diagramEditorFrame;
 
     private final JFileChooser fileChooser = new JFileChooser();
 
-    public SaveDiagramAction(String name, DiagramEditorFrame diagramEditorFrame, ImageIcon icon) {
+    public SaveAsDiagramAction(String name, DiagramEditorFrame diagramEditorFrame, ImageIcon icon) {
         super(name, icon);
         this.diagramEditorFrame = diagramEditorFrame;
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Diagrams",
@@ -54,6 +55,7 @@ public final class SaveDiagramAction extends AbstractAction {
                         diagramEditorFrame.getDiagramEditor().getDiagram().save(xds,
                                 monitor);
                         diagramEditorFrame.getDiagramEditor().setDiagramChanged(false);
+                        diagramEditorFrame.getDiagramEditor().setCurrentFile(new File(fileName));
                     } catch (DiagramSavingException ex) {
                         JOptionPane.showMessageDialog(diagramEditorFrame,
                                 "Ошибка при сохранении диаграммы");

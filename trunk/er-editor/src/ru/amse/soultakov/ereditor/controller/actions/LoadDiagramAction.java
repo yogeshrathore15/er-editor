@@ -78,6 +78,7 @@ public final class LoadDiagramAction extends AbstractAction {
                                 diagramEditorFrame.getDiagramEditor().repaint();
                             }
                         });
+                        diagramEditorFrame.getDiagramEditor().setCurrentFile(fc.getSelectedFile());
                     } catch (DiagramLoadingException ex) {
                         JOptionPane.showMessageDialog(diagramEditorFrame,
                                 "Ошибка при загрузке диаграммы");
