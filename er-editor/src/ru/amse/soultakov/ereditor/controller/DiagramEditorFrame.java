@@ -36,7 +36,7 @@ import ru.amse.soultakov.ereditor.controller.actions.NewDiagramAction;
 import ru.amse.soultakov.ereditor.controller.actions.RedoAction;
 import ru.amse.soultakov.ereditor.controller.actions.RemoveAttributeAction;
 import ru.amse.soultakov.ereditor.controller.actions.RemoveSelectionAction;
-import ru.amse.soultakov.ereditor.controller.actions.SaveDiagramAction;
+import ru.amse.soultakov.ereditor.controller.actions.SaveAsDiagramAction;
 import ru.amse.soultakov.ereditor.controller.actions.UndoAction;
 import ru.amse.soultakov.ereditor.controller.tools.AddCommentTool;
 import ru.amse.soultakov.ereditor.controller.tools.AddEntityTool;
@@ -159,7 +159,7 @@ public class DiagramEditorFrame extends JFrame {
     private final Action newDiagramAction = new NewDiagramAction("New", this,
             NEW_ICON);
 
-    private final Action saveDiagramAction = new SaveDiagramAction("Save", this,
+    private final Action saveDiagramAction = new SaveAsDiagramAction("Save", this,
             SAVE_ICON);
 
     private final Action loadDiagramAction = new LoadDiagramAction("Open...", this,

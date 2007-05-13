@@ -15,6 +15,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.io.File;
 import java.util.Collection;
 import java.util.List;
 
@@ -62,6 +63,8 @@ public class DiagramEditor extends JPanel {
     private final AddItemsVisitor itemsAdder = new AddItemsVisitor();
 
     private final CommandManager commandManager = new CommandManager();
+    
+    private File currentFile;
 
     private final IViewableListener viewableListener = new IViewableListener() {
         public void notify(IViewable viewable) {
@@ -422,6 +425,20 @@ public class DiagramEditor extends JPanel {
     
     public void removeFKRelationship(RelationshipView rv) {
         diagram.removeFKRelationshipView(rv);
+    }
+
+    /**
+     * @param currentFile the currentFile to set
+     */
+    public void setCurrentFile(File currentFile) {
+        this.currentFile = currentFile;
+    }
+
+    /**
+     * @return the currentFile
+     */
+    public File getCurrentFile() {
+        return currentFile;
     }
 
 }
