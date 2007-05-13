@@ -3,6 +3,7 @@
  */
 package ru.amse.soultakov.ereditor.controller.actions;
 
+import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.FileInputStream;
@@ -13,6 +14,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import ru.amse.soultakov.ereditor.controller.DiagramEditorFrame;
@@ -40,6 +42,23 @@ public final class LoadDiagramAction extends AbstractAction {
     }
 
     public void actionPerformed(ActionEvent e) {
+        if (diagramEditorFrame.getDiagramEditor().isDiagramChanged()) {
+            int res = JOptionPane.showConfirmDialog(diagramEditorFrame,
+                    "Diagram has been modified. Save changes?", "Save Resource",
+                    JOptionPane.YES_NO_CANCEL_OPTION);
+            if (res == JOptionPane.YES_OPTION) {
+                diagramEditorFrame.getSaveDiagramAction().actionPerformed(null);
+                loadDiagram();
+            } else if (res == JOptionPane.NO_OPTION) {
+                loadDiagram();
+            }
+        } else {
+            loadDiagram();
+        }
+        
+    }
+
+    private void loadDiagram() throws HeadlessException {
         if (fc.showOpenDialog(diagramEditorFrame) == JFileChooser.APPROVE_OPTION) {
             final IProgressMonitor monitor = new ProgressMonitorAdapter(
                     diagramEditorFrame);
@@ -52,6 +71,13 @@ public final class LoadDiagramAction extends AbstractAction {
                         diagramEditorFrame.getDiagramEditor().setDiagram(
                                 Diagram.load(xdl, monitor));
                         diagramEditorFrame.getDiagramEditor().setDiagramChanged(false);
+                        diagramEditorFrame.getDiagramEditor().getCommandManager().reset();
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                diagramEditorFrame.getDiagramEditor().revalidate();
+                                diagramEditorFrame.getDiagramEditor().repaint();
+                            }
+                        });
                     } catch (DiagramLoadingException ex) {
                         JOptionPane.showMessageDialog(diagramEditorFrame,
                                 "Ошибка при загрузке диаграммы");

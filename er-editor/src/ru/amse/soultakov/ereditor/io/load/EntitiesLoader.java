@@ -3,7 +3,9 @@
  */
 package ru.amse.soultakov.ereditor.io.load;
 
-import static ru.amse.soultakov.ereditor.io.XmlTagConstants.*;
+import static ru.amse.soultakov.ereditor.io.XmlTagConstants.ATTR_DEFAULT_VALUE;
+import static ru.amse.soultakov.ereditor.io.XmlTagConstants.ATTR_FOREIGN;
+import static ru.amse.soultakov.ereditor.io.XmlTagConstants.ATTR_FOREIGN_ENTITY;
 import static ru.amse.soultakov.ereditor.io.XmlTagConstants.ATTR_ID;
 import static ru.amse.soultakov.ereditor.io.XmlTagConstants.ATTR_NAME;
 import static ru.amse.soultakov.ereditor.io.XmlTagConstants.ATTR_NOTNULL;
@@ -11,6 +13,8 @@ import static ru.amse.soultakov.ereditor.io.XmlTagConstants.ATTR_TYPE;
 import static ru.amse.soultakov.ereditor.io.XmlTagConstants.TAG_ATTRIBUTE;
 import static ru.amse.soultakov.ereditor.io.XmlTagConstants.TAG_ATTRIBUTES;
 import static ru.amse.soultakov.ereditor.io.XmlTagConstants.TAG_ENTITY;
+import static ru.amse.soultakov.ereditor.io.XmlTagConstants.TAG_FKATTRIBUTE;
+import static ru.amse.soultakov.ereditor.io.XmlTagConstants.TAG_FOREIGN_KEY;
 import static ru.amse.soultakov.ereditor.io.XmlTagConstants.TAG_PRIMARY_KEY;
 import static ru.amse.soultakov.ereditor.io.XmlTagConstants.TAG_UNIQUE;
 
@@ -24,6 +28,7 @@ import org.jdom.Element;
 import ru.amse.soultakov.ereditor.model.AbstractAttribute;
 import ru.amse.soultakov.ereditor.model.ArrayAttributeType;
 import ru.amse.soultakov.ereditor.model.Attribute;
+import ru.amse.soultakov.ereditor.model.Constraint;
 import ru.amse.soultakov.ereditor.model.ERModel;
 import ru.amse.soultakov.ereditor.model.Entity;
 import ru.amse.soultakov.ereditor.model.FKAttribute;
@@ -78,15 +83,16 @@ class EntitiesLoader {
                 for (Object fk : children) {
                     if (fk instanceof Element) {
                         Element fkElement = (Element) fk;
-                        Set<AbstractAttribute> set = newLinkedHashSet();
+                        Constraint<FKAttribute> constraint = new Constraint<FKAttribute>();
+                        loadingIdManager.putObject(fkElement.getAttributeValue(ATTR_ID), constraint);
                         for (Object attr : fkElement.getChildren(TAG_ATTRIBUTE)) {
                             Element attrElement = (Element) attr;
-                            AbstractAttribute aa = (AbstractAttribute) loadingIdManager
+                            FKAttribute aa = (FKAttribute) loadingIdManager
                                     .getObject(attrElement
                                             .getAttributeValue(ATTR_ID));
-                            set.add(aa);
+                            constraint.add(aa);
                         }
-                        entity.addToUniqueAttributes(set);
+                        entity.addForeignKey(constraint);
                     }
                 }
             }

@@ -83,10 +83,10 @@ class EntitiesSaver {
 
     private Collection<Element> getFkElements(Entity entity) {
         Collection<Element> elements = newLinkedHashSet();
-        for (Constraint<FKAttribute> col : entity.getForeignKeys()) {
+        for (Constraint<FKAttribute> constraint : entity.getForeignKeys()) {
             Element fkRoot = new Element(TAG_FOREIGN_KEY);
-            fkRoot.setAttribute(ATTR_ID, savingIdManager.getId(fkRoot));
-            for (AbstractAttribute aa : col) {
+            fkRoot.setAttribute(ATTR_ID, savingIdManager.getId(constraint));
+            for (AbstractAttribute aa : constraint) {
                 fkRoot.addContent(new Element(TAG_ATTRIBUTE).setAttribute(ATTR_ID,
                         savingIdManager.getId(aa)));
             }
