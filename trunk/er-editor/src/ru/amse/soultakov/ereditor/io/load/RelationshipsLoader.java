@@ -67,6 +67,7 @@ class RelationshipsLoader {
         } else {
             Constraint<FKAttribute> constraint = (Constraint<FKAttribute>) loadingIdManager
                     .getObject(element.getAttributeValue(ATTR_CONSTRAINT));
+            assert constraint != null : "Constraint is null (loading relationship)";
             FKRelationshipEnd end = new FKRelationshipEnd(entity, rm, name,
                     constraint);
             return end;

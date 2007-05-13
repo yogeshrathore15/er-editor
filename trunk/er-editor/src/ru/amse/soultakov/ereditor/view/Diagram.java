@@ -303,7 +303,7 @@ public class Diagram {
         }
     }
 
-    public Block getEntityView(Entity entity) {
+    public EntityView getEntityView(Entity entity) {
         return entityToView.get(entity);
     }
 
@@ -321,6 +321,10 @@ public class Diagram {
      */
     public void setCommandManager(CommandManager commandManager) {
         this.commandManager = commandManager;
+    }
+    
+    public RelationshipView getRelationshipView(Relationship relationship) {
+        return relationshipToView.get(relationship);
     }
 
     /**

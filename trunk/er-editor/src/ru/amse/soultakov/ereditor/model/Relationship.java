@@ -61,4 +61,24 @@ public class Relationship {
         return firstEnd.getEntity() + " " + secondEnd.getEntity().toString();
     }
 
+    public RelationshipEnd getRelationshipEndFor(Entity entity) {
+        if (firstEnd.getEntity() == entity) {
+            return firstEnd;
+        } else if (secondEnd.getEntity() == entity) {
+            return secondEnd;
+        } else {
+            return null;
+        }
+    }
+
+    public RelationshipEnd getOppositeRelationshipEndFor(Entity entity) {
+        if (firstEnd.getEntity() == entity) {
+            return secondEnd;
+        } else if (secondEnd.getEntity() == entity) {
+            return firstEnd;
+        } else {
+            return null;
+        }
+    }
+    
 }

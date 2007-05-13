@@ -8,6 +8,7 @@ import javax.swing.Icon;
 import javax.swing.KeyStroke;
 
 import ru.amse.soultakov.ereditor.controller.DiagramEditor;
+import ru.amse.soultakov.ereditor.controller.undo.commands.RemoveAttributeCommand;
 import ru.amse.soultakov.ereditor.view.EntityView;
 import ru.amse.soultakov.ereditor.view.IViewable;
 import ru.amse.soultakov.ereditor.view.SelectedItems;
@@ -44,7 +45,7 @@ public class RemoveAttributeAction extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
         if (isEnabled()) {
             if (entityView.getSelectedAttributeIndex() != -1) {
-                diagramEditor.getCommandManager().executeCommand(new RemoveAttributeCommand(entityView));
+                diagramEditor.getCommandManager().executeCommand(new RemoveAttributeCommand(diagramEditor, entityView));
             }
         }
     }

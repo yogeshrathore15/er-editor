@@ -11,6 +11,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
+import ru.amse.soultakov.ereditor.controller.DiagramEditor;
 import ru.amse.soultakov.ereditor.controller.DiagramEditorFrame;
 import ru.amse.soultakov.ereditor.view.Diagram;
 
@@ -34,13 +35,19 @@ public final class NewDiagramAction extends AbstractAction {
                     JOptionPane.YES_NO_CANCEL_OPTION);
             if (res == JOptionPane.YES_OPTION) {
                 diagramEditorFrame.getSaveDiagramAction().actionPerformed(null);
-                diagramEditorFrame.getDiagramEditor().setDiagram(new Diagram());
+                createNewDiagram();
             } else if (res == JOptionPane.NO_OPTION) {
-                diagramEditorFrame.getDiagramEditor().setDiagram(new Diagram());
+                createNewDiagram();
             }
         } else {
-            diagramEditorFrame.getDiagramEditor().setDiagram(new Diagram());
+            createNewDiagram();
         }
+    }
+
+    private void createNewDiagram() {
+        DiagramEditor diagramEditor = diagramEditorFrame.getDiagramEditor();
+        diagramEditor.setDiagram(new Diagram());
+        diagramEditor.getCommandManager().reset();
     }
 
 }

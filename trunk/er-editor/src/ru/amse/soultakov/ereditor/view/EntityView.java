@@ -162,6 +162,11 @@ public class EntityView extends Block {
         }
         initialized = false;
     }
+    
+    public void reset() {
+        initAttributes();
+        notifyListeners();
+    }
 
     public void paint(Graphics2D graphics) {
         lazyInitCompartments(graphics);
@@ -189,7 +194,7 @@ public class EntityView extends Block {
         graphics.drawLine(getX(), newCurY, getX() + getWidth(), newCurY);
     }
 
-    boolean isUnique(AbstractAttribute a) {
+    public boolean isUnique(AbstractAttribute a) {
         for (Constraint<AbstractAttribute> index : entity.getUniqueAttributes()) {
             if (index.contains(a)) {
                 return true;

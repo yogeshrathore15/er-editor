@@ -78,4 +78,12 @@ public class CommandManager {
         }
     }
 
+    public void reset() {
+        undoList.clear();
+        redoList.clear();
+        notifyUndone();
+        notifyRedone();
+        notifyInvoked();
+    }
+
 }

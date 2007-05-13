@@ -256,4 +256,22 @@ public class Entity implements Iterable<AbstractAttribute>, ICopyable<Entity> {
         return entity;
     }
 
+    public Constraint<AbstractAttribute> getUniqueConstraintFor(AbstractAttribute attribute) {
+        for (Constraint<AbstractAttribute> c : uniqueAttributes ) {
+            if (c.contains(attribute)) {
+                return c;
+            }
+        }
+        return null;
+    }
+    
+    public Constraint<FKAttribute> getForeignKeyConstraintFor(AbstractAttribute attribute) {
+        for (Constraint<FKAttribute> c : foreignKeys) {
+            if (c.contains(attribute)) {
+                return c;
+            }
+        }
+        return null;
+    }
+
 }
