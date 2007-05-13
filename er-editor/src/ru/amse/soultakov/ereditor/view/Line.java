@@ -204,7 +204,7 @@ public abstract class Line implements IViewable {
     public void processClick(MouseEvent mouseEvent, DiagramEditor editor) {
     }
 
-    public void exitProcessing() {
+    public void stopProcessing(DiagramEditor diagramEditor) {
     }
 
     public void processDrag(MouseEvent mouseEvent, DiagramEditor editor) {

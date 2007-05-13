@@ -124,6 +124,8 @@ public class EntityView extends Block {
 
     private int selectedAttributeIndex = -1;
 
+    private JTextField textField;
+
     public EntityView(Diagram diagram, Entity entity, int x, int y) {
         super(diagram, x, y);
         if (entity == null) {
@@ -275,21 +277,21 @@ public class EntityView extends Block {
     }
 
     private void editTitle(final DiagramEditor editor) {
-        final JTextField tf = new JTextField(entity.getName());
-        tf.setBounds(getX() + Block.MARGIN, getY() + titleCompartment.getY(), tf
-                .getPreferredSize().width, tf.getPreferredSize().height);
+        textField = new JTextField(entity.getName());
+        textField.setBounds(getX() + Block.MARGIN, getY() + titleCompartment.getY(), textField
+                .getPreferredSize().width, textField.getPreferredSize().height);
         final ITool oldTool = editor.getTool();
-        tf.addKeyListener(new KeyAdapter() {
+        textField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-                    stopEditing(editor, tf, oldTool);
+                    stopEditing(editor, textField, oldTool);
                 } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    if (!tf.getText().isEmpty()) {
+                    if (!textField.getText().isEmpty()) {
                         editor.getCommandManager().executeCommand(
                                 new EditEntityNameCommand(editor, EntityView.this,
-                                        tf.getText()));
-                        stopEditing(editor, tf, oldTool);
+                                        textField.getText()));
+                        stopEditing(editor, textField, oldTool);
                     } else {
                         JOptionPane.showMessageDialog(null,
                                 "Синтаксическая ошибка!", "Ошибка!",
@@ -298,32 +300,32 @@ public class EntityView extends Block {
                 }
             }
         });
-        editor.add(tf);
-        tf.requestFocus();
+        editor.add(textField);
+        textField.requestFocus();
         editor.setTool(new ToolAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                stopEditing(editor, tf, oldTool);
+                stopEditing(editor, textField, oldTool);
             }
         });
     }
 
     private void editAttribute(final DiagramEditor editor) {
-        final JTextField tf = new JTextField(attributeViews.get(
+        textField = new JTextField(attributeViews.get(
                 selectedAttributeIndex).getStringPresentation());
-        tf.setBounds(getX() + Block.MARGIN, attributeViews.get(
-                selectedAttributeIndex).getLastPaintedY() - 15, tf
-                .getPreferredSize().width, tf.getPreferredSize().height);
+        textField.setBounds(getX() + Block.MARGIN, attributeViews.get(
+                selectedAttributeIndex).getLastPaintedY() - 15, textField
+                .getPreferredSize().width, textField.getPreferredSize().height);
         final ITool oldTool = editor.getTool();
-        tf.addKeyListener(new KeyAdapter() {
+        textField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-                    stopEditing(editor, tf, oldTool);
+                    stopEditing(editor, textField, oldTool);
                 } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     if (attributeViews.get(selectedAttributeIndex)
-                            .tryToSetAttribute(tf.getText(), editor)) {
-                        stopEditing(editor, tf, oldTool);
+                            .tryToSetAttribute(textField.getText(), editor)) {
+                        stopEditing(editor, textField, oldTool);
                     }
                 }
             }
@@ -331,11 +333,11 @@ public class EntityView extends Block {
         editor.setTool(new ToolAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                stopEditing(editor, tf, oldTool);
+                stopEditing(editor, textField, oldTool);
             }
         });
-        editor.add(tf);
-        tf.requestFocus();
+        editor.add(textField);
+        textField.requestFocus();
     }
 
     private void selectAttribute(int y) {
@@ -384,8 +386,12 @@ public class EntityView extends Block {
 
     private void stopEditing(final DiagramEditor editor, final JTextField tf,
             ITool oldTool) {
-        editor.remove(tf);
-        editor.setTool(oldTool);
+        if (tf != null) {
+            editor.remove(tf);
+        }
+        if (oldTool != null) {
+            editor.setTool(oldTool);
+        }
         editor.getSelectedOutlines().clear();
         editor.repaint();
         selectedAttributeIndex = -1;
@@ -445,9 +451,12 @@ public class EntityView extends Block {
             selectAttribute(mouseEvent.getY());
             notifyListeners();
             dragStarted = true;
-        } else {
-
         }
+    }
+    
+    @Override
+    public void stopProcessing(DiagramEditor editor) {
+        stopEditing(editor, textField, null);
     }
 
     @Override

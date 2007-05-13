@@ -240,8 +240,8 @@ public class RelationshipView extends Line {
     @Override
     public void processClick(MouseEvent mouseEvent, final DiagramEditor editor) {
         if (mouseEvent.getClickCount() == 2) {
-            boolean firstEndIsFK = !(relationship.getFirstEnd() instanceof FKRelationshipEnd);
-            boolean secondEndIsFK = !(relationship.getSecondEnd() instanceof FKRelationshipEnd);
+            boolean firstEndIsFK = relationship.getFirstEnd() instanceof FKRelationshipEnd;
+            boolean secondEndIsFK = relationship.getSecondEnd() instanceof FKRelationshipEnd;
             final JComboBox cb;
             if (firstEndIsFK || secondEndIsFK) {
                 cb = new JComboBox(ONE_BASED_COMBOBOX_VALUES);                
@@ -251,11 +251,11 @@ public class RelationshipView extends Line {
             if (distance(mouseEvent.getX(), mouseEvent.getY(), firstCenterX,
                     firstCenterY) < distance(mouseEvent.getX(), mouseEvent.getY(),
                     secondCenterX, secondCenterY)) {
-                if (secondEndIsFK) {
+                if (!secondEndIsFK) {
                     showComboBox(editor, cb, firstCenterX, firstCenterY,
                             relationship.getFirstEnd());
                 }
-            } else if (firstEndIsFK) {
+            } else if (!firstEndIsFK) {
                 showComboBox(editor, cb, secondCenterX, secondCenterY, relationship
                         .getSecondEnd());
             }

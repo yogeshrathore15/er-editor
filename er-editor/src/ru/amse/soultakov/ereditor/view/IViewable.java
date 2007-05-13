@@ -47,5 +47,7 @@ public interface IViewable extends ICopyable<IViewable> {
     public void processDrag(MouseEvent mouseEvent, DiagramEditor editor);
 
     public void processRelease(MouseEvent mouseEvent, DiagramEditor editor);
+    
+    public void stopProcessing(DiagramEditor diagramEditor);
 
 }
