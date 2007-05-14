@@ -55,9 +55,6 @@ public class RelationshipView extends Line {
 
     private static final int SELECTION_RECTANGLE_SIZE = 7;
 
-    /**
-     * 
-     */
     private Relationship relationship;
 
     /**
@@ -114,7 +111,7 @@ public class RelationshipView extends Line {
 
     private void drawBothRight(Graphics2D graphics, int firstY, int secondY) {
         int firstX = getFirstEntityView().getX() + getFirstEntityView().getWidth();
-        int secondX = getSecondEntityView().getX() + getFirstEntityView().getWidth();
+        int secondX = getSecondEntityView().getX() + getSecondEntityView().getWidth();
         Point firstPoint = paintRelationshipEnd(graphics, firstX + END_LENGTH,
                 firstY, firstX, firstY,
                 relationship.getFirstEnd().getMultiplicity(), true);

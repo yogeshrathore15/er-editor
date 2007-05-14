@@ -8,7 +8,7 @@ import javax.swing.Icon;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
-import ru.amse.soultakov.ereditor.controller.DiagramEditor;
+import ru.amse.soultakov.ereditor.controller.DiagramEditorFrame;
 import ru.amse.soultakov.ereditor.controller.undo.commands.AddAttributeCommand;
 import ru.amse.soultakov.ereditor.model.AbstractAttribute;
 import ru.amse.soultakov.ereditor.model.Attribute;
@@ -21,25 +21,27 @@ import ru.amse.soultakov.ereditor.view.SelectedItemsListener;
 @SuppressWarnings("serial")
 public class AddAttributeAction extends AbstractAction {
 
-    private final DiagramEditor diagramEditor;
+    private final DiagramEditorFrame diagramEditorFrame;
 
     private EntityView entityView;
 
-    public AddAttributeAction(final DiagramEditor diagramEditor, String name,
-            Icon icon) {
+    public AddAttributeAction(final DiagramEditorFrame diagramEditorFrame,
+            String name, Icon icon) {
         super(name, icon);
-        this.diagramEditor = diagramEditor;
+        this.diagramEditorFrame = diagramEditorFrame;
         setEnabled(false);
-        diagramEditor.getSelectedItems().addListener(new SelectedItemsListener() {
-            public void selectionChanged(SelectedItems<? extends IViewable> selection) {
-                setEnabled(selection.size() == 1
-                        && selection.getFirst().acceptVisitor(new EntityChecker(),
-                                null));
-                if (isEnabled()) {
-                    entityView = (EntityView) selection.getFirst();
-                }
-            }
-        });
+        diagramEditorFrame.getDiagramEditor().getSelectedItems().addListener(
+                new SelectedItemsListener() {
+                    public void selectionChanged(
+                            SelectedItems<? extends IViewable> selection) {
+                        setEnabled(selection.size() == 1
+                                && selection.getFirst().acceptVisitor(
+                                        new EntityChecker(), null));
+                        if (isEnabled()) {
+                            entityView = (EntityView) selection.getFirst();
+                        }
+                    }
+                });
         putValue(MNEMONIC_KEY, KeyEvent.VK_A);
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("shift alt A"));
     }
@@ -63,13 +65,15 @@ public class AddAttributeAction extends AbstractAction {
             }
             Attribute attribute = new Attribute(full, SimpleAttributeType.INTEGER,
                     false, "");
-            diagramEditor.getSelectedItems().getFirst().stopProcessing(diagramEditor);
-            diagramEditor.getCommandManager().executeCommand(
-                    new AddAttributeCommand(entityView, attribute));
+            diagramEditorFrame.getDiagramEditor().getSelectedItems().getFirst()
+                    .stopProcessing(diagramEditorFrame.getDiagramEditor());
+            diagramEditorFrame.getDiagramEditor().setTool(diagramEditorFrame.getSelectingTool());
+            diagramEditorFrame.getDiagramEditor().getCommandManager()
+                    .executeCommand(new AddAttributeCommand(entityView, attribute));
             SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
                     entityView.editAttribute(entityView.getEntity().getAttributes()
-                            .size() - 1, diagramEditor);
+                            .size() - 1, diagramEditorFrame.getDiagramEditor());
                 }
             });
         }

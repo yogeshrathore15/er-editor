@@ -34,6 +34,7 @@ public class XmlDiagramSaver implements IDiagramSaver {
         XMLOutputter out = new XMLOutputter(Format.getPrettyFormat());
         try {
             out.output(doc, outputStream);
+            monitor.setProgress(100);
         } catch (IOException e) {
             throw new DiagramSavingException(e);
         }
