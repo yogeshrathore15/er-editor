@@ -33,7 +33,7 @@ public final class LoadDiagramAction extends AbstractAction {
     public LoadDiagramAction(String name, DiagramEditorFrame diagramEditorFrame, ImageIcon icon) {
         super(name, icon);
         this.diagramEditorFrame = diagramEditorFrame;
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("Diagrams",
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Diagrams (*.erd)",
                 DiagramEditorFrame.ERD);
         fc.setFileFilter(filter);
         fc.setFileSelectionMode(JFileChooser.FILES_ONLY);

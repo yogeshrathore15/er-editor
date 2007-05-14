@@ -10,7 +10,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
 import javax.swing.AbstractAction;
-import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
@@ -28,20 +27,20 @@ public final class SaveAsDiagramAction extends AbstractAction {
 
     private final JFileChooser fileChooser = new JFileChooser();
 
-    public SaveAsDiagramAction(String name, DiagramEditorFrame diagramEditorFrame, ImageIcon icon) {
-        super(name, icon);
+    public SaveAsDiagramAction(String name, DiagramEditorFrame diagramEditorFrame) {
+        super(name);
         this.diagramEditorFrame = diagramEditorFrame;
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("Diagrams",
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Diagrams (*.erd)",
                 DiagramEditorFrame.ERD);
         fileChooser.setFileFilter(filter);
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        this.putValue(MNEMONIC_KEY, KeyEvent.VK_S);
-        this.putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("control S"));
+        this.putValue(MNEMONIC_KEY, KeyEvent.VK_A);
+        this.putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("control shift S"));
     }
 
     public void actionPerformed(ActionEvent e) {
+        final IProgressMonitor monitor = new ProgressMonitorAdapter(diagramEditorFrame);
         if (fileChooser.showSaveDialog(diagramEditorFrame) == JFileChooser.APPROVE_OPTION) {
-            final IProgressMonitor monitor = new ProgressMonitorAdapter(null);
             new Thread(new Runnable() {
                 public void run() {
                     try {

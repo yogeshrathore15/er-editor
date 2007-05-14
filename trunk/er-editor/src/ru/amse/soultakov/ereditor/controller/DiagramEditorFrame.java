@@ -37,6 +37,7 @@ import ru.amse.soultakov.ereditor.controller.actions.RedoAction;
 import ru.amse.soultakov.ereditor.controller.actions.RemoveAttributeAction;
 import ru.amse.soultakov.ereditor.controller.actions.RemoveSelectionAction;
 import ru.amse.soultakov.ereditor.controller.actions.SaveAsDiagramAction;
+import ru.amse.soultakov.ereditor.controller.actions.SaveDiagramAction;
 import ru.amse.soultakov.ereditor.controller.actions.UndoAction;
 import ru.amse.soultakov.ereditor.controller.tools.AddCommentTool;
 import ru.amse.soultakov.ereditor.controller.tools.AddEntityTool;
@@ -159,8 +160,9 @@ public class DiagramEditorFrame extends JFrame {
     private final Action newDiagramAction = new NewDiagramAction("New", this,
             NEW_ICON);
 
-    private final Action saveDiagramAction = new SaveAsDiagramAction("Save", this,
-            SAVE_ICON);
+    private final Action saveDiagramAction = new SaveDiagramAction("Save", this, SAVE_ICON);
+    
+    private final Action saveAsDiagramAction = new SaveAsDiagramAction("Save as...", this);
 
     private final Action loadDiagramAction = new LoadDiagramAction("Open...", this,
             OPEN_ICON);
@@ -186,7 +188,7 @@ public class DiagramEditorFrame extends JFrame {
     private final Action removeAttributeAction = new RemoveAttributeAction(
             diagramEditor, "Remove attribute", ATTRIBUTE_REMOVE_ICON);
 
-    private final Action addAttributeAction = new AddAttributeAction(diagramEditor,
+    private final Action addAttributeAction = new AddAttributeAction(this,
             "Add attribute", ATTRIBUTE_ADD_ICON);
 
     private final Action removeSelectionAction = new RemoveSelectionAction(
@@ -454,6 +456,7 @@ public class DiagramEditorFrame extends JFrame {
         fileMenu.add(disableIcon(loadDiagramAction));
         fileMenu.addSeparator();
         fileMenu.add(disableIcon(saveDiagramAction));
+        fileMenu.add(disableIcon(saveAsDiagramAction));
         fileMenu.addSeparator();
         fileMenu.add(disableIcon(exitAction));
         JMenu editMenu = new JMenu("Edit");
@@ -503,6 +506,10 @@ public class DiagramEditorFrame extends JFrame {
 
     public Action getSaveDiagramAction() {
         return saveDiagramAction;
+    }
+
+    public ITool getSelectingTool() {
+        return selectElementTool;
     }
 
 }
