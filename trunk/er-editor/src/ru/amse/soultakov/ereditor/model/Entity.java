@@ -274,4 +274,12 @@ public class Entity implements Iterable<AbstractAttribute>, ICopyable<Entity> {
         return null;
     }
 
+	/**
+	 * @param constraint
+	 */
+	public void removeForeignKey(Constraint<? extends AbstractAttribute> constraint)
+	{
+		foreignKeys.remove(constraint);
+	}
+
 }

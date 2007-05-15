@@ -44,5 +44,14 @@ public class Constraint<T extends AbstractAttribute> implements Iterable<T> {
     public int size() {
         return attributes.size();
     }
+    
+    /** 
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString()
+    {
+    	return attributes.toString();
+    }
 
 }
