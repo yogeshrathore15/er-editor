@@ -17,6 +17,7 @@ import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import ru.amse.soultakov.ereditor.controller.DiagramEditorFrame;
+import ru.amse.soultakov.ereditor.controller.IDiagramChangesListener;
 import ru.amse.soultakov.ereditor.controller.IProgressMonitor;
 import ru.amse.soultakov.ereditor.controller.ProgressMonitorAdapter;
 import ru.amse.soultakov.ereditor.io.save.XmlDiagramSaver;
@@ -37,6 +38,12 @@ public final class SaveDiagramAction extends AbstractAction {
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         this.putValue(MNEMONIC_KEY, KeyEvent.VK_S);
         this.putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("control S"));
+        diagramEditorFrame.getDiagramEditor().addDiagramChangesListener(new IDiagramChangesListener() {
+            public void diagramChangedSetTo(boolean newValue) {
+                setEnabled(newValue);
+            }
+        });
+        setEnabled(false);
     }
 
     public void actionPerformed(ActionEvent e) {

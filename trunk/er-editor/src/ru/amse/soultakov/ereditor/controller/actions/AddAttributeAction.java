@@ -65,9 +65,12 @@ public class AddAttributeAction extends AbstractAction {
             }
             Attribute attribute = new Attribute(full, SimpleAttributeType.INTEGER,
                     false, "");
-            diagramEditorFrame.getDiagramEditor().getSelectedItems().getFirst()
-                    .stopProcessing(diagramEditorFrame.getDiagramEditor());
-            diagramEditorFrame.getDiagramEditor().setTool(diagramEditorFrame.getSelectingTool());
+            if (!diagramEditorFrame.getDiagramEditor().getSelectedItems().isEmpty()) {
+                diagramEditorFrame.getDiagramEditor().getSelectedItems().getFirst()
+                        .stopProcessing(diagramEditorFrame.getDiagramEditor());
+            }
+            diagramEditorFrame.getDiagramEditor().setTool(
+                    diagramEditorFrame.getSelectingTool());
             diagramEditorFrame.getDiagramEditor().getCommandManager()
                     .executeCommand(new AddAttributeCommand(entityView, attribute));
             SwingUtilities.invokeLater(new Runnable() {
@@ -78,5 +81,4 @@ public class AddAttributeAction extends AbstractAction {
             });
         }
     }
-
 }

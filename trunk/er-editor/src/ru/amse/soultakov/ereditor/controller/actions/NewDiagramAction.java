@@ -47,6 +47,7 @@ public final class NewDiagramAction extends AbstractAction {
     private void createNewDiagram() {
         DiagramEditor diagramEditor = diagramEditorFrame.getDiagramEditor();
         diagramEditor.setDiagram(new Diagram());
+        diagramEditor.setCurrentFile(null);
         diagramEditor.getCommandManager().reset();
     }
 
