@@ -72,11 +72,16 @@ public class DiagramEditor extends JPanel {
         }
     };
 
-    private final List<ICurrentToolListener> listeners = newArrayList();
+    private final List<ICurrentToolListener> currentToolListeners = newArrayList();
 
+    private final List<ICurrentFileListener> currentFileListeners = newArrayList();
+    
+    private final List<IDiagramChangesListener> diagramChangesListener = newArrayList(); 
+    
     private boolean currentToolEnabled = true;
     
     private boolean diagramChanged;
+
 
     public DiagramEditor() {
         this.setLayout(null);
@@ -90,7 +95,7 @@ public class DiagramEditor extends JPanel {
         commandManager.addListener(new CommandManagerListener() {
 
             public void commandInvoked() {
-                diagramChanged = true;
+                setDiagramChanged(true);
             }
 
             public void commandRedone() {
@@ -104,6 +109,7 @@ public class DiagramEditor extends JPanel {
     
     public void setDiagramChanged(boolean diagramChanged) {
         this.diagramChanged = diagramChanged;
+        notifyDiagramChangesListeners(diagramChanged);
     }
     
     public boolean isDiagramChanged() {
@@ -306,19 +312,20 @@ public class DiagramEditor extends JPanel {
     }
 
     public void addViewable(IViewable v) {
+        v.addListener(viewableListener);
         v.acceptVisitor(itemsAdder, null);
     }
 
     public void addToolChangeListener(ICurrentToolListener ctl) {
-        listeners.add(ctl);
+        currentToolListeners.add(ctl);
     }
 
     public boolean removeToolChangeListener(ICurrentToolListener ctl) {
-        return listeners.remove(ctl);
+        return currentToolListeners.remove(ctl);
     }
 
     protected void notifyListeners(ITool oldTool, ITool newTool) {
-        for (ICurrentToolListener ctl : listeners) {
+        for (ICurrentToolListener ctl : currentToolListeners) {
             ctl.currentToolChanged(oldTool, newTool);
         }
     }
@@ -431,7 +438,38 @@ public class DiagramEditor extends JPanel {
      * @param currentFile the currentFile to set
      */
     public void setCurrentFile(File currentFile) {
+        diagramChanged = false;
+        File temp = currentFile;
         this.currentFile = currentFile;
+        notifyCurrentFileListeners(currentFile, temp);
+    }
+
+    private void notifyCurrentFileListeners(File newCurrentFile, File oldCurrentFile) {
+        for(ICurrentFileListener listener : currentFileListeners) {
+            listener.currentFileChanged(newCurrentFile, oldCurrentFile);
+        }
+    }
+    
+    public boolean addCurrentFileListener(ICurrentFileListener listener) {
+        return currentFileListeners.add(listener);
+    }
+    
+    public boolean removeCurrentFileListener(ICurrentFileListener listener) {
+        return currentFileListeners.remove(listener);
+    }
+    
+    private void notifyDiagramChangesListeners(boolean value) {
+        for(IDiagramChangesListener listener : diagramChangesListener) {
+            listener.diagramChangedSetTo(value);
+        }
+    }
+    
+    public boolean addDiagramChangesListener(IDiagramChangesListener listener) {
+        return diagramChangesListener.add(listener);
+    }
+    
+    public boolean removeDiagramChangesListener(IDiagramChangesListener listener) {
+        return diagramChangesListener.remove(listener);
     }
 
     /**

@@ -41,6 +41,9 @@ public class UndoAction extends AbstractAction {
     }
 
     public void actionPerformed(ActionEvent e) {
+        if (!diagramEditor.getSelectedItems().isEmpty()) {
+            diagramEditor.getSelectedItems().getFirst().stopProcessing(diagramEditor);
+        }
         diagramEditor.getCommandManager().undoCommand();
     }
 

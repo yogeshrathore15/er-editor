@@ -30,11 +30,12 @@ public final class LoadDiagramAction extends AbstractAction {
 
     private JFileChooser fc = new JFileChooser();
 
-    public LoadDiagramAction(String name, DiagramEditorFrame diagramEditorFrame, ImageIcon icon) {
+    public LoadDiagramAction(String name, DiagramEditorFrame diagramEditorFrame,
+            ImageIcon icon) {
         super(name, icon);
         this.diagramEditorFrame = diagramEditorFrame;
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("Diagrams (*.erd)",
-                DiagramEditorFrame.ERD);
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                "Diagrams (*.erd)", DiagramEditorFrame.ERD);
         fc.setFileFilter(filter);
         fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
         this.putValue(MNEMONIC_KEY, KeyEvent.VK_O);
@@ -55,7 +56,6 @@ public final class LoadDiagramAction extends AbstractAction {
         } else {
             loadDiagram();
         }
-        
     }
 
     private void loadDiagram() throws HeadlessException {
@@ -63,6 +63,7 @@ public final class LoadDiagramAction extends AbstractAction {
             final IProgressMonitor monitor = new ProgressMonitorAdapter(
                     diagramEditorFrame);
             new Thread(new Runnable() {
+
                 @SuppressWarnings("synthetic-access")
                 public void run() {
                     try {
@@ -70,15 +71,18 @@ public final class LoadDiagramAction extends AbstractAction {
                                 new FileInputStream(fc.getSelectedFile()));
                         diagramEditorFrame.getDiagramEditor().setDiagram(
                                 Diagram.load(xdl, monitor));
-                        diagramEditorFrame.getDiagramEditor().setDiagramChanged(false);
-                        diagramEditorFrame.getDiagramEditor().getCommandManager().reset();
+                        diagramEditorFrame.getDiagramEditor().getCommandManager()
+                                .reset();
                         SwingUtilities.invokeLater(new Runnable() {
                             public void run() {
                                 diagramEditorFrame.getDiagramEditor().revalidate();
                                 diagramEditorFrame.getDiagramEditor().repaint();
                             }
                         });
-                        diagramEditorFrame.getDiagramEditor().setCurrentFile(fc.getSelectedFile());
+                        diagramEditorFrame.getDiagramEditor().setCurrentFile(
+                                fc.getSelectedFile());
+                        diagramEditorFrame.getDiagramEditor().setDiagramChanged(
+                                false);
                     } catch (DiagramLoadingException ex) {
                         JOptionPane.showMessageDialog(diagramEditorFrame,
                                 "Ошибка при загрузке диаграммы");

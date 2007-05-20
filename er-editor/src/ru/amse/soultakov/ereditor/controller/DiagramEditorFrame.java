@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.util.Map;
 
 import javax.swing.AbstractAction;
@@ -50,6 +51,8 @@ import ru.amse.soultakov.ereditor.controller.tools.SelectElementTool;
 @SuppressWarnings("serial")
 public class DiagramEditorFrame extends JFrame {
 
+    private static final String FRAME_CAPTION = "ER Diagram Editor";
+
     private static final Insets NO_INSETS = new Insets(0, 0, 0, 0);
 
     public static final String ERD = "erd";
@@ -75,7 +78,7 @@ public class DiagramEditorFrame extends JFrame {
     private static final ImageIcon TOOL_ADDING_RELATIONHIP_PRESSED_ICON = new ImageIcon(
             DiagramEditorFrame.class
                     .getResource("/images/tool_add_relation_pressed.png"));
-    
+
     private static final ImageIcon TOOL_ADDING_FK_RELATIONSHIP_ICON = new ImageIcon(
             DiagramEditorFrame.class.getResource("/images/tool_add_fk_relation.png"));
 
@@ -160,9 +163,11 @@ public class DiagramEditorFrame extends JFrame {
     private final Action newDiagramAction = new NewDiagramAction("New", this,
             NEW_ICON);
 
-    private final Action saveDiagramAction = new SaveDiagramAction("Save", this, SAVE_ICON);
-    
-    private final Action saveAsDiagramAction = new SaveAsDiagramAction("Save as...", this);
+    private final Action saveDiagramAction = new SaveDiagramAction("Save", this,
+            SAVE_ICON);
+
+    private final Action saveAsDiagramAction = new SaveAsDiagramAction("Save as...",
+            this);
 
     private final Action loadDiagramAction = new LoadDiagramAction("Open...", this,
             OPEN_ICON);
@@ -229,7 +234,7 @@ public class DiagramEditorFrame extends JFrame {
     };
 
     public DiagramEditorFrame() {
-        super("ER Diagram Editor");
+        super(FRAME_CAPTION);
         this.setJMenuBar(createMenu());
         this.add(createToolbar(), BorderLayout.NORTH);
         this.add(createDiagramEditorPanel(), BorderLayout.CENTER);
@@ -253,6 +258,17 @@ public class DiagramEditorFrame extends JFrame {
                 }
             }
         });
+        diagramEditor.addCurrentFileListener(new ICurrentFileListener() {
+            public void currentFileChanged(File newCurrentFile, File oldCurrentFile) {
+                updateTitle(newCurrentFile);
+            }
+        });
+        diagramEditor.addDiagramChangesListener(new IDiagramChangesListener() {
+            public void diagramChangedSetTo(boolean newValue) {
+                updateTitle(diagramEditor.getCurrentFile());
+            }
+        });
+        updateTitle(diagramEditor.getCurrentFile());
     }
 
     private Component createDiagramEditorPanel() {
@@ -285,8 +301,10 @@ public class DiagramEditorFrame extends JFrame {
         addFkRelationshipTool.addListener(toolListener);
         JToggleButton addFkRelationshipButton = new JToggleButton(
                 enableAddingFkRelationshipAction);
-        addFkRelationshipButton.setSelectedIcon(TOOL_ADDING_FK_RELATIONHIP_PRESSED_ICON);
-        addFkRelationshipButton.setPressedIcon(TOOL_ADDING_FK_RELATIONHIP_PRESSED_ICON);
+        addFkRelationshipButton
+                .setSelectedIcon(TOOL_ADDING_FK_RELATIONHIP_PRESSED_ICON);
+        addFkRelationshipButton
+                .setPressedIcon(TOOL_ADDING_FK_RELATIONHIP_PRESSED_ICON);
         addFkRelationshipButton.setText(null);
         addFkRelationshipButton.setMargin(NO_INSETS);
         addFkRelationshipButton.setToolTipText("Add FK relationship");
@@ -510,6 +528,11 @@ public class DiagramEditorFrame extends JFrame {
 
     public ITool getSelectingTool() {
         return selectElementTool;
+    }
+
+    private void updateTitle(File newCurrentFile) {
+        setTitle(FRAME_CAPTION + " - " + (diagramEditor.isDiagramChanged() ? "*" : "")
+                + (newCurrentFile == null ? "noname" : newCurrentFile.getName()));
     }
 
 }
