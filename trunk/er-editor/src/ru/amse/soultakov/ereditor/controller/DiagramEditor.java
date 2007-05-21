@@ -76,7 +76,7 @@ public class DiagramEditor extends JPanel {
 
     private final List<ICurrentFileListener> currentFileListeners = newArrayList();
     
-    private final List<IDiagramChangesListener> diagramChangesListener = newArrayList(); 
+    private final List<IDiagramChangesListener> diagramChangesListeners = newArrayList(); 
     
     private boolean currentToolEnabled = true;
     
@@ -459,17 +459,17 @@ public class DiagramEditor extends JPanel {
     }
     
     private void notifyDiagramChangesListeners(boolean value) {
-        for(IDiagramChangesListener listener : diagramChangesListener) {
+        for(IDiagramChangesListener listener : diagramChangesListeners) {
             listener.diagramChangedSetTo(value);
         }
     }
     
     public boolean addDiagramChangesListener(IDiagramChangesListener listener) {
-        return diagramChangesListener.add(listener);
+        return diagramChangesListeners.add(listener);
     }
     
     public boolean removeDiagramChangesListener(IDiagramChangesListener listener) {
-        return diagramChangesListener.remove(listener);
+        return diagramChangesListeners.remove(listener);
     }
 
     /**
