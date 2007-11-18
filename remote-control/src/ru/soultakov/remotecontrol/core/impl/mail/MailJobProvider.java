@@ -26,11 +26,13 @@ public class MailJobProvider implements IJobProvider {
         @Override
         public List<MailJob> processMessages(List<Message> messages) throws MessagingException,
                 IOException {
-
+            LOGGER.info(messages.size() + " messages to process");
             final ArrayList<MailJob> jobs = new ArrayList<MailJob>();
             for (final Message m : messages) {
                 String subject = m.getSubject();
+                LOGGER.info("Processing message with subject '" + subject + "'");
                 if (subject.matches(subjectPattern)) {
+                    LOGGER.info("Adding new job...");
                     jobs.add(new MailJob(mailService, m));
                 }
             }
@@ -59,9 +61,9 @@ public class MailJobProvider implements IJobProvider {
         try {
             return mailService.receiveUnreadMessages(messageProcessor);
         } catch (final MessagingException e) {
-            throw new JobProvidingException(e);
+            throw new JobProvidingException(e.getMessage(), e);
         } catch (final IOException e) {
-            throw new JobProvidingException(e);
+            throw new JobProvidingException(e.getMessage(), e);
         }
     }
 }

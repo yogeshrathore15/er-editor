@@ -17,10 +17,12 @@ public class MailJob implements IJob {
     private final MailService mailService;
     private String commandText;
 
+    // TODO : add new exception type to protect against crashing job provider
+    // when one mail job can't be created
     public MailJob(MailService mailService, Message message) throws MessagingException, IOException {
         this.mailService = mailService;
         // TODO : replace with a polymorphism
-        if ("text/plain".equals(message.getContentType())) {
+        if (message.getContentType().startsWith("text/plain")) {
             commandText = (String) message.getContent();
             LOGGER.info("MailJob created. Command text = '" + commandText + "'");
         } else {

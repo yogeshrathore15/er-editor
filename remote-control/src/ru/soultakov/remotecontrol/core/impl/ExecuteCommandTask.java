@@ -6,6 +6,8 @@ package ru.soultakov.remotecontrol.core.impl;
 import java.util.List;
 import java.util.TimerTask;
 
+import org.apache.log4j.Logger;
+
 import ru.soultakov.remotecontrol.core.IJob;
 import ru.soultakov.remotecontrol.core.IJobProvider;
 import ru.soultakov.remotecontrol.core.exceptions.CommandExecutionException;
@@ -13,6 +15,8 @@ import ru.soultakov.remotecontrol.core.exceptions.IllegalCommandException;
 import ru.soultakov.remotecontrol.core.exceptions.JobProvidingException;
 
 final class ExecuteCommandTask extends TimerTask {
+
+    private static final Logger LOGGER = Logger.getLogger(ExecuteCommandTask.class);
 
     private final TimerCommandServiceImpl timerCommandService;
 
@@ -27,24 +31,28 @@ final class ExecuteCommandTask extends TimerTask {
 
     @Override
     public void run() {
+        LOGGER.info("Checking new jobs...");
         if (isEnabled()) {
             final List<IJobProvider> jobProviders = this.timerCommandService.getJobProviders();
             for (final IJobProvider provider : jobProviders) {
+                LOGGER.info("Checking '" + provider + "' provider");
                 try {
                     for (final IJob job : provider.getJobs()) {
                         executeJob(job);
                     }
                 } catch (final JobProvidingException e) {
-                    e.printStackTrace();
+                    LOGGER.error("Error while getting job.", e);
                 }
             }
         }
     }
 
     private void executeJob(final IJob job) {
+        LOGGER.info("Scheduling new job : '" + job + "'");
         timerCommandService.getExecutorService().execute(new Runnable() {
             @Override
             public void run() {
+                LOGGER.info("Running job : '" + job + "'");
                 try {
                     final String result = ExecuteCommandTask.this.timerCommandService
                             .getCommandExecutor().execute(job.getCommandText());
