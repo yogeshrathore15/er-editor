@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:lang="http://www.springframework.org/schema/lang"
+  xmlns:util="http://www.springframework.org/schema/util"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-2.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+
+  <bean id="commandInterpreter"
+    class="ru.soultakov.remotecontrol.core.impl.DefaultCommandInterpretor">
+    <property name="delimeter" value="\s" />
+    <property name="commandPrefix" value="-" />
+  </bean>
+
+  <bean id="commandExecutor"
+    class="ru.soultakov.remotecontrol.core.impl.CommandExecutorImpl">
+    <property name="commands">
+      <map>
+        <entry key="helloworld" value-ref="helloWorldCommand" />
+        <entry key="stop" value-ref="stopCommand" />
+      </map>
+    </property>
+    <property name="interpreter" ref="commandInterpreter" />
+  </bean>
+
+  <bean id="executorService" class="java.util.concurrent.Executors"
+    factory-method="newFixedThreadPool">
+    <constructor-arg value="5" />
+  </bean>
+
+  <bean id="consoleJobProvider"
+    class="ru.soultakov.remotecontrol.core.impl.console.ConsoleJobProvider">
+  </bean>
+
+  <bean id="commandService"
+    class="ru.soultakov.remotecontrol.core.impl.TimerCommandServiceImpl">
+    <property name="executorService" ref="executorService" />
+    <property name="commandExecutor" ref="commandExecutor" />
+    <property name="jobProviders">
+      <list>
+        <ref bean="mailJobProvider"/> 
+        <ref bean="consoleJobProvider"/>
+      </list>
+    </property>
+    <property name="period" value="10000" />
+  </bean>
+
+  <bean id="mailService"
+    class="ru.soultakov.remotecontrol.mail.MailService">
+    <property name="properties">
+      <props>
+        <prop key="mail.store.protocol">pop3</prop>
+        <prop key="mail.from">remote-control-@mail.ru</prop>
+        <prop key="mail.pop3.host">pop.mail.ru</prop>
+      </props>
+    </property>
+    <property name="username" value="remote-control-@mail.ru"></property>
+    <property name="password" value="mystupidbot"></property>
+  </bean>
+
+  <bean id="mailJobProvider"
+    class="ru.soultakov.remotecontrol.core.impl.mail.MailJobProvider">
+    <property name="mailService" ref="mailService" />
+    <property name="subjectPattern" value="COMMAND *" />
+  </bean>
+
+  <!-- Begin Commands -->
+  <bean id="helloWorldCommand"
+    class="ru.soultakov.remotecontrol.core.impl.commands.HelloWorldCommand">
+  </bean>
+
+  <bean id="stopCommand"
+    class="ru.soultakov.remotecontrol.core.impl.commands.StopCommand">
+  </bean>
+
+  <!-- End Commands -->
+
+</beans>

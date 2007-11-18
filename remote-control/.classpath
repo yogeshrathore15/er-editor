@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/dsn.jar"/>
+	<classpathentry kind="lib" path="lib/imap.jar"/>
+	<classpathentry kind="lib" path="lib/mailapi.jar" sourcepath="D:/@work/java mail/javamail-1_4_1/javamail-1.4.1/docs/javadocs">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/D:/@work/java mail/javamail-1_4_1/javamail-1.4.1/docs/javadocs/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/pop3.jar"/>
+	<classpathentry kind="lib" path="lib/smtp.jar"/>
+	<classpathentry kind="lib" path="lib/spring.jar" sourcepath="D:/@work/spring/spring-framework-2.0.7/dist/spring-src.zip"/>
+	<classpathentry kind="lib" path="lib/commons-logging-1.0.4.jar"/>
+	<classpathentry kind="lib" path="lib/log4j-1.2.15.jar" sourcepath="D:/@work/log4j/apache-log4j-1.2.15/src/main/java"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
