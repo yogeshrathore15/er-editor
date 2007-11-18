@@ -47,7 +47,7 @@
   </bean>
 
   <bean id="mailService"
-    class="ru.soultakov.remotecontrol.mail.MailService" destroy-method="close" scope="singleton">
+    class="ru.soultakov.remotecontrol.mail.MailService" destroy-method="close">
     <property name="properties">
       <props>
         <prop key="mail.store.protocol">pop3</prop>
