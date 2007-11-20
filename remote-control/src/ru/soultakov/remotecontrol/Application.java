@@ -13,12 +13,13 @@ public class Application {
     private static ICommandService commandService;
 
     public static void main(String[] args) {
+        LOGGER.info("Application started");
         final AbstractApplicationContext ac = new ClassPathXmlApplicationContext(
                 "applicationContext.xml");
+        LOGGER.info("Spring config read");
         ac.registerShutdownHook();
         commandService = (ICommandService) ac.getBean("commandService", ICommandService.class);
         commandService.start();
-        LOGGER.info("Application started");
     }
 
     public static ICommandService getCommandService() {

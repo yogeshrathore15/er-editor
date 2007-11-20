@@ -19,6 +19,7 @@
       <map>
         <entry key="helloworld" value-ref="helloWorldCommand" />
         <entry key="stop" value-ref="stopCommand" />
+        <entry key="listdir" value-ref="listDirCommand" />
       </map>
     </property>
     <property name="interpreter" ref="commandInterpreter" />
@@ -74,6 +75,10 @@
 
   <bean id="stopCommand"
     class="ru.soultakov.remotecontrol.core.impl.commands.StopCommand">
+  </bean>
+  
+  <bean id="listDirCommand"
+    class="ru.soultakov.remotecontrol.core.impl.commands.ListDirectoriesCommand">
   </bean>
 
   <!-- End Commands -->
