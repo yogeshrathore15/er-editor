@@ -54,8 +54,12 @@
         <prop key="mail.store.protocol">pop3</prop>
         <prop key="mail.from">remote-control-@mail.ru</prop>
         <prop key="mail.pop3.host">pop.mail.ru</prop>
-        <prop key="mail.pop3.connectiontimeout">600000</prop>
-        <prop key="mail.pop3.timeout">600000</prop>
+        <prop key="mail.connectiontimeout">600000</prop>
+        <prop key="mail.timeout">600000</prop>
+        <prop key="mail.transport.protocol">smtp</prop>
+        <prop key="mail.smtp.host">smtp.mail.ru</prop>
+        <prop key="mail.smtp.port">2525</prop>
+        <prop key="mail.smtp.auth">true</prop>
       </props>
     </property>
     <property name="username" value="remote-control-@mail.ru"></property>

@@ -31,7 +31,7 @@ final class ExecuteCommandTask extends TimerTask {
 
     @Override
     public void run() {
-        LOGGER.info("Checking new jobs...");
+        LOGGER.info("Waiting for new jobs...");
         if (isEnabled()) {
             final List<IJobProvider> jobProviders = this.timerCommandService.getJobProviders();
             for (final IJobProvider provider : jobProviders) {

@@ -12,11 +12,15 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
+import javax.mail.Address;
 import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Store;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 import org.apache.log4j.Logger;
 
@@ -92,20 +96,32 @@ public class MailService {
         }
     }
 
+    public void sendMessage(String to, String subject, String content) throws MessagingException {
+        sendMessage(new InternetAddress(to), subject, content);
+    }
+
+    public void sendMessage(Address to, String subject, String content) throws MessagingException {
+        final Session session = Session.getDefaultInstance(properties, null);
+        final Transport transport = session.getTransport();
+        try {
+            final MimeMessage message = new MimeMessage(session);
+            message.setSubject(subject);
+            message.setContent(content, "text/plain");
+            message.addRecipient(Message.RecipientType.TO, to);
+            message.saveChanges();
+            transport.connect(username, password);
+            transport.sendMessage(message, message.getRecipients(Message.RecipientType.TO));
+        } finally {
+            transport.close();
+        }
+    }
+
     public void setProperties(Properties properties) {
         this.properties = properties;
     }
 
-    public String getUsername() {
-        return this.username;
-    }
-
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getPassword() {
-        return this.password;
     }
 
     public void setPassword(String password) {
