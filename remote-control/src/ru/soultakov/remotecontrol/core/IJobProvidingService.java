@@ -1,12 +1,12 @@
 package ru.soultakov.remotecontrol.core;
 
-public interface ICommandService {
+public interface IJobProvidingService {
 
     void start();
 
     void suspend();
 
-    void wakeUp();
+    void resume();
 
     void stop();
 

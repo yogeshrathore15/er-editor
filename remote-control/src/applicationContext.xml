@@ -13,8 +13,8 @@
     <property name="commandPrefix" value="-" />
   </bean>
 
-  <bean id="commandExecutor"
-    class="ru.soultakov.remotecontrol.core.impl.CommandExecutorImpl">
+  <bean id="jobExecutionService"
+    class="ru.soultakov.remotecontrol.core.impl.JobExecutionServiceImpl">
     <property name="commands">
       <map>
         <entry key="helloworld" value-ref="helloWorldCommand" />
@@ -23,6 +23,7 @@
       </map>
     </property>
     <property name="interpreter" ref="commandInterpreter" />
+    <property name="executorService" ref="executorService"></property>
   </bean>
 
   <bean id="executorService" class="java.util.concurrent.Executors"
@@ -30,25 +31,15 @@
     <constructor-arg value="5" />
   </bean>
 
-  <bean id="consoleJobProvider"
-    class="ru.soultakov.remotecontrol.core.impl.console.ConsoleJobProvider">
-  </bean>
-
-  <bean id="commandService"
-    class="ru.soultakov.remotecontrol.core.impl.TimerCommandServiceImpl">
-    <property name="executorService" ref="executorService" />
-    <property name="commandExecutor" ref="commandExecutor" />
-    <property name="jobProviders">
-      <list>
-        <ref bean="mailJobProvider"/> 
-        <!--ref bean="consoleJobProvider"/-->
-      </list>
-    </property>
-    <property name="period" value="30000" />
+  <bean id="consoleJobProvidingService"
+    class="ru.soultakov.remotecontrol.core.impl.console.ConsoleJobProvidingService">
+    <property name="jobExecutionService" ref="jobExecutionService"></property>
+    <property name="timeout" value="60000"></property>
   </bean>
 
   <bean id="mailService"
-    class="ru.soultakov.remotecontrol.mail.MailService" destroy-method="close">
+    class="ru.soultakov.remotecontrol.mail.MailService"
+    destroy-method="close">
     <property name="properties">
       <props>
         <prop key="mail.store.protocol">pop3</prop>
@@ -66,10 +57,27 @@
     <property name="password" value="mystupidbot"></property>
   </bean>
 
-  <bean id="mailJobProvider"
-    class="ru.soultakov.remotecontrol.core.impl.mail.MailJobProvider">
+  <bean id="mailJobProvidingService"
+    class="ru.soultakov.remotecontrol.core.impl.mail.MailJobProvidingService">
     <property name="mailService" ref="mailService" />
     <property name="subjectPattern" value="COMMAND*" />
+    <property name="jobExecutionService" ref="jobExecutionService"></property>
+    <property name="period" value="60000"></property>
+  </bean>
+
+  <bean id="application" class="ru.soultakov.remotecontrol.Application"
+    factory-method="getInstance" init-method="start">
+    <property name="jobExecutionServices">
+      <list>
+        <ref bean="jobExecutionService" />
+      </list>
+    </property>
+    <property name="jobProvidingServices">
+      <list>
+        <!-- <ref bean="mailJobProvidingService" /> -->
+        <ref bean="consoleJobProvidingService" />
+      </list>
+    </property>
   </bean>
 
   <!-- Begin Commands -->
@@ -80,7 +88,7 @@
   <bean id="stopCommand"
     class="ru.soultakov.remotecontrol.core.impl.commands.StopCommand">
   </bean>
-  
+
   <bean id="listDirCommand"
     class="ru.soultakov.remotecontrol.core.impl.commands.ListDirectoriesCommand">
   </bean>

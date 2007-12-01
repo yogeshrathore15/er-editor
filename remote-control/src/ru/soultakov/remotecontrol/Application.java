@@ -1,28 +1,67 @@
 package ru.soultakov.remotecontrol;
 
-import org.apache.log4j.Logger;
-import org.springframework.context.support.AbstractApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import java.util.List;
 
-import ru.soultakov.remotecontrol.core.ICommandService;
+import org.apache.log4j.Logger;
+
+import ru.soultakov.remotecontrol.core.IJobExecutionService;
+import ru.soultakov.remotecontrol.core.IJobProvidingService;
 
 public class Application {
 
     private static final Logger LOGGER = Logger.getLogger(Application.class);
 
-    private static ICommandService commandService;
+    private static Application instance;
 
-    public static void main(String[] args) {
-        LOGGER.info("Application started");
-        final AbstractApplicationContext ac = new ClassPathXmlApplicationContext(
-                "applicationContext.xml");
-        LOGGER.info("Spring config read");
-        ac.registerShutdownHook();
-        commandService = (ICommandService) ac.getBean("commandService", ICommandService.class);
-        commandService.start();
+    private List<IJobExecutionService> jobExecutionServices;
+    private List<IJobProvidingService> jobProvidingServices;
+
+    private Application() {
     }
 
-    public static ICommandService getCommandService() {
-        return commandService;
+    public void start() {
+        LOGGER.info("Starting application...");
+        for (final IJobExecutionService jobExecutionService : jobExecutionServices) {
+            jobExecutionService.start();
+        }
+        for (final IJobProvidingService jobProvidingService : jobProvidingServices) {
+            jobProvidingService.start();
+        }
+        LOGGER.info("Application started successfully");
     }
+
+    public void shutdown() {
+        LOGGER.info("Shutting down application...");
+        for (final IJobExecutionService jobExecutionService : jobExecutionServices) {
+            jobExecutionService.stop();
+        }
+        for (final IJobProvidingService jobProvidingService : jobProvidingServices) {
+            jobProvidingService.stop();
+        }
+        LOGGER.info("Application was shut down successfully");
+    }
+
+    public List<IJobExecutionService> getJobExecutionServices() {
+        return this.jobExecutionServices;
+    }
+
+    public void setJobExecutionServices(List<IJobExecutionService> jobExecutionServices) {
+        this.jobExecutionServices = jobExecutionServices;
+    }
+
+    public List<IJobProvidingService> getJobProvidingServices() {
+        return this.jobProvidingServices;
+    }
+
+    public void setJobProvidingServices(List<IJobProvidingService> jobProvidingServices) {
+        this.jobProvidingServices = jobProvidingServices;
+    }
+
+    public synchronized static Application getInstance() {
+        if (instance == null) {
+            instance = new Application();
+        }
+        return instance;
+    }
+
 }

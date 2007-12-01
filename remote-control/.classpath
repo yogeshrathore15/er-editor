@@ -14,5 +14,6 @@
 	<classpathentry kind="lib" path="lib/spring.jar" sourcepath="D:/@work/spring/spring-framework-2.0.7/dist/spring-src.zip"/>
 	<classpathentry kind="lib" path="lib/commons-logging-1.0.4.jar"/>
 	<classpathentry kind="lib" path="lib/log4j-1.2.15.jar" sourcepath="D:/@work/log4j/apache-log4j-1.2.15/src/main/java"/>
+	<classpathentry kind="lib" path="lib/ant.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -10,7 +10,6 @@ public class HelloWorldCommand implements ICommand {
 
     @Override
     public String execute(Map<String, List<String>> parameters) throws CommandExecutionException {
-        System.out.println("helloworld");
         return "I've done it";
     }
 
