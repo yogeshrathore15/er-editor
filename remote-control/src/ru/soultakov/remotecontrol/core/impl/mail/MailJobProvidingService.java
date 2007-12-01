@@ -28,7 +28,7 @@ public class MailJobProvidingService extends AbstractJobProvidingService {
     private IJobExecutionService jobExecutionService;
 
     private Timer timer;
-    private final CheckForNewMessagesTask timerTask = new CheckForNewMessagesTask(this);
+    private final ReceiveMessagesTask timerTask = new ReceiveMessagesTask(this);
 
     private final IMessageProcessor<MailJob> messageProcessor = new IMessageProcessor<MailJob>() {
         @Override

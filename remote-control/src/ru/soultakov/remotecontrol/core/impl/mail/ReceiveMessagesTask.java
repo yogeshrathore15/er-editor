@@ -13,9 +13,9 @@ import org.apache.log4j.Logger;
 import ru.soultakov.remotecontrol.core.exceptions.CommandExecutionException;
 import ru.soultakov.remotecontrol.core.exceptions.IllegalCommandException;
 
-final class CheckForNewMessagesTask extends TimerTask {
+final class ReceiveMessagesTask extends TimerTask {
 
-    private static final Logger LOGGER = Logger.getLogger(CheckForNewMessagesTask.class);
+    private static final Logger LOGGER = Logger.getLogger(ReceiveMessagesTask.class);
 
     private final MailJobProvidingService mailJobProvidingService;
     private volatile boolean enabled = true;
@@ -23,7 +23,7 @@ final class CheckForNewMessagesTask extends TimerTask {
     /**
      * @param mailJobProvidingService
      */
-    CheckForNewMessagesTask(MailJobProvidingService mailJobProvidingService) {
+    ReceiveMessagesTask(MailJobProvidingService mailJobProvidingService) {
         this.mailJobProvidingService = mailJobProvidingService;
     }
 

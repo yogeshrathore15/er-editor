@@ -1,0 +1,7 @@
+<project>
+
+  <target name="compile">
+  	<echo message="Hello World mazafa" />
+  </target>
+
+</project>
