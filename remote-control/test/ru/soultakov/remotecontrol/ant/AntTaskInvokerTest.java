@@ -19,9 +19,9 @@ import static org.junit.Assert.fail;
 
 public class AntTaskInvokerTest {
 
-    private static final String EXPRECTED_XML = "<project>\r\n<target name=\"target\">\r\n<echo message=\"Hello World\"/>\r\n</target>\r\n</project>\r\n";
-    private static final String ECHO_TASK = "<echo message=\"Hello World\" />";
-    private static final String EXPECTED_RESULT = "\r\ntarget:\r\n     [echo] Hello World\r\n\r\nBUILD SUCCESSFUL\r\nTotal time: 0 seconds\r\n";
+    public static final String EXPRECTED_XML = "<project>\r\n<target name=\"target\">\r\n<echo message=\"Hello World\"/>\r\n</target>\r\n</project>\r\n";
+    public static final String ECHO_TASK = "<echo message=\"Hello World\" />";
+    public static final String EXPECTED_RESULT = "\r\ntarget:\r\n     [echo] Hello World\r\n\r\nBUILD SUCCESSFUL\r\nTotal time: 0 seconds\r\n";
 
     @Test(expected = IllegalArgumentException.class)
     public void testInvokeTask1() throws AntTaskInvokationException {
