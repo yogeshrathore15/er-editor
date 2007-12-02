@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import ru.soultakov.remotecontrol.core.ICommandInterpreter;
-import ru.soultakov.remotecontrol.core.exceptions.IllegalCommandException;
+import ru.soultakov.remotecontrol.core.exceptions.IllegalJobException;
 
 public class DefaultCommandInterpretor implements ICommandInterpreter {
 
@@ -16,11 +16,11 @@ public class DefaultCommandInterpretor implements ICommandInterpreter {
     private String delimeter;
 
     @Override
-    public String getName(String command) throws IllegalCommandException {
+    public String getName(String command) throws IllegalJobException {
         checkCommand(command);
         final String[] strings = command.split(delimeter);
         if (strings.length == 0) {
-            throw new IllegalCommandException("Command name must be specified");
+            throw new IllegalJobException("Command name must be specified");
         }
         return strings[0];
     }
@@ -32,7 +32,7 @@ public class DefaultCommandInterpretor implements ICommandInterpreter {
     }
 
     @Override
-    public Map<String, List<String>> getParameters(String command) throws IllegalCommandException {
+    public Map<String, List<String>> getParameters(String command) throws IllegalJobException {
         checkCommand(command);
         final String[] strings = command.split(delimeter);
         final Map<String, List<String>> parameters;
@@ -45,7 +45,7 @@ public class DefaultCommandInterpretor implements ICommandInterpreter {
     }
 
     private Map<String, List<String>> parseParameters(String[] strings)
-            throws IllegalCommandException {
+            throws IllegalJobException {
         assert strings.length > 0;
         final Map<String, List<String>> params = new HashMap<String, List<String>>();
         ArrayList<String> currentList = null;
@@ -56,7 +56,7 @@ public class DefaultCommandInterpretor implements ICommandInterpreter {
                 currentList = list;
             } else {
                 if (currentList == null) {
-                    throw new IllegalCommandException("Wrong parameters : " + strings);
+                    throw new IllegalJobException("Wrong parameters : " + strings);
                 }
                 currentList.add(string);
             }

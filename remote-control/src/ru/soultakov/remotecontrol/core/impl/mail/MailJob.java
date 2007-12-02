@@ -20,10 +20,14 @@ public class MailJob implements IJob {
     private final String commandText;
     private final Address[] customerAddresses;
 
+    private final String interpreterName;
+
     // TODO : add new exception type to protect against crashing job provider
     // when one mail job can't be created
-    public MailJob(MailService mailService, Message message) throws MessagingException, IOException {
+    public MailJob(MailService mailService, Message message, String interpreterName)
+            throws MessagingException, IOException {
         this.mailService = mailService;
+        this.interpreterName = interpreterName;
         customerAddresses = message.getFrom().clone();
         if ((customerAddresses == null) || (customerAddresses.length == 0)) {
             throw new IllegalArgumentException("Illegal 'from' addresses : "
@@ -56,6 +60,11 @@ public class MailJob implements IJob {
     @Override
     public String getCommandText() {
         return commandText;
+    }
+
+    @Override
+    public String getInterpreterName() {
+        return interpreterName;
     }
 
 }

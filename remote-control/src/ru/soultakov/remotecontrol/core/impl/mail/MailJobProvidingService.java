@@ -13,7 +13,7 @@ import org.apache.log4j.Logger;
 import ru.soultakov.remotecontrol.core.IJob;
 import ru.soultakov.remotecontrol.core.IJobExecutionService;
 import ru.soultakov.remotecontrol.core.exceptions.CommandExecutionException;
-import ru.soultakov.remotecontrol.core.exceptions.IllegalCommandException;
+import ru.soultakov.remotecontrol.core.exceptions.IllegalJobException;
 import ru.soultakov.remotecontrol.core.impl.AbstractJobProvidingService;
 import ru.soultakov.remotecontrol.mail.IMessageProcessor;
 import ru.soultakov.remotecontrol.mail.MailService;
@@ -41,7 +41,7 @@ public class MailJobProvidingService extends AbstractJobProvidingService {
                 LOGGER.info("Processing message with subject '" + subject + "'");
                 if (subject.matches(subjectPattern)) {
                     LOGGER.info("Adding new job...");
-                    jobs.add(new MailJob(mailService, m));
+                    jobs.add(new MailJob(mailService, m, "default"));
                 }
             }
             return jobs;
@@ -64,7 +64,7 @@ public class MailJobProvidingService extends AbstractJobProvidingService {
         this.mailService = mailService;
     }
 
-    void receiveAndExecute() throws MessagingException, IOException, IllegalCommandException,
+    void receiveAndExecute() throws MessagingException, IOException, IllegalJobException,
             CommandExecutionException {
         final List<MailJob> newJobs = mailService.receiveUnreadMessages(messageProcessor);
         for (final IJob job : newJobs) {

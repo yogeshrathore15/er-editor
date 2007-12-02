@@ -9,8 +9,10 @@ import ru.soultakov.remotecontrol.core.impl.JobExecutionServiceImplTest;
 import ru.soultakov.remotecontrol.core.impl.commands.InvokeAntCommandTest;
 
 @RunWith(Suite.class)
-@SuiteClasses( { AntTaskInvokerTest.class, JobExecutionServiceImplTest.class,
-        InvokeAntCommandTest.class })
+@SuiteClasses( 
+        { AntTaskInvokerTest.class, 
+          JobExecutionServiceImplTest.class,
+          InvokeAntCommandTest.class })
 public class AllTests {
 
 }

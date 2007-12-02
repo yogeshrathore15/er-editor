@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 
 import ru.soultakov.remotecontrol.core.IJobExecutionService;
 import ru.soultakov.remotecontrol.core.exceptions.CommandExecutionException;
-import ru.soultakov.remotecontrol.core.exceptions.IllegalCommandException;
+import ru.soultakov.remotecontrol.core.exceptions.IllegalJobException;
 import ru.soultakov.remotecontrol.core.impl.AbstractJobProvidingService;
 
 public class ConsoleJobProvidingService extends AbstractJobProvidingService {
@@ -31,7 +31,7 @@ public class ConsoleJobProvidingService extends AbstractJobProvidingService {
                     try {
                         System.out.println("<Enter the next command> ");
                         final String commandText = userIn.readLine();
-                        final ConsoleJob consoleJob = new ConsoleJob(commandText, lock);
+                        final ConsoleJob consoleJob = new ConsoleJob(commandText, "default", lock);
                         synchronized (lock) {
                             try {
                                 jobExecutionService.execute(consoleJob);
@@ -41,7 +41,7 @@ public class ConsoleJobProvidingService extends AbstractJobProvidingService {
                                 while (!consoleJob.isDone()) {
                                     lock.wait(timeout);
                                 }
-                            } catch (final IllegalCommandException e) {
+                            } catch (final IllegalJobException e) {
                                 LOGGER.error(e.getMessage());
                             } catch (final CommandExecutionException e) {
                                 LOGGER.error(e.getMessage(), e);

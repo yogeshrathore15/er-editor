@@ -1,18 +1,49 @@
 package ru.soultakov.remotecontrol.core.impl;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import ru.soultakov.remotecontrol.ant.AntTaskInvokerTest;
+import ru.soultakov.remotecontrol.core.exceptions.CommandExecutionException;
+import ru.soultakov.remotecontrol.core.exceptions.IllegalJobException;
+import ru.soultakov.remotecontrol.core.exceptions.NoSuchCommandException;
+import ru.soultakov.remotecontrol.core.impl.commands.InvokeAntCommand;
+
 public class JobExecutionServiceImplTest {
 
-    @Test
-    public void testExecute() {
+    private JobExecutionServiceImpl executor;
+
+    @Before
+    public void initExecutor() {
         final AbstractApplicationContext ac = new ClassPathXmlApplicationContext(
                 "applicationContext.xml");
-        final JobExecutionServiceImpl executor = (JobExecutionServiceImpl) ac.getBean(
-                "jobExecutionService", JobExecutionServiceImpl.class);
-        // executor.execute(new TestJob("ant " + ));
+        executor = (JobExecutionServiceImpl) ac.getBean("jobExecutionService",
+                JobExecutionServiceImpl.class);
+    }
+
+    @After
+    public void stopExecutor() {
+        executor.stop();
+    }
+
+    @Test
+    public void testExecute() throws NoSuchCommandException, IllegalJobException,
+            CommandExecutionException {
+        final TestJob testJob = new TestJob("ant ", InvokeAntCommand.USAGE, false, "default");
+        executor.execute(testJob);
+        testJob.checkResult(0);
+    }
+
+    @Test
+    public void testExecute2() throws NoSuchCommandException, IllegalJobException,
+            CommandExecutionException {
+        final TestJob testJob = new TestJob(AntTaskInvokerTest.ECHO_TASK,
+                AntTaskInvokerTest.EXPECTED_RESULT, true, "ant");
+        executor.execute(testJob);
+        testJob.checkResult(0);
     }
 
 }

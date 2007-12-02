@@ -14,6 +14,7 @@ public class ApplicationStarter {
                 "applicationContext.xml");
         LOGGER.info("Spring config read");
         ac.registerShutdownHook();
+        Application.getInstance().start();
     }
 
 }

@@ -6,4 +6,6 @@ public interface IJob {
 
     void done(String result, boolean success);
 
+    String getInterpreterName();
+
 }

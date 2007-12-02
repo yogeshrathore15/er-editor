@@ -1,34 +1,48 @@
 package ru.soultakov.remotecontrol.ant;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintStream;
-import java.io.Writer;
+import java.io.*;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.TransformerFactoryConfigurationError;
+import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.apache.log4j.Logger;
 import org.apache.tools.ant.DefaultLogger;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.ProjectHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 public class AntTaskInvoker {
+
+    private static final Logger LOGGER = Logger.getLogger(AntTaskInvoker.class);
+
+    public static class LogErrorHandler implements ErrorHandler {
+
+        public static final ErrorHandler INSTANCE = new LogErrorHandler();
+
+        @Override
+        public void error(SAXParseException exception) throws SAXException {
+            LOGGER.info(exception.getMessage());
+        }
+
+        @Override
+        public void fatalError(SAXParseException exception) throws SAXException {
+            LOGGER.info(exception.getMessage());
+        }
+
+        @Override
+        public void warning(SAXParseException exception) throws SAXException {
+        }
+
+    }
 
     static final String TARGET_NAME = "target";
     static final String NAME = "name";
@@ -41,18 +55,27 @@ public class AntTaskInvoker {
         if (task == null) {
             throw new IllegalArgumentException("Task must not be null");
         }
+        LOGGER.info("Invoking task '" + task + "'");
         synchronized (LOCK) {
             try {
                 final Document antBuildFileDocument = getAntBuildFileDocument(task);
+                LOGGER.info("Ant build file document created");
                 final File antBuildFile = saveXmlToTempFile(antBuildFileDocument);
-                return executeAntBuild(antBuildFile);
+                LOGGER.info("Ant build file created and saved to disc");
+                final String result = executeAntBuild(antBuildFile);
+                LOGGER.info("Task successfully invoked. Result = '" + result + "'");
+                return result;
             } catch (final ParserConfigurationException e) {
+                LOGGER.error(e.getMessage());
                 throw new AntTaskInvokationException(e);
             } catch (final TransformerException e) {
+                LOGGER.error(e.getMessage());
                 throw new AntTaskInvokationException(e);
             } catch (final IOException e) {
+                LOGGER.error(e.getMessage());
                 throw new AntTaskInvokationException(e);
             } catch (final SAXException e) {
+                LOGGER.info(e.getMessage());
                 throw new AntTaskInvokationException(e);
             }
         }
@@ -114,6 +137,7 @@ public class AntTaskInvoker {
             SAXException, IOException {
         final DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         final DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        documentBuilder.setErrorHandler(LogErrorHandler.INSTANCE);
         final Document antBuildFileDocument = documentBuilder.newDocument();
 
         final Element projectElement = antBuildFileDocument.createElement(PROJECT);

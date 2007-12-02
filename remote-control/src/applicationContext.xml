@@ -7,10 +7,14 @@
 		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-2.0.xsd
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 
-  <bean id="commandInterpreter"
+  <bean id="defaultCommandInterpreter"
     class="ru.soultakov.remotecontrol.core.impl.DefaultCommandInterpretor">
     <property name="delimeter" value="\s" />
     <property name="commandPrefix" value="-" />
+  </bean>
+  
+  <bean id="antCommandInterpreter" 
+    class="ru.soultakov.remotecontrol.core.impl.AntCommandInterpreter">
   </bean>
 
   <bean id="jobExecutionService"
@@ -23,7 +27,12 @@
         <entry key="ant" value-ref="invokeAntCommand" />
       </map>
     </property>
-    <property name="interpreter" ref="commandInterpreter" />
+    <property name="interpreters" >
+      <map>
+        <entry key="default" value-ref="defaultCommandInterpreter" />
+        <entry key="ant" value-ref="antCommandInterpreter" />
+      </map>
+    </property>
     <property name="executorService" ref="executorService"></property>
   </bean>
 
@@ -67,7 +76,7 @@
   </bean>
 
   <bean id="application" class="ru.soultakov.remotecontrol.Application"
-    factory-method="getInstance" init-method="start">
+    factory-method="getInstance">
     <property name="jobExecutionServices">
       <list>
         <ref bean="jobExecutionService" />

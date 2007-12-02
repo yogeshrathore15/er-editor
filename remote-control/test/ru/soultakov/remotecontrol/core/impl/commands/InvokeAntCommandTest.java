@@ -2,9 +2,7 @@ package ru.soultakov.remotecontrol.core.impl.commands;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import org.junit.Test;
 
@@ -23,4 +21,11 @@ public class InvokeAntCommandTest {
         assertEquals(result, AntTaskInvokerTest.EXPECTED_RESULT);
     }
 
+    @Test(expected = CommandExecutionException.class)
+    public void testExecute2() throws CommandExecutionException {
+        final ICommand command = new InvokeAntCommand();
+        final String result = command.execute(Collections.singletonMap("task", Arrays
+                .asList("this is not correct task xaxaxa")));
+        assertEquals(result, AntTaskInvokerTest.EXPECTED_RESULT);
+    }
 }

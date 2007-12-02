@@ -11,7 +11,7 @@ import javax.mail.MessagingException;
 import org.apache.log4j.Logger;
 
 import ru.soultakov.remotecontrol.core.exceptions.CommandExecutionException;
-import ru.soultakov.remotecontrol.core.exceptions.IllegalCommandException;
+import ru.soultakov.remotecontrol.core.exceptions.IllegalJobException;
 
 final class ReceiveMessagesTask extends TimerTask {
 
@@ -36,7 +36,7 @@ final class ReceiveMessagesTask extends TimerTask {
             LOGGER.error(e.getMessage(), e);
         } catch (final IOException e) {
             LOGGER.error(e.getMessage(), e);
-        } catch (final IllegalCommandException e) {
+        } catch (final IllegalJobException e) {
             LOGGER.error(e.getMessage(), e);
         } catch (final CommandExecutionException e) {
             LOGGER.error(e.getMessage(), e);

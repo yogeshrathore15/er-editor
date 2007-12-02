@@ -6,13 +6,8 @@ import java.util.concurrent.ExecutorService;
 
 import org.apache.log4j.Logger;
 
-import ru.soultakov.remotecontrol.core.ICommand;
-import ru.soultakov.remotecontrol.core.ICommandInterpreter;
-import ru.soultakov.remotecontrol.core.IJob;
-import ru.soultakov.remotecontrol.core.IJobExecutionService;
-import ru.soultakov.remotecontrol.core.exceptions.CommandExecutionException;
-import ru.soultakov.remotecontrol.core.exceptions.IllegalCommandException;
-import ru.soultakov.remotecontrol.core.exceptions.NoSuchCommandException;
+import ru.soultakov.remotecontrol.core.*;
+import ru.soultakov.remotecontrol.core.exceptions.*;
 
 public class JobExecutionServiceImpl implements IJobExecutionService {
 
@@ -22,15 +17,18 @@ public class JobExecutionServiceImpl implements IJobExecutionService {
 
     private ExecutorService executorService;
     private Map<String, ICommand> commands;
-    private ICommandInterpreter interpreter;
+    private Map<String, ICommandInterpreter> interpreters;
 
     /**
      * {@inheritDoc}
      * 
      * @throws CommandExecutionException
      */
-    public void execute(final IJob job) throws IllegalCommandException, CommandExecutionException,
-            NoSuchCommandException {
+    public void execute(final IJob job) throws IllegalJobException, CommandExecutionException {
+        final ICommandInterpreter interpreter = interpreters.get(job.getInterpreterName());
+        if (interpreter == null) {
+            throw new NoSuchInterpreterException(job.getInterpreterName());
+        }
         final String commandName = interpreter.getName(job.getCommandText());
         final Map<String, List<String>> parameters = interpreter
                 .getParameters(job.getCommandText());
@@ -39,14 +37,32 @@ public class JobExecutionServiceImpl implements IJobExecutionService {
             throw new NoSuchCommandException(commandName);
         }
         executorService.execute(new Runnable() {
+            /**
+             * Executes job
+             */
             @Override
             public void run() {
                 LOGGER.info("Executing job '" + commandName + "'");
                 try {
                     final String result = command.execute(parameters);
-                    job.done(result, true);
+                    LOGGER.info("Executed job '" + commandName + "'");
+                    LOGGER.info("Result = '" + result + "'");
+                    notifyJob(job, result, true);
                 } catch (final CommandExecutionException e) {
-                    job.done(e.getMessage(), false);
+                    notifyJob(job, e.getMessage(), false);
+                } catch (final RuntimeException e) {
+                    LOGGER.error(e.getMessage(), e);
+                    final String errorMessage = "Runtime exception : " + e.getClass().getName()
+                            + ". Message: " + e.getMessage();
+                    notifyJob(job, errorMessage, false);
+                }
+            }
+
+            private void notifyJob(final IJob job, final String result, boolean success) {
+                try {
+                    job.done(result, success);
+                } catch (final RuntimeException e) {
+                    LOGGER.error(e.getMessage(), e);
                 }
             }
         });
@@ -60,17 +76,8 @@ public class JobExecutionServiceImpl implements IJobExecutionService {
         return commands;
     }
 
-    public void setInterpreter(ICommandInterpreter interpreter) {
-        this.interpreter = interpreter;
-    }
-
-    public ICommandInterpreter getInterpreter() {
-        return interpreter;
-    }
-
     @Override
     public void start() {
-
     }
 
     @Override
@@ -88,5 +95,13 @@ public class JobExecutionServiceImpl implements IJobExecutionService {
 
     public void setExecutorService(ExecutorService executorService) {
         this.executorService = executorService;
+    }
+
+    public Map<String, ICommandInterpreter> getInterpreters() {
+        return this.interpreters;
+    }
+
+    public void setInterpreters(Map<String, ICommandInterpreter> interpreters) {
+        this.interpreters = interpreters;
     }
 }
