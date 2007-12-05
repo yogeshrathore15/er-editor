@@ -1,4 +1,4 @@
-package ru.soultakov.remotecontrol.core.impl.commands;
+package ru.soultakov.remotecontrol.core.impl.ant;
 
 import static org.junit.Assert.assertEquals;
 
@@ -6,9 +6,9 @@ import java.util.*;
 
 import org.junit.Test;
 
-import ru.soultakov.remotecontrol.ant.AntTaskInvokerTest;
 import ru.soultakov.remotecontrol.core.ICommand;
 import ru.soultakov.remotecontrol.core.exceptions.CommandExecutionException;
+import ru.soultakov.remotecontrol.core.impl.ant.InvokeAntCommand;
 
 public class InvokeAntCommandTest {
 

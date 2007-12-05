@@ -1,4 +1,4 @@
-package ru.soultakov.remotecontrol.ant;
+package ru.soultakov.remotecontrol.core.impl.ant;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -12,6 +12,9 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
+import ru.soultakov.remotecontrol.core.impl.ant.AntTaskInvokationException;
+import ru.soultakov.remotecontrol.core.impl.ant.AntTaskInvoker;
 
 import static junit.framework.Assert.assertEquals;
 

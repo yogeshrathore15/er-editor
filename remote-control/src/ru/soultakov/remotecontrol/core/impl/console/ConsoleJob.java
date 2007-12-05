@@ -7,9 +7,11 @@ public class ConsoleJob implements IJob {
     private final String commandText;
     private volatile boolean done = false;
     private final Object lock;
+    private final String interpreterName;
 
     public ConsoleJob(String commandText, String interpreterName, Object lock) {
         this.commandText = commandText;
+        this.interpreterName = interpreterName;
         this.lock = lock;
     }
 
@@ -34,7 +36,7 @@ public class ConsoleJob implements IJob {
 
     @Override
     public String getInterpreterName() {
-        return null;
+        return interpreterName;
     }
 
 }

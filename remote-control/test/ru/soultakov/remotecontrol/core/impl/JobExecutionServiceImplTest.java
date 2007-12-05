@@ -6,11 +6,11 @@ import org.junit.Test;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import ru.soultakov.remotecontrol.ant.AntTaskInvokerTest;
 import ru.soultakov.remotecontrol.core.exceptions.CommandExecutionException;
 import ru.soultakov.remotecontrol.core.exceptions.IllegalJobException;
 import ru.soultakov.remotecontrol.core.exceptions.NoSuchCommandException;
-import ru.soultakov.remotecontrol.core.impl.commands.InvokeAntCommand;
+import ru.soultakov.remotecontrol.core.impl.ant.AntTaskInvokerTest;
+import ru.soultakov.remotecontrol.core.impl.ant.InvokeAntCommand;
 
 public class JobExecutionServiceImplTest {
 

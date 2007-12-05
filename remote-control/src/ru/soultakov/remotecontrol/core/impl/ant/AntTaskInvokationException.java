@@ -1,4 +1,4 @@
-package ru.soultakov.remotecontrol.ant;
+package ru.soultakov.remotecontrol.core.impl.ant;
 
 public class AntTaskInvokationException extends Exception {
 

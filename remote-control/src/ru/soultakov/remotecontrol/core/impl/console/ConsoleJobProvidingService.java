@@ -13,14 +13,22 @@ import ru.soultakov.remotecontrol.core.impl.AbstractJobProvidingService;
 
 public class ConsoleJobProvidingService extends AbstractJobProvidingService {
 
+    private static final String ANT = "ant";
+    private static final String DEFAULT = "default";
+
     private static final Logger LOGGER = Logger.getLogger(ConsoleJobProvidingService.class);
 
-    private IJobExecutionService jobExecutionService;
-    private long timeout;
+    private final IJobExecutionService jobExecutionService;
+    private final long timeout;
 
     private Thread inputThread;
 
     private final Object lock = new Object();
+
+    public ConsoleJobProvidingService(IJobExecutionService jobExecutionService, long timeout) {
+        this.jobExecutionService = jobExecutionService;
+        this.timeout = timeout;
+    }
 
     private void startConsole() {
         final BufferedReader userIn = new BufferedReader(new InputStreamReader(System.in));
@@ -31,18 +39,20 @@ public class ConsoleJobProvidingService extends AbstractJobProvidingService {
                     try {
                         System.out.println("<Enter the next command> ");
                         final String commandText = userIn.readLine();
-                        final ConsoleJob consoleJob = new ConsoleJob(commandText, "default", lock);
+                        final ConsoleJob consoleJob;
+                        if (commandText.startsWith(ANT)) {
+                            consoleJob = new ConsoleJob(commandText.substring(3), ANT, lock);
+                        } else {
+                            consoleJob = new ConsoleJob(commandText, DEFAULT, lock);
+                        }
                         synchronized (lock) {
                             try {
                                 jobExecutionService.execute(consoleJob);
-                                // TODO : this is not correct!!
-                                // But spurious wakeups appear so seldom..
-                                // So, we can put a cock on this error
                                 while (!consoleJob.isDone()) {
                                     lock.wait(timeout);
                                 }
                             } catch (final IllegalJobException e) {
-                                LOGGER.error(e.getMessage());
+                                LOGGER.error(e.getMessage(), e);
                             } catch (final CommandExecutionException e) {
                                 LOGGER.error(e.getMessage(), e);
                             } catch (final InterruptedException e) {
@@ -87,22 +97,6 @@ public class ConsoleJobProvidingService extends AbstractJobProvidingService {
 
     @Override
     protected void doSuspend() {
-    }
-
-    public IJobExecutionService getJobExecutionService() {
-        return this.jobExecutionService;
-    }
-
-    public void setJobExecutionService(IJobExecutionService jobExecutionService) {
-        this.jobExecutionService = jobExecutionService;
-    }
-
-    public long getTimeout() {
-        return this.timeout;
-    }
-
-    public void setTimeout(long timeout) {
-        this.timeout = timeout;
     }
 
 }

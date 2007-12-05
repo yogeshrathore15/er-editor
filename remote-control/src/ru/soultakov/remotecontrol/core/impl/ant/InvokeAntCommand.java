@@ -1,10 +1,8 @@
-package ru.soultakov.remotecontrol.core.impl.commands;
+package ru.soultakov.remotecontrol.core.impl.ant;
 
 import java.util.List;
 import java.util.Map;
 
-import ru.soultakov.remotecontrol.ant.AntTaskInvokationException;
-import ru.soultakov.remotecontrol.ant.AntTaskInvoker;
 import ru.soultakov.remotecontrol.core.ICommand;
 import ru.soultakov.remotecontrol.core.exceptions.CommandExecutionException;
 import ru.soultakov.remotecontrol.core.exceptions.IllegalCommandParametersException;
@@ -33,8 +31,7 @@ public class InvokeAntCommand implements ICommand {
         if ((taskList == null) || (taskList.size() == 0)) {
             throw new IllegalCommandParametersException(USAGE);
         }
-        final String task = taskList.get(0);
-        return task;
+        return taskList.get(0);
     }
 
 }

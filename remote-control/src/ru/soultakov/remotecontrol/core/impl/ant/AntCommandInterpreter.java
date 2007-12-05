@@ -1,4 +1,4 @@
-package ru.soultakov.remotecontrol.core.impl;
+package ru.soultakov.remotecontrol.core.impl.ant;
 
 import java.util.*;
 

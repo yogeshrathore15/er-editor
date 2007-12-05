@@ -9,42 +9,42 @@
 
   <bean id="defaultCommandInterpreter"
     class="ru.soultakov.remotecontrol.core.impl.DefaultCommandInterpretor">
-    <property name="delimeter" value="\s" />
-    <property name="commandPrefix" value="-" />
+    <constructor-arg index="0" value="\s" />
+    <constructor-arg index="1" value="-" />
   </bean>
   
   <bean id="antCommandInterpreter" 
-    class="ru.soultakov.remotecontrol.core.impl.AntCommandInterpreter">
+    class="ru.soultakov.remotecontrol.core.impl.ant.AntCommandInterpreter">
   </bean>
 
   <bean id="jobExecutionService"
     class="ru.soultakov.remotecontrol.core.impl.JobExecutionServiceImpl">
-    <property name="commands">
+    <constructor-arg ref="executorService"></constructor-arg>
+    <constructor-arg index="1">
       <map>
         <entry key="helloworld" value-ref="helloWorldCommand" />
         <entry key="stop" value-ref="stopCommand" />
         <entry key="listdir" value-ref="listDirCommand" />
         <entry key="ant" value-ref="invokeAntCommand" />
       </map>
-    </property>
-    <property name="interpreters" >
+    </constructor-arg>
+    <constructor-arg index="2">
       <map>
         <entry key="default" value-ref="defaultCommandInterpreter" />
         <entry key="ant" value-ref="antCommandInterpreter" />
       </map>
-    </property>
-    <property name="executorService" ref="executorService"></property>
+    </constructor-arg>
   </bean>
 
   <bean id="executorService" class="java.util.concurrent.Executors"
     factory-method="newFixedThreadPool">
-    <constructor-arg value="5" />
+    <constructor-arg type="int" value="5"/>
   </bean>
 
   <bean id="consoleJobProvidingService"
     class="ru.soultakov.remotecontrol.core.impl.console.ConsoleJobProvidingService">
-    <property name="jobExecutionService" ref="jobExecutionService"></property>
-    <property name="timeout" value="60000"></property>
+    <constructor-arg ref="jobExecutionService"></constructor-arg>
+    <constructor-arg value="60000"></constructor-arg>
   </bean>
 
   <bean id="mailService"
@@ -104,7 +104,7 @@
   </bean>
   
   <bean id="invokeAntCommand"
-    class="ru.soultakov.remotecontrol.core.impl.commands.InvokeAntCommand">
+    class="ru.soultakov.remotecontrol.core.impl.ant.InvokeAntCommand">
   </bean>
 
   <!-- End Commands -->

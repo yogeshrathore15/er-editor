@@ -1,4 +1,4 @@
-package ru.soultakov.remotecontrol.ant;
+package ru.soultakov.remotecontrol.core.impl.ant;
 
 import java.io.*;
 
@@ -10,9 +10,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.apache.log4j.Logger;
-import org.apache.tools.ant.DefaultLogger;
-import org.apache.tools.ant.Project;
-import org.apache.tools.ant.ProjectHelper;
+import org.apache.tools.ant.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -40,6 +38,7 @@ public class AntTaskInvoker {
 
         @Override
         public void warning(SAXParseException exception) throws SAXException {
+            LOGGER.info(exception.getMessage());
         }
 
     }
@@ -75,6 +74,9 @@ public class AntTaskInvoker {
                 LOGGER.error(e.getMessage());
                 throw new AntTaskInvokationException(e);
             } catch (final SAXException e) {
+                LOGGER.info(e.getMessage());
+                throw new AntTaskInvokationException(e);
+            } catch (final BuildException e) {
                 LOGGER.info(e.getMessage());
                 throw new AntTaskInvokationException(e);
             }

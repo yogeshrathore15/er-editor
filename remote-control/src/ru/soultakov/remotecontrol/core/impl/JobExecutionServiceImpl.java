@@ -15,9 +15,18 @@ public class JobExecutionServiceImpl implements IJobExecutionService {
 
     private volatile boolean stopped;
 
-    private ExecutorService executorService;
-    private Map<String, ICommand> commands;
-    private Map<String, ICommandInterpreter> interpreters;
+    private final ExecutorService executorService;
+    private final Map<String, ICommand> commands;
+    private final Map<String, ICommandInterpreter> interpreters;
+
+    private final Object lock = new Object();
+
+    public JobExecutionServiceImpl(ExecutorService executorService, Map<String, ICommand> commands,
+            Map<String, ICommandInterpreter> interpreters) {
+        this.executorService = executorService;
+        this.commands = commands;
+        this.interpreters = interpreters;
+    }
 
     /**
      * {@inheritDoc}
@@ -25,10 +34,12 @@ public class JobExecutionServiceImpl implements IJobExecutionService {
      * @throws CommandExecutionException
      */
     public void execute(final IJob job) throws IllegalJobException, CommandExecutionException {
+        LOGGER.info("Preparing for executing job " + job);
         final ICommandInterpreter interpreter = interpreters.get(job.getInterpreterName());
         if (interpreter == null) {
             throw new NoSuchInterpreterException(job.getInterpreterName());
         }
+        LOGGER.info("Interpreter has been got " + interpreter);
         final String commandName = interpreter.getName(job.getCommandText());
         final Map<String, List<String>> parameters = interpreter
                 .getParameters(job.getCommandText());
@@ -36,72 +47,29 @@ public class JobExecutionServiceImpl implements IJobExecutionService {
         if (command == null) {
             throw new NoSuchCommandException(commandName);
         }
-        executorService.execute(new Runnable() {
-            /**
-             * Executes job
-             */
-            @Override
-            public void run() {
-                LOGGER.info("Executing job '" + commandName + "'");
-                try {
-                    final String result = command.execute(parameters);
-                    LOGGER.info("Executed job '" + commandName + "'");
-                    LOGGER.info("Result = '" + result + "'");
-                    notifyJob(job, result, true);
-                } catch (final CommandExecutionException e) {
-                    notifyJob(job, e.getMessage(), false);
-                } catch (final RuntimeException e) {
-                    LOGGER.error(e.getMessage(), e);
-                    final String errorMessage = "Runtime exception : " + e.getClass().getName()
-                            + ". Message: " + e.getMessage();
-                    notifyJob(job, errorMessage, false);
-                }
-            }
-
-            private void notifyJob(final IJob job, final String result, boolean success) {
-                try {
-                    job.done(result, success);
-                } catch (final RuntimeException e) {
-                    LOGGER.error(e.getMessage(), e);
-                }
-            }
-        });
-    }
-
-    public void setCommands(Map<String, ICommand> commands) {
-        this.commands = commands;
-    }
-
-    public Map<String, ICommand> getCommands() {
-        return commands;
+        LOGGER.info("Command has been created " + command);
+        LOGGER.info("Command has been queued up for execution");
+        executorService.execute(new CommandRunner(parameters, command, commandName, job));
     }
 
     @Override
     public void start() {
+        checkState();
     }
 
     @Override
     public void stop() {
+        synchronized (lock) {
+            checkState();
+            stopped = true;
+            executorService.shutdown();
+        }
+    }
+
+    private void checkState() {
         if (stopped) {
             throw new IllegalStateException("The service has already been stopped");
         }
-        executorService.shutdown();
-        stopped = true;
     }
 
-    public ExecutorService getExecutorService() {
-        return this.executorService;
-    }
-
-    public void setExecutorService(ExecutorService executorService) {
-        this.executorService = executorService;
-    }
-
-    public Map<String, ICommandInterpreter> getInterpreters() {
-        return this.interpreters;
-    }
-
-    public void setInterpreters(Map<String, ICommandInterpreter> interpreters) {
-        this.interpreters = interpreters;
-    }
 }

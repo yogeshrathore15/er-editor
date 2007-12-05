@@ -1,19 +1,19 @@
 package ru.soultakov.remotecontrol.core.impl;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import ru.soultakov.remotecontrol.core.ICommandInterpreter;
 import ru.soultakov.remotecontrol.core.exceptions.IllegalJobException;
 
 public class DefaultCommandInterpretor implements ICommandInterpreter {
 
-    private String commandPrefix;
-    private String delimeter;
+    private final String commandPrefix;
+    private final String delimeter;
+
+    public DefaultCommandInterpretor(String commandPrefix, String delimeter) {
+        this.commandPrefix = commandPrefix;
+        this.delimeter = delimeter;
+    }
 
     @Override
     public String getName(String command) throws IllegalJobException {
@@ -44,8 +44,7 @@ public class DefaultCommandInterpretor implements ICommandInterpreter {
         return parameters;
     }
 
-    private Map<String, List<String>> parseParameters(String[] strings)
-            throws IllegalJobException {
+    private Map<String, List<String>> parseParameters(String[] strings) throws IllegalJobException {
         assert strings.length > 0;
         final Map<String, List<String>> params = new HashMap<String, List<String>>();
         ArrayList<String> currentList = null;
@@ -64,19 +63,4 @@ public class DefaultCommandInterpretor implements ICommandInterpreter {
         return params;
     }
 
-    public String getDelimeter() {
-        return this.delimeter;
-    }
-
-    public void setDelimeter(String delimeter) {
-        this.delimeter = delimeter;
-    }
-
-    public void setCommandPrefix(String commandPrefix) {
-        this.commandPrefix = commandPrefix;
-    }
-
-    public String getCommandPrefix() {
-        return commandPrefix;
-    }
 }
