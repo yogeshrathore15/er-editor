@@ -1,0 +1,1 @@
+This is a project, created in the context of studying in the Academy of Modern Programming. The main aim of this project is learning basic methods of OOA&D.
